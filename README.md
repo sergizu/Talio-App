@@ -10,7 +10,7 @@ Add your own name (do not add the names for others!) to the section below.
 
 | Profile Picture | Name | Email |
 |---|---|---|
-| ![](https://gitlab.ewi.tudelft.nl/uploads/-/system/user/avatar/5950/avatar.png?width=400) | Sergiu-Nicolae Stancu | S.N.Stancu@student.tudelft.nl | ![](https://secure.gravatar.com/avatar/70bd6424dcf4164c26d17566d394fbd3?s=800&d=identicon?width=400) Yuraj Mangalgi | Y.Mangalgi@student.tudelft.nl |
+| ![](https://gitlab.ewi.tudelft.nl/uploads/-/system/user/avatar/5950/avatar.png?width=400) | Sergiu-Nicolae Stancu | S.N.Stancu@student.tudelft.nl | ![](https://secure.gravatar.com/avatar/70bd6424dcf4164c26d17566d394fbd3?s=800&d=identicon?width=400) |Yuraj Mangalgi | Y.Mangalgi@student.tudelft.nl |
 
 <!-- Instructions (remove once assignment has been completed -->
 <!-- - Add (only!) your own name to the table above (use Markdown formatting) -->
