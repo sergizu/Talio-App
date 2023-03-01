@@ -23,6 +23,6 @@ public class CardTest {
     @Test
     public void testEquals() {
         Card card2 = new Card("test card");
-        assertNotEquals(card, card2);
+        assertEquals(card, card2);
     }
 }
