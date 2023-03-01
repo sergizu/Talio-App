@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.database.CardRepository;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/cards")
 public class CardController {
@@ -22,9 +24,14 @@ public class CardController {
         return ResponseEntity.ok(cardRepository.findById(id).get());
     }
 
+    @GetMapping()
+    public ResponseEntity<List<Card>> getAll() {
+        return ResponseEntity.ok(cardRepository.findAll());
+    }
+
     @PostMapping()
     public ResponseEntity<Card> add(@RequestBody Card card) {
-        if(card == null || cardRepository.existsById(card.id))
+        if(card == null || cardRepository.existsById(card.getId()))
             return ResponseEntity.badRequest().build();
         cardRepository.save(card);
         return ResponseEntity.ok(card);
