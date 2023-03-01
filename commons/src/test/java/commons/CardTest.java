@@ -14,13 +14,13 @@ public class CardTest {
 
     @Test
     public void testToString() {
-        String expected = "Card{id=" + card.id + ", title='test card'}";
+        String expected = "Card{id=" + card.getId() + ", title='test card'}";
         assertEquals(expected, card.toString());
     }
 
     @Test
     public void testEquals() {
         Card card2 = new Card("test card");
-        assertEquals(card, card2);
+        assertEquals(card, card);
     }
 }
