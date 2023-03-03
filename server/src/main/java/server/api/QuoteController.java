@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Random;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,6 +54,13 @@ public class QuoteController {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(repo.findById(id).get());
+    }
+
+    @MessageMapping("/quotes")
+    @SendTo("/topic/quotes")
+    public Quote addMessage(Quote q){
+        add(q);
+        return q;
     }
 
     @PostMapping(path = { "", "/" })
