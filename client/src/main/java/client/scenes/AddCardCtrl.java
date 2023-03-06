@@ -64,16 +64,16 @@ public class AddCardCtrl {
 
     public void ok() {
         server.send("/app/cards", getCard());
-        try {
-            server.addCard(getCard());
-        } catch (WebApplicationException e) {
-
-            var alert = new Alert(Alert.AlertType.ERROR);
-            alert.initModality(Modality.APPLICATION_MODAL);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-            return;
-        }
+//        try {
+//            server.addCard(getCard());
+//        } catch (WebApplicationException e) {
+//
+//            var alert = new Alert(Alert.AlertType.ERROR);
+//            alert.initModality(Modality.APPLICATION_MODAL);
+//            alert.setContentText(e.getMessage());
+//            alert.showAndWait();
+//            return;
+//        }
 
         mainCtrl.showList();
     }

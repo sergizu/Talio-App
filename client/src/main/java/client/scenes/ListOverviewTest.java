@@ -36,15 +36,12 @@ public class ListOverviewTest implements Initializable {
     @FXML private TableView<Card> tableView;
     @FXML private TableColumn<Card, String> CardColumn;
 
-
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         CardColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
         server.registerForMessages("/topic/cards", Card.class, q -> {
             data.add(q);
         });
-
     }
 
     public void refresh() {
@@ -52,8 +49,6 @@ public class ListOverviewTest implements Initializable {
         data = FXCollections.observableList(cards);
         tableView.setItems(data);
     }
-
-
 
 
     @Inject

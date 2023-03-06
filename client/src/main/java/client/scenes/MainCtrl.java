@@ -30,7 +30,7 @@ public class MainCtrl {
     private AddCardCtrl addCardCtrl;
     private ListOverviewTest list;
 
-    private AddQuoteCtrl addCtrl;
+    //private AddQuoteCtrl addCtrl;
 
 
     private Scene add;
@@ -44,21 +44,21 @@ public class MainCtrl {
         this.addCardCtrl = add.getKey();
         this.add = new Scene(add.getValue());
 
-//        showOverview();
+        showOverview();
         showList();
         primaryStage.show();
     }
 
     public void showOverview() {
-        primaryStage.setTitle("Quotes: Overview");
+        primaryStage.setTitle("Lists: Overview");
         primaryStage.setScene(overview);
         overviewCtrl.refresh();
     }
 
     public void showAdd() {
-        primaryStage.setTitle("Quotes: Adding Quote");
+        primaryStage.setTitle("Quotes: Adding Card");
         primaryStage.setScene(add);
-        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+        add.setOnKeyPressed(e -> addCardCtrl.keyPressed(e));
     }
 
     public void showCard() {
@@ -71,7 +71,6 @@ public class MainCtrl {
         primaryStage.setTitle("Quotes: Adding Quote");
         primaryStage.setScene(overview);
         list.refresh();
-
     }
 
 
