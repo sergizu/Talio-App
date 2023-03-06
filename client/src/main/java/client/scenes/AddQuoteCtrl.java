@@ -20,9 +20,12 @@ import com.google.inject.Inject;
 import client.utils.ServerUtils;
 import commons.Person;
 import commons.Quote;
+import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Modality;
 
 public class AddQuoteCtrl {
 
@@ -52,16 +55,16 @@ public class AddQuoteCtrl {
 
     public void ok() {
         server.send("/app/quotes", getQuote());
-//        try {
-//            server.addQuote(getQuote());
-//        } catch (WebApplicationException e) {
-//
-//            var alert = new Alert(Alert.AlertType.ERROR);
-//            alert.initModality(Modality.APPLICATION_MODAL);
-//            alert.setContentText(e.getMessage());
-//            alert.showAndWait();
-//            return;
-//        }
+        try {
+            server.addQuote(getQuote());
+        } catch (WebApplicationException e) {
+
+            var alert = new Alert(Alert.AlertType.ERROR);
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+            return;
+        }
 
         clearFields();
         mainCtrl.showOverview();

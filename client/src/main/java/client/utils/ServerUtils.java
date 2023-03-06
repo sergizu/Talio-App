@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
+import commons.Card;
 import org.glassfish.jersey.client.ClientConfig;
 
 import commons.Quote;
@@ -62,6 +63,14 @@ public class ServerUtils {
                 .get(new GenericType<List<Quote>>() {});
     }
 
+    public List<Card> getCard() {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/cards") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Card>>() {});
+    }
+
     public Quote addQuote(Quote quote) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/quotes") //
@@ -69,6 +78,16 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
     }
+
+    public Card addCard(Card card) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/cards") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(card, APPLICATION_JSON), Card.class);
+    }
+
+
 
     private StompSession session = connect("ws://localhost:8080/websocket");
 
