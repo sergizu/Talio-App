@@ -1,10 +1,15 @@
 package commons;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Objects;
+
+import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 @Entity
 public class Card {
@@ -27,29 +32,19 @@ public class Card {
     //Equals method, decided to include both the ID and title(maybe we should rethink this later)
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Card card = (Card) o;
-
-        if (id != card.id) return false;
-        return Objects.equals(title, card.title);
+        return EqualsBuilder.reflectionEquals(this,o);
+        // I suggest we could use EqualsBuilder - reliable and shorter implementation
     }
 
     //Hashcode method, decided to include both the ID and title(maybe we should rethink this later)
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        return result;
+        return HashCodeBuilder.reflectionHashCode(this); ///also reliable and less code
     }
 
     @Override
     public String toString() {
-        return "Card{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                '}';
+        return ToStringBuilder.reflectionToString(this,MULTI_LINE_STYLE); ///shorter implementation
     }
 
     public long getId() {
