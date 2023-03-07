@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -15,7 +14,7 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String title;
-    private List<TDList> lists;
+    private ArrayList<TDList> lists;
     private Board(){}
     public Board(String title) {
         this.title = title;
