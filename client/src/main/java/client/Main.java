@@ -35,7 +35,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        var overview = FXML.load(ListOverviewTest.class, "client", "scenes", "ListOverviewTest.fxml");
+        var overview = FXML.load(ListOverviewCtrl.class, "client", "scenes", "ListOverviewTest.fxml");
         var add = FXML.load(AddCardCtrl.class, "client", "scenes", "AddCard.fxml");
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);

@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ListOverviewTest implements Initializable {
+public class ListOverviewCtrl implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
@@ -57,7 +57,7 @@ public class ListOverviewTest implements Initializable {
 
 
     @Inject
-    public ListOverviewTest(ServerUtils server, MainCtrl mainCtrl) {
+    public ListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
     }

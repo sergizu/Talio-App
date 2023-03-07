@@ -24,13 +24,13 @@ public class MainYCtrl {
 
     private Stage primaryStage;
 
-    private ListOverviewTest overviewCtrl;
+    private ListOverviewCtrl overviewCtrl;
     private Scene overview;
 
     private AddCardCtrl addCtrl;
     private Scene add;
 
-    public void initialize(Stage primaryStage, Pair<ListOverviewTest, Parent> overview,
+    public void initialize(Stage primaryStage, Pair<ListOverviewCtrl, Parent> overview,
                            Pair<AddCardCtrl, Parent> add) {
         this.primaryStage = primaryStage;
         this.overviewCtrl = overview.getKey();

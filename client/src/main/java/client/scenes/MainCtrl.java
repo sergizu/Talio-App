@@ -28,14 +28,14 @@ public class MainCtrl {
     private Scene overview;
 
     private AddCardCtrl addCardCtrl;
-    private ListOverviewTest list;
+    private ListOverviewCtrl list;
 
     private AddQuoteCtrl addCtrl;
 
 
     private Scene add;
 
-    public void initialize(Stage primaryStage, Pair<ListOverviewTest, Parent> overview,
+    public void initialize(Stage primaryStage, Pair<ListOverviewCtrl, Parent> overview,
             Pair<AddCardCtrl, Parent> add) {
         this.primaryStage = primaryStage;
         this.list = overview.getKey();
