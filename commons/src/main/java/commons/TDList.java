@@ -1,7 +1,6 @@
 package commons;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,8 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.Objects;
-
-import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 @Entity
 public class TDList {
@@ -34,7 +31,8 @@ public class TDList {
 
     @Override
     public boolean equals(Object o) {
-        return EqualsBuilder.reflectionEquals(this,o);  // I suggest we could use EqualsBuilder - reliable and shorter implementation
+        return EqualsBuilder.reflectionEquals(this,o);
+        // I suggest we could use EqualsBuilder - reliable and shorter implementation
     }
 
     @Override
@@ -43,7 +41,14 @@ public class TDList {
     }
 
     public String toString(){
-       return ToStringBuilder.reflectionToString(this,MULTI_LINE_STYLE);} //added toString
+        String toReturn = "TO DO List:\n" +
+                "id: " + id + "\n"
+                +"title: " + title + "\n" +
+                "Cards:\n";
+        for(Card card : list)
+            toReturn += card.toString();
+        return toReturn;
+    } //added toString
 
     public long getId() {
         return id;
