@@ -23,10 +23,6 @@ public class AddCardCtrl {
         this.server = server;
     }
 
-    public void showList() {
-        mainCtrl.showOverview();
-    }
-
     private Card getCard() {
         String title = cardName.getText();
         return new Card(title);
