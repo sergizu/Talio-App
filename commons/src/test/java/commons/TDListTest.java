@@ -2,22 +2,15 @@ package commons;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-
-
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class TDListTest {
-    TDList DO;
-    TDList DOING;
-
-    TDList DO1;
-    TDList DONE;
-    Card card2;
-    Card card1;
-
-
+    private TDList DO;
+    private TDList DOING;
+    private TDList DO1;
+    private TDList DONE;
+    private Card card2;
+    private Card card1;
 
     @BeforeEach
     void setUp() {
@@ -27,7 +20,6 @@ class TDListTest {
          DONE = new TDList("TO DO");
          card1 = new Card("test card");
          card2 = new Card("Next Card");
-
     }
 
     @Test
