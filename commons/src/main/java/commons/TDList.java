@@ -1,5 +1,7 @@
 package commons;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,16 +31,24 @@ public class TDList {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TDList tdList = (TDList) o;
-        return id == tdList.id && Objects.equals(title, tdList.title) && Objects.equals(list, tdList.list);
+        return EqualsBuilder.reflectionEquals(this,o);
+        // I suggest we could use EqualsBuilder - reliable and shorter implementation
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, title, list);
     }
+
+    public String toString(){
+        String toReturn = "TO DO List:\n" +
+                "id: " + id + "\n"
+                +"title: " + title + "\n" +
+                "Cards:\n";
+        for(Card card : list)
+            toReturn += card.toString();
+        return toReturn;
+    } //added toString
 
     public long getId() {
         return id;
