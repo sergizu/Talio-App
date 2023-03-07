@@ -3,7 +3,6 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
-
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,9 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-
 import javafx.stage.Stage;
-
 
 import java.io.IOException;
 import java.net.URL;
@@ -34,13 +31,13 @@ public class ListOverviewCtrl implements Initializable {
     private ObservableList<Card> data;
 
     @FXML private TableView<Card> tableView;
-    @FXML private TableColumn<Card, String> CardColumn;
+    @FXML private TableColumn<Card, String> cardColumn;
 
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        CardColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
+        cardColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
         server.registerForMessages("/topic/cards", Card.class, q -> {
             data.add(q);
         });
@@ -63,7 +60,7 @@ public class ListOverviewCtrl implements Initializable {
     }
 
 
-    public void SwitchToCard(ActionEvent event) {
+    public void switchToCard(ActionEvent event) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("client\\scenes\\AddCard.fxml"));
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
