@@ -15,6 +15,7 @@ public class Board {
     private long id;
     private String title;
     private List<TDList> lists;
+    private Board(){}
     public Board(String title) {
         this.title = title;
         lists = new ArrayList<>();
@@ -58,18 +59,9 @@ public class Board {
         this.title = title;
     }
 
-    public void addList(String name){ lists.add(new TDList(name)); }
+    public void addList(TDList l){ lists.add(l); }
 
     public boolean removeList(long id){
-        List<TDList> r = new ArrayList<>();
-        boolean a = false;
-        for(TDList l:lists){
-            if(l.getId() != id){
-                r.add(l);
-                a = true;
-            }
-        }
-        lists = r;
-        return a;
+        return lists.removeIf(n -> (n.getId() == id));
     }
 }
