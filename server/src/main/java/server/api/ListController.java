@@ -31,7 +31,7 @@ public class ListController {
 
     @PostMapping()
     public ResponseEntity<TDList> add(@RequestBody TDList tdList) {
-        if(tdList == null || listRepository.existsById(tdList.getId())) {
+        if(tdList == null || listRepository.existsById(tdList.id)) {
             return ResponseEntity.badRequest().build();
         }
         TDList saved = listRepository.save(tdList);
