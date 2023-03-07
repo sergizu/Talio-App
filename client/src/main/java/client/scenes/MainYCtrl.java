@@ -44,13 +44,13 @@ public class MainYCtrl {
     }
 
     public void showOverview() {
-        primaryStage.setTitle("Quotes: Overview");
+        primaryStage.setTitle("Lists: Overview");
         primaryStage.setScene(overview);
 //        overviewCtrl.refresh();
     }
 
     public void showAdd() {
-        primaryStage.setTitle("Quotes: Adding Quote");
+        primaryStage.setTitle("Cards: Adding Card");
         primaryStage.setScene(add);
 //        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
