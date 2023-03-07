@@ -26,17 +26,17 @@
          <Font size="18.0" />
       </font></Label>
       <Button layoutX="139.0" layoutY="71.0" mnemonicParsing="false" onAction="#addCard" text="+" />
-      <TableView fx:id="tableView" layoutX="10.0" layoutY="100.0" prefHeight="270.0" prefWidth="157.0">
+      <TableView fx:id="tableView" fixedCellSize="5.0" layoutX="10.0" layoutY="100.0" prefHeight="270.0" prefWidth="157.0" style="-fx-background-color: lightgray;">
         <columns>
-          <TableColumn fx:id="cardColumn" prefWidth="75.0" text="Card Name" />
+          <TableColumn fx:id="cardColumn" prefWidth="156.80001220703124" />
         </columns>
       </TableView>
-   <TableView fx:id="tableView1" layoutX="221.0" layoutY="100.0" prefHeight="270.0" prefWidth="157.0">
+   <TableView fx:id="tableView1" layoutX="221.0" layoutY="100.0" prefHeight="270.0" prefWidth="157.0" style="-fx-background-color: lightgray;">
       <columns>
          <TableColumn fx:id="CardColumn1" prefWidth="156.80001220703124" />
       </columns>
    </TableView>
-   <TableView fx:id="tableView2" layoutX="432.0" layoutY="100.0" prefHeight="270.0" prefWidth="157.0">
+   <TableView fx:id="tableView2" layoutX="432.0" layoutY="100.0" prefHeight="270.0" prefWidth="157.0" style="-fx-background-color: lightgray;">
       <columns>
          <TableColumn fx:id="CardColumn2" prefWidth="156.80001220703124" />
       </columns>
