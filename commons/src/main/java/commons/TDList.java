@@ -14,11 +14,12 @@ public class TDList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    public long id;
 
-    private String title;
+    public String title;
 
-    private ArrayList<Card> list; //Maybe an arrayList isn't the best data structure
+    //Maybe an arrayList isn't the best data structure
+    public ArrayList<Card> list;
 
     private TDList() {
 
@@ -31,7 +32,7 @@ public class TDList {
 
     @Override
     public boolean equals(Object o) {
-        return EqualsBuilder.reflectionEquals(this,o);
+        return EqualsBuilder.reflectionEquals(this, o);
         // I suggest we could use EqualsBuilder - reliable and shorter implementation
     }
 
@@ -40,37 +41,25 @@ public class TDList {
         return Objects.hash(id, title, list);
     }
 
-    public String toString(){
+    public String toString() {
         String toReturn = "TO DO List:\n" +
                 "id: " + id + "\n"
-                +"title: " + title + "\n" +
+                + "title: " + title + "\n" +
                 "Cards:\n";
-        for(Card card : list)
+        for (Card card : list)
             toReturn += card.toString();
         return toReturn;
     } //added toString
 
-    public long getId() {
-        return id;
+    public boolean removeCard(long id) {
+        return list.removeIf(p -> p.getId() == id);
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void addCard(Card card) {
+        list.add(card);
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public ArrayList<Card> getList() {
-        return list;
-    }
-
-    public void setList(ArrayList<Card> list) {
-        this.list = list;
+    public boolean isEmpty() {
+        return list.isEmpty();
     }
 }
