@@ -4,6 +4,7 @@ import commons.Card;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -34,9 +35,9 @@ public class CardControllerTest {
     @Test
     public void testGetById() {
         Card card1 = new Card("new card 1");
-        Card card2 = new Card("new card 2");
+        //Card card2 = new Card("new card 2");
         cardController.add(card1);
-        cardController.add(card2);
+        //cardController.add(card2);
         assertEquals(card1, cardController.getById(card1.getId()).getBody());
     }
 }

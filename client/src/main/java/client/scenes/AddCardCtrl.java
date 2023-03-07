@@ -4,20 +4,11 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
 import jakarta.ws.rs.WebApplicationException;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
-import javafx.stage.Stage;
-
-import java.io.IOException;
-
 
 public class AddCardCtrl {
     private final ServerUtils server;
@@ -32,7 +23,7 @@ public class AddCardCtrl {
         this.server = server;
     }
 
-    public void ShowList() {
+    public void showList() {
         mainCtrl.showOverview();
     }
 

@@ -1,10 +1,7 @@
 package server.api;
 
 import commons.Card;
-import commons.Quote;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import server.database.CardRepository;
@@ -39,8 +36,8 @@ public class CardController {
     public ResponseEntity<Card> add(@RequestBody Card card) {
         if(card == null || isNullOrEmpty(card.title))
             return ResponseEntity.badRequest().build();
-
-        msgs.convertAndSend("/topic/cards", card);
+        if(msgs != null)
+            msgs.convertAndSend("/topic/cards", card);
         Card saved = cardRepository.save(card);
         return ResponseEntity.ok(saved);
     }
