@@ -8,7 +8,7 @@ import server.database.ListRepository;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/lists")
+@RequestMapping("/api/lists")
 public class ListController {
 
     private final ListRepository listRepository;

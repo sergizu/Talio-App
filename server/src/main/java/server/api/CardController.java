@@ -2,6 +2,7 @@ package server.api;
 
 import commons.Card;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import server.database.CardRepository;
 
@@ -11,10 +12,17 @@ import java.util.List;
 @RequestMapping("/api/cards")
 public class CardController {
     private final CardRepository cardRepository;
+    private SimpMessagingTemplate msgs;
 
     //using a constructor to allow for dependency injection
-    public CardController(CardRepository cardRepository) {
+    public CardController(CardRepository cardRepository, SimpMessagingTemplate msgs) {
         this.cardRepository = cardRepository;
+        this.msgs = msgs;
+    }
+
+    @GetMapping(path = { "", "/" })
+    public List<Card> getAll() {
+        return cardRepository.findAll();
     }
 
     @GetMapping("/{id}")
@@ -24,16 +32,17 @@ public class CardController {
         return ResponseEntity.ok(cardRepository.findById(id).get());
     }
 
-    @GetMapping()
-    public ResponseEntity<List<Card>> getAll() {
-        return ResponseEntity.ok(cardRepository.findAll());
+    @PostMapping(path = { "", "/" })
+    public ResponseEntity<Card> add(@RequestBody Card card) {
+        if(card == null || isNullOrEmpty(card.title))
+            return ResponseEntity.badRequest().build();
+        if(msgs != null)
+            msgs.convertAndSend("/topic/cards", card);
+        Card saved = cardRepository.save(card);
+        return ResponseEntity.ok(saved);
     }
 
-    @PostMapping()
-    public ResponseEntity<Card> add(@RequestBody Card card) {
-        if(card == null || cardRepository.existsById(card.getId()))
-            return ResponseEntity.badRequest().build();
-        cardRepository.save(card);
-        return ResponseEntity.ok(card);
+    private static boolean isNullOrEmpty(String s) {
+        return s == null || s.isEmpty();
     }
 }

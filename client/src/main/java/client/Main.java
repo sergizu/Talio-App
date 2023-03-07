@@ -18,7 +18,6 @@ package client;
 import static com.google.inject.Guice.createInjector;
 
 
-
 import client.scenes.*;
 import com.google.inject.Injector;
 
@@ -30,12 +29,10 @@ public class Main extends Application {
     private static final Injector INJECTOR = createInjector(new MyModule());
     private static final MyFXML FXML = new MyFXML(INJECTOR);
 
-
-
     @Override
     public void start(Stage primaryStage) {
-
         var overview = FXML.load(ListOverviewCtrl.class, "client", "scenes", "ListOverview.fxml");
+
         var add = FXML.load(AddCardCtrl.class, "client", "scenes", "AddCard.fxml");
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);

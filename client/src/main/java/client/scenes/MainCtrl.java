@@ -23,15 +23,10 @@ import javafx.util.Pair;
 public class MainCtrl {
 
     private Stage primaryStage;
-
-    private QuoteOverviewCtrl overviewCtrl;
     private Scene overview;
 
-    private AddCardCtrl addCardCtrl;
     private ListOverviewCtrl list;
-
-    private AddQuoteCtrl addCtrl;
-
+    private AddCardCtrl addCardCtrl;
 
     private Scene add;
 
@@ -44,37 +39,19 @@ public class MainCtrl {
         this.addCardCtrl = add.getKey();
         this.add = new Scene(add.getValue());
 
-//        showOverview();
-        showList();
+        showOverview();
         primaryStage.show();
     }
 
     public void showOverview() {
-        primaryStage.setTitle("Quotes: Overview");
+        primaryStage.setTitle("Lists: Overview");
         primaryStage.setScene(overview);
-        overviewCtrl.refresh();
+        list.refresh();
     }
 
     public void showAdd() {
-        primaryStage.setTitle("Quotes: Adding Quote");
-        primaryStage.setScene(add);
-        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
-    }
-
-    public void showCard() {
-        primaryStage.setTitle("Quotes: Adding Quote");
+        primaryStage.setTitle("Board: Adding Card");
         primaryStage.setScene(add);
         add.setOnKeyPressed(e -> addCardCtrl.keyPressed(e));
     }
-
-    public void showList() {
-        primaryStage.setTitle("Quotes: Adding Quote");
-        primaryStage.setScene(overview);
-        list.refresh();
-
-    }
-
-
-
-
 }
