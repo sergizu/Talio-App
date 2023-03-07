@@ -45,7 +45,6 @@ public class AddQuoteCtrl {
     public AddQuoteCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
-
     }
 
     public void cancel() {
@@ -54,11 +53,10 @@ public class AddQuoteCtrl {
     }
 
     public void ok() {
-        server.send("/app/quotes", getQuote());
+        //server.send("/app/quotes", getQuote());
         try {
             server.addQuote(getQuote());
         } catch (WebApplicationException e) {
-
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
             alert.setContentText(e.getMessage());

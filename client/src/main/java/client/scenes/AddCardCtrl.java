@@ -22,9 +22,10 @@ import java.io.IOException;
 
 
 public class AddCardCtrl {
-    private Stage stage;
-    private Scene scene;
+//    private Stage stage;
+//    private Scene scene;
     private Parent root;
+
     @FXML
     private TextField CardName;
     private final ServerUtils server;
@@ -35,47 +36,49 @@ public class AddCardCtrl {
     public AddCardCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
-
     }
 
-    public void SwitchToList(ActionEvent event) {
-
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("client\\scenes\\AddCard.fxml"));
-            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
-    }
+//    public void SwitchToList(ActionEvent event) {
+//
+//        try {
+//            Parent root = FXMLLoader.load(getClass().getResource("client\\scenes\\AddCard.fxml"));
+//            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+//            scene = new Scene(root);
+//            stage.setScene(scene);
+//            stage.show();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//
+//    }
 
     public void ShowList() {
-        mainCtrl.showList();
+        mainCtrl.showOverview();
     }
 
     private Card getCard() {
         String title = CardName.getText();
+        System.out.println(title);
         return new Card(title);
     }
 
     public void ok() {
-        server.send("/app/cards", getCard());
-//        try {
-//            server.addCard(getCard());
-//        } catch (WebApplicationException e) {
-//
-//            var alert = new Alert(Alert.AlertType.ERROR);
-//            alert.initModality(Modality.APPLICATION_MODAL);
-//            alert.setContentText(e.getMessage());
-//            alert.showAndWait();
-//            return;
-//        }
+        try {
+            server.addCard(getCard());
+        } catch (WebApplicationException e) {
+            var alert = new Alert(Alert.AlertType.ERROR);
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+            return;
+        }
+        clearFields();
+        mainCtrl.showOverview();
+    }
 
-        mainCtrl.showList();
+    private void clearFields() {
+        CardName.clear();
     }
 
     public void keyPressed(KeyEvent e) {

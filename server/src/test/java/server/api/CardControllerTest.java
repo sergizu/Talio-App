@@ -15,7 +15,7 @@ public class CardControllerTest {
     @BeforeEach
     public void setup() {
         this.testCardRepository = new TestCardRepository();
-        this.cardController = new CardController(testCardRepository);
+        this.cardController = new CardController(testCardRepository, null);
     }
 
     @Test

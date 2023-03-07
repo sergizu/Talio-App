@@ -11,9 +11,9 @@ public class Card {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    public long id;
 
-    private String title;
+    public String title;
 
     //empty constructor for ObjectMapper
     private Card() {
@@ -46,10 +46,7 @@ public class Card {
 
     @Override
     public String toString() {
-        return "Card{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                '}';
+        return title;
     }
 
     public long getId() {
