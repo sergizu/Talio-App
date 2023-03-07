@@ -24,7 +24,7 @@ public class AddCardCtrl {
     private Scene scene;
     private Parent root;
     @FXML
-    private TextField CardName;
+    private TextField cardName;
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
@@ -36,7 +36,7 @@ public class AddCardCtrl {
 
     }
 
-    public void SwitchToList(ActionEvent event) {
+    public void switchToList(ActionEvent event) {
 
         try {
             Parent root = FXMLLoader.load(getClass().getResource("client\\scenes\\AddCard.fxml"));
@@ -51,12 +51,12 @@ public class AddCardCtrl {
 
     }
 
-    public void ShowList() {
+    public void showList() {
         mainCtrl.showList();
     }
 
     private Card getCard() {
-        String title = CardName.getText();
+        String title = cardName.getText();
         return new Card(title);
     }
 

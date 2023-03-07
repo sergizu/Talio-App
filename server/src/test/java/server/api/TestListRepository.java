@@ -157,7 +157,9 @@ public class TestListRepository implements ListRepository {
     }
 
     @Override
-    public <S extends TDList, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+    public <S extends TDList, R> R findBy(Example<S> example,
+                                          Function<FluentQuery.
+                                                  FetchableFluentQuery<S>, R> queryFunction) {
         return null;
     }
 }
