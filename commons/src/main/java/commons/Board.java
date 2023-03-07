@@ -59,6 +59,6 @@ public class Board {
     public void addList(TDList l){ lists.add(l); }
 
     public boolean removeList(long id){
-        return lists.removeIf(n -> (n.getId() == id));
+        return lists.removeIf(n -> (n.id == id));
     }
 }
