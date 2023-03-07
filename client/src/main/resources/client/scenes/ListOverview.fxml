@@ -28,7 +28,7 @@
       <Button layoutX="139.0" layoutY="71.0" mnemonicParsing="false" onAction="#addCard" text="+" />
       <TableView fx:id="tableView" layoutX="10.0" layoutY="100.0" prefHeight="270.0" prefWidth="157.0">
         <columns>
-          <TableColumn fx:id="CardColumn" prefWidth="156.80001220703124" />
+          <TableColumn fx:id="cardColumn" prefWidth="75.0" text="Card Name" />
         </columns>
       </TableView>
    <TableView fx:id="tableView1" layoutX="221.0" layoutY="100.0" prefHeight="270.0" prefWidth="157.0">

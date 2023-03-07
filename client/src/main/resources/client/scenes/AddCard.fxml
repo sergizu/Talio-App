@@ -8,11 +8,8 @@
 
 <AnchorPane prefHeight="236.0" prefWidth="362.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AddCardCtrl">
 
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="119.0" layoutY="39.0" prefHeight="26.0" prefWidth="122.0" text="Card Name">
-      <font>
-         <Font size="16.0" />
-      </font></Label>
-      <TextField fx:id="CardName" layoutX="79.0" layoutY="77.0" prefHeight="26.0" prefWidth="202.0" />
-      <Button layoutX="113.0" layoutY="161.0" mnemonicParsing="false" onAction="#ok" prefHeight="26.0" prefWidth="134.0" text="Create" />
+      <Label layoutX="54.0" layoutY="42.0" prefHeight="26.0" prefWidth="104.0" text="Card Name:" />
+      <TextField fx:id="cardName" layoutX="54.0" layoutY="75.0" prefHeight="26.0" prefWidth="202.0" />
+      <Button layoutX="206.0" layoutY="186.0" mnemonicParsing="false" onAction="#ok" prefHeight="26.0" prefWidth="134.0" text="Create" />
 
 </AnchorPane>
