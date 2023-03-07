@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ListOverviewCtrl">
+<AnchorPane prefHeight="409.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ListOverviewCtrl">
 
       <Accordion layoutX="49.0" layoutY="93.0" />
       <AmbientLight color="CHARTREUSE" />
@@ -26,9 +26,9 @@
          <Font size="18.0" />
       </font></Label>
       <Button layoutX="139.0" layoutY="71.0" mnemonicParsing="false" onAction="#addCard" text="+" />
-      <TableView fx:id="tableView" fixedCellSize="5.0" layoutX="10.0" layoutY="100.0" prefHeight="270.0" prefWidth="157.0" style="-fx-background-color: lightgray;">
+      <TableView fx:id="tableView" fixedCellSize="30.0" layoutX="10.0" layoutY="100.0" prefHeight="270.0" prefWidth="157.0" style="-fx-background-color: lightgray;" stylesheets="@../../../../../OneDrive/Bureaublad/OOPP/style.css">
         <columns>
-          <TableColumn fx:id="cardColumn" prefWidth="156.80001220703124" />
+          <TableColumn fx:id="cardColumn" prefWidth="156.0" />
         </columns>
       </TableView>
    <TableView fx:id="tableView1" layoutX="221.0" layoutY="100.0" prefHeight="270.0" prefWidth="157.0" style="-fx-background-color: lightgray;">
@@ -41,4 +41,5 @@
          <TableColumn fx:id="CardColumn2" prefWidth="156.80001220703124" />
       </columns>
    </TableView>
+   <Button layoutX="45.0" layoutY="374.0" mnemonicParsing="false" onAction="#removeCard" text="Remove Card" />
 </AnchorPane>

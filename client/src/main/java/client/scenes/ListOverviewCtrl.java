@@ -45,4 +45,10 @@ public class ListOverviewCtrl implements Initializable {
     public void addCard() {
         mainCtrl.showAdd();
     }
+
+    public void removeCard() {
+        Card card = tableView.getSelectionModel().getSelectedItem();
+        data.remove(card);
+    }
 }
+

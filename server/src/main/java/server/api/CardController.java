@@ -42,6 +42,15 @@ public class CardController {
         return ResponseEntity.ok(saved);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity removeByID(@PathVariable("id") long id) {
+        if(!cardRepository.existsById(id)) {
+            return ResponseEntity.badRequest().build();
+        }
+        cardRepository.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
+
     private static boolean isNullOrEmpty(String s) {
         return s == null || s.isEmpty();
     }
