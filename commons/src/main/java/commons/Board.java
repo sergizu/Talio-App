@@ -15,7 +15,7 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String title;
-    private List<TDList> lists;
+    private ArrayList<TDList> lists;
     private Board(){}
     public Board(String title) {
         this.title = title;
