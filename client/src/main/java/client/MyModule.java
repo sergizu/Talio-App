@@ -26,6 +26,6 @@ public class MyModule implements Module {
     public void configure(Binder binder) {
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AddCardCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(ListOverviewTest.class).in(Scopes.SINGLETON);
+        binder.bind(ListOverviewCtrl.class).in(Scopes.SINGLETON);
     }
 }

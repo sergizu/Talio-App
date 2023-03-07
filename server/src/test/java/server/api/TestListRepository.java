@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class TestListRepositry implements ListRepository {
+public class TestListRepository implements ListRepository {
 
 
     @Override
@@ -157,7 +157,9 @@ public class TestListRepositry implements ListRepository {
     }
 
     @Override
-    public <S extends TDList, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+    public <S extends TDList, R> R findBy(Example<S> example,
+                                          Function<FluentQuery.
+                                                  FetchableFluentQuery<S>, R> queryFunction) {
         return null;
     }
 }

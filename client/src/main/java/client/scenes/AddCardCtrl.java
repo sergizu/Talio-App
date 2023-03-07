@@ -3,8 +3,6 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
-import commons.Person;
-import commons.Quote;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,15 +20,11 @@ import java.io.IOException;
 
 
 public class AddCardCtrl {
-//    private Stage stage;
-//    private Scene scene;
-    private Parent root;
-
-    @FXML
-    private TextField CardName;
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
+    @FXML
+    private TextField cardName;
 
     @Inject
     public AddCardCtrl(ServerUtils server, MainCtrl mainCtrl) {
@@ -38,28 +32,12 @@ public class AddCardCtrl {
         this.server = server;
     }
 
-//    public void SwitchToList(ActionEvent event) {
-//
-//        try {
-//            Parent root = FXMLLoader.load(getClass().getResource("client\\scenes\\AddCard.fxml"));
-//            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-//            scene = new Scene(root);
-//            stage.setScene(scene);
-//            stage.show();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//
-//    }
-
     public void ShowList() {
         mainCtrl.showOverview();
     }
 
     private Card getCard() {
-        String title = CardName.getText();
-        System.out.println(title);
+        String title = cardName.getText();
         return new Card(title);
     }
 
@@ -78,7 +56,7 @@ public class AddCardCtrl {
     }
 
     private void clearFields() {
-        CardName.clear();
+        cardName.clear();
     }
 
     public void keyPressed(KeyEvent e) {

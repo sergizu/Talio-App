@@ -1,10 +1,12 @@
 package commons;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Objects;
 
 @Entity
 public class Card {
@@ -27,26 +29,22 @@ public class Card {
     //Equals method, decided to include both the ID and title(maybe we should rethink this later)
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Card card = (Card) o;
-
-        if (id != card.id) return false;
-        return Objects.equals(title, card.title);
+        return EqualsBuilder.reflectionEquals(this,o);
+        // I suggest we could use EqualsBuilder - reliable and shorter implementation
     }
 
     //Hashcode method, decided to include both the ID and title(maybe we should rethink this later)
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        return result;
+        return HashCodeBuilder.reflectionHashCode(this); ///also reliable and less code
     }
 
     @Override
     public String toString() {
-        return title;
+        return "Card{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                '}';
     }
 
     public long getId() {

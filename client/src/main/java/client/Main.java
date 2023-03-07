@@ -17,8 +17,6 @@ package client;
 
 import static com.google.inject.Guice.createInjector;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 import client.scenes.*;
 import com.google.inject.Injector;
@@ -31,13 +29,10 @@ public class Main extends Application {
     private static final Injector INJECTOR = createInjector(new MyModule());
     private static final MyFXML FXML = new MyFXML(INJECTOR);
 
-    public static void main(String[] args) throws URISyntaxException, IOException {
-        launch();
-    }
-
     @Override
-    public void start(Stage primaryStage) throws IOException {
-        var overview = FXML.load(ListOverviewTest.class, "client", "scenes", "ListOverviewTest.fxml");
+    public void start(Stage primaryStage) {
+        var overview = FXML.load(ListOverviewCtrl.class, "client", "scenes", "ListOverview.fxml");
+
         var add = FXML.load(AddCardCtrl.class, "client", "scenes", "AddCard.fxml");
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);

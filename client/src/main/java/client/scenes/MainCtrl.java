@@ -25,12 +25,12 @@ public class MainCtrl {
     private Stage primaryStage;
     private Scene overview;
 
-    private ListOverviewTest list;
+    private ListOverviewCtrl list;
     private AddCardCtrl addCardCtrl;
 
     private Scene add;
 
-    public void initialize(Stage primaryStage, Pair<ListOverviewTest, Parent> overview,
+    public void initialize(Stage primaryStage, Pair<ListOverviewCtrl, Parent> overview,
             Pair<AddCardCtrl, Parent> add) {
         this.primaryStage = primaryStage;
         this.list = overview.getKey();
@@ -51,12 +51,6 @@ public class MainCtrl {
 
     public void showAdd() {
         primaryStage.setTitle("Board: Adding Card");
-        primaryStage.setScene(add);
-        add.setOnKeyPressed(e -> addCardCtrl.keyPressed(e));
-    }
-
-    public void showCard() {
-        primaryStage.setTitle("Cards: Adding Card");
         primaryStage.setScene(add);
         add.setOnKeyPressed(e -> addCardCtrl.keyPressed(e));
     }
