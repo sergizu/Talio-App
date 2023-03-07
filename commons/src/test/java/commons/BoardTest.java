@@ -35,7 +35,7 @@ public class BoardTest {
         TDList l= new TDList("aa");
         b.addList(l);
         assertNotEquals(b, a);
-        b.removeList(l.getId());
+        b.removeList(l.id);
         assertEquals(b, a);
     }
 }
