@@ -77,7 +77,7 @@ public class ListOverviewCtrl implements Initializable {
     }
 
     public void addCard() {
-        mainCtrl.showCard();
+        mainCtrl.showAdd();
     }
 
 
