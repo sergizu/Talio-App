@@ -25,9 +25,7 @@ public class ListOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         cardColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
-        server.registerForMessages("/topic/cards", Card.class, q -> {
-            data.add(q);
-        });
+        server.registerForMessages("/topic/cards", Card.class, q -> data.add(q));
     }
 
     public void refresh() {
@@ -49,6 +47,8 @@ public class ListOverviewCtrl implements Initializable {
     public void removeCard() {
         Card card = tableView.getSelectionModel().getSelectedItem();
         data.remove(card);
+        server.removeCard(card);
+        refresh();
     }
 }
 

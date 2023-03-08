@@ -21,12 +21,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.net.URI;
 import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
 import commons.Card;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 
 import commons.Quote;
@@ -87,13 +92,15 @@ public class ServerUtils {
                 .post(Entity.entity(card, APPLICATION_JSON), Card.class);
     }
 
-//    public void removeCard(Card card) {
-//        return ClientBuilder.newClient(new ClientConfig())
-//                .target(SERVER).path("api/cards")
-//                .request(APPLICATION_JSON)
-//                .accept(APPLICATION_JSON)
-//                .delete()
-//    }
+    public void removeCard(Card card) {
+        long id = card.id;
+        String idString = String.valueOf(id);
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/cards/" + idString) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .delete();
+    }
 
     private StompSession session = connect("ws://localhost:8080/websocket");
 
