@@ -45,13 +45,6 @@ public class ListOverviewCtrl implements Initializable {
         mainCtrl.showAdd();
     }
 
-    public void removeCard() {
-        Card card = tableView.getSelectionModel().getSelectedItem();
-        data.remove(card);
-        server.removeCard(card);
-        refresh();
-    }
-
     public void cardExpansion() {
         tableView.setOnMousePressed(event -> {
             Card card = tableView.getSelectionModel().getSelectedItem();
