@@ -1,4 +1,4 @@
-package server.api;
+package server.service;
 
 import commons.Card;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +21,29 @@ public class CardService {
     }
 
     //Method returns either the card or null if the card doesn't exist
-    public Card getById(long Id) {
-        if(cardRepository.existsById(Id))
-            return cardRepository.getById(Id);
+    public Card getById(long id) {
+        if(cardRepository.existsById(id))
+            return cardRepository.getById(id);
         return null;
     }
 
-    //Method returns either the card that is added or null if null was sent
+    //Method returns either the card that is added or null if an error occurs was sent
     public Card addCard(Card card) {
-        if(card == null) return null;
-        Card saved = cardRepository.save(card);
-        return saved;
+        if(card == null || card.title == null) return null;
+        if(cardRepository.existsById(card.id))
+            return null;
+        return cardRepository.save(card);
+    }
+
+    public boolean existsById(long id) {
+        return cardRepository.existsById(id);
+    }
+
+    //Method that updates the card if it exists, otherwise it will return null
+    public Card update(Card card) {
+        if(card == null || card.title == null) return null;
+        if(!cardRepository.existsById(card.id))
+            return null;
+        return cardRepository.save(card);
     }
 }
