@@ -33,6 +33,7 @@ public class EditCardCtrl {
             return;
         }
         card.setTitle(cardName.getText());
+        server.updateCard(card);
         mainCtrl.showOverview();
     }
 
