@@ -16,6 +16,18 @@ public class BoardController {
         this.boardRepository = boardRepository;
     }
 
+    //This mapper is only temporary to make it possible to already work with a board even though we dont id this
+    //board yet or give the possibilities to add more boards
+    @GetMapping("/tempGetter")
+    public ResponseEntity<Board> tempGetter() {
+        if(!boardRepository.existsById(1L)) {
+            Board board = new Board("Default board");
+            board.id = 1L;
+            boardRepository.save(board);
+        }
+        return ResponseEntity.ok(boardRepository.getById(1L));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Board> getById(@PathVariable("id") long id) {
         if(!boardRepository.existsById(id))

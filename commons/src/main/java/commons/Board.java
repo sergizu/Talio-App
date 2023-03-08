@@ -12,9 +12,9 @@ import java.util.Objects;
 public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    public long id;
     private String title;
-    private ArrayList<TDList> lists;
+    public ArrayList<TDList> lists;
     private Board(){}
     public Board(String title) {
         this.title = title;

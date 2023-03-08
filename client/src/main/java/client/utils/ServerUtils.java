@@ -24,15 +24,21 @@ import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
+import commons.Board;
 import commons.Card;
+import commons.CardChange;
+import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 
 import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
+import org.springframework.http.HttpStatus;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
@@ -44,6 +50,7 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
 public class ServerUtils {
 
     private static final String SERVER = "http://localhost:8080/";
+    private static final ExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadExecutor();
 
     public void getQuotesTheHardWay() throws IOException {
         var url = new URL("http://localhost:8080/api/quotes");
@@ -97,34 +104,35 @@ public class ServerUtils {
                 .delete();
     }
 
-    private StompSession session = connect("ws://localhost:8080/websocket");
-
-    private StompSession connect(String url){
-        var client = new StandardWebSocketClient();
-        var stomp  = new WebSocketStompClient(client);
-        stomp.setMessageConverter(new MappingJackson2MessageConverter());
-        try{
-            return stomp.connect(url, new StompSessionHandlerAdapter() {}).get();
-        } catch(InterruptedException e){
-            Thread.currentThread().interrupt();
-        } catch(ExecutionException e){
-            throw new RuntimeException(e);
-        }
-        throw new IllegalArgumentException();
+    public Board tempBoardGetter() {
+        Response result = ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("/api/boards/tempGetter")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(Response.class);
+        if(result.getStatus() == HttpStatus.OK.value())
+            return result.readEntity(Board.class);
+        return null;
     }
 
-    public <T> void registerForMessages(String dest, Class<T> type, Consumer<T> consumer){
-        session.subscribe(dest, new StompFrameHandler() {
-            @Override
-            public Type getPayloadType(StompHeaders headers) {
-                return type;
-            }
 
-            @SuppressWarnings("unchecked")
-            @Override
-            public void handleFrame(StompHeaders headers, Object payload) {
-                consumer.accept((T) payload);
+    public void registerForUpdates(Consumer<CardChange> consumer) {
+        EXECUTOR_SERVICE.submit(() -> {
+            while (!Thread.interrupted()) {
+                Response result = ClientBuilder.newClient(new ClientConfig())
+                        .target(SERVER).path("/api/cards/updates")
+                        .request(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON)
+                        .get(Response.class);
+                if(result.getStatus() == HttpStatus.NO_CONTENT.value())
+                    continue;
+                CardChange cardChange = result.readEntity(CardChange.class);
+                consumer.accept(cardChange);
             }
         });
+    }
+
+    public void stop() {
+        EXECUTOR_SERVICE.shutdownNow();
     }
 }
