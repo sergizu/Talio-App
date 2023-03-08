@@ -1,39 +1,68 @@
 package server.api;
 
 import commons.Card;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
-import server.database.CardRepository;
+import server.service.CardService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/cards")
 public class CardController {
-    private final CardRepository cardRepository;
 
-    //using a constructor to allow for dependency injection
-    public CardController(CardRepository cardRepository) {
-        this.cardRepository = cardRepository;
+    private final CardService cardService;
+    private final SimpMessagingTemplate messagingTemplate;
+
+    @Autowired
+    public CardController(CardService cardService,
+                          SimpMessagingTemplate messagingTemplate) {
+        this.cardService = cardService;
+        this.messagingTemplate = messagingTemplate;
+    }
+
+    @GetMapping(path = { "", "/" })
+    public List<Card> getAll() {
+        return cardService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Card> getById(@PathVariable("id") long id) {
-        if(!cardRepository.existsById(id))
+        Card retrievedCard = cardService.getById(id);
+        if(retrievedCard == null)
             return ResponseEntity.badRequest().build();
-        return ResponseEntity.ok(cardRepository.findById(id).get());
+        return ResponseEntity.ok(retrievedCard);
     }
 
-    @GetMapping()
-    public ResponseEntity<List<Card>> getAll() {
-        return ResponseEntity.ok(cardRepository.findAll());
-    }
-
-    @PostMapping()
+    //this method adds a card to the database and generates an ID for the card
+    //if the id is already set, and there already exists a card with that id in the database
+    //an error will be thrown, if you want to update the card send a put request
+    @PostMapping(path = { "", "/" })
     public ResponseEntity<Card> add(@RequestBody Card card) {
-        if(card == null || cardRepository.existsById(card.getId()))
+        Card response = cardService.addCard(card);
+        if(response == null)
             return ResponseEntity.badRequest().build();
-        cardRepository.save(card);
-        return ResponseEntity.ok(card);
+        if(messagingTemplate != null)
+            messagingTemplate.convertAndSend("/topic/cards", card);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity removeByID(@PathVariable("id") long id) {
+        boolean result = cardService.delete(id);
+        if(!result) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping(path = { "", "/" })
+    public ResponseEntity<Card> update(@RequestBody Card card) {
+        Card response = cardService.update(card);
+        if(response == null)
+            return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(response);
     }
 }

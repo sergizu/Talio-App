@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -15,7 +14,7 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String title;
-    private List<TDList> lists;
+    private ArrayList<TDList> lists;
     private Board(){}
     public Board(String title) {
         this.title = title;
@@ -60,6 +59,6 @@ public class Board {
     public void addList(TDList l){ lists.add(l); }
 
     public boolean removeList(long id){
-        return lists.removeIf(n -> (n.getId() == id));
+        return lists.removeIf(n -> (n.id == id));
     }
 }
