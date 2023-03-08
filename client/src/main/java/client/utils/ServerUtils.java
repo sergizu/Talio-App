@@ -87,6 +87,16 @@ public class ServerUtils {
                 .post(Entity.entity(card, APPLICATION_JSON), Card.class);
     }
 
+    public void removeCard(Card card) {
+        long id = card.id;
+        String idString = String.valueOf(id);
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/cards/" + idString) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .delete();
+    }
+
     private StompSession session = connect("ws://localhost:8080/websocket");
 
     private StompSession connect(String url){
