@@ -15,7 +15,7 @@ public class BoardControllerTest {
     @BeforeEach
     public void setup() {
         this.testBoardRepository = new TestBoardRepository();
-        this.boardController = new BoardController(testBoardRepository);
+        this.boardController = new BoardController(testBoardRepository, listRepository, cardService);
     }
 
     @Test
