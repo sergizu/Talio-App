@@ -16,13 +16,10 @@
 package client.scenes;
 
 import commons.Card;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
-
-import java.io.IOException;
 
 public class MainCtrl {
 

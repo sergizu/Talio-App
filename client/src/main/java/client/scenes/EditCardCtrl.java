@@ -26,4 +26,20 @@ public class EditCardCtrl {
         this.card = card;
         cardName.setText(card.title);
     }
+
+    public void ok() {
+        if (cardName.getText().equals(card.title)) {
+            mainCtrl.showOverview();
+            return;
+        }
+        card.setTitle(cardName.getText());
+        mainCtrl.showOverview();
+    }
+
+    public void delete() {
+        server.removeCard(card);
+        mainCtrl.showOverview();
+    }
+
+
 }
