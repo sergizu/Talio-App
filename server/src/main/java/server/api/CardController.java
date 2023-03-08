@@ -51,10 +51,10 @@ public class CardController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity removeByID(@PathVariable("id") long id) {
-        if(!cardRepository.existsById(id)) {
+        boolean result = cardService.delete(id);
+        if(!result) {
             return ResponseEntity.badRequest().build();
         }
-        cardRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
 
