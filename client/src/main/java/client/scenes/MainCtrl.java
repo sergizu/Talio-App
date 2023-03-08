@@ -15,10 +15,14 @@
  */
 package client.scenes;
 
+import commons.Card;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+
+import java.io.IOException;
 
 public class MainCtrl {
 
@@ -30,14 +34,20 @@ public class MainCtrl {
 
     private Scene add;
 
+    private EditCardCtrl editCardCtrl;
+    private Scene edit;
+
     public void initialize(Stage primaryStage, Pair<ListOverviewCtrl, Parent> overview,
-            Pair<AddCardCtrl, Parent> add) {
+            Pair<AddCardCtrl, Parent> add, Pair<EditCardCtrl, Parent> edit) {
         this.primaryStage = primaryStage;
         this.list = overview.getKey();
         this.overview = new Scene(overview.getValue());
 
         this.addCardCtrl = add.getKey();
         this.add = new Scene(add.getValue());
+
+        this.editCardCtrl = edit.getKey();
+        this.edit = new Scene(edit.getValue());
 
         showOverview();
         primaryStage.show();
@@ -53,5 +63,11 @@ public class MainCtrl {
         primaryStage.setTitle("Board: Adding Card");
         primaryStage.setScene(add);
         add.setOnKeyPressed(e -> addCardCtrl.keyPressed(e));
+    }
+
+    public void showEdit(Card card) {
+        primaryStage.setTitle("Card: Edit Card");
+        primaryStage.setScene(edit);
+        editCardCtrl.init(card);
     }
 }
