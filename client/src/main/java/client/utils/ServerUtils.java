@@ -27,6 +27,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
 import commons.Card;
+import commons.TDList;
 import org.glassfish.jersey.client.ClientConfig;
 
 import commons.Quote;
@@ -71,6 +72,22 @@ public class ServerUtils {
                 .get(new GenericType<List<Card>>() {});
     }
 
+    public List<TDList> getLists() {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("/api/lists") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<TDList>>() {});
+    }
+
+    public TDList addList(TDList list) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("/api/lists") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(list, APPLICATION_JSON), TDList.class);
+    }
+
     public Quote addQuote(Quote quote) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/quotes") //
@@ -95,6 +112,14 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .delete();
+    }
+
+    public void updateCard(Card card) {
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/cards/") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(card, APPLICATION_JSON), Card.class);//
     }
 
     private StompSession session = connect("ws://localhost:8080/websocket");

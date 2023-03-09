@@ -33,9 +33,14 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         var overview = FXML.load(ListOverviewCtrl.class, "client", "scenes", "ListOverview.fxml");
 
-        var add = FXML.load(AddCardCtrl.class, "client", "scenes", "AddCard.fxml");
+        var addCard = FXML.load(AddCardCtrl.class, "client", "scenes", "AddCard.fxml");
+
+        var addList = FXML.load(AddListCtrl.class, "client", "scenes", "AddList.fxml");
+
+        var edit = FXML.load(EditCardCtrl.class, "client", "scenes", "EditCard.fxml");
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, overview, add);
+        mainCtrl.initialize(primaryStage, overview, addCard, addList, edit);
+
     }
 }
