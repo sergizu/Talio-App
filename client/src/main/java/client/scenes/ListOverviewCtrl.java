@@ -8,6 +8,7 @@ import commons.Change;
 import commons.TDList;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -28,6 +29,7 @@ public class ListOverviewCtrl implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        cardColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
         server.registerForUpdates(cardChange -> {
             if(cardChange.change == Change.Add)
                 dataLists.add(cardChange.card); //adding the card to the most left list(TO-DO)
