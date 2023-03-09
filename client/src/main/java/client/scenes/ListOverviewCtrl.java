@@ -42,7 +42,11 @@ public class ListOverviewCtrl implements Initializable {
     }
 
     public void addCard() {
-        mainCtrl.showAdd();
+        mainCtrl.showAddCard();
+    }
+
+    public void addList(){
+        mainCtrl.showAddList();
     }
 
     public void cardExpansion() {

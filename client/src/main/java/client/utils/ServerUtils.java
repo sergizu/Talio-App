@@ -27,6 +27,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
 import commons.Card;
+import commons.TDList;
 import org.glassfish.jersey.client.ClientConfig;
 
 import commons.Quote;
@@ -69,6 +70,22 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<List<Card>>() {});
+    }
+
+    public List<TDList> getLists() {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("/api/lists") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<TDList>>() {});
+    }
+
+    public TDList addList(TDList list) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("/api/lists") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(list, APPLICATION_JSON), TDList.class);
     }
 
     public Quote addQuote(Quote quote) {

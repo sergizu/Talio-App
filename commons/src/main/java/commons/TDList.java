@@ -59,7 +59,7 @@ public class TDList {
         list.add(card);
     }
 
-    public boolean isEmpty() {
-        return list.isEmpty();
+    public boolean empty() {
+        return list.size() == 0;
     }
 }
