@@ -37,6 +37,7 @@ public class BoardController {
         TDList tdList = new TDList("Default list");
         tdList.addCard(card);
         tdList = listRepository.save(tdList);
+        board.addList(tdList);
         board = boardRepository.save(board);
 
         return ResponseEntity.ok(board);
