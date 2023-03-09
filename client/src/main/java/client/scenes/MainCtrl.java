@@ -37,7 +37,8 @@ public class MainCtrl {
     private Scene edit;
 
     public void initialize(Stage primaryStage, Pair<ListOverviewCtrl, Parent> overview,
-            Pair<AddCardCtrl, Parent> addCard, Pair<AddListCtrl, Parent> addList, Pair<EditCardCtrl, Parent> edit) {
+            Pair<AddCardCtrl, Parent> addCard, Pair<AddListCtrl, Parent> addList,
+                           Pair<EditCardCtrl, Parent> edit) {
 
         this.primaryStage = primaryStage;
         this.list = overview.getKey();
