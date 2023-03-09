@@ -126,7 +126,15 @@ public class ServerUtils {
                         .get(Response.class);
                 if(result.getStatus() == HttpStatus.NO_CONTENT.value())
                     continue;
-                CardChange cardChange = result.readEntity(CardChange.class);
+                System.out.println(result);
+                CardChange cardChange = null;
+                try {
+                    cardChange = result.readEntity(CardChange.class);
+                } catch (Exception e) {
+                    System.out.println("problems");
+                }
+
+                System.out.println(cardChange);
                 consumer.accept(cardChange);
             }
         });

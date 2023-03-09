@@ -6,6 +6,8 @@ import commons.Board;
 import commons.Card;
 import commons.Change;
 import commons.TDList;
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,30 +23,27 @@ public class ListOverviewCtrl implements Initializable {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private Board board;
-    private List<ObservableList<Card>> dataLists;
+    private ObservableList<Card> dataLists;
     @FXML private TableView<Card> tableView;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         server.registerForUpdates(cardChange -> {
             if(cardChange.change == Change.Add)
-                dataLists.get(0).add(cardChange.card); //adding the card to the most left list(TO-DO)
+                dataLists.add(cardChange.card); //adding the card to the most left list(TO-DO)
         });
     }
 
     public void refresh() {
         board = server.tempBoardGetter();
-        for (TDList tdList: board.lists) {
-            dataLists.add(FXCollections.observableList(tdList.list));
-        }
-        tableView.setItems(dataLists.get(0));
+        tableView.setItems(dataLists);
     }
 
     @Inject
     public ListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
-        dataLists = new ArrayList<>();
+        dataLists = FXCollections.observableArrayList();
     }
 
     public void addCard() {

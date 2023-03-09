@@ -49,6 +49,7 @@ public class CardController {
         Card response = cardService.addCard(card);
         if(response == null)
             return ResponseEntity.badRequest().build();
+        listeners.forEach((key, listener) -> listener.accept(new CardChange(response, Change.Add)));
         return ResponseEntity.ok(response);
     }
 
@@ -64,7 +65,6 @@ public class CardController {
     @PutMapping(path = { "", "/" })
     public ResponseEntity<Card> update(@RequestBody Card card) {
         Card response = cardService.update(card);
-        listeners.forEach((key, listener) -> listener.accept(new CardChange(response, Change.Add)));
         if(response == null)
             return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(response);
@@ -77,8 +77,8 @@ public class CardController {
 
         Object key = new Object(); //trick to uniquely identify every key
 
-        listeners.put(key, pair -> {
-           result.setResult(ResponseEntity.ok(pair));
+        listeners.put(key, cardChange -> {
+           result.setResult(ResponseEntity.ok(cardChange));
         });
         result.onCompletion(() -> {
             listeners.remove(key);
