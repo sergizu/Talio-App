@@ -42,7 +42,6 @@ public class AddListCtrl {
 
     private TDList getList() {
         String title = listTitle.getText();
-        System.out.println(title);
         return new TDList(title);
     }
 
