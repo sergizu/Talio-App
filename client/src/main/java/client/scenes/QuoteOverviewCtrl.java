@@ -65,7 +65,7 @@ public class QuoteOverviewCtrl implements Initializable {
     }
 
     public void addQuote() {
-        mainCtrl.showAdd();
+        mainCtrl.showAddCard();
     }
 
     public void refresh() {
