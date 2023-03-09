@@ -39,16 +39,11 @@ public class BoardController {
             System.out.println(existsById);
             Board board = null;
             try {
-                board = boardRepository.getById(defaultBoardID);
+                board = boardRepository.findById(defaultBoardID).get();
             } catch (Exception e) {
                 System.out.println("problems");
             }
-            System.out.println(board.toString());
-
-            Board board1 = new Board(board.getTitle());
-            board1.lists = board.lists;
-            board1 = boardRepository.save(board1);
-            return ResponseEntity.ok(board1);
+            return ResponseEntity.ok(board);
         }
         Board board = new Board("Default board");
         Card card = new Card("Default card");
