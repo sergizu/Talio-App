@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import commons.Card;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -32,8 +33,12 @@ public class MainCtrl {
     private Scene sceneAddCard;
     private Scene sceneAddList;
 
+    private EditCardCtrl editCardCtrl;
+    private Scene edit;
+
     public void initialize(Stage primaryStage, Pair<ListOverviewCtrl, Parent> overview,
-            Pair<AddCardCtrl, Parent> addCard, Pair<AddListCtrl, Parent> addList) {
+            Pair<AddCardCtrl, Parent> addCard, Pair<AddListCtrl, Parent> addList, Pair<EditCardCtrl, Parent> edit) {
+
         this.primaryStage = primaryStage;
         this.list = overview.getKey();
         System.out.println(primaryStage);
@@ -43,6 +48,9 @@ public class MainCtrl {
         this.addListCtrl = addList.getKey();
         this.sceneAddCard = new Scene(addCard.getValue());
         this.sceneAddList = new Scene(addList.getValue());
+
+        this.editCardCtrl = edit.getKey();
+        this.edit = new Scene(edit.getValue());
 
         showOverview();
         primaryStage.show();
@@ -64,5 +72,11 @@ public class MainCtrl {
         primaryStage.setTitle("Board: Adding List");
         primaryStage.setScene(sceneAddList);
         sceneAddList.setOnKeyPressed(e -> addListCtrl.keyPressed(e));
+    }
+
+    public void showEdit(Card card) {
+        primaryStage.setTitle("Card: Edit Card");
+        primaryStage.setScene(edit);
+        editCardCtrl.init(card);
     }
 }

@@ -49,6 +49,15 @@ public class CardController {
         return ResponseEntity.ok(response);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity removeByID(@PathVariable("id") long id) {
+        boolean result = cardService.delete(id);
+        if(!result) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
+    }
+
     @PutMapping(path = { "", "/" })
     public ResponseEntity<Card> update(@RequestBody Card card) {
         Card response = cardService.update(card);

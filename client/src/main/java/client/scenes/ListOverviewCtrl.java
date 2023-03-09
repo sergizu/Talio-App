@@ -25,9 +25,8 @@ public class ListOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         cardColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
-        server.registerForMessages("/topic/cards", Card.class, q -> {
-            data.add(q);
-        });
+        server.registerForMessages("/topic/cards", Card.class, q -> data.add(q));
+        cardExpansion();
     }
 
     public void refresh() {
@@ -45,4 +44,15 @@ public class ListOverviewCtrl implements Initializable {
     public void addCard() {
         mainCtrl.showAddCard();
     }
+
+    public void cardExpansion() {
+        tableView.setOnMousePressed(event -> {
+            if(tableView.getSelectionModel().getSelectedItem() != null) {
+                Card card = tableView.getSelectionModel().getSelectedItem();
+                mainCtrl.showEdit(card);
+            }
+        });
+    }
 }
+
+

@@ -46,4 +46,11 @@ public class CardService {
             return null;
         return cardRepository.save(card);
     }
+
+    public boolean delete(long id) {
+        if(!cardRepository.existsById(id))
+            return false;
+        cardRepository.deleteById(id);
+        return true;
+    }
 }
