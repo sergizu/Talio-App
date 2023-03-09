@@ -41,5 +41,5 @@
          <TableColumn fx:id="CardColumn2" prefWidth="156.80001220703124" />
       </columns>
    </TableView>
-   <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#addCard" text="Add list" />
+   <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#addList" text="Add list" />
 </AnchorPane>

@@ -45,6 +45,10 @@ public class ListOverviewCtrl implements Initializable {
         mainCtrl.showAddCard();
     }
 
+    public void addList(){
+        mainCtrl.showAddList();
+    }
+
     public void cardExpansion() {
         tableView.setOnMousePressed(event -> {
             if(tableView.getSelectionModel().getSelectedItem() != null) {
