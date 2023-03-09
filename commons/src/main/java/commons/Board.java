@@ -12,10 +12,12 @@ public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public long id;
-    private String title;
+    public String title;
     @OneToMany
     public List<TDList> lists;
-    private Board(){}
+    public Board() {
+        lists = new ArrayList<>();
+    }
     public Board(String title) {
         this.title = title;
         lists = new ArrayList<>();

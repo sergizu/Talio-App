@@ -12,6 +12,7 @@ import server.database.ListRepository;
 import server.service.CardService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/boards")
@@ -19,18 +20,36 @@ public class BoardController {
     private final BoardRepository boardRepository;
     private final ListRepository listRepository;
     private final CardRepository cardRepository;
+    private Long defaultBoardID; //temporary default board to return to all requests
 
     @Autowired
     public BoardController(BoardRepository boardRepository, ListRepository listRepository, CardRepository cardRepository) {
         this.boardRepository = boardRepository;
         this.listRepository = listRepository;
         this.cardRepository = cardRepository;
+        this.defaultBoardID = -1L; //setting it to undefined
     }
 
     //This mapper is only temporary to make it possible to already work with a board even though we dont id this
     //board yet or give the possibilities to add more boards
     @GetMapping("/tempGetter")
     public ResponseEntity<Board> tempGetter() {
+        if (defaultBoardID != -1L) {
+            boolean existsById = boardRepository.existsById(defaultBoardID);
+            System.out.println(existsById);
+            Board board = null;
+            try {
+                board = boardRepository.getById(defaultBoardID);
+            } catch (Exception e) {
+                System.out.println("problems");
+            }
+            System.out.println(board.toString());
+
+            Board board1 = new Board(board.getTitle());
+            board1.lists = board.lists;
+            board1 = boardRepository.save(board1);
+            return ResponseEntity.ok(board1);
+        }
         Board board = new Board("Default board");
         Card card = new Card("Default card");
         card = cardRepository.save(card);
@@ -39,7 +58,7 @@ public class BoardController {
         tdList = listRepository.save(tdList);
         board.addList(tdList);
         board = boardRepository.save(board);
-
+        defaultBoardID = board.id;
         return ResponseEntity.ok(board);
     }
 

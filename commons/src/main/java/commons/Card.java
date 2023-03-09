@@ -18,7 +18,7 @@ public class Card {
     public String title;
 
     //empty constructor for ObjectMapper
-    private Card() {
+    public Card() {
 
     }
 

@@ -111,7 +111,12 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .get(Response.class);
         if(result.getStatus() == HttpStatus.OK.value())
-            return result.readEntity(Board.class);
+            try {
+                Board board = result.readEntity(Board.class);
+                return board;
+            } catch (Exception e) {
+                System.out.println("big time problems");
+            }
         return null;
     }
 

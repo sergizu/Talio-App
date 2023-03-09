@@ -13,7 +13,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+
+import javax.management.openmbean.OpenMBeanInfoSupport;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,21 +27,28 @@ public class ListOverviewCtrl implements Initializable {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private Board board;
-    private ObservableList<Card> dataLists;
+    private ObservableList<ObservableList<Card>> dataLists;
     @FXML private TableView<Card> tableView;
+    @FXML private TableColumn<Card, String> cardColumn;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         cardColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
         server.registerForUpdates(cardChange -> {
             if(cardChange.change == Change.Add)
-                dataLists.add(cardChange.card); //adding the card to the most left list(TO-DO)
+                dataLists.get(0).add(cardChange.card); //adding the card to the most left list(TO-DO)
         });
     }
 
-    public void refresh() {
+    //boardID is not yet used
+    public void populate(long boardId) {
         board = server.tempBoardGetter();
-        tableView.setItems(dataLists);
+        for(TDList tdList : board.lists) {
+            dataLists.add(FXCollections.observableList(tdList.list));
+        }
+
+        //when we can dynamicly add lists we would need a for loop here
+        tableView.setItems(dataLists.get(0));
     }
 
     @Inject

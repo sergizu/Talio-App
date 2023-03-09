@@ -20,8 +20,8 @@ public class TDList {
     @OneToMany
     public List<Card> list;
 
-    private TDList() {
-
+    public TDList() {
+        list = new ArrayList<>();
     }
 
     public TDList(String title) {
