@@ -16,6 +16,7 @@
 package client.scenes;
 
 import commons.Card;
+import commons.TDList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -35,11 +36,14 @@ public class MainCtrl {
     private Scene sceneAddList;
 
     private EditCardCtrl editCardCtrl;
+    private EditListCtrl editListCtrl;
     private Scene edit;
+
+    private Scene editList;
 
     public void initialize(Stage primaryStage, Pair<ListOverviewCtrl, Parent> overview,
             Pair<AddCardCtrl, Parent> addCard, Pair<AddListCtrl, Parent> addList,
-                           Pair<EditCardCtrl, Parent> edit) {
+                           Pair<EditCardCtrl, Parent> edit, Pair<EditListCtrl, Parent> editList) {
 
         this.primaryStage = primaryStage;
         this.listOverviewCtrl = overview.getKey();
@@ -52,6 +56,9 @@ public class MainCtrl {
 
         this.editCardCtrl = edit.getKey();
         this.edit = new Scene(edit.getValue());
+
+        this.editListCtrl = editList.getKey();
+        this.editList = new Scene(editList.getValue());
 
         showOverview();
         primaryStage.show();
@@ -80,5 +87,12 @@ public class MainCtrl {
         primaryStage.setTitle("Card: Edit Card");
         primaryStage.setScene(edit);
         editCardCtrl.init(card);
+    }
+
+    public void showEditList(TDList list){
+        
+        primaryStage.setTitle("List: Rename list");
+        primaryStage.setScene(editList);
+        editListCtrl.init(list);
     }
 }

@@ -9,10 +9,6 @@ import javax.persistence.*;
 @Entity
 public class Card {
 
-    @ManyToOne
-    @JoinColumn(name = "list_id")
-    public TDList list;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public long id;

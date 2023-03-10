@@ -15,7 +15,13 @@
  */
 package client.utils;
 
-import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
+import commons.*;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.Response;
+import org.glassfish.jersey.client.ClientConfig;
+import org.springframework.http.HttpStatus;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,18 +32,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
-import commons.Board;
-import commons.Card;
-import commons.CardChange;
-import jakarta.ws.rs.core.Response;
-import commons.TDList;
-import org.glassfish.jersey.client.ClientConfig;
-
-import commons.Quote;
-import jakarta.ws.rs.client.ClientBuilder;
-import jakarta.ws.rs.client.Entity;
-import jakarta.ws.rs.core.GenericType;
-import org.springframework.http.HttpStatus;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class ServerUtils {
 
@@ -168,6 +163,14 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(card, APPLICATION_JSON), Card.class);//
+    }
+
+    public void updateList(TDList list){
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/lists/") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(list, APPLICATION_JSON), TDList.class);//
     }
 
 

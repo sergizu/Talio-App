@@ -11,10 +11,6 @@ import java.util.Objects;
 @Entity
 public class TDList {
 
-    @ManyToOne
-    @JoinColumn(name = "board_id")
-    public Board board;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "list_id")
@@ -22,14 +18,13 @@ public class TDList {
 
     public String title;
 
-    @OneToMany(mappedBy = "list",cascade = CascadeType.ALL)
+    @OneToMany
     public List<Card> list = new ArrayList<>();
 
     public TDList() {}
 
     public TDList(String title) {
         this.title = title;
-        list = new ArrayList<>();
     }
 
     @Override

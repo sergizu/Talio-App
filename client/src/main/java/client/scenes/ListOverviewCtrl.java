@@ -11,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
@@ -23,6 +24,8 @@ public class ListOverviewCtrl implements Initializable {
     private final MainCtrl mainCtrl;
     private Board board;
     private ObservableList<ObservableList<Card>> dataLists;
+
+    @FXML private Label label1;
     @FXML private TableView<Card> tableView;
     @FXML private TableColumn<Card, String> cardColumn;
 
@@ -35,6 +38,7 @@ public class ListOverviewCtrl implements Initializable {
                 //adding the card to the most left list(TO-DO)
         });
         cardExpansion();
+
     }
 
     //boardID is not yet used
@@ -44,7 +48,7 @@ public class ListOverviewCtrl implements Initializable {
             dataLists.add(FXCollections.observableList(tdList.list));
         }
 
-        //when we can dynamicly add lists we would need a for loop here
+        //when we can dynamically add lists we would need a for loop here
         tableView.setItems(dataLists.get(0));
     }
 
@@ -74,6 +78,11 @@ public class ListOverviewCtrl implements Initializable {
                 mainCtrl.showEdit(card);
             }
         });
+    }
+
+    public void editListName() {
+        TDList list = board.lists.get(0);
+        mainCtrl.showEditList(list);
     }
 }
 
