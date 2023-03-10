@@ -27,12 +27,12 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class BoardControllerTest {
     @Mock BoardService boardService;
-    @Mock SimpMessagingTemplate messagingTemplate;
+
     BoardController boardController;
 
     @BeforeEach
     void setUp() {
-        boardController = new BoardController(boardService, messagingTemplate);
+        boardController = new BoardController(boardService);
     }
 
     @Test

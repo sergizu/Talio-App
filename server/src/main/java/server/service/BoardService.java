@@ -39,7 +39,7 @@ public class BoardService {
     public boolean existsById(long id) {
         return boardRepository.existsById(id);
     }
-    }
+}
 
 
 
