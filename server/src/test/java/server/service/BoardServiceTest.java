@@ -36,10 +36,12 @@ class BoardServiceTest {
 
     @Test
     void getByIdIfExists() {
-        long id = 1;
+        long id = 0;
         given(boardRepository.existsById(id)).willReturn(true);
+        Board board = new Board("new Board");
+        given(boardRepository.findById(id)).willReturn(Optional.of(board));
         boardService.getById(id);
-        verify(boardRepository).getById(id);
+        verify(boardRepository).findById(id);
     }
 
 
