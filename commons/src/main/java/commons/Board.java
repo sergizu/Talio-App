@@ -8,19 +8,21 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "board")
 public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+
+    @Column(name = "board_id")
     public long id;
+
     public String title;
-    @OneToMany
-    public List<TDList> lists;
-    public Board() {
-        lists = new ArrayList<>();
-    }
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    public List<TDList> lists = new ArrayList<>(); //JPA does not work with ArrayLists
+    public Board(){}
     public Board(String title) {
         this.title = title;
-        lists = new ArrayList<>();
     }
 
     @Override

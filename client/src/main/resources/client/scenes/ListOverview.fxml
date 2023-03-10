@@ -26,7 +26,7 @@
          <Font size="18.0" />
       </font></Label>
       <Button layoutX="139.0" layoutY="71.0" mnemonicParsing="false" onAction="#addCard" text="+" />
-      <TableView fx:id="tableView" fixedCellSize="30.0" layoutX="10.0" layoutY="100.0" prefHeight="270.0" prefWidth="157.0" style="-fx-background-color: lightgray;" stylesheets="@../../../../../OneDrive/Bureaublad/OOPP/style.css">
+      <TableView fx:id="tableView" fixedCellSize="30.0" layoutX="10.0" layoutY="100.0" prefHeight="270.0" prefWidth="157.0" style="-fx-background-color: lightgray;">
         <columns>
           <TableColumn fx:id="cardColumn" prefWidth="156.0" />
         </columns>
@@ -41,5 +41,5 @@
          <TableColumn fx:id="CardColumn2" prefWidth="156.80001220703124" />
       </columns>
    </TableView>
-   <Button layoutX="45.0" layoutY="374.0" mnemonicParsing="false" onAction="#removeCard" text="Remove Card" />
+   <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#addList" text="Add list" />
 </AnchorPane>

@@ -3,13 +3,15 @@ package commons;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+@Table(name = "Card")
 @Entity
 public class Card {
+
+    @ManyToOne
+    @JoinColumn(name = "list_id")
+    public TDList list;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -18,8 +18,7 @@ package client.scenes;
 import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
-import commons.Person;
-import commons.Quote;
+import commons.TDList;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -27,24 +26,23 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 
-public class AddQuoteCtrl {
+public class AddListCtrl {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
     @FXML
-    private TextField firstName;
-
-    @FXML
-    private TextField lastName;
-
-    @FXML
-    private TextField quote;
+    private TextField listTitle;
 
     @Inject
-    public AddQuoteCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public AddListCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
+    }
+
+    private TDList getList() {
+        String title = listTitle.getText();
+        return new TDList(title);
     }
 
     public void cancel() {
@@ -53,9 +51,8 @@ public class AddQuoteCtrl {
     }
 
     public void ok() {
-        //server.send("/app/quotes", getQuote());
         try {
-            server.addQuote(getQuote());
+            server.addList(getList());
         } catch (WebApplicationException e) {
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
@@ -68,16 +65,8 @@ public class AddQuoteCtrl {
         mainCtrl.showOverview();
     }
 
-    private Quote getQuote() {
-        var p = new Person(firstName.getText(), lastName.getText());
-        var q = quote.getText();
-        return new Quote(p, q);
-    }
-
     private void clearFields() {
-        firstName.clear();
-        lastName.clear();
-        quote.clear();
+        listTitle.clear();
     }
 
     public void keyPressed(KeyEvent e) {

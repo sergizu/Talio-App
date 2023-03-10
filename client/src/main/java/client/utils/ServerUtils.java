@@ -30,6 +30,7 @@ import commons.Board;
 import commons.Card;
 import commons.CardChange;
 import jakarta.ws.rs.core.Response;
+import commons.TDList;
 import org.glassfish.jersey.client.ClientConfig;
 
 import commons.Quote;
@@ -67,6 +68,22 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<List<Card>>() {});
+    }
+
+    public List<TDList> getLists() {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("/api/lists") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<TDList>>() {});
+    }
+
+    public TDList addList(TDList list) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("/api/lists") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(list, APPLICATION_JSON), TDList.class);
     }
 
     public Quote addQuote(Quote quote) {
@@ -144,6 +161,15 @@ public class ServerUtils {
             }
         });
     }
+
+    public void updateCard(Card card) {
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/cards/") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(card, APPLICATION_JSON), Card.class);//
+    }
+
 
     public void stop() {
         EXECUTOR_SERVICE.shutdownNow();

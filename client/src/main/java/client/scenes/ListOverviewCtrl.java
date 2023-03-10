@@ -34,6 +34,7 @@ public class ListOverviewCtrl implements Initializable {
                 dataLists.get(0).add(cardChange.card);
                 //adding the card to the most left list(TO-DO)
         });
+        cardExpansion();
     }
 
     //boardID is not yet used
@@ -58,15 +59,22 @@ public class ListOverviewCtrl implements Initializable {
         mainCtrl.showAdd(board.id);
     }
 
-    public void removeCard() {
-//        Card card = tableView.getSelectionModel().getSelectedItem();
-//        data.remove(card);
-//        server.removeCard(card);
-//        refresh();
-    }
-
     public void stop() {
         server.stop();
     }
+
+    public void addList(){
+        mainCtrl.showAddList();
+    }
+
+    public void cardExpansion() {
+        tableView.setOnMousePressed(event -> {
+            if(tableView.getSelectionModel().getSelectedItem() != null) {
+                Card card = tableView.getSelectionModel().getSelectedItem();
+                mainCtrl.showEdit(card);
+            }
+        });
+    }
 }
+
 

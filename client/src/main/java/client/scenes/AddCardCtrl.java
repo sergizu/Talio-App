@@ -7,6 +7,7 @@ import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 
@@ -53,12 +54,8 @@ public class AddCardCtrl {
     }
 
     public void keyPressed(KeyEvent e) {
-        switch (e.getCode()) {
-            case ENTER:
-                ok();
-                break;
-            default:
-                break;
+        if (e.getCode() == KeyCode.ENTER) {
+            ok();
         }
     }
 
