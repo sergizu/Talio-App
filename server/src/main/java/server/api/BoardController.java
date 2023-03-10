@@ -1,38 +1,50 @@
 package server.api;
 
 import commons.Board;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.*;
-import server.database.BoardRepository;
+
+import server.service.BoardService;
+
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/boards")
 public class BoardController {
-    private final BoardRepository boardRepository;
 
-    public BoardController(BoardRepository boardRepository) {
-        this.boardRepository = boardRepository;
+    private final BoardService boardService;
+
+
+    @Autowired
+    public BoardController(BoardService boardService) {
+        this.boardService = boardService;
+
     }
-
     @GetMapping("/{id}")
     public ResponseEntity<Board> getById(@PathVariable("id") long id) {
-        if(!boardRepository.existsById(id))
+
+        Board retrieveBoard = boardService.getById(id);
+        if(retrieveBoard == null) {
             return ResponseEntity.badRequest().build();
-        return ResponseEntity.ok(boardRepository.findById(id).get());
+        }
+        return ResponseEntity.ok(retrieveBoard);
     }
 
     @GetMapping()
-    public ResponseEntity<List<Board>> getAll() {
-        return ResponseEntity.ok(boardRepository.findAll());
+    public List<Board> getAll() {
+        return  boardService.getAll();
     }
 
     @PostMapping()
     public ResponseEntity<Board> add(@RequestBody Board board) {
-        if(board == null || boardRepository.existsById(board.getId()))
+        Board response = boardService.addBoard(board);
+        if(response == null) {
             return ResponseEntity.badRequest().build();
-        boardRepository.save(board);
-        return ResponseEntity.ok(board);
+        }
+        return ResponseEntity.ok(response);
     }
 }

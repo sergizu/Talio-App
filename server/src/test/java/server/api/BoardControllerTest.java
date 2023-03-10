@@ -1,42 +1,78 @@
 package server.api;
 
 import commons.Board;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class BoardControllerTest {
-    private TestBoardRepository testBoardRepository;
-    private BoardController boardController;
+
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import org.springframework.http.ResponseEntity;
+
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+
+
+import server.service.BoardService;
+
+
+
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+@ExtendWith(MockitoExtension.class)
+class BoardControllerTest {
+    @Mock BoardService boardService;
+
+    BoardController boardController;
 
     @BeforeEach
-    public void setup() {
-        this.testBoardRepository = new TestBoardRepository();
-        this.boardController = new BoardController(testBoardRepository);
+    void setUp() {
+        boardController = new BoardController(boardService);
     }
 
     @Test
-    public void canAddEntity() {
-        Board board = new Board("board");
-        assertEquals(HttpStatus.OK, boardController.add(board).getStatusCode());
+    void getAll() {
+        boardController.getAll();
+        verify(boardService).getAll();
     }
 
     @Test
-    public void newEntityIsActuallyAdded() {
-        Board board = new Board("board");
-        boardController.add(board);
-        assertTrue(testBoardRepository.existsById(board.getId()));
+    void add() {
+        Board board = new Board("Board 1");
+        given(boardService.addBoard(board)).willReturn(board);
+        assertEquals(boardController.add(board), ResponseEntity.ok(board));
+        verify(boardService).addBoard(board);
     }
 
     @Test
-    public void testGetById() {
-        Board b1 = new Board("board1");
-        Board b2 = new Board("board2");
-        boardController.add(b1);
-        boardController.add(b2);
-        assertEquals(b1, boardController.getById(b1.getId()).getBody());
+    void addAlreadyWhenExists() {
+        Board board = new Board("Board 1");
+        given(boardService.addBoard(board)).willReturn(null);
+        assertEquals(boardController.add(board), ResponseEntity.badRequest().build());
+        verify(boardService).addBoard(board);
     }
+
+    @Test
+    void getById() {
+        Board board = new Board("Board 1");
+        given(boardService.getById(board.getId())).willReturn(board);
+        assertEquals(ResponseEntity.ok(board), boardController.getById(board.getId()));
+        verify(boardService).getById(board.getId());
+    }
+
+    @Test
+    void getByIdNotExisting() {
+        Board board = new Board("Board 1");
+        given(boardService.getById(board.getId())).willReturn(null);
+        assertEquals(ResponseEntity.badRequest().build(), boardController.getById(board.getId()));
+        verify(boardService).getById(board.getId());
+    }
+
+
+
 }
