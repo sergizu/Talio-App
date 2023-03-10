@@ -1,10 +1,9 @@
 package server.api;
 
 import commons.TDList;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import server.service.ListService;
+import server.database.ListRepository;
 
 import java.util.List;
 
@@ -12,47 +11,30 @@ import java.util.List;
 @RequestMapping("/api/lists")
 public class ListController {
 
-    private final ListService listService;
+    private final ListRepository listRepository;
 
-    @Autowired
-    public ListController(ListService listService) {
-        this.listService = listService;
+    public ListController(ListRepository listRepository) {
+        this.listRepository = listRepository;
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<TDList> getById(@PathVariable("id") long id) {
-        TDList retrievedList = listService.getById(id);
-        if(retrievedList == null)
+        if(!listRepository.existsById(id))
             return ResponseEntity.badRequest().build();
-        return ResponseEntity.ok(retrievedList);
+        return ResponseEntity.ok(listRepository.findById(id).get());
     }
 
-    @GetMapping(path = { "", "/" })
-    public List<TDList> getAll() {
-        return listService.getAll();
+    @GetMapping()
+    public ResponseEntity<List<TDList>> getAll() {
+        return ResponseEntity.ok(listRepository.findAll());
     }
 
-    @PostMapping(path = { "", "/" })
-    public ResponseEntity<TDList> add(@RequestBody TDList list) {
-        TDList response = listService.addList(list);
-        if(response == null)
-            return ResponseEntity.badRequest().build();
-        return ResponseEntity.ok(response);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity removeByID(@PathVariable("id") long id) {
-        boolean result = listService.delete(id);
-        if(!result) {
+    @PostMapping()
+    public ResponseEntity<TDList> add(@RequestBody TDList tdList) {
+        if(tdList == null || listRepository.existsById(tdList.id)) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok().build();
-    }
-    @PutMapping(path = { "", "/" })
-    public ResponseEntity<TDList> update(@RequestBody TDList list) {
-        TDList response = listService.update(list);
-        if(response == null)
-            return ResponseEntity.badRequest().build();
-        return ResponseEntity.ok(response);
+        TDList saved = listRepository.save(tdList);
+        return ResponseEntity.ok(saved);
     }
 }
