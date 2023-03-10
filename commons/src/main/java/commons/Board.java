@@ -17,8 +17,7 @@ public class Board {
     public long id;
 
     public String title;
-
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @OneToMany
     public List<TDList> lists = new ArrayList<>(); //JPA does not work with ArrayLists
     public Board(){}
     public Board(String title) {

@@ -15,14 +15,12 @@
  */
 package client;
 
-import static com.google.inject.Guice.createInjector;
-
-
 import client.scenes.*;
 import com.google.inject.Injector;
-
 import javafx.application.Application;
 import javafx.stage.Stage;
+
+import static com.google.inject.Guice.createInjector;
 
 public class Main extends Application {
 
@@ -39,8 +37,9 @@ public class Main extends Application {
 
         var edit = FXML.load(EditCardCtrl.class, "client", "scenes", "EditCard.fxml");
 
+        var editList = FXML.load(EditListCtrl.class,"client", "scenes", "RenameList.fxml");
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, overview, addCard, addList, edit);
+        mainCtrl.initialize(primaryStage, overview, addCard, addList, edit, editList);
         primaryStage.setOnCloseRequest(event -> {
             overview.getKey().stop();
         });
