@@ -24,7 +24,7 @@ public class BoardService {
 
     public Board getById(long id) {
         if(boardRepository.existsById(id)) {
-            return boardRepository.getById(id);
+            return boardRepository.findById(id).get(); 
         }
         return null;
     }
