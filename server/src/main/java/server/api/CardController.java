@@ -1,26 +1,30 @@
 package server.api;
 
 import commons.Card;
+import commons.CardChange;
+import commons.Change;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.async.DeferredResult;
 import server.service.CardService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 @RestController
 @RequestMapping("/api/cards")
 public class CardController {
 
     private final CardService cardService;
-    private final SimpMessagingTemplate messagingTemplate;
+    private final Map<Object, Consumer<CardChange>> listeners = new HashMap<>();
 
     @Autowired
-    public CardController(CardService cardService,
-                          SimpMessagingTemplate messagingTemplate) {
+    public CardController(CardService cardService) {
         this.cardService = cardService;
-        this.messagingTemplate = messagingTemplate;
     }
 
     @GetMapping(path = { "", "/" })
@@ -44,8 +48,7 @@ public class CardController {
         Card response = cardService.addCard(card);
         if(response == null)
             return ResponseEntity.badRequest().build();
-        if(messagingTemplate != null)
-            messagingTemplate.convertAndSend("/topic/cards", card);
+        listeners.forEach((key, listener) -> listener.accept(new CardChange(response, Change.Add)));
         return ResponseEntity.ok(response);
     }
 
@@ -64,5 +67,22 @@ public class CardController {
         if(response == null)
             return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/updates")
+    public DeferredResult<ResponseEntity<CardChange>> getUpdates() {
+        ResponseEntity<CardChange> noContent = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        DeferredResult<ResponseEntity<CardChange>> result = new DeferredResult<>(1000L, noContent);
+
+        Object key = new Object(); //trick to uniquely identify every key
+
+        listeners.put(key, cardChange -> {
+            result.setResult(ResponseEntity.ok(cardChange));
+        });
+        result.onCompletion(() -> {
+            listeners.remove(key);
+        });
+
+        return result;
     }
 }

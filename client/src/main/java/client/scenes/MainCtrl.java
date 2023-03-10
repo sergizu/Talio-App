@@ -26,9 +26,10 @@ public class MainCtrl {
     private Stage primaryStage;
     private Scene overview;
 
-    private ListOverviewCtrl list;
+    private ListOverviewCtrl listOverviewCtrl;
     private AddCardCtrl addCardCtrl;
     private AddListCtrl addListCtrl;
+
 
     private Scene sceneAddCard;
     private Scene sceneAddList;
@@ -41,8 +42,7 @@ public class MainCtrl {
                            Pair<EditCardCtrl, Parent> edit) {
 
         this.primaryStage = primaryStage;
-        this.list = overview.getKey();
-        System.out.println(primaryStage);
+        this.listOverviewCtrl = overview.getKey();
         this.overview = new Scene(overview.getValue());
 
         this.addCardCtrl = addCard.getKey();
@@ -60,15 +60,16 @@ public class MainCtrl {
     public void showOverview() {
         primaryStage.setTitle("Lists: Overview");
         primaryStage.setScene(overview);
-        list.refresh();
+        listOverviewCtrl.refresh(1L);
+        //temporarily hardcoded boardID(which might even not be the correct ID)
     }
 
-    public void showAddCard() {
+    public void showAdd(long boardId) {
         primaryStage.setTitle("Board: Adding Card");
         primaryStage.setScene(sceneAddCard);
+        addCardCtrl.setBoard(boardId);
         sceneAddCard.setOnKeyPressed(e -> addCardCtrl.keyPressed(e));
     }
-
     public void showAddList() {
         primaryStage.setTitle("Board: Adding List");
         primaryStage.setScene(sceneAddList);

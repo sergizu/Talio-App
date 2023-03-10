@@ -39,6 +39,14 @@ public class BoardService {
     public boolean existsById(long id) {
         return boardRepository.existsById(id);
     }
+
+    //Method that updates the board if it exists, otherwise it will return null
+    public Board update(Board board) {
+        if(board == null || board.title == null) return null;
+        if(!boardRepository.existsById(board.id))
+            return null;
+        return boardRepository.save(board);
+    }
 }
 
 

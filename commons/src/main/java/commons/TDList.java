@@ -22,14 +22,10 @@ public class TDList {
 
     public String title;
 
-    //Maybe an arrayList isn't the best data structure
-
     @OneToMany(mappedBy = "list",cascade = CascadeType.ALL)
     public List<Card> list = new ArrayList<>();
 
-    private TDList() {
-
-    }
+    public TDList() {}
 
     public TDList(String title) {
         this.title = title;
