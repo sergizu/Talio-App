@@ -2,24 +2,30 @@ package commons;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+@Table(name ="TDList")
 @Entity
 public class TDList {
 
+    @ManyToOne
+    @JoinColumn(name = "board_id")
+    public Board board;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "list_id")
     public long id;
 
     public String title;
 
     //Maybe an arrayList isn't the best data structure
-    public ArrayList<Card> list;
+
+    @OneToMany(mappedBy = "list",cascade = CascadeType.ALL)
+    public List<Card> list = new ArrayList<>();
 
     private TDList() {
 
@@ -33,7 +39,6 @@ public class TDList {
     @Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o);
-        // I suggest we could use EqualsBuilder - reliable and shorter implementation
     }
 
     @Override
@@ -49,7 +54,7 @@ public class TDList {
         for (Card card : list)
             toReturn += card.toString();
         return toReturn;
-    } //added toString
+    }
 
     public boolean removeCard(long id) {
         return list.removeIf(p -> p.getId() == id);
