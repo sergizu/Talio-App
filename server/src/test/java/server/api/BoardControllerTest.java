@@ -4,7 +4,10 @@ import commons.Board;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import server.database.CardRepository;
+import server.database.ListRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -27,12 +30,17 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class BoardControllerTest {
     @Mock BoardService boardService;
+    @Mock ListRepository listRepository;
+    @Mock CardRepository cardRepository;
+
 
     BoardController boardController;
 
+
     @BeforeEach
+
     void setUp() {
-        boardController = new BoardController(boardService);
+        boardController = new BoardController(boardService, listRepository, cardRepository);
     }
 
     @Test

@@ -12,14 +12,15 @@ import java.util.Objects;
 public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "board_id")
-    private long id;
 
-    private String title;
+    @Column(name = "board_id")
+    public long id;
+
+    public String title;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
-    private List<TDList> lists = new ArrayList<>(); //JPA does not work with ArrayLists
-    private Board(){}
+    public List<TDList> lists = new ArrayList<>(); //JPA does not work with ArrayLists
+    public Board(){}
     public Board(String title) {
         this.title = title;
     }

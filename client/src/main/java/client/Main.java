@@ -41,6 +41,8 @@ public class Main extends Application {
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
         mainCtrl.initialize(primaryStage, overview, addCard, addList, edit);
-
+        primaryStage.setOnCloseRequest(event -> {
+            overview.getKey().stop();
+        });
     }
 }

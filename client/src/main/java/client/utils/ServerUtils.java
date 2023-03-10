@@ -20,13 +20,16 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
+import commons.Board;
 import commons.Card;
+import commons.CardChange;
+import jakarta.ws.rs.core.Response;
 import commons.TDList;
 import org.glassfish.jersey.client.ClientConfig;
 
@@ -34,17 +37,12 @@ import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
-import org.springframework.messaging.converter.MappingJackson2MessageConverter;
-import org.springframework.messaging.simp.stomp.StompFrameHandler;
-import org.springframework.messaging.simp.stomp.StompHeaders;
-import org.springframework.messaging.simp.stomp.StompSession;
-import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
-import org.springframework.web.socket.client.standard.StandardWebSocketClient;
-import org.springframework.web.socket.messaging.WebSocketStompClient;
+import org.springframework.http.HttpStatus;
 
 public class ServerUtils {
 
     private static final String SERVER = "http://localhost:8080/";
+    private static final ExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadExecutor();
 
     public void getQuotesTheHardWay() throws IOException {
         var url = new URL("http://localhost:8080/api/quotes");
@@ -114,6 +112,56 @@ public class ServerUtils {
                 .delete();
     }
 
+    public Board tempBoardGetter() {
+        Response result = ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("/api/boards/tempGetter")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get();
+        if(result.getStatus() == HttpStatus.OK.value()) {
+            try {
+                Board board = result.readEntity(Board.class);
+                return board;
+            } catch (Exception e) {
+                System.out.println("problems: couldnt parse the incoming board");
+            }
+        }
+        return null;
+    }
+
+    public void addToList(long boardId, Card card) {
+        Response result = ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("/api/boards/" + boardId + "/addCard")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(card, APPLICATION_JSON));
+    }
+
+
+    public void registerForUpdates(Consumer<CardChange> consumer) {
+        EXECUTOR_SERVICE.submit(() -> {
+            while (!Thread.interrupted()) {
+                Response result = ClientBuilder.newClient(new ClientConfig())
+                        .target(SERVER).path("/api/cards/updates")
+                        .request(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON)
+                        .get(Response.class);
+                if(result.getStatus() == HttpStatus.NO_CONTENT.value())
+                    continue;
+                System.out.println(result);
+                CardChange cardChange = null;
+                try {
+                    cardChange = result.readEntity(CardChange.class);
+                } catch (Exception e) {
+                    System.out.println("problems");
+                }
+
+                System.out.println(cardChange);
+                consumer.accept(cardChange);
+            }
+        });
+    }
+
     public void updateCard(Card card) {
         ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/cards/") //
@@ -122,34 +170,8 @@ public class ServerUtils {
                 .put(Entity.entity(card, APPLICATION_JSON), Card.class);//
     }
 
-    private StompSession session = connect("ws://localhost:8080/websocket");
 
-    private StompSession connect(String url){
-        var client = new StandardWebSocketClient();
-        var stomp  = new WebSocketStompClient(client);
-        stomp.setMessageConverter(new MappingJackson2MessageConverter());
-        try{
-            return stomp.connect(url, new StompSessionHandlerAdapter() {}).get();
-        } catch(InterruptedException e){
-            Thread.currentThread().interrupt();
-        } catch(ExecutionException e){
-            throw new RuntimeException(e);
-        }
-        throw new IllegalArgumentException();
-    }
-
-    public <T> void registerForMessages(String dest, Class<T> type, Consumer<T> consumer){
-        session.subscribe(dest, new StompFrameHandler() {
-            @Override
-            public Type getPayloadType(StompHeaders headers) {
-                return type;
-            }
-
-            @SuppressWarnings("unchecked")
-            @Override
-            public void handleFrame(StompHeaders headers, Object payload) {
-                consumer.accept((T) payload);
-            }
-        });
+    public void stop() {
+        EXECUTOR_SERVICE.shutdownNow();
     }
 }

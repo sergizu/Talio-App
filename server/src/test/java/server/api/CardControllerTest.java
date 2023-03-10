@@ -23,12 +23,11 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class CardControllerTest {
     @Mock CardService cardService;
-    @Mock SimpMessagingTemplate messagingTemplate;
     CardController cardController;
 
     @BeforeEach
     void setUp() {
-        cardController = new CardController(cardService, messagingTemplate);
+        cardController = new CardController(cardService);
     }
     @Test
     void getAll() {
