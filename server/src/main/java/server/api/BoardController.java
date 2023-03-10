@@ -9,10 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import server.database.BoardRepository;
 import server.database.CardRepository;
 import server.database.ListRepository;
-import server.service.CardService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/boards")
@@ -23,14 +21,16 @@ public class BoardController {
     private Long defaultBoardID; //temporary default board to return to all requests
 
     @Autowired
-    public BoardController(BoardRepository boardRepository, ListRepository listRepository, CardRepository cardRepository) {
+    public BoardController(BoardRepository boardRepository,
+                           ListRepository listRepository, CardRepository cardRepository) {
         this.boardRepository = boardRepository;
         this.listRepository = listRepository;
         this.cardRepository = cardRepository;
         this.defaultBoardID = -1L; //setting it to undefined
     }
 
-    //This mapper is only temporary to make it possible to already work with a board even though we dont id this
+    //This mapper is only temporary to make it possible to already
+    //work with a board even though we dont id this
     //board yet or give the possibilities to add more boards
     @GetMapping("/tempGetter")
     public ResponseEntity<Board> tempGetter() {
@@ -62,6 +62,19 @@ public class BoardController {
         if(!boardRepository.existsById(id))
             return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(boardRepository.findById(id).get());
+    }
+
+    @PutMapping("/{id}/addCard")
+    public ResponseEntity addCardToBoard(@PathVariable("id") long id, @RequestBody Card card) {
+        if (!boardRepository.existsById(id))
+            ResponseEntity.badRequest().build();
+        Board board = boardRepository.findById(id).get();
+        TDList list = board.lists.get(0);
+        list.addCard(card);
+        list = listRepository.save(list);
+        board.lists.set(0, list);
+        board = boardRepository.save(board);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping()

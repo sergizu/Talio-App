@@ -4,7 +4,6 @@ import commons.Card;
 import commons.CardChange;
 import commons.Change;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -78,7 +77,7 @@ public class CardController {
         Object key = new Object(); //trick to uniquely identify every key
 
         listeners.put(key, cardChange -> {
-           result.setResult(ResponseEntity.ok(cardChange));
+            result.setResult(ResponseEntity.ok(cardChange));
         });
         result.onCompletion(() -> {
             listeners.remove(key);

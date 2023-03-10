@@ -20,10 +20,8 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -39,13 +37,6 @@ import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 import org.springframework.http.HttpStatus;
-import org.springframework.messaging.converter.MappingJackson2MessageConverter;
-import org.springframework.messaging.simp.stomp.StompFrameHandler;
-import org.springframework.messaging.simp.stomp.StompHeaders;
-import org.springframework.messaging.simp.stomp.StompSession;
-import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
-import org.springframework.web.socket.client.standard.StandardWebSocketClient;
-import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 public class ServerUtils {
 
@@ -109,15 +100,24 @@ public class ServerUtils {
                 .target(SERVER).path("/api/boards/tempGetter")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .get(Response.class);
-        if(result.getStatus() == HttpStatus.OK.value())
+                .get();
+        if(result.getStatus() == HttpStatus.OK.value()) {
             try {
                 Board board = result.readEntity(Board.class);
                 return board;
             } catch (Exception e) {
-                System.out.println("big time problems");
+                System.out.println("problems: couldnt parse the incoming board");
             }
+        }
         return null;
+    }
+
+    public void addToList(long boardId, Card card) {
+        Response result = ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("/api/boards/" + boardId + "/addCard")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(card, APPLICATION_JSON));
     }
 
 

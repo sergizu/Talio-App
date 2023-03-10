@@ -46,12 +46,14 @@ public class MainCtrl {
     public void showOverview() {
         primaryStage.setTitle("Lists: Overview");
         primaryStage.setScene(overview);
-        listOverviewCtrl.populate(1L); //temporarily hardcoded boardID(which might even not be the correct ID)
+        listOverviewCtrl.refresh(1L);
+        //temporarily hardcoded boardID(which might even not be the correct ID)
     }
 
-    public void showAdd() {
+    public void showAdd(long boardId) {
         primaryStage.setTitle("Board: Adding Card");
         primaryStage.setScene(addScene);
+        addCardCtrl.setBoard(boardId);
         addScene.setOnKeyPressed(e -> addCardCtrl.keyPressed(e));
     }
 }

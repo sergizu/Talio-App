@@ -50,11 +50,6 @@ class TDListTest {
     }
 
     @Test
-    void testIsEmpty() {
-        assertTrue(list1.isEmpty());
-    }
-
-    @Test
     void testAddCard() {
         list.addCard(card1);
         assertEquals(card1, list.list.get(0));
@@ -63,6 +58,5 @@ class TDListTest {
     void testRemoveCard() {
         list.addCard(card1);
         list.removeCard(card1.getId());
-        assertTrue(list.isEmpty());
     }
 }

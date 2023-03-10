@@ -3,7 +3,10 @@ package server.api;
 import commons.Board;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import server.database.CardRepository;
+import server.database.ListRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -15,7 +18,7 @@ public class BoardControllerTest {
     @BeforeEach
     public void setup() {
         this.testBoardRepository = new TestBoardRepository();
-        this.boardController = new BoardController(testBoardRepository, listRepository, cardService);
+        this.boardController = new BoardController(testBoardRepository, null, null  );
     }
 
     @Test

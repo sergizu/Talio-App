@@ -6,8 +6,6 @@ import commons.Board;
 import commons.Card;
 import commons.Change;
 import commons.TDList;
-import javafx.beans.property.Property;
-import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,10 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
-import javax.management.openmbean.OpenMBeanInfoSupport;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class ListOverviewCtrl implements Initializable {
@@ -36,12 +31,13 @@ public class ListOverviewCtrl implements Initializable {
         cardColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
         server.registerForUpdates(cardChange -> {
             if(cardChange.change == Change.Add)
-                dataLists.get(0).add(cardChange.card); //adding the card to the most left list(TO-DO)
+                dataLists.get(0).add(cardChange.card);
+                //adding the card to the most left list(TO-DO)
         });
     }
 
     //boardID is not yet used
-    public void populate(long boardId) {
+    public void refresh(long boardId) {
         board = server.tempBoardGetter();
         for(TDList tdList : board.lists) {
             dataLists.add(FXCollections.observableList(tdList.list));
@@ -59,7 +55,7 @@ public class ListOverviewCtrl implements Initializable {
     }
 
     public void addCard() {
-        mainCtrl.showAdd();
+        mainCtrl.showAdd(board.id);
     }
 
     public void removeCard() {
