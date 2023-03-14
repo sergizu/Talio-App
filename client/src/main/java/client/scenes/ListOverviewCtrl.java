@@ -30,11 +30,11 @@ public class ListOverviewCtrl implements Initializable {
     private Board board;
     private ObservableList<ObservableList<Card>> dataLists;
 
-    private static final DataFormat serialization = new DataFormat("application/x-java-serialized-object");
+    private static final DataFormat serialization =
+            new DataFormat("application/x-java-serialized-object");
 
     @FXML private Label label1;
     @FXML private TableView<Card> tableView;
-
     @FXML private TableColumn<Card, String> cardColumn;
 
     @Override
@@ -98,8 +98,7 @@ public class ListOverviewCtrl implements Initializable {
     public void dragAndDrop() {
         tableView.setRowFactory(tv -> {
             TableRow<Card> row = new TableRow<>();
-            row.setOnDragDetected(e -> {
-                //Method gets called whenever a mouse drags a row
+            row.setOnDragDetected(e -> { //Method gets called whenever a mouse drags a row
                 if (!row.isEmpty()) {
                     int i = row.getIndex();
                     Dragboard db = row.startDragAndDrop(TransferMode.MOVE);
@@ -112,18 +111,15 @@ public class ListOverviewCtrl implements Initializable {
                     e.consume(); //Marks the end of the event
                 }
             });
-
             row.setOnDragOver(e -> {
                 Dragboard db = e.getDragboard();
                 if (db.hasContent(serialization)) {
-                    //Checks whether the dataformat has any information, which it should have as
+                    //Checks whether the data format has any information, which it should have as
                     //it has been associated with the row Index in the setOnRowDetected method
-                        e.acceptTransferModes(TransferMode.MOVE);
-                        //accepts the drag event
-                        e.consume();
+                    e.acceptTransferModes(TransferMode.MOVE); //accepts the drag event
+                    e.consume();
                 }
             });
-
             row.setOnDragDropped(e -> {
                 Dragboard db = e.getDragboard();
                 if (db.hasContent(serialization)) {
@@ -131,11 +127,8 @@ public class ListOverviewCtrl implements Initializable {
                     Card card = tableView.getItems().remove(draggedIndex);
                     //gets the rowIndex and removes the Card at it's position
                     int dropIndex;
-                    if (row.isEmpty()) {
-                        dropIndex = tableView.getItems().size() ;
-                    } else {
-                        dropIndex = row.getIndex();
-                    }
+                    if (row.isEmpty()) dropIndex = tableView.getItems().size();
+                    else dropIndex = row.getIndex();
                     tableView.getItems().add(dropIndex, card);
                     //If the row we drop the card on is empty, the card will be appended to
                     //the end of the tableview, otherwise it's dropped at the row index and
