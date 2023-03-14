@@ -71,9 +71,11 @@ public class ListOverviewCtrl implements Initializable {
         mainCtrl.showAddList();
     }
 
+    //Method that will pop up a window to change the card name whenever you double-click on a card
     public void cardExpansion() {
         tableView.setOnMousePressed(event -> {
-            if(tableView.getSelectionModel().getSelectedItem() != null) {
+            if(tableView.getSelectionModel().getSelectedItem() != null
+                    && event.getClickCount() == 2) {
                 Card card = tableView.getSelectionModel().getSelectedItem();
                 mainCtrl.showEdit(card);
             }
