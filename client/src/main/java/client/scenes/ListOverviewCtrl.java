@@ -11,14 +11,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -37,6 +37,16 @@ public class ListOverviewCtrl implements Initializable {
     @FXML private TableView<Card> tableView;
     @FXML private TableColumn<Card, String> cardColumn;
 
+    @FXML
+    private ScrollPane scrollPane;
+
+    @Inject
+    public ListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
+        this.server = server;
+        this.mainCtrl = mainCtrl;
+        dataLists = FXCollections.observableArrayList();
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         cardColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
@@ -45,26 +55,78 @@ public class ListOverviewCtrl implements Initializable {
                 dataLists.get(0).add(cardChange.card);
                 //adding the card to the most left list(TO-DO)
         });
-        cardExpansion();
-        dragAndDrop();
+        setScrollPane();
+    }
+
+    public void showLists(){
+        System.out.println(dataLists);
+        scrollPane.setContent(createFlowPane());
+    }
+
+    public Button createButton(long id){
+        Button button = new Button("+");
+        button.setOnAction(e ->{
+            addCard();
+        });
+        return button;
+    }
+
+    public FlowPane createFlowPane(){
+        FlowPane flowPane = new FlowPane();
+        setFlowPane(flowPane);
+        var lists = board.lists;
+        for(var tdList: lists){
+            Button button = createButton(tdList.id);
+            TableView<Card> tv = createTable(tdList);
+            cardExpansion(tv);
+            dragAndDrop(tv);
+            flowPane.getChildren().addAll(createVBox(tv, button));
+        }
+        return flowPane;
+    }
+
+    public void setFlowPane(FlowPane flowPane){
+        flowPane.setAlignment(Pos.BASELINE_CENTER);
+        flowPane.setHgap(50);
+        flowPane.setVgap(5);
+    }
+
+    public void setScrollPane(){
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+    }
+
+    public TableView<Card> createTable(TDList tdList){
+        TableView<Card> tv = new TableView<>();
+        tv.setPrefSize(157, 270);
+        TableColumn<Card, String> tableColumn = new TableColumn<>();
+        tableColumn.setText(tdList.title);
+        tableColumn.setPrefWidth(tv.getPrefWidth());
+        tableColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().title));
+        tv.getColumns().add(tableColumn);
+        ObservableList<Card> dataCards = FXCollections.observableList(tdList.list);
+        tv.setItems(dataCards);
+        return tv;
+    }
+
+    public VBox createVBox(TableView<Card> cards, Button button){
+        VBox vBox = new VBox();
+        vBox.getChildren().addAll(button, cards);
+        vBox.setAlignment(Pos.TOP_RIGHT);
+        vBox.setSpacing(3);
+        return vBox;
     }
 
     //boardID is not yet used
     public void refresh(long boardId) {
         board = server.tempBoardGetter();
+        showLists();
         for(TDList tdList : board.lists) {
             dataLists.add(FXCollections.observableList(tdList.list));
         }
 
         //when we can dynamically add lists we would need a for loop here
         tableView.setItems(dataLists.get(0));
-    }
-
-    @Inject
-    public ListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
-        this.server = server;
-        this.mainCtrl = mainCtrl;
-        dataLists = FXCollections.observableArrayList();
     }
 
     public void addCard() {
@@ -76,16 +138,17 @@ public class ListOverviewCtrl implements Initializable {
     }
 
     public void addList(){
-        mainCtrl.showAddList();
+        mainCtrl.showAddList(board.id);
     }
 
     //Method that will pop up a window to change the card name whenever you double-click on a card
-    public void cardExpansion() {
+    public void cardExpansion(TableView<Card> tableView) {
         tableView.setOnMousePressed(event -> {
             if(tableView.getSelectionModel().getSelectedItem() != null
                     && event.getClickCount() == 2) {
                 Card card = tableView.getSelectionModel().getSelectedItem();
                 mainCtrl.showEdit(card);
+                refresh(board.id);
             }
         });
     }
@@ -95,7 +158,7 @@ public class ListOverviewCtrl implements Initializable {
         mainCtrl.showEditList(list);
     }
 
-    public void dragAndDrop() {
+    public void dragAndDrop(TableView<Card> tableView) {
         tableView.setRowFactory(tv -> {
             TableRow<Card> row = new TableRow<>();
             row.setOnDragDetected(e -> { //Method gets called whenever a mouse drags a row
