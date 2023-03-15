@@ -98,10 +98,8 @@ public class ServerUtils {
     }
 
     public void removeCard(Card card) {
-        long id = card.id;
-        String idString = String.valueOf(id);
         ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/cards/" + idString) //
+                .target(SERVER).path("api/cards/" + card.id) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .delete();
