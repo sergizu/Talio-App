@@ -33,10 +33,6 @@ public class ListOverviewCtrl implements Initializable {
     private static final DataFormat serialization =
             new DataFormat("application/x-java-serialized-object");
 
-    @FXML private Label label1;
-    @FXML private TableView<Card> tableView;
-    @FXML private TableColumn<Card, String> cardColumn;
-
     @FXML
     private ScrollPane scrollPane;
 
@@ -49,7 +45,6 @@ public class ListOverviewCtrl implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        cardColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
         server.registerForUpdates(cardChange -> {
             if(cardChange.change == Change.Add)
                 dataLists.get(0).add(cardChange.card);
@@ -59,7 +54,6 @@ public class ListOverviewCtrl implements Initializable {
     }
 
     public void showLists(){
-        System.out.println(dataLists);
         scrollPane.setContent(createFlowPane());
     }
 
@@ -124,9 +118,6 @@ public class ListOverviewCtrl implements Initializable {
         for(TDList tdList : board.lists) {
             dataLists.add(FXCollections.observableList(tdList.list));
         }
-
-        //when we can dynamically add lists we would need a for loop here
-        tableView.setItems(dataLists.get(0));
     }
 
     public void addCard() {
