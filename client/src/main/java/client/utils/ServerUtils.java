@@ -98,10 +98,8 @@ public class ServerUtils {
     }
 
     public void removeCard(Card card) {
-        long id = card.id;
-        String idString = String.valueOf(id);
         ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/cards/" + idString) //
+                .target(SERVER).path("api/cards/remove/" + card.id) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .delete();
@@ -130,6 +128,14 @@ public class ServerUtils {
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(card, APPLICATION_JSON));
+    }
+
+    public void addListToBoard(long boardId, TDList tdList) {
+        Response result = ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("/api/boards/" + boardId + "/addList")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(tdList, APPLICATION_JSON));
     }
 
 
@@ -177,4 +183,6 @@ public class ServerUtils {
     public void stop() {
         EXECUTOR_SERVICE.shutdownNow();
     }
+
+
 }

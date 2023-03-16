@@ -81,6 +81,17 @@ public class BoardController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/{id}/addList")
+    public ResponseEntity addListToBoard(@PathVariable("id") long id, @RequestBody TDList tdList) {
+        if (!boardService.existsById(id))
+            ResponseEntity.badRequest().build();
+        Board board = boardService.getById(id);
+        TDList list = listRepository.save(tdList);
+        board.lists.add(list);
+        board = boardService.update(board);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping()
     public List<Board> getAll() {
         return  boardService.getAll();

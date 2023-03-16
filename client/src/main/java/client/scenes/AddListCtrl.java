@@ -31,6 +31,8 @@ public class AddListCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
+    private long boardId;
+
     @FXML
     private TextField listTitle;
 
@@ -52,7 +54,9 @@ public class AddListCtrl {
 
     public void ok() {
         try {
-            server.addList(getList());
+            TDList list = getList();
+            TDList tdList = server.addList(list);
+            server.addListToBoard(boardId, tdList);
         } catch (WebApplicationException e) {
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
@@ -80,5 +84,9 @@ public class AddListCtrl {
             default:
                 break;
         }
+    }
+
+    public void setBoard(long boardId) {
+        this.boardId = boardId;
     }
 }
