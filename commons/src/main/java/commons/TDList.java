@@ -18,11 +18,7 @@ public class TDList {
 
     public String title;
 
-    @ManyToOne
-    @JoinColumn(name = "board_id")
-    public Board board;
-
-    @OneToMany(mappedBy = "list",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany
     public List<Card> list = new ArrayList<>();
 
     public TDList() {}

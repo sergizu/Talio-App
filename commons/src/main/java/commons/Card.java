@@ -15,9 +15,6 @@ public class Card {
 
     public String title;
 
-    @ManyToOne
-    @JoinColumn(name = "list_id")
-    public TDList list;
     //empty constructor for ObjectMapper
     public Card() {
 
