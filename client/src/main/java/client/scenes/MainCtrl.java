@@ -77,9 +77,10 @@ public class MainCtrl {
         addCardCtrl.setBoard(boardId);
         sceneAddCard.setOnKeyPressed(e -> addCardCtrl.keyPressed(e));
     }
-    public void showAddList() {
+    public void showAddList(long boardId) {
         primaryStage.setTitle("Board: Adding List");
         primaryStage.setScene(sceneAddList);
+        addListCtrl.setBoard(boardId);
         sceneAddList.setOnKeyPressed(e -> addListCtrl.keyPressed(e));
     }
 
