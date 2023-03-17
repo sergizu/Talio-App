@@ -4,14 +4,12 @@ import commons.Board;
 import commons.Card;
 import commons.TDList;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.*;
 import server.database.CardRepository;
 import server.database.ListRepository;
-
 import server.service.BoardService;
+
 import java.util.List;
 
 @RestController
@@ -38,7 +36,7 @@ public class BoardController {
     public ResponseEntity<Board> tempGetter() {
         if (defaultBoardID != -1L) {
             boolean existsById = boardService.existsById(defaultBoardID);
-            System.out.println(existsById);
+            //System.out.println(existsById);
             Board board = null;
             try {
                 board = boardService.getById(defaultBoardID);
@@ -49,12 +47,15 @@ public class BoardController {
         }
         Board board = new Board("Default board");
         Card card = new Card("Default card");
-        card = cardRepository.save(card);
         TDList tdList = new TDList("Default list");
+        card.list = tdList;
+        //card = cardRepository.save(card);
         tdList.addCard(card);
-        tdList = listRepository.save(tdList);
+        tdList.board = board;
+        //tdList = listRepository.save(tdList);
         board.addList(tdList);
         board = boardService.addBoard(board);
+        //System.out.println(board);
         defaultBoardID = board.id;
         return ResponseEntity.ok(board);
     }
@@ -73,6 +74,7 @@ public class BoardController {
         if (!boardService.existsById(id))
             ResponseEntity.badRequest().build();
         Board board = boardService.getById(id);
+        //System.out.println(board.lists);
         TDList list = board.lists.get(0);
         list.addCard(card);
         list = listRepository.save(list);
@@ -86,9 +88,9 @@ public class BoardController {
         if (!boardService.existsById(id))
             ResponseEntity.badRequest().build();
         Board board = boardService.getById(id);
-        TDList list = listRepository.save(tdList);
-        board.lists.add(list);
-        board = boardService.update(board);
+        tdList.board = board;
+        board.lists.add(tdList);
+        boardService.update(board);
         return ResponseEntity.ok().build();
     }
 

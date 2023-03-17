@@ -1,5 +1,6 @@
 package server.api;
 
+import commons.Card;
 import commons.TDList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -48,11 +49,24 @@ public class ListController {
         }
         return ResponseEntity.ok().build();
     }
-    @PutMapping(path = { "", "/" })
+
+    @PutMapping("/update")
     public ResponseEntity<TDList> update(@RequestBody TDList list) {
+        System.out.println(list);
         TDList response = listService.update(list);
         if(response == null)
             return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{id}/addCard")
+    public ResponseEntity addCardToList(@PathVariable("id") long id, @RequestBody Card card) {
+        if (!listService.existsById(id))
+            return ResponseEntity.badRequest().build();
+        TDList tdlist = listService.getById(id);
+        tdlist.addCard(card);
+        card.list = tdlist;
+        TDList update = listService.update(tdlist);
+        return ResponseEntity.ok().build();
     }
 }

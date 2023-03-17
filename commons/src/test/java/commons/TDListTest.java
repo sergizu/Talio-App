@@ -2,6 +2,7 @@ package commons;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class TDListTest {
@@ -57,7 +58,7 @@ class TDListTest {
     @Test
     void testAddCard() {
         list.addCard(card1);
-        assertEquals(card1, list.list.get(0));
+        assertEquals(card1, list.cards.get(0));
     }
     @Test
     void testRemoveCard() {
