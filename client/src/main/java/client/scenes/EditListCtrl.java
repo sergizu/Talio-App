@@ -44,4 +44,9 @@ public class EditListCtrl {
             ok();
         }
     }
+
+    public void delete() {
+        server.removeList(taskList);
+        mainCtrl.showOverview();
+    }
 }

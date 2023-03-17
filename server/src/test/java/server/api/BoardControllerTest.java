@@ -2,10 +2,11 @@ package server.api;
 
 import commons.Board;
 
+import commons.Card;
+import commons.TDList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+
 import server.database.CardRepository;
 import server.database.ListRepository;
 
@@ -18,7 +19,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import org.springframework.http.ResponseEntity;
 
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 
 import server.service.BoardService;
@@ -80,6 +80,42 @@ class BoardControllerTest {
         assertEquals(ResponseEntity.badRequest().build(), boardController.getById(board.getId()));
         verify(boardService).getById(board.getId());
     }
+
+    @Test
+    void addCardToBoard() {
+        Board board = new Board("Board 1");
+        Card card = new Card("Card 1");
+        TDList list = new TDList("list 1");
+        board.addList(list);
+        given(boardService.getById(board.getId())).willReturn(board);
+        assertEquals(ResponseEntity.ok().build(), boardController.addCardToBoard(board.getId(), card));
+    }
+
+    @Test
+    void addListToBoard() {
+        Board board = new Board("Board 1");
+        TDList list = new TDList("list 1");
+        given(boardService.getById(board.getId())).willReturn(board);
+        assertEquals(ResponseEntity.ok().build(), boardController.addListToBoard(board.getId(), list));
+    }
+
+    @Test
+    void removeByID() {
+        Board board = new Board("Board 1");
+        given(boardService.delete(board.id)).willReturn(true);
+        assertEquals(boardController.removeByID(board.id), ResponseEntity.ok().build());
+        verify(boardService).delete(board.id);
+    }
+
+    @Test
+    void RemoveNotExist() {
+        Board board = new Board("Board 1");
+        given(boardService.delete(board.id)).willReturn(false);
+        assertEquals(boardController.removeByID(board.id), ResponseEntity.badRequest().build());
+        verify(boardService).delete(board.id);
+    }
+
+
 
 
 
