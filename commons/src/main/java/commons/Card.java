@@ -1,11 +1,12 @@
 package commons;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 
-@Table(name = "Card")
+
 @Entity
 public class Card {
 
@@ -15,7 +16,11 @@ public class Card {
 
     public String title;
 
-    //empty constructor for ObjectMapper
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinColumn(name = "list_id")
+    @JsonBackReference
+    public TDList list;
+
     public Card() {
 
     }

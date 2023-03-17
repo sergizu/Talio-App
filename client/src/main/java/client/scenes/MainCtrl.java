@@ -42,7 +42,7 @@ public class MainCtrl {
     private Scene editList;
 
     public void initialize(Stage primaryStage, Pair<ListOverviewCtrl, Parent> overview,
-            Pair<AddCardCtrl, Parent> addCard, Pair<AddListCtrl, Parent> addList,
+                           Pair<AddCardCtrl, Parent> addCard, Pair<AddListCtrl, Parent> addList,
                            Pair<EditCardCtrl, Parent> edit, Pair<EditListCtrl, Parent> editList) {
 
         this.primaryStage = primaryStage;
@@ -71,10 +71,10 @@ public class MainCtrl {
         //temporarily hardcoded boardID(which might even not be the correct ID)
     }
 
-    public void showAdd(long boardId) {
+    public void showAdd(long listId) {
         primaryStage.setTitle("Board: Adding Card");
         primaryStage.setScene(sceneAddCard);
-        addCardCtrl.setBoard(boardId);
+        addCardCtrl.setListId(listId);
         sceneAddCard.setOnKeyPressed(e -> addCardCtrl.keyPressed(e));
     }
     public void showAddList(long boardId) {
@@ -91,7 +91,6 @@ public class MainCtrl {
     }
 
     public void showEditList(TDList list){
-        
         primaryStage.setTitle("List: Rename list");
         primaryStage.setScene(editList);
         editListCtrl.init(list);

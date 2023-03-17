@@ -1,5 +1,6 @@
 package commons;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import javax.persistence.*;
@@ -8,18 +9,21 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "board")
 public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-
     @Column(name = "board_id")
     public long id;
 
     public String title;
-    @OneToMany
-    public List<TDList> lists = new ArrayList<>(); //JPA does not work with ArrayLists
+
+    @OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST,
+        CascadeType.MERGE, CascadeType.REFRESH})
+    @JsonManagedReference
+    public List<TDList> lists = new ArrayList<>();
+
     public Board(){}
+
     public Board(String title) {
         this.title = title;
     }
