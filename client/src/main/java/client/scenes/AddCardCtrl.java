@@ -17,7 +17,7 @@ public class AddCardCtrl {
 
     @FXML
     private TextField cardName;
-    private long boardId;
+    private long listId;
 
     @Inject
     public AddCardCtrl(ServerUtils server, MainCtrl mainCtrl) {
@@ -25,8 +25,8 @@ public class AddCardCtrl {
         this.server = server;
     }
 
-    public void setBoard(long boardId) {
-        this.boardId = boardId;
+    public void setListId(long listId) {
+        this.listId = listId;
     }
 
     private Card getCard() {
@@ -36,8 +36,8 @@ public class AddCardCtrl {
 
     public void ok() {
         try {
-            Card added = server.addCard(getCard());
-            server.addToList(boardId, added);
+            Card card = getCard();
+            server.addCardToList(listId, card);
         } catch (WebApplicationException e) {
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
@@ -58,10 +58,4 @@ public class AddCardCtrl {
             ok();
         }
     }
-
-
-
-
-
-
 }
