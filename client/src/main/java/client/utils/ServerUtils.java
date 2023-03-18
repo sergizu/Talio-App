@@ -109,21 +109,7 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(card, APPLICATION_JSON), Card.class);
     }
-
-<<<<<<< HEAD
-
-
-
-
-=======
-    public void removeCard(Card card) {
-        ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/cards/" + card.getId()) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .delete();
-    }
->>>>>>> 2dc0c2de5466c5cd92346b58420bc16a530e56e5
+    
 
     public Board tempBoardGetter() {
         Response result = ClientBuilder.newClient(new ClientConfig())
