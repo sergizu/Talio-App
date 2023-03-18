@@ -21,7 +21,7 @@ public class AddCardCtrl {
 
     @FXML
     private TextField cardName;
-    private long boardId;
+    private long listId;
 
     @Inject
     public AddCardCtrl(ServerUtils server, MainCtrl mainCtrl) {
@@ -30,8 +30,8 @@ public class AddCardCtrl {
 
     }
 
-    public void setBoard(long boardId) {
-        this.boardId = boardId;
+    public void setListId(long listId) {
+        this.listId = listId;
     }
 
     private Card getCard() {
@@ -81,10 +81,4 @@ public class AddCardCtrl {
             cancel();
         }
     }
-
-
-
-
-
-
 }

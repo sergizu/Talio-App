@@ -52,7 +52,7 @@ public class CardController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/remove/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity removeByID(@PathVariable("id") long id) {
         boolean result = cardService.delete(id);
         if(!result) {
@@ -61,7 +61,7 @@ public class CardController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping(path = { "", "/" })
+    @PutMapping("/update")
     public ResponseEntity<Card> update(@RequestBody Card card) {
         Card response = cardService.update(card);
         if(response == null)
