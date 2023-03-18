@@ -27,7 +27,7 @@ public class ListService {
     }
 
     public TDList addList(TDList l) {
-        if(l == null || l.title == null || l.list == null) return null;
+        if(l == null || l.title == null || l.cards == null) return null;
         if(listRepository.existsById(l.id))
             return null;
         return listRepository.save(l);
@@ -38,8 +38,8 @@ public class ListService {
     }
 
     public TDList update(TDList l) {
-        if(l == null || l.title == null) return null;
-        if(!listRepository.existsById(l.id))
+        if(l == null || l.getTitle() == null) return null;
+        if(!listRepository.existsById(l.getId()))
             return null;
         return listRepository.save(l);
     }

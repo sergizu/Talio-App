@@ -45,22 +45,24 @@ public class ListOverviewCtrl implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //cardColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
         server.registerForUpdates(cardChange -> {
             if(cardChange.change == Change.Add)
                 dataLists.get(0).add(cardChange.card);
-                //adding the card to the most left list(TO-DO)
+            //adding the card to the most left list(TO-DO)
         });
         setScrollPane();
     }
 
     public void showLists(){
+        //System.out.println(dataLists);
         scrollPane.setContent(createFlowPane());
     }
 
     public Button createButton(long id){
         Button button = new Button("+");
         button.setOnAction(e ->{
-            addCard();
+            addCard(id);
         });
         return button;
     }
@@ -98,7 +100,7 @@ public class ListOverviewCtrl implements Initializable {
         tableColumn.setPrefWidth(tv.getPrefWidth());
         tableColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().title));
         tv.getColumns().add(tableColumn);
-        ObservableList<Card> dataCards = FXCollections.observableList(tdList.list);
+        ObservableList<Card> dataCards = FXCollections.observableList(tdList.cards);
         tv.setItems(dataCards);
         return tv;
     }
@@ -116,12 +118,15 @@ public class ListOverviewCtrl implements Initializable {
         board = server.tempBoardGetter();
         showLists();
         for(TDList tdList : board.lists) {
-            dataLists.add(FXCollections.observableList(tdList.list));
+            dataLists.add(FXCollections.observableList(tdList.cards));
         }
+
+        //when we can dynamically add lists we would need a for loop here
+        //tableView.setItems(dataLists.get(0));
     }
 
-    public void addCard() {
-        mainCtrl.showAdd(board.id);
+    public void addCard(long listId) {
+        mainCtrl.showAdd(listId);
     }
 
     public void stop() {
@@ -139,7 +144,6 @@ public class ListOverviewCtrl implements Initializable {
                     && event.getClickCount() == 2) {
                 Card card = tableView.getSelectionModel().getSelectedItem();
                 mainCtrl.showEdit(card);
-                refresh(board.id);
             }
         });
     }

@@ -15,9 +15,8 @@
  */
 package client.scenes;
 
-import com.google.inject.Inject;
-
 import client.utils.ServerUtils;
+import com.google.inject.Inject;
 import commons.TDList;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
@@ -55,8 +54,7 @@ public class AddListCtrl {
     public void ok() {
         try {
             TDList list = getList();
-            TDList tdList = server.addList(list);
-            server.addListToBoard(boardId, tdList);
+            server.addListToBoard(boardId, list);
         } catch (WebApplicationException e) {
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
