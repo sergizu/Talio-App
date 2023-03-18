@@ -58,10 +58,7 @@ public class ListController {
             return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(response);
     }
-<<<<<<< HEAD
-=======
 
->>>>>>> 2dc0c2de5466c5cd92346b58420bc16a530e56e5
     @PutMapping("/{id}/addCard")
     public ResponseEntity addCardToList(@PathVariable("id") long id, @RequestBody Card card) {
         if (!listService.existsById(id))
@@ -72,8 +69,5 @@ public class ListController {
         TDList update = listService.update(tdlist);
         return ResponseEntity.ok().build();
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> 2dc0c2de5466c5cd92346b58420bc16a530e56e5
 }
