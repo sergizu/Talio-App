@@ -46,7 +46,7 @@ public class AddCardCtrl {
             try {
                 myLable.setText("");
                 Card added = server.addCard(getCard());
-                server.addToList(boardId, added);
+                server.addToList(listId, added);
             } catch (WebApplicationException e) {
                 var alert = new Alert(Alert.AlertType.ERROR);
                 alert.initModality(Modality.APPLICATION_MODAL);
