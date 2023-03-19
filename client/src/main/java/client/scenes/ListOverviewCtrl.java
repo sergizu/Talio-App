@@ -21,6 +21,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ListOverviewCtrl implements Initializable {
@@ -47,31 +48,31 @@ public class ListOverviewCtrl implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         //cardColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
         server.registerForUpdates(cardChange -> {
-            if(cardChange.change == Change.Add)
+            if (cardChange.change == Change.Add)
                 dataLists.get(0).add(cardChange.card);
             //adding the card to the most left list(TO-DO)
         });
         setScrollPane();
     }
 
-    public void showLists(){
+    public void showLists() {
         //System.out.println(dataLists);
         scrollPane.setContent(createFlowPane());
     }
 
-    public Button createButton(long id){
+    public Button createButton(long id) {
         Button button = new Button("+");
-        button.setOnAction(e ->{
+        button.setOnAction(e -> {
             addCard(id);
         });
         return button;
     }
 
-    public FlowPane createFlowPane(){
+    public FlowPane createFlowPane() {
         FlowPane flowPane = new FlowPane();
         setFlowPane(flowPane);
         var lists = board.lists;
-        for(var tdList: lists){
+        for (var tdList : lists) {
             Button button = createButton(tdList.id);
             TableView<Card> tv = createTable(tdList);
             cardExpansion(tv);
@@ -81,18 +82,18 @@ public class ListOverviewCtrl implements Initializable {
         return flowPane;
     }
 
-    public void setFlowPane(FlowPane flowPane){
+    public void setFlowPane(FlowPane flowPane) {
         flowPane.setAlignment(Pos.BASELINE_CENTER);
         flowPane.setHgap(50);
         flowPane.setVgap(5);
     }
 
-    public void setScrollPane(){
+    public void setScrollPane() {
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
     }
 
-    public TableView<Card> createTable(TDList tdList){
+    public TableView<Card> createTable(TDList tdList) {
         TableView<Card> tv = new TableView<>();
         tv.setPrefSize(157, 270);
         TableColumn<Card, String> tableColumn = new TableColumn<>();
@@ -105,7 +106,7 @@ public class ListOverviewCtrl implements Initializable {
         return tv;
     }
 
-    public VBox createVBox(TableView<Card> cards, Button button){
+    public VBox createVBox(TableView<Card> cards, Button button) {
         VBox vBox = new VBox();
         vBox.getChildren().addAll(button, cards);
         vBox.setAlignment(Pos.TOP_RIGHT);
@@ -114,10 +115,10 @@ public class ListOverviewCtrl implements Initializable {
     }
 
     //boardID is not yet used
-    public void refresh(long boardId) {
+    public void refresh() {
         board = server.tempBoardGetter();
         showLists();
-        for(TDList tdList : board.lists) {
+        for (TDList tdList : board.lists) {
             dataLists.add(FXCollections.observableList(tdList.cards));
         }
 
@@ -133,14 +134,14 @@ public class ListOverviewCtrl implements Initializable {
         server.stop();
     }
 
-    public void addList(){
+    public void addList() {
         mainCtrl.showAddList(board.id);
     }
 
     //Method that will pop up a window to change the card name whenever you double-click on a card
     public void cardExpansion(TableView<Card> tableView) {
         tableView.setOnMousePressed(event -> {
-            if(tableView.getSelectionModel().getSelectedItem() != null
+            if (tableView.getSelectionModel().getSelectedItem() != null
                     && event.getClickCount() == 2) {
                 Card card = tableView.getSelectionModel().getSelectedItem();
                 mainCtrl.showEdit(card);
@@ -188,10 +189,10 @@ public class ListOverviewCtrl implements Initializable {
                     if (row.isEmpty()) dropIndex = tableView.getItems().size();
                     else dropIndex = row.getIndex();
                     tableView.getItems().add(dropIndex, card);
-                    //If the row we drop the card on is empty, the card will be appended to
-                    //the end of the tableview, otherwise it's dropped at the row index and
-                    //added to the tableview items list
-
+                    ArrayList<Card> items = new ArrayList<>();
+                    items.addAll(tableView.getItems());
+                    TDList tdList = card.list;
+                    updateList(tdList, items);
                     e.setDropCompleted(true); //marks the end of the drag event
                     tableView.getSelectionModel().select(dropIndex);
                     //Selects the dropped card, otherwise the first card in the tableview
@@ -199,8 +200,20 @@ public class ListOverviewCtrl implements Initializable {
                     e.consume();
                 }
             });
-            return row ;
+            return row;
         });
+    }
+
+    public void updateList(TDList tdList, ArrayList<Card> items ) {
+        tdList.cards.clear();
+        tdList.cards.addAll(items);
+        for(Card item : items) {
+            server.addCardToList(tdList.id, item);
+        }
+        System.out.println(tdList);
+        server.updateList(tdList);
+        server.updateBoard(board);
+        refresh();
     }
 }
 

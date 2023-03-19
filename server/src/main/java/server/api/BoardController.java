@@ -107,4 +107,12 @@ public class BoardController {
         }
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<Board> update(@RequestBody Board board) {
+        Board response = boardService.update(board);
+        if(response == null)
+            return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(response);
+    }
 }

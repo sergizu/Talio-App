@@ -3,9 +3,11 @@ package server.service;
 
 import commons.Board;
 
+import commons.Card;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.UpperCase;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import server.database.BoardRepository;
@@ -79,5 +81,14 @@ class BoardServiceTest {
         verify(boardRepository).existsById(id);
     }
 
+    @Test
+    void update() {
+            Board board = new Board("Board 1");
+            board.id = 1;
+            given(boardRepository.existsById(board.id)).willReturn(true);
+            boardService.update(board);
+            verify(boardRepository).save(board);
+    }
 }
+
 

@@ -81,6 +81,14 @@ class BoardControllerTest {
         verify(boardService).getById(board.getId());
     }
 
+    @Test
+    void update() {
+        Board board = new Board("Board 1");
+        given(boardService.update(board)).willReturn(board);
+        assertEquals(ResponseEntity.ok(board), boardController.update(board));
+        verify(boardService).update(board);
+    }
+
 
 
 }
