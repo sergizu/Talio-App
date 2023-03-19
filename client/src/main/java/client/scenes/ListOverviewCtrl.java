@@ -37,6 +37,8 @@ public class ListOverviewCtrl implements Initializable {
     @FXML
     private ScrollPane scrollPane;
 
+    private TableView<Card> selection;
+
     @Inject
     public ListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
@@ -77,6 +79,8 @@ public class ListOverviewCtrl implements Initializable {
             TableView<Card> tv = createTable(tdList);
             cardExpansion(tv);
             dragAndDrop(tv);
+            setSelection(tv);
+            dragOtherLists(tv);
             flowPane.getChildren().addAll(createVBox(tv, button));
         }
         return flowPane;
@@ -140,7 +144,7 @@ public class ListOverviewCtrl implements Initializable {
 
     //Method that will pop up a window to change the card name whenever you double-click on a card
     public void cardExpansion(TableView<Card> tableView) {
-        tableView.setOnMousePressed(event -> {
+        tableView.setOnMouseClicked(event -> {
             if (tableView.getSelectionModel().getSelectedItem() != null
                     && event.getClickCount() == 2) {
                 Card card = tableView.getSelectionModel().getSelectedItem();
@@ -181,7 +185,7 @@ public class ListOverviewCtrl implements Initializable {
             });
             row.setOnDragDropped(e -> {
                 Dragboard db = e.getDragboard();
-                if (db.hasContent(serialization)) {
+                if (db.hasContent(serialization) && selection == tableView) {
                     int draggedIndex = (int) db.getContent(serialization);
                     Card card = tableView.getItems().remove(draggedIndex);
                     //gets the rowIndex and removes the Card at it's position
@@ -213,7 +217,31 @@ public class ListOverviewCtrl implements Initializable {
         System.out.println(tdList);
         server.updateList(tdList);
         server.updateBoard(board);
-        refresh();
+//        refresh();
+    }
+
+    public void dragOtherLists(TableView<Card> tableView) {
+        tableView.setOnDragOver(e -> {
+            Dragboard db = e.getDragboard();
+            if (db.hasContent(serialization)) {
+                e.acceptTransferModes(TransferMode.MOVE);
+                e.consume();
+            }
+        });
+        tableView.setOnDragDropped(e -> {
+            Dragboard db = e.getDragboard();
+            int draggedIndex = (int) db.getContent(serialization);
+            Card card = selection.getItems().remove(draggedIndex);
+            tableView.getItems().add(card);
+            e.consume();
+        });
+    }
+
+    public void setSelection(TableView<Card> tableView) {
+        tableView.setOnMousePressed(e ->  {
+            selection = tableView;
+            System.out.println(selection.getItems());
+        });
     }
 }
 
