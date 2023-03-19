@@ -67,7 +67,7 @@ public class MainCtrl {
     public void showOverview() {
         primaryStage.setTitle("Lists: Overview");
         primaryStage.setScene(overview);
-        listOverviewCtrl.refresh();
+        listOverviewCtrl.refresh(1L);
         //temporarily hardcoded boardID(which might even not be the correct ID)
     }
 

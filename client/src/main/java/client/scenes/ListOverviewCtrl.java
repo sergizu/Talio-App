@@ -119,7 +119,7 @@ public class ListOverviewCtrl implements Initializable {
     }
 
     //boardID is not yet used
-    public void refresh() {
+    public void refresh(long boardID) {
         board = server.tempBoardGetter();
         showLists();
         for (TDList tdList : board.lists) {
@@ -217,7 +217,7 @@ public class ListOverviewCtrl implements Initializable {
         System.out.println(tdList);
         server.updateList(tdList);
         server.updateBoard(board);
-//        refresh();
+//        refresh(board.id);
     }
 
     public void dragOtherLists(TableView<Card> tableView) {
