@@ -233,10 +233,18 @@ public class ListOverviewCtrl implements Initializable {
             int draggedIndex = (int) db.getContent(serialization);
             Card card = selection.getItems().remove(draggedIndex);
             tableView.getItems().add(card);
+            ArrayList<Card> items = new ArrayList<>();
+            items.addAll(tableView.getItems());
+            updateList(card.list, items);
+            //I have to find a way to get a reference to the TDList that it's dropped on
+            //Don't know how to do that yet
             e.consume();
         });
     }
 
+    //Sets whatever tableview the drag starts with to be the selection tableview
+    //This allows dragOtherLists to work because otherwise there would be no
+    //reference to the tableview from which the card is removed
     public void setSelection(TableView<Card> tableView) {
         tableView.setOnMousePressed(e ->  {
             selection = tableView;
