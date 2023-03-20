@@ -149,13 +149,13 @@ public class ListOverviewCtrl implements Initializable {
                     && event.getClickCount() == 2) {
                 Card card = tableView.getSelectionModel().getSelectedItem();
                 mainCtrl.showEdit(card);
+            } else if (tableView.getSelectionModel().getSelectedItem() == null
+                    && tableView.getItems().get(0) != null && event.getClickCount() == 2) {
+                mainCtrl.showEditList(tableView.getItems().get(0).list);
+                //This will make it so that when u double-click on a tableview without having
+                //anything selected, you will then be able to change the title of said tableview
             }
         });
-    }
-
-    public void editListName() {
-        TDList list = board.lists.get(0);
-        mainCtrl.showEditList(list);
     }
 
     public void dragAndDrop(TableView<Card> tableView) {
