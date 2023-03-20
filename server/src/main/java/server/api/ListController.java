@@ -54,6 +54,7 @@ public class ListController {
     public ResponseEntity<TDList> update(@RequestBody TDList list) {
         System.out.println(list);
         TDList response = listService.update(list);
+        System.out.println(response);
         if(response == null)
             return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(response);

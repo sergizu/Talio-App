@@ -82,6 +82,14 @@ class BoardControllerTest {
     }
 
     @Test
+    void update() {
+        Board board = new Board("Board 1");
+        given(boardService.update(board)).willReturn(board);
+        assertEquals(ResponseEntity.ok(board), boardController.update(board));
+        verify(boardService).update(board);
+    }
+
+    @Test
     void addCardToBoard() {
         Board board = new Board("Board 1");
         Card card = new Card("Card 1");
@@ -114,9 +122,4 @@ class BoardControllerTest {
         assertEquals(boardController.removeByID(board.id), ResponseEntity.badRequest().build());
         verify(boardService).delete(board.id);
     }
-
-
-
-
-
 }

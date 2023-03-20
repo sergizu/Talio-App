@@ -190,7 +190,15 @@ public class ServerUtils {
                 .target(SERVER).path("api/lists/update") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON)
-                .put(Entity.entity(list, APPLICATION_JSON), TDList.class);//
+                .put(Entity.entity(list, APPLICATION_JSON));//
+    }
+
+    public void updateBoard(Board board) {
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/boards/update") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(board, APPLICATION_JSON), Board.class);//
     }
 
 
