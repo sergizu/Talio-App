@@ -44,6 +44,9 @@ public class EditListCtrl {
         if (e.getCode() == KeyCode.ENTER) {
             ok();
         }
+        if(e.getCode() == KeyCode.ESCAPE) {
+            cancel();
+        }
     }
 
     public void delete() {
@@ -51,6 +54,9 @@ public class EditListCtrl {
             server.removeCard(card);
         }
         server.removeList(taskList);
+        mainCtrl.showOverview();
+    }
+    public void cancel() {
         mainCtrl.showOverview();
     }
 }
