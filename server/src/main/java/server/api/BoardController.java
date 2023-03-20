@@ -72,7 +72,7 @@ public class BoardController {
     @PutMapping("/{id}/addCard")
     public ResponseEntity addCardToBoard(@PathVariable("id") long id, @RequestBody Card card) {
         if (!boardService.existsById(id))
-            ResponseEntity.badRequest().build();
+             ResponseEntity.badRequest().build();
         Board board = boardService.getById(id);
         //System.out.println(board.lists);
         TDList list = board.lists.get(0);
@@ -114,5 +114,14 @@ public class BoardController {
         if(response == null)
             return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/remove/{id}")
+    public ResponseEntity removeByID(@PathVariable("id") long id) {
+        boolean result = boardService.delete(id);
+        if(!result) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
     }
 }

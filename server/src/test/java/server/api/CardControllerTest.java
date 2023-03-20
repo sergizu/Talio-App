@@ -82,4 +82,21 @@ class CardControllerTest {
         assertEquals(ResponseEntity.badRequest().build(), cardController.update(card));
         verify(cardService).update(card);
     }
+
+    @Test
+    void removeByID() {
+        Card card = new Card("Card 1");
+        given(cardService.delete(card.id)).willReturn(true);
+        assertEquals(cardController.removeByID(card.id), ResponseEntity.ok().build());
+        verify(cardService).delete(card.id);
+    }
+
+    @Test
+    void RemoveNotExist() {
+        Card card = new Card("Card 1");
+        given(cardService.delete(card.id)).willReturn(false);
+        assertEquals(cardController.removeByID(card.id), ResponseEntity.badRequest().build());
+        verify(cardService).delete(card.id);
+    }
+
 }
