@@ -17,8 +17,7 @@ public class AddCardCtrl {
     private final MainCtrl mainCtrl;
 
     @FXML
-    private Label myLable;
-
+    private Label myLabel;
     @FXML
     private TextField cardName;
     private long listId;
@@ -41,10 +40,10 @@ public class AddCardCtrl {
 
     public void ok() {
         if (cardName.getText().isEmpty()) {
-            myLable.setText("Cant be empty");
+            myLabel.setText("Cant be empty");
         } else {
             try {
-                myLable.setText("");
+                myLabel.setText("");
                 Card added = server.addCard(getCard());
                 server.addCardToList(listId, added);
             } catch (WebApplicationException e) {
@@ -64,13 +63,10 @@ public class AddCardCtrl {
     }
 
     public void cancel() {
-        myLable.setText("");
+        myLabel.setText("");
         clearFields();
         mainCtrl.showOverview();
     }
-
-
-
 
     public void keyPressed(KeyEvent e) {
         if (e.getCode() == KeyCode.ENTER) {

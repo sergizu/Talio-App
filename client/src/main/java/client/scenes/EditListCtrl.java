@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Card;
 import commons.TDList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -46,6 +47,9 @@ public class EditListCtrl {
     }
 
     public void delete() {
+        for(Card card : taskList.cards) {
+            server.removeCard(card);
+        }
         server.removeList(taskList);
         mainCtrl.showOverview();
     }
