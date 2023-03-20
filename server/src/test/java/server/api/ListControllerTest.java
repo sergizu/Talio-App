@@ -1,5 +1,6 @@
 package server.api;
 
+import commons.Card;
 import commons.TDList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -76,5 +77,21 @@ class ListControllerTest {
                 given(listService.update(list)).willReturn(null);
                 assertEquals(ResponseEntity.badRequest().build(), listController.update(list));
                 verify(listService).update(list);
+        }
+
+        @Test
+        void removeByID() {
+                TDList list = new TDList("lIST 1");
+                given(listService.delete(list.id)).willReturn(true);
+                assertEquals(listController.removeByID(list.id), ResponseEntity.ok().build());
+                verify(listService).delete(list.id);
+        }
+
+        @Test
+        void RemoveNotExist() {
+                TDList list = new TDList("lIST 1");
+                given(listService.delete(list.id)).willReturn(false);
+                assertEquals(listController.removeByID(list.id), ResponseEntity.badRequest().build());
+                verify(listService).delete(list.id);
         }
 }

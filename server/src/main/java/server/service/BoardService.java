@@ -47,6 +47,15 @@ public class BoardService {
             return null;
         return boardRepository.save(board);
     }
+
+
+
+    public boolean delete(long id) {
+        if(!boardRepository.existsById(id))
+            return false;
+        boardRepository.deleteById(id);
+        return true;
+    }
 }
 
 

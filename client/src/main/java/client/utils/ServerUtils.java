@@ -80,7 +80,20 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(list, APPLICATION_JSON), TDList.class);
     }
-
+    public void removeList(TDList list) {
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/lists/remove/" + list.id) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .delete();
+    }
+    public void removeCard(Card card) {
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/cards/remove/" + card.id) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .delete();
+    }
     public Quote addQuote(Quote quote) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/quotes") //
@@ -96,14 +109,7 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(card, APPLICATION_JSON), Card.class);
     }
-
-    public void removeCard(Card card) {
-        ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/cards/" + card.getId()) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .delete();
-    }
+    
 
     public Board tempBoardGetter() {
         Response result = ClientBuilder.newClient(new ClientConfig())
