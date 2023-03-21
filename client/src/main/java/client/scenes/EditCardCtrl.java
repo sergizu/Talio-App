@@ -43,9 +43,17 @@ public class EditCardCtrl {
         server.removeCard(card);
         mainCtrl.showOverview();
     }
+
     public void enterPressed(KeyEvent e) {
         if (e.getCode() == KeyCode.ENTER) {
             ok();
         }
+        if(e.getCode() == KeyCode.ESCAPE) {
+            cancel();
+        }
+    }
+
+    public void cancel() {
+        mainCtrl.showOverview();
     }
 }

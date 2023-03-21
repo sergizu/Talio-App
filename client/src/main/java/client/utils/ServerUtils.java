@@ -82,14 +82,14 @@ public class ServerUtils {
     }
     public void removeList(TDList list) {
         ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/lists/remove/" + list.id) //
+                .target(SERVER).path("api/lists/" + list.id) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .delete();
     }
     public void removeCard(Card card) {
         ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/cards/remove/" + card.id) //
+                .target(SERVER).path("api/cards/" + card.id) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .delete();
