@@ -7,6 +7,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import server.database.ListRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
@@ -35,8 +40,10 @@ class ListServiceTest {
     void getByIdIfExists() {
         long id = 1;
         given(listRepository.existsById(id)).willReturn(true);
-        listService.getById(id);
-        verify(listRepository).getById(id);
+        TDList list = new TDList("test list");
+        list.id = id;
+        given(listRepository.findById(id)).willReturn(Optional.of(list));
+        assertEquals(list, listService.getById(id));
     }
 
     @Test
