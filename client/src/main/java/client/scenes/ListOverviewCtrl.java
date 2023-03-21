@@ -18,6 +18,7 @@ import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -62,10 +63,18 @@ public class ListOverviewCtrl implements Initializable {
         scrollPane.setContent(createFlowPane());
     }
 
-    public Button createButton(long id) {
+    public Button createAddCardButton(long id) {
         Button button = new Button("+");
         button.setOnAction(e -> {
             addCard(id);
+        });
+        return button;
+    }
+
+    public Button createEditListButton(long id) {
+        Button button = new Button("Edit");
+        button.setOnAction(e -> {
+
         });
         return button;
     }
@@ -75,13 +84,15 @@ public class ListOverviewCtrl implements Initializable {
         setFlowPane(flowPane);
         var lists = board.lists;
         for (var tdList : lists) {
-            Button button = createButton(tdList.id);
+            Button buttonAddCard = createAddCardButton(tdList.id);
+            Button buttonEditList = createEditListButton(tdList.id);
             TableView<Card> tv = createTable(tdList);
             cardExpansion(tv);
             dragAndDrop(tv);
             setSelection(tv);
             dragOtherLists(tv);
-            flowPane.getChildren().addAll(createVBox(tv, button));
+            flowPane.getChildren().addAll(createVBox(tv,
+                    createHBox(buttonAddCard, buttonEditList)));
         }
         return flowPane;
     }
@@ -110,9 +121,17 @@ public class ListOverviewCtrl implements Initializable {
         return tv;
     }
 
-    public VBox createVBox(TableView<Card> cards, Button button) {
+    public HBox createHBox(Button button1, Button button2) {
+        HBox hBox = new HBox();
+        hBox.getChildren().addAll(button2, button1);
+        //hBox.setAlignment(Pos.BASELINE_CENTER);
+        hBox.setSpacing(100);
+        return hBox;
+    }
+
+    public VBox createVBox(TableView<Card> cards, HBox hBox) {
         VBox vBox = new VBox();
-        vBox.getChildren().addAll(button, cards);
+        vBox.getChildren().addAll(hBox, cards);
         vBox.setAlignment(Pos.TOP_RIGHT);
         vBox.setSpacing(3);
         return vBox;
