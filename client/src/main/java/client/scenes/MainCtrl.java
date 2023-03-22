@@ -66,18 +66,21 @@ public class MainCtrl {
 
     public void showOverview() {
         primaryStage.setTitle("Lists: Overview");
+        listOverviewCtrl.setAnchorPaneHeightWidth();
         primaryStage.setScene(overview);
         listOverviewCtrl.refresh(1L);
         //temporarily hardcoded boardID(which might even not be the correct ID)
     }
 
     public void showAdd(long listId) {
+        listOverviewCtrl.saveAnchorPaneHeightWidth();
         primaryStage.setTitle("Board: Adding Card");
         primaryStage.setScene(sceneAddCard);
         addCardCtrl.setListId(listId);
         sceneAddCard.setOnKeyPressed(e -> addCardCtrl.keyPressed(e));
     }
     public void showAddList(long boardId) {
+        listOverviewCtrl.saveAnchorPaneHeightWidth();
         primaryStage.setTitle("Board: Adding List");
         primaryStage.setScene(sceneAddList);
         addListCtrl.setBoard(boardId);
@@ -85,12 +88,14 @@ public class MainCtrl {
     }
 
     public void showEdit(Card card) {
+        listOverviewCtrl.saveAnchorPaneHeightWidth();
         primaryStage.setTitle("Card: Edit Card");
         primaryStage.setScene(edit);
         editCardCtrl.init(card);
     }
 
     public void showEditList(TDList list){
+        listOverviewCtrl.saveAnchorPaneHeightWidth();
         primaryStage.setTitle("List: Rename list");
         primaryStage.setScene(editList);
         editListCtrl.init(list);
