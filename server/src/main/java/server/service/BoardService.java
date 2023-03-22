@@ -66,23 +66,31 @@ public class BoardService {
 
     public DeferredResult<ResponseEntity<Board>> subscribeForUpdates() {
         ResponseEntity<Board> noContent = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        DeferredResult<ResponseEntity<Board>> result = new DeferredResult<>(1000L, noContent);
+        DeferredResult<ResponseEntity<Board>> result = new DeferredResult<>(10000000000L, noContent);
 
         Object key = new Object(); //trick to uniquely identify every key
 
         listeners.put(key, newBoard -> {
-            result.setResult(ResponseEntity.ok(newBoard));
+            System.out.println(newBoard);
+            try {
+                ResponseEntity<Board> responseEntity = ResponseEntity.ok(newBoard);
+                System.out.println(responseEntity);
+                System.out.println(result.setResult(responseEntity));
+            } catch (Exception e) {
+                System.out.println("serialization problems");
+            }
+
+            System.out.println(result);
         });
         result.onCompletion(() -> {
-            listeners.remove(key);
+            //listeners.remove(key);
         });
-
         return result;
     }
 
     public void sendUpdates(long id) {
         try {
-            Board board = getById(id);
+            Board board = boardRepository.getById(id);
             listeners.forEach((key, listener) -> listener.accept(board));
         } catch (Exception e) {
             System.out.println(e.getMessage());

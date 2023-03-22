@@ -25,7 +25,7 @@ public class CardService {
     //Method returns either the card or null if the card doesn't exist
     public Card getById(long id) {
         if(cardRepository.existsById(id))
-            return cardRepository.getById(id);
+            return cardRepository.findById(id).get();
         return null;
     }
 
