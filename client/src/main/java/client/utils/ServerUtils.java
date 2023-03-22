@@ -36,7 +36,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class ServerUtils {
 
-    private static final String SERVER = "http://localhost:8080/";
+    private static String server = "http://localhost:8080/";
     private static final ExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadExecutor();
 
     public void getQuotesTheHardWay() throws IOException {
@@ -48,10 +48,13 @@ public class ServerUtils {
             System.out.println(line);
         }
     }
+    public static void changeSERVER(String server){
+        server = "http://"+server+"/";
+    }
 
     public List<Quote> getQuotes() {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/quotes") //
+                .target(server).path("api/quotes") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<List<Quote>>() {});
@@ -59,7 +62,7 @@ public class ServerUtils {
 
     public List<Card> getCard() {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/cards") //
+                .target(server).path("api/cards") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<List<Card>>() {});
@@ -67,7 +70,7 @@ public class ServerUtils {
 
     public List<TDList> getLists() {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("/api/lists") //
+                .target(server).path("/api/lists") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<List<TDList>>() {});
@@ -75,28 +78,28 @@ public class ServerUtils {
 
     public TDList addList(TDList list) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("/api/lists") //
+                .target(server).path("/api/lists") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(list, APPLICATION_JSON), TDList.class);
     }
     public void removeList(TDList list) {
         ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/lists/" + list.id) //
+                .target(server).path("api/lists/" + list.id) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .delete();
     }
     public void removeCard(Card card) {
         ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/cards/" + card.id) //
+                .target(server).path("api/cards/" + card.id) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .delete();
     }
     public Quote addQuote(Quote quote) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/quotes") //
+                .target(server).path("api/quotes") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
@@ -104,7 +107,7 @@ public class ServerUtils {
 
     public Card addCard(Card card) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/cards") //
+                .target(server).path("api/cards") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(card, APPLICATION_JSON), Card.class);
@@ -113,7 +116,7 @@ public class ServerUtils {
 
     public Board tempBoardGetter() {
         Response result = ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("/api/boards/tempGetter")
+                .target(server).path("/api/boards/tempGetter")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get();
@@ -130,7 +133,7 @@ public class ServerUtils {
 
     public void addCardToList(long listId, Card card) {
         Response result = ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("/api/lists/" + listId + "/addCard")
+                .target(server).path("/api/lists/" + listId + "/addCard")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(card, APPLICATION_JSON));
@@ -138,7 +141,7 @@ public class ServerUtils {
 
     public void addToList(long boardId, Card card) {
         Response result = ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("/api/boards/" + boardId + "/addCard")
+                .target(server).path("/api/boards/" + boardId + "/addCard")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(card, APPLICATION_JSON));
@@ -146,7 +149,7 @@ public class ServerUtils {
 
     public void addListToBoard(long boardId, TDList tdList) {
         Response result = ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("/api/boards/" + boardId + "/addList")
+                .target(server).path("/api/boards/" + boardId + "/addList")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(tdList, APPLICATION_JSON));
@@ -157,7 +160,7 @@ public class ServerUtils {
         EXECUTOR_SERVICE.submit(() -> {
             while (!Thread.interrupted()) {
                 Response result = ClientBuilder.newClient(new ClientConfig())
-                        .target(SERVER).path("/api/cards/updates")
+                        .target(server).path("/api/cards/updates")
                         .request(APPLICATION_JSON)
                         .accept(APPLICATION_JSON)
                         .get(Response.class);
@@ -179,7 +182,7 @@ public class ServerUtils {
 
     public Card updateCard(Card card) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/cards/update") //
+                .target(server).path("api/cards/update") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(card, APPLICATION_JSON), Card.class);//
@@ -187,7 +190,7 @@ public class ServerUtils {
 
     public void updateList(TDList list){
         ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/lists/update") //
+                .target(server).path("api/lists/update") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(list, APPLICATION_JSON));//
@@ -195,7 +198,7 @@ public class ServerUtils {
 
     public void updateBoard(Board board) {
         ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/boards/update") //
+                .target(server).path("api/boards/update") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(board, APPLICATION_JSON), Board.class);//
@@ -203,7 +206,7 @@ public class ServerUtils {
 
     public void updateCardName(long id, String name) {
         ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/cards/updateName/" + id)
+                .target(server).path("api/cards/updateName/" + id)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(name, APPLICATION_JSON));

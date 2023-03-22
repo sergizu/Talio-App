@@ -38,8 +38,10 @@ public class Main extends Application {
         var edit = FXML.load(EditCardCtrl.class, "client", "scenes", "EditCard.fxml");
 
         var editList = FXML.load(EditListCtrl.class,"client", "scenes", "RenameList.fxml");
+        var selectServer = FXML.load(SelectServerCtrl.class,"client",
+                "scenes", "SelectServer.fxml");
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, overview, addCard, addList, edit, editList);
+        mainCtrl.initialize(primaryStage, overview, addCard, addList, edit, editList, selectServer);
         primaryStage.setOnCloseRequest(event -> {
             overview.getKey().stop();
         });

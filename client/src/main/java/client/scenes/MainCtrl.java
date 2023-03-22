@@ -38,12 +38,15 @@ public class MainCtrl {
     private EditCardCtrl editCardCtrl;
     private EditListCtrl editListCtrl;
     private Scene edit;
-
     private Scene editList;
+
+    private Scene selectServer;
+    private SelectServerCtrl selectServerCtrl;
 
     public void initialize(Stage primaryStage, Pair<ListOverviewCtrl, Parent> overview,
                            Pair<AddCardCtrl, Parent> addCard, Pair<AddListCtrl, Parent> addList,
-                           Pair<EditCardCtrl, Parent> edit, Pair<EditListCtrl, Parent> editList) {
+                           Pair<EditCardCtrl, Parent> edit, Pair<EditListCtrl, Parent> editList,
+                           Pair<SelectServerCtrl, Parent> selectServer) {
 
         this.primaryStage = primaryStage;
         this.listOverviewCtrl = overview.getKey();
@@ -60,8 +63,15 @@ public class MainCtrl {
         this.editListCtrl = editList.getKey();
         this.editList = new Scene(editList.getValue());
 
-        showOverview();
+        this.selectServerCtrl = selectServer.getKey();
+        this.selectServer = new Scene(selectServer.getValue());
+        System.out.println("working");
+        showSelectServer();
         primaryStage.show();
+    }
+    public void showSelectServer(){
+        primaryStage.setTitle("Server: selecting server");
+        primaryStage.setScene(selectServer);
     }
 
     public void showOverview() {
