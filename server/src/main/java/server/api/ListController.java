@@ -71,4 +71,13 @@ public class ListController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/updateName/{listId}")
+    public ResponseEntity updateListName(@PathVariable("listId")long id,
+                                         @RequestBody String newName) {
+        if(listService.updateName(id,newName))
+            return ResponseEntity.ok().build();
+        else return ResponseEntity.badRequest().build();
+
+    }
+
 }
