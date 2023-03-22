@@ -71,10 +71,10 @@ public class ListOverviewCtrl implements Initializable {
         return button;
     }
 
-    public Button createEditListButton(long id) {
+    public Button createEditListButton(TDList list) {
         Button button = new Button("Edit");
         button.setOnAction(e -> {
-
+            mainCtrl.showEditList(list);
         });
         return button;
     }
@@ -85,7 +85,7 @@ public class ListOverviewCtrl implements Initializable {
         var lists = board.lists;
         for (var tdList : lists) {
             Button buttonAddCard = createAddCardButton(tdList.id);
-            Button buttonEditList = createEditListButton(tdList.id);
+            Button buttonEditList = createEditListButton(tdList);
             TableView<Card> tv = createTable(tdList);
             cardExpansion(tv);
             dragAndDrop(tv);
