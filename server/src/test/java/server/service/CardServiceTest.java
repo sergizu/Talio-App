@@ -20,12 +20,15 @@ class CardServiceTest {
 
     @Mock
     private CardRepository cardRepository;
+
+    @Mock
+    private BoardService boardService;
     private CardService cardService;
 
 
     @BeforeEach
     void setUp() {
-        cardService = new CardService(cardRepository);
+        cardService = new CardService(cardRepository, boardService);
     }
 
     @Test

@@ -75,4 +75,8 @@ public class TDList {
     public long getId() {
         return id;
     }
+
+    public Board getBoard() {
+        return board;
+    }
 }

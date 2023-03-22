@@ -4,7 +4,6 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Board;
 import commons.Card;
-import commons.Change;
 import commons.TDList;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -50,10 +49,14 @@ public class ListOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //cardColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
-        server.registerForUpdates(cardChange -> {
-            if (cardChange.change == Change.Add)
-                dataLists.get(0).add(cardChange.card);
-            //adding the card to the most left list(TO-DO)
+        server.registerForUpdates(updatedBoard -> {
+            if(board.getId() == updatedBoard.getId())
+                board = updatedBoard;
+            showLists();
+            dataLists.clear();
+            for (TDList tdList : board.lists) {
+                dataLists.add(FXCollections.observableList(tdList.cards));
+            }
         });
         setScrollPane();
     }

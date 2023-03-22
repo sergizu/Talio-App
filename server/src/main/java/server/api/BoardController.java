@@ -1,11 +1,10 @@
 package server.api;
 
-import commons.Board;
-import commons.Card;
-import commons.TDList;
+import commons.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.async.DeferredResult;
 import server.database.CardRepository;
 import server.database.ListRepository;
 import server.service.BoardService;
@@ -19,6 +18,7 @@ public class BoardController {
     private final ListRepository listRepository;
     private final CardRepository cardRepository;
     private Long defaultBoardID; //temporary default board to return to all requests
+
 
     @Autowired
     public BoardController(BoardService boardService,
@@ -123,5 +123,10 @@ public class BoardController {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/updates")
+    public DeferredResult<ResponseEntity<Board>> getUpdates() {
+        return boardService.subscribeForUpdates();
     }
 }

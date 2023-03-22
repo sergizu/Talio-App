@@ -10,10 +10,12 @@ import java.util.List;
 @Service
 public class CardService {
     private final CardRepository cardRepository;
+    private final BoardService boardService;
 
     @Autowired
-    public CardService(CardRepository cardRepository) {
+    public CardService(CardRepository cardRepository, BoardService boardService) {
         this.cardRepository = cardRepository;
+        this.boardService = boardService;
     }
 
     public List<Card> getAll() {
@@ -58,7 +60,8 @@ public class CardService {
         try {
             Card toUpdate = cardRepository.getById(id);
             toUpdate.setTitle(name);
-            cardRepository.save(toUpdate);
+            toUpdate = cardRepository.save(toUpdate);
+            boardService.sendUpdates(toUpdate.getList().getBoard().getId());
         } catch (Exception e) {
             return false;
         }

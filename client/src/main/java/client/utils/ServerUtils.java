@@ -153,26 +153,26 @@ public class ServerUtils {
     }
 
 
-    public void registerForUpdates(Consumer<CardChange> consumer) {
+    public void registerForUpdates(Consumer<Board> consumer) {
         EXECUTOR_SERVICE.submit(() -> {
             while (!Thread.interrupted()) {
                 Response result = ClientBuilder.newClient(new ClientConfig())
-                        .target(SERVER).path("/api/cards/updates")
+                        .target(SERVER).path("/api/boards/updates")
                         .request(APPLICATION_JSON)
                         .accept(APPLICATION_JSON)
                         .get(Response.class);
                 if(result.getStatus() == HttpStatus.NO_CONTENT.value())
                     continue;
                 System.out.println(result);
-                CardChange cardChange = null;
+                Board board = null;
                 try {
-                    cardChange = result.readEntity(CardChange.class);
+                    board = result.readEntity(Board.class);
                 } catch (Exception e) {
                     System.out.println("problems");
                 }
 
-                System.out.println(cardChange);
-                consumer.accept(cardChange);
+                System.out.println(board);
+                consumer.accept(board);
             }
         });
     }
