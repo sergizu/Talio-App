@@ -85,4 +85,11 @@ public class CardController {
 
         return result;
     }
+
+    @PutMapping("/updateName/{id}")
+    public ResponseEntity updateName(@PathVariable("id") long id, @RequestBody String newName) {
+        if(cardService.updateName(id, newName))
+            return ResponseEntity.ok().build();
+        return ResponseEntity.badRequest().build();
+    }
 }

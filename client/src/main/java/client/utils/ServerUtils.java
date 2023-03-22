@@ -177,12 +177,12 @@ public class ServerUtils {
         });
     }
 
-    public void updateCard(Card card) {
-        ClientBuilder.newClient(new ClientConfig()) //
+    public Card updateCard(Card card) {
+        return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/cards/update") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON)
-                .put(Entity.entity(card, APPLICATION_JSON));//
+                .put(Entity.entity(card, APPLICATION_JSON), Card.class);//
     }
 
     public void updateList(TDList list){
@@ -199,6 +199,14 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(board, APPLICATION_JSON), Board.class);//
+    }
+
+    public void updateCardName(long id, String name) {
+        ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/cards/updateName/" + id)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(name, APPLICATION_JSON));
     }
 
 

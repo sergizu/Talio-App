@@ -53,4 +53,15 @@ public class CardService {
         cardRepository.deleteById(id);
         return true;
     }
+
+    public boolean updateName(long id, String name) {
+        try {
+            Card toUpdate = cardRepository.getById(id);
+            toUpdate.setTitle(name);
+            cardRepository.save(toUpdate);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
 }

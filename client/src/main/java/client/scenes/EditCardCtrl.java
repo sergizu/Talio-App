@@ -34,8 +34,7 @@ public class EditCardCtrl {
             mainCtrl.showOverview();
             return;
         }
-        card.setTitle(cardName.getText());
-        server.updateCard(card);
+        server.updateCardName(card.getId(), cardName.getText());
         mainCtrl.showOverview();
     }
 

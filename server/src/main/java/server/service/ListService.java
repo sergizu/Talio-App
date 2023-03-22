@@ -22,7 +22,7 @@ public class ListService {
 
     public TDList getById(long id) {
         if(listRepository.existsById(id))
-            return listRepository.getById(id);
+            return listRepository.findById(id).get();
         return null;
     }
 
