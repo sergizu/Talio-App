@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.services.AddCardService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
@@ -15,6 +16,7 @@ import javafx.stage.Modality;
 public class AddCardCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    private final AddCardService service;
 
     @FXML
     private Label myLabel;
@@ -23,10 +25,10 @@ public class AddCardCtrl {
     private long listId;
 
     @Inject
-    public AddCardCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public AddCardCtrl(ServerUtils server, MainCtrl mainCtrl, AddCardService service) {
         this.mainCtrl = mainCtrl;
         this.server = server;
-
+        this.service = service;
     }
 
     public void setListId(long listId) {
@@ -34,44 +36,29 @@ public class AddCardCtrl {
     }
 
     private Card getCard() {
-        String title = cardName.getText();
-        return new Card(title);
+        return service.createCard(cardName.getText());
     }
 
     public void ok() {
-        if (cardName.getText().isEmpty()) {
-            myLabel.setText("Cant be empty");
-        } else {
-            try {
-                myLabel.setText("");
-                server.addCardToList(listId, getCard());
-            } catch (WebApplicationException e) {
-                var alert = new Alert(Alert.AlertType.ERROR);
-                alert.initModality(Modality.APPLICATION_MODAL);
-                alert.setContentText(e.getMessage());
-                alert.showAndWait();
-                return;
-            }
-            clearFields();
-            mainCtrl.showOverview();
-        }
+        service.ok(cardName, myLabel, server, listId, getCard());
+        mainCtrl.showOverview();
     }
 
     private void clearFields() {
-        cardName.clear();
+        service.clearFields(cardName);
     }
 
     public void cancel() {
-        myLabel.setText("");
+        service.setLabelToEmpty(myLabel);
         clearFields();
         mainCtrl.showOverview();
     }
 
     public void keyPressed(KeyEvent e) {
-        if (e.getCode() == KeyCode.ENTER) {
+        if (service.keyEnter(e)) {
             ok();
         }
-        else if (e.getCode() == KeyCode.ESCAPE) {
+        else if (service.keyEscape(e)) {
             cancel();
         }
     }
