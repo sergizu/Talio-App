@@ -50,4 +50,15 @@ public class ListService {
         listRepository.deleteById(id);
         return true;
     }
+
+    public boolean updateName(long id,String newName){
+        try {
+            TDList toUpdate = listRepository.getById(id);
+            toUpdate.setTitle(newName);
+            listRepository.save(toUpdate);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
 }

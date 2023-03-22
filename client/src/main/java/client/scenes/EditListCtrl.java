@@ -35,8 +35,7 @@ public class EditListCtrl {
             mainCtrl.showOverview();
             return;
         }
-        taskList.title = listName.getText();
-        server.updateList(taskList);
+        server.updateListName(taskList.getId(),listName.getText());
         mainCtrl.showOverview();
     }
 

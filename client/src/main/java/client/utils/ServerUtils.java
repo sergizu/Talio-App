@@ -193,6 +193,15 @@ public class ServerUtils {
                 .put(Entity.entity(list, APPLICATION_JSON));//
     }
 
+    public void updateListName(long listId, String newName){
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/lists/updateName/" + listId) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(newName, APPLICATION_JSON));//
+
+    }
+
     public void updateBoard(Board board) {
         ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/boards/update") //
