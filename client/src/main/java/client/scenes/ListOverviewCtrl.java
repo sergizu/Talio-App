@@ -17,6 +17,7 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -37,8 +38,12 @@ public class ListOverviewCtrl implements Initializable {
 
     @FXML
     private ScrollPane scrollPane;
+    @FXML
+    private AnchorPane anchorPane;
 
     private TableView<Card> selection;
+    private double height = 700;
+    private double width = 700;
 
     @Inject
     public ListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
@@ -57,6 +62,15 @@ public class ListOverviewCtrl implements Initializable {
         });
         setScrollPane();
     }
+    public void setAnchorPaneHeightWidth(){
+        anchorPane.setPrefHeight(height);
+        anchorPane.setPrefWidth(width);
+    }
+    public void saveAnchorPaneHeightWidth(){
+        height = anchorPane.getHeight();
+        width = anchorPane.getWidth();
+    }
+
 
     public void showLists() {
         //System.out.println(dataLists);
