@@ -75,4 +75,8 @@ public class TDList {
     public long getId() {
         return id;
     }
+
+    public void setTitle(String newName) {
+        this.title = newName;
+    }
 }
