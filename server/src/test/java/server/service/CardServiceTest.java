@@ -11,6 +11,8 @@ import server.api.BoardController;
 import server.database.CardRepository;
 import server.database.ListRepository;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -46,8 +48,9 @@ class CardServiceTest {
     void getByIdIfExists() {
         long id = 1;
         given(cardRepository.existsById(id)).willReturn(true);
+        given(cardRepository.findById(id)).willReturn(Optional.of(new Card("test")));
         cardService.getById(id);
-        verify(cardRepository).getById(id);
+        verify(cardRepository).findById(id);
     }
 
     @Test

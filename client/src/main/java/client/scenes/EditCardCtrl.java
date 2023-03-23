@@ -14,7 +14,6 @@ public class EditCardCtrl {
     private final MainCtrl mainCtrl;
 
     private Card card;
-    private Long boardID;
 
     @FXML
     private TextField cardName;
@@ -25,9 +24,8 @@ public class EditCardCtrl {
         this.server = server;
     }
 
-    public void init(Card card, Long boardID) {
+    public void init(Card card) {
         this.card = card;
-        this.boardID = boardID;
         cardName.setText(card.title);
     }
 
@@ -36,7 +34,7 @@ public class EditCardCtrl {
             mainCtrl.showOverview();
             return;
         }
-        server.updateCardName(card.getId(), cardName.getText(), boardID);
+        server.updateCardName(card.getId(), cardName.getText());
         mainCtrl.showOverview();
     }
 

@@ -2,7 +2,6 @@ package server.api;
 
 import commons.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
@@ -11,10 +10,7 @@ import server.database.CardRepository;
 import server.database.ListRepository;
 import server.service.BoardService;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
 
 @RestController
 @RequestMapping("/api/boards")
@@ -30,7 +26,8 @@ public class BoardController {
 
     @Autowired
     public BoardController(BoardService boardService,
-                           ListRepository listRepository, CardRepository cardRepository, BoardRepository boardRepository) {
+                           ListRepository listRepository, CardRepository cardRepository,
+                           BoardRepository boardRepository) {
         this.boardService = boardService;
         this.listRepository = listRepository;
         this.cardRepository = cardRepository;

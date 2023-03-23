@@ -18,7 +18,7 @@ public class Board {
     public String title;
 
     @OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST,
-        CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+        CascadeType.MERGE, CascadeType.REFRESH})
     @JsonManagedReference
     public List<TDList> tdLists = new ArrayList<>();
 

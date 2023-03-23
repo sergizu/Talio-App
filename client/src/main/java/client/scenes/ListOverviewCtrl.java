@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import commons.Board;
 import commons.Card;
 import commons.TDList;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,7 +30,6 @@ public class ListOverviewCtrl implements Initializable {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private Board board;
-    private ObservableList<ObservableList<Card>> dataLists;
 
     private static final DataFormat serialization =
             new DataFormat("application/x-java-serialized-object");
@@ -43,7 +43,6 @@ public class ListOverviewCtrl implements Initializable {
     public ListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
-        dataLists = FXCollections.observableArrayList();
     }
 
     @Override
@@ -53,12 +52,9 @@ public class ListOverviewCtrl implements Initializable {
         server.registerForUpdates(updatedBoardID -> {
             if(board.getId() == updatedBoardID)
                 board = server.tempBoardGetter();
-            showLists();
-            //mainCtrl.showOverview();
-            dataLists.clear();
-            for (TDList tdList : board.tdLists) {
-                dataLists.add(FXCollections.observableList(tdList.cards));
-            }
+            Platform.runLater(() -> {
+                showLists();
+            });
         });
     }
 
@@ -145,9 +141,6 @@ public class ListOverviewCtrl implements Initializable {
     public void refresh(long boardID) {
         board = server.tempBoardGetter();
         showLists();
-        for (TDList tdList : board.tdLists) {
-            dataLists.add(FXCollections.observableList(tdList.cards));
-        }
 
         //when we can dynamically add tdLists we would need a for loop here
         //tableView.setItems(dataLists.get(0));
@@ -171,7 +164,7 @@ public class ListOverviewCtrl implements Initializable {
             if (tableView.getSelectionModel().getSelectedItem() != null
                     && event.getClickCount() == 2) {
                 Card card = tableView.getSelectionModel().getSelectedItem();
-                mainCtrl.showEdit(card, board.getId());
+                mainCtrl.showEdit(card);
             } else if (tableView.getSelectionModel().getSelectedItem() == null
                     && tableView.getItems().get(0) != null && event.getClickCount() == 2) {
                 mainCtrl.showEditList(tableView.getItems().get(0).list);

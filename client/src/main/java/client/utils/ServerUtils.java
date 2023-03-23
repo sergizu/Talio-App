@@ -192,9 +192,9 @@ public class ServerUtils {
                 .put(Entity.entity(board, APPLICATION_JSON), Board.class);//
     }
 
-    public void updateCardName(long id, String name, long boardId) {
+    public void updateCardName(long id, String name) {
         ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/cards/updateName/" + id + "/" + boardId)
+                .target(SERVER).path("api/cards/updateName/" + id)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(name, APPLICATION_JSON));
