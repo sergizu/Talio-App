@@ -11,5 +11,6 @@
       <Button layoutX="14.0" layoutY="210.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
       <Label layoutX="31.0" layoutY="73.0" text="List Name:" />
       <TextField fx:id="listTitle" layoutX="31.0" layoutY="100.0" />
+      <Label fx:id="emptyName" alignment="CENTER" layoutX="31.0" layoutY="134.0" text="" textFill="RED" />
    </children>
 </AnchorPane>

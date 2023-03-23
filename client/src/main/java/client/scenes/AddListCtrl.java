@@ -21,6 +21,7 @@ import commons.TDList;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
@@ -35,6 +36,9 @@ public class AddListCtrl {
     @FXML
     private TextField listTitle;
 
+    @FXML
+    private Label emptyName;
+
     @Inject
     public AddListCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
@@ -43,6 +47,10 @@ public class AddListCtrl {
 
     private TDList getList() {
         String title = listTitle.getText();
+        if(title.equals("")) {
+            emptyName.setText("List name can not be empty!");
+            return null;
+        }
         return new TDList(title);
     }
 
@@ -54,6 +62,8 @@ public class AddListCtrl {
     public void ok() {
         try {
             TDList list = getList();
+            if(list == null)
+                return;
             server.addListToBoard(boardId, list);
         } catch (WebApplicationException e) {
             var alert = new Alert(Alert.AlertType.ERROR);
@@ -69,6 +79,7 @@ public class AddListCtrl {
 
     private void clearFields() {
         listTitle.clear();
+        emptyName.setText("");
     }
 
     public void keyPressed(KeyEvent e) {
