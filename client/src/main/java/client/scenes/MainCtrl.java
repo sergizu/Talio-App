@@ -84,10 +84,10 @@ public class MainCtrl {
         sceneAddList.setOnKeyPressed(e -> addListCtrl.keyPressed(e));
     }
 
-    public void showEdit(Card card) {
+    public void showEdit(Card card, Long boardID) {
         primaryStage.setTitle("Card: Edit Card");
         primaryStage.setScene(edit);
-        editCardCtrl.init(card);
+        editCardCtrl.init(card, boardID);
     }
 
     public void showEditList(TDList list){

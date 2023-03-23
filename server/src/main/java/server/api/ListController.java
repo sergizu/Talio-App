@@ -10,7 +10,7 @@ import server.service.ListService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/lists")
+@RequestMapping("/api/tdLists")
 public class ListController {
 
     private final ListService listService;

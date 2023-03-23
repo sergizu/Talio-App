@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.context.request.async.DeferredResult;
 import server.database.BoardRepository;
 
@@ -18,7 +19,6 @@ import java.util.function.Consumer;
 @Service
 public class BoardService {
     private final BoardRepository boardRepository;
-    private final Map<Object, Consumer<Board>> listeners = new HashMap<>();
 
     @Autowired
     public BoardService(BoardRepository boardRepository) {
@@ -28,6 +28,8 @@ public class BoardService {
     public List<Board> getAll() {
         return boardRepository.findAll();
     }
+
+    private final Map<Object, Consumer<Long>> listeners = new HashMap<>();
 
     public Board getById(long id) {
         if(boardRepository.existsById(id)) {
@@ -64,34 +66,24 @@ public class BoardService {
         return true;
     }
 
-    public DeferredResult<ResponseEntity<Board>> subscribeForUpdates() {
-        ResponseEntity<Board> noContent = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        DeferredResult<ResponseEntity<Board>> result = new DeferredResult<>(10000000000L, noContent);
+    public DeferredResult<ResponseEntity<Long>> subscribeForUpdates() {
+        ResponseEntity<Long> noContent = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        DeferredResult<ResponseEntity<Long>> result = new DeferredResult<>(10000L, noContent);
 
         Object key = new Object(); //trick to uniquely identify every key
 
-        listeners.put(key, newBoard -> {
-            System.out.println(newBoard);
-            try {
-                ResponseEntity<Board> responseEntity = ResponseEntity.ok(newBoard);
-                System.out.println(responseEntity);
-                System.out.println(result.setResult(responseEntity));
-            } catch (Exception e) {
-                System.out.println("serialization problems");
-            }
-
-            System.out.println(result);
+        listeners.put(key, id -> {
+            result.setResult(ResponseEntity.ok(id));
         });
         result.onCompletion(() -> {
-            //listeners.remove(key);
+            listeners.remove(key);
         });
         return result;
     }
 
     public void sendUpdates(long id) {
         try {
-            Board board = boardRepository.getById(id);
-            listeners.forEach((key, listener) -> listener.accept(board));
+            listeners.forEach((key, listener) -> listener.accept(id));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

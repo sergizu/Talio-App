@@ -18,9 +18,9 @@ public class Board {
     public String title;
 
     @OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST,
-        CascadeType.MERGE, CascadeType.REFRESH})
+        CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonManagedReference
-    public List<TDList> lists = new ArrayList<>();
+    public List<TDList> tdLists = new ArrayList<>();
 
     public Board(){}
 
@@ -35,7 +35,7 @@ public class Board {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, lists);
+        return Objects.hash(id, title, tdLists);
     }
     // To string method does not work, because class TDList doesn't have toString method
     @Override
@@ -43,7 +43,7 @@ public class Board {
         return "Board{" +
                 "id=" + id +
                 ", title=" + title +
-                ", lists=" + lists +
+                ", tdLists=" + tdLists +
                 '}';
     }
 
@@ -63,9 +63,9 @@ public class Board {
         this.title = title;
     }
 
-    public void addList(TDList l){ lists.add(l); }
+    public void addList(TDList l){ tdLists.add(l); }
 
     public boolean removeList(long id){
-        return lists.removeIf(n -> (n.id == id));
+        return tdLists.removeIf(n -> (n.id == id));
     }
 }

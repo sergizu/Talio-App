@@ -26,7 +26,7 @@ public class TDList {
     public Board board;
 
     @OneToMany(mappedBy = "list", cascade = {CascadeType.PERSIST,
-        CascadeType.MERGE, CascadeType.REFRESH})
+        CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonManagedReference
     public List<Card> cards = new ArrayList<>();
 
@@ -78,5 +78,9 @@ public class TDList {
 
     public Board getBoard() {
         return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
     }
 }

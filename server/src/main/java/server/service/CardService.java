@@ -1,21 +1,29 @@
 package server.service;
 
+import commons.Board;
 import commons.Card;
+import commons.TDList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import server.api.BoardController;
+import server.database.BoardRepository;
 import server.database.CardRepository;
+import server.database.ListRepository;
 
 import java.util.List;
+import java.util.ListResourceBundle;
 
 @Service
 public class CardService {
     private final CardRepository cardRepository;
     private final BoardService boardService;
+    private final ListRepository listRepository;
 
     @Autowired
-    public CardService(CardRepository cardRepository, BoardService boardService) {
+    public CardService(CardRepository cardRepository, BoardService boardService, ListRepository listRepository) {
         this.cardRepository = cardRepository;
         this.boardService = boardService;
+        this.listRepository = listRepository;
     }
 
     public List<Card> getAll() {
@@ -56,12 +64,12 @@ public class CardService {
         return true;
     }
 
-    public boolean updateName(long id, String name) {
+    public boolean updateName(long cardID, String name, long boardID) {
         try {
-            Card toUpdate = cardRepository.getById(id);
+            Card toUpdate = cardRepository.getById(cardID); //only get a proxy/reference
             toUpdate.setTitle(name);
-            toUpdate = cardRepository.save(toUpdate);
-            boardService.sendUpdates(toUpdate.getList().getBoard().getId());
+            cardRepository.save(toUpdate);
+            boardService.sendUpdates(boardID);
         } catch (Exception e) {
             return false;
         }

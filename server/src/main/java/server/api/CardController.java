@@ -63,9 +63,10 @@ public class CardController {
     }
 
 
-    @PutMapping("/updateName/{id}")
-    public ResponseEntity updateName(@PathVariable("id") long id, @RequestBody String newName) {
-        if(cardService.updateName(id, newName))
+    @PutMapping("/updateName/{cardID}/{boardID}")
+    public ResponseEntity updateName(@PathVariable("cardID") long cardID, @PathVariable("boardID") long boardID,
+                                     @RequestBody String newName) {
+        if(cardService.updateName(cardID, newName, boardID))
             return ResponseEntity.ok().build();
         return ResponseEntity.badRequest().build();
     }

@@ -2,14 +2,19 @@ package server.api;
 
 import commons.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
+import server.database.BoardRepository;
 import server.database.CardRepository;
 import server.database.ListRepository;
 import server.service.BoardService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 @RestController
 @RequestMapping("/api/boards")
@@ -17,15 +22,19 @@ public class BoardController {
     private final BoardService boardService;
     private final ListRepository listRepository;
     private final CardRepository cardRepository;
+
+    private final BoardRepository boardRepository;
     private Long defaultBoardID; //temporary default board to return to all requests
+
 
 
     @Autowired
     public BoardController(BoardService boardService,
-                           ListRepository listRepository, CardRepository cardRepository) {
+                           ListRepository listRepository, CardRepository cardRepository, BoardRepository boardRepository) {
         this.boardService = boardService;
         this.listRepository = listRepository;
         this.cardRepository = cardRepository;
+        this.boardRepository = boardRepository;
         this.defaultBoardID = -1L; //setting it to undefined
     }
 
@@ -55,7 +64,7 @@ public class BoardController {
         //tdList = listRepository.save(tdList);
         board.addList(tdList);
         board = boardService.addBoard(board);
-        //System.out.println(board);
+        System.out.println(board);
         defaultBoardID = board.id;
         return ResponseEntity.ok(board);
     }
@@ -74,11 +83,11 @@ public class BoardController {
         if (!boardService.existsById(id))
              ResponseEntity.badRequest().build();
         Board board = boardService.getById(id);
-        //System.out.println(board.lists);
-        TDList list = board.lists.get(0);
+        //System.out.println(board.tdLists);
+        TDList list = board.tdLists.get(0);
         list.addCard(card);
         list = listRepository.save(list);
-        board.lists.set(0, list);
+        board.tdLists.set(0, list);
         board = boardService.update(board);
         return ResponseEntity.ok().build();
     }
@@ -89,7 +98,7 @@ public class BoardController {
             ResponseEntity.badRequest().build();
         Board board = boardService.getById(id);
         tdList.board = board;
-        board.lists.add(tdList);
+        board.tdLists.add(tdList);
         boardService.update(board);
         return ResponseEntity.ok().build();
     }
@@ -126,7 +135,7 @@ public class BoardController {
     }
 
     @GetMapping("/updates")
-    public DeferredResult<ResponseEntity<Board>> getUpdates() {
+    public DeferredResult<ResponseEntity<Long>> subscribeForUpdates() {
         return boardService.subscribeForUpdates();
     }
 }

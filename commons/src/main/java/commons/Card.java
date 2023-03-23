@@ -69,4 +69,8 @@ public class Card {
     public TDList getList() {
         return list;
     }
+
+    public void setList(TDList list) {
+        this.list = list;
+    }
 }

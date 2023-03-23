@@ -7,7 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import server.api.BoardController;
 import server.database.CardRepository;
+import server.database.ListRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -23,12 +25,15 @@ class CardServiceTest {
 
     @Mock
     private BoardService boardService;
+
+    @Mock
+    private ListRepository listRepository;
     private CardService cardService;
 
 
     @BeforeEach
     void setUp() {
-        cardService = new CardService(cardRepository, boardService);
+        cardService = new CardService(cardRepository, boardService, listRepository);
     }
 
     @Test
