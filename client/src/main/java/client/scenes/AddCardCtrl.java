@@ -4,14 +4,10 @@ import client.services.AddCardService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
-import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Modality;
 
 public class AddCardCtrl {
     private final ServerUtils server;
