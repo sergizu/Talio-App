@@ -4,6 +4,7 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -17,6 +18,9 @@ public class EditCardCtrl {
 
     @FXML
     private TextField cardName;
+
+    @FXML
+    private Label emptyName;
 
     @Inject
     public EditCardCtrl (MainCtrl mainCtrl, ServerUtils server) {
@@ -34,6 +38,11 @@ public class EditCardCtrl {
             mainCtrl.showOverview();
             return;
         }
+        else if(cardName.getText().equals("")){
+            emptyName.setText("Card name can not be empty!");
+            return;
+        }
+        emptyName.setText("");
         server.updateCardName(card.getId(), cardName.getText());
         mainCtrl.showOverview();
     }
