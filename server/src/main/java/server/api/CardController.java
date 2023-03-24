@@ -3,6 +3,7 @@ package server.api;
 import commons.Card;
 import commons.CardChange;
 import commons.Change;
+import commons.TDList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -89,6 +90,13 @@ public class CardController {
     @PutMapping("/updateName/{id}")
     public ResponseEntity updateName(@PathVariable("id") long id, @RequestBody String newName) {
         if(cardService.updateName(id, newName))
+            return ResponseEntity.ok().build();
+        return ResponseEntity.badRequest().build();
+    }
+
+    @PutMapping("/updateList/{id}")
+    public ResponseEntity updateList(@PathVariable("id") long id, @RequestBody TDList list) {
+        if(cardService.updateList(id, list))
             return ResponseEntity.ok().build();
         return ResponseEntity.badRequest().build();
     }

@@ -76,6 +76,14 @@ public class ServerUtils {
                 .get(new GenericType<List<TDList>>() {});
     }
 
+    public TDList getList(long listId) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(server).path("/api/lists" + listId) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<>() {});
+    }
+
     public TDList addList(TDList list) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(server).path("/api/lists") //
@@ -221,10 +229,15 @@ public class ServerUtils {
                 .put(Entity.entity(name, APPLICATION_JSON));
     }
 
+    public void updateCardList(long id, TDList list) {
+        ClientBuilder.newClient(new ClientConfig())
+                .target(server).path("api/cards/updateList/" + id)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(list, APPLICATION_JSON));
+    }
 
     public void stop() {
         EXECUTOR_SERVICE.shutdownNow();
     }
-
-
 }
