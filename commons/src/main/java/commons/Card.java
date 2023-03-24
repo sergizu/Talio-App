@@ -16,7 +16,7 @@ public class Card {
 
     public String title;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.REFRESH})
     @JoinColumn(name = "list_id")
     @JsonBackReference
     public TDList list;
@@ -64,5 +64,9 @@ public class Card {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setList(TDList list) {
+        this.list = list;
     }
 }

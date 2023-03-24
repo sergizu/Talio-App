@@ -1,6 +1,7 @@
 package commons;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
@@ -11,6 +12,8 @@ import java.util.Objects;
 
 
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
+
 public class TDList {
 
     @Id
@@ -64,7 +67,7 @@ public class TDList {
         cards.add(card);
     }
 
-    public boolean empty() {
+    public boolean isEmpty() {
         return cards.size() == 0;
     }
 
