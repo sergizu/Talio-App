@@ -65,4 +65,12 @@ public class Card {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public TDList getList() {
+        return list;
+    }
+
+    public void setList(TDList list) {
+        this.list = list;
+    }
 }

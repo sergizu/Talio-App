@@ -4,16 +4,22 @@ import commons.Card;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import server.database.CardRepository;
+import server.database.ListRepository;
 
 import java.util.List;
 
 @Service
 public class CardService {
     private final CardRepository cardRepository;
+    private final BoardService boardService;
+    private final ListRepository listRepository;
 
     @Autowired
-    public CardService(CardRepository cardRepository) {
+    public CardService(CardRepository cardRepository, BoardService boardService,
+                       ListRepository listRepository) {
         this.cardRepository = cardRepository;
+        this.boardService = boardService;
+        this.listRepository = listRepository;
     }
 
     public List<Card> getAll() {
@@ -23,7 +29,7 @@ public class CardService {
     //Method returns either the card or null if the card doesn't exist
     public Card getById(long id) {
         if(cardRepository.existsById(id))
-            return cardRepository.getById(id);
+            return cardRepository.findById(id).get();
         return null;
     }
 
@@ -54,11 +60,12 @@ public class CardService {
         return true;
     }
 
-    public boolean updateName(long id, String name) {
+    public boolean updateName(long cardID, String name) {
         try {
-            Card toUpdate = cardRepository.getById(id);
+            Card toUpdate = cardRepository.getById(cardID); //only get a proxy/reference
             toUpdate.setTitle(name);
-            cardRepository.save(toUpdate);
+            toUpdate = cardRepository.save(toUpdate);
+            boardService.sendUpdates(toUpdate.getList().getBoard().getId());
         } catch (Exception e) {
             return false;
         }

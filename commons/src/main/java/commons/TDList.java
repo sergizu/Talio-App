@@ -79,4 +79,12 @@ public class TDList {
     public void setTitle(String newName) {
         this.title = newName;
     }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
 }
