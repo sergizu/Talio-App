@@ -49,6 +49,7 @@ public class EditCardCtrl {
 
     public void delete() {
         server.removeCard(card);
+        emptyName.setText("");
         mainCtrl.showOverview();
     }
 
