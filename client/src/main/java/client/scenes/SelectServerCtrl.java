@@ -25,7 +25,7 @@ public class SelectServerCtrl {
             myLabel.setText("Can not be empty!");
             return;
         }
-        ServerUtils.changeSERVER(s);
+        server.changeServer(s);
         try{
             server.getLists();
             mainCtrl.showOverview();

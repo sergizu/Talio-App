@@ -48,9 +48,10 @@ public class ServerUtils {
             System.out.println(line);
         }
     }
-    public static void changeSERVER(String server){
-        server = "http://"+server+"/";
+    public void changeServer(String s){
+        server = "http://"+s+"/";
     }
+    public static String getServer(){return server;}
 
     public List<Quote> getQuotes() {
         return ClientBuilder.newClient(new ClientConfig()) //
