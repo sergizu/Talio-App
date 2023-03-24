@@ -7,6 +7,7 @@ import commons.TDList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import server.database.BoardRepository;
 import server.database.CardRepository;
 import server.database.ListRepository;
 
@@ -34,6 +35,8 @@ class BoardControllerTest {
     @Mock BoardService boardService;
     @Mock ListRepository listRepository;
     @Mock CardRepository cardRepository;
+    @Mock
+    BoardRepository boardRepository;
 
 
     BoardController boardController;
@@ -42,7 +45,8 @@ class BoardControllerTest {
     @BeforeEach
 
     void setUp() {
-        boardController = new BoardController(boardService, listRepository, cardRepository);
+        boardController = new BoardController(boardService, listRepository,
+                cardRepository, boardRepository);
     }
 
     @Test

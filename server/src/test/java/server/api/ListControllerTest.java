@@ -9,6 +9,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import server.database.ListRepository;
+import server.service.BoardService;
 import server.service.ListService;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,11 +22,17 @@ import static org.mockito.Mockito.when;
 class ListControllerTest {
         @Mock ListService listService;
         @Mock SimpMessagingTemplate messagingTemplate;
+
+        @Mock
+        BoardService boardService;
+
+        @Mock
+        ListRepository listRepository;
         ListController listController;
 
         @BeforeEach
         void setUp() {
-                listController = new ListController(listService);
+                listController = new ListController(listService, boardService, listRepository);
         }
         @Test
         void getAll() {

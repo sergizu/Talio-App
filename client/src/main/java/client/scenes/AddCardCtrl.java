@@ -40,7 +40,7 @@ public class AddCardCtrl {
 
     public void ok() {
         if (cardName.getText().isEmpty()) {
-            myLabel.setText("Cant be empty");
+            myLabel.setText("The card name can not be empty!");
         } else {
             try {
                 myLabel.setText("");

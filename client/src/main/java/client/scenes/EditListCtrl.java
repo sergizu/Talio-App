@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import commons.Card;
 import commons.TDList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -18,6 +19,9 @@ public class EditListCtrl {
 
     @FXML
     private TextField listName;
+
+    @FXML
+    private Label emptyName;
 
     @Inject
     public EditListCtrl (MainCtrl mainCtrl, ServerUtils server) {
@@ -35,8 +39,13 @@ public class EditListCtrl {
             mainCtrl.showOverview();
             return;
         }
-        server.updateListName(taskList.getId(),listName.getText());
-        mainCtrl.showOverview();
+        if(listName.getText().equals(""))
+            emptyName.setText("List name can not be empty!");
+        else {
+            emptyName.setText("");
+            server.updateListName(taskList.getId(), listName.getText());
+            mainCtrl.showOverview();
+        }
     }
 
     public void enterPressed(KeyEvent e) {
