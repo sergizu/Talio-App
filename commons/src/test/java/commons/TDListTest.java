@@ -52,7 +52,7 @@ class TDListTest {
 
     @Test
     void testIsEmpty() {
-        assertTrue(list1.empty());
+        assertTrue(list1.isEmpty());
     }
 
     @Test
@@ -64,6 +64,6 @@ class TDListTest {
     void testRemoveCard() {
         list.addCard(card1);
         list.removeCard(card1.getId());
-        assertTrue(list.empty());
+        assertTrue(list.isEmpty());
     }
 }
