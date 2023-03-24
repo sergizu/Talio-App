@@ -4,8 +4,8 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Board;
 import commons.Card;
-import commons.Change;
 import commons.TDList;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,7 +32,6 @@ public class ListOverviewCtrl implements Initializable {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private Board board;
-    private ObservableList<ObservableList<Card>> dataLists;
 
     private static final DataFormat serialization =
             new DataFormat("application/x-java-serialized-object");
@@ -50,18 +49,19 @@ public class ListOverviewCtrl implements Initializable {
     public ListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
-        dataLists = FXCollections.observableArrayList();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //cardColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
-        server.registerForUpdates(cardChange -> {
-            if (cardChange.change == Change.Add)
-                dataLists.get(0).add(cardChange.card);
-            //adding the card to the most left list(TO-DO)
-        });
         setScrollPane();
+        server.registerForUpdates(updatedBoardID -> {
+            if(board.getId() == updatedBoardID)
+                board = server.tempBoardGetter();
+            Platform.runLater(() -> {
+                showLists();
+            });
+        });
     }
     public void setAnchorPaneHeightWidth(){
         anchorPane.setPrefHeight(height);
@@ -97,7 +97,7 @@ public class ListOverviewCtrl implements Initializable {
     public FlowPane createFlowPane() {
         FlowPane flowPane = new FlowPane();
         setFlowPane(flowPane);
-        var lists = board.lists;
+        var lists = board.tdLists;
         for (var tdList : lists) {
             Button buttonAddCard = createAddCardButton(tdList.id);
             Button buttonEditList = createEditListButton(tdList);
@@ -158,11 +158,8 @@ public class ListOverviewCtrl implements Initializable {
     public void refresh(long boardID) {
         board = server.tempBoardGetter();
         showLists();
-        for (TDList tdList : board.lists) {
-            dataLists.add(FXCollections.observableList(tdList.cards));
-        }
 
-        //when we can dynamically add lists we would need a for loop here
+        //when we can dynamically add tdLists we would need a for loop here
         //tableView.setItems(dataLists.get(0));
     }
 
@@ -271,8 +268,6 @@ public class ListOverviewCtrl implements Initializable {
             e.consume();
         });
     }
-
-
 }
 
 
