@@ -10,7 +10,7 @@ public class SelectServerCtrlService {
             myLabel.setText("Can not be empty!");
             return;
         }
-        ServerUtils.changeSERVER(serverName.getText());
+        server.changeSERVER(serverName.getText());
         try{
             server.getLists();
 
