@@ -104,8 +104,8 @@ public class ListOverviewCtrl implements Initializable {
             TableView<Card> tv = createTable(tdList);
             cardExpansion(tv);
             dragAndDrop(tv);
-            setSelection(tv);
-            dragOtherLists(tv);
+            //setSelection(tv);
+            dragOtherLists(tv, tdList);
             flowPane.getChildren().addAll(createVBox(tv,
                     createHBox(buttonAddCard, buttonEditList)));
         }
@@ -126,6 +126,7 @@ public class ListOverviewCtrl implements Initializable {
     public TableView<Card> createTable(TDList tdList) {
         TableView<Card> tv = new TableView<>();
         tv.setPrefSize(157, 270);
+        tv.setId(Long.toString(tdList.getId()));
         TableColumn<Card, String> tableColumn = new TableColumn<>();
         tableColumn.setText(tdList.title);
         tableColumn.setPrefWidth(tv.getPrefWidth());
@@ -250,7 +251,10 @@ public class ListOverviewCtrl implements Initializable {
         server.updateBoard(board);
     }
 
-    public void dragOtherLists(TableView<Card> tableView) {
+    public void dragOtherLists(TableView<Card> tableView, TDList tdList) {
+        tableView.setOnMousePressed(e ->  {
+            selection = tableView;
+        });
         tableView.setOnDragOver(e -> {
             Dragboard db = e.getDragboard();
             if (db.hasContent(serialization)) {
@@ -262,25 +266,13 @@ public class ListOverviewCtrl implements Initializable {
             Dragboard db = e.getDragboard();
             int draggedIndex = (int) db.getContent(serialization);
             Card card = selection.getItems().remove(draggedIndex);
-            tableView.getItems().add(card);
-            ArrayList<Card> items = new ArrayList<>();
-            items.addAll(tableView.getItems());
-            updateList(card.list, items);
-            //I have to find a way to get a reference to the TDList that it's dropped on
-            //Don't know how to do that yet
+            server.updateCardList(card.getId(), tdList);
+            refresh(0);
             e.consume();
         });
     }
 
-    //Sets whatever tableview the drag starts with to be the selection tableview
-    //This allows dragOtherLists to work because otherwise there would be no
-    //reference to the tableview from which the card is removed
-    public void setSelection(TableView<Card> tableView) {
-        tableView.setOnMousePressed(e ->  {
-            selection = tableView;
-            System.out.println(selection.getItems());
-        });
-    }
+
 }
 
 
