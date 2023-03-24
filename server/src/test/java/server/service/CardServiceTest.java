@@ -12,8 +12,7 @@ import server.database.CardRepository;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CardServiceTest {
@@ -37,7 +36,7 @@ class CardServiceTest {
     @Test
     void getByIdIfExists() {
         long id = 1;
-        given(cardRepository.existsById(id)).willReturn(true);
+        when(cardRepository.existsById(id)).thenReturn(true);
         cardService.getById(id);
         verify(cardRepository).getById(id);
     }
@@ -45,7 +44,7 @@ class CardServiceTest {
     @Test
     void getByIdIfNotExists() {
         long id = 1;
-        given(cardRepository.existsById(id)).willReturn(false);
+        when(cardRepository.existsById(id)).thenReturn(false);
         cardService.getById(id);
         verify(cardRepository, never()).findById(anyLong());
     }
@@ -55,7 +54,7 @@ class CardServiceTest {
     void addCard() {
         Card toAdd = new Card("Card");
         toAdd.id = 1;
-        given(cardRepository.existsById(toAdd.id)).willReturn(false);
+        when(cardRepository.existsById(toAdd.id)).thenReturn(false);
         cardService.addCard(toAdd);
         verify(cardRepository).save(toAdd);
     }
@@ -64,7 +63,7 @@ class CardServiceTest {
     void addCardIfExists() {
         Card toAdd = new Card("Card");
         toAdd.id = 1;
-        given(cardRepository.existsById(toAdd.id)).willReturn(true);
+        when(cardRepository.existsById(toAdd.id)).thenReturn(true);
         cardService.addCard(toAdd);
         verify(cardRepository, never()).save(toAdd);
     }
@@ -80,7 +79,7 @@ class CardServiceTest {
     void update() {
         Card card = new Card("Card");
         card.id = 1;
-        given(cardRepository.existsById(card.id)).willReturn(true);
+        when(cardRepository.existsById(card.id)).thenReturn(true);
         cardService.update(card);
         verify(cardRepository).save(card);
     }
@@ -89,7 +88,7 @@ class CardServiceTest {
     void updateIfNotExists() {
         Card card = new Card("Card");
         card.id = 1;
-        given(cardRepository.existsById(card.id)).willReturn(false);
+        when(cardRepository.existsById(card.id)).thenReturn(false);
         cardService.update(card);
         verify(cardRepository, never()).save(card);
     }
