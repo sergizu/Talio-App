@@ -14,8 +14,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ListServiceTest {
@@ -39,7 +38,7 @@ class ListServiceTest {
     @Test
     void getByIdIfExists() {
         long id = 1;
-        given(listRepository.existsById(id)).willReturn(true);
+        when(listRepository.existsById(id)).thenReturn(true);
         TDList list = new TDList("test list");
         list.id = id;
         given(listRepository.findById(id)).willReturn(Optional.of(list));
@@ -49,7 +48,7 @@ class ListServiceTest {
     @Test
     void getByIdIfNotExists() {
         long id = 1;
-        given(listRepository.existsById(id)).willReturn(false);
+        when(listRepository.existsById(id)).thenReturn(false);
         listService.getById(id);
         verify(listRepository, never()).findById(anyLong());
     }
@@ -59,7 +58,7 @@ class ListServiceTest {
     void addList() {
         TDList toAdd = new TDList("list1");
         toAdd.id = 1;
-        given(listRepository.existsById(toAdd.id)).willReturn(false);
+        when(listRepository.existsById(toAdd.id)).thenReturn(false);
         listService.addList(toAdd);
         verify(listRepository).save(toAdd);
     }
@@ -68,7 +67,7 @@ class ListServiceTest {
     void addListIfExists() {
         TDList toAdd = new TDList("list1");
         toAdd.id = 1;
-        given(listRepository.existsById(toAdd.id)).willReturn(true);
+        when(listRepository.existsById(toAdd.id)).thenReturn(true);
         listService.addList(toAdd);
         verify(listRepository, never()).save(toAdd);
     }
@@ -84,7 +83,7 @@ class ListServiceTest {
     void update() {
         TDList list = new TDList("list1");
         list.id = 1;
-        given(listRepository.existsById(list.id)).willReturn(true);
+        when(listRepository.existsById(list.id)).thenReturn(true);
         listService.update(list);
         verify(listRepository).save(list);
     }
@@ -93,7 +92,7 @@ class ListServiceTest {
     void updateIfNotExists() {
         TDList list = new TDList("list1");
         list.id = 1;
-        given(listRepository.existsById(list.id)).willReturn(false);
+        when(listRepository.existsById(list.id)).thenReturn(false);
         listService.update(list);
         verify(listRepository, never()).save(list);
     }

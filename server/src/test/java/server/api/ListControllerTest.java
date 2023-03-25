@@ -16,6 +16,7 @@ import server.service.ListService;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ListControllerTest {
@@ -42,7 +43,7 @@ class ListControllerTest {
         @Test
         void add() {
                 TDList list = new TDList("list1");
-                given(listService.addList(list)).willReturn(list);
+                when(listService.addList(list)).thenReturn(list);
                 assertEquals(listController.add(list), ResponseEntity.ok(list));
                 verify(listService).addList(list);
         }
@@ -50,7 +51,7 @@ class ListControllerTest {
         @Test
         void addAlreadyWhenExists() {
                 TDList list = new TDList("list1");
-                given(listService.addList(list)).willReturn(null);
+                when(listService.addList(list)).thenReturn(null);
                 assertEquals(listController.add(list), ResponseEntity.badRequest().build());
                 verify(listService).addList(list);
         }
@@ -58,7 +59,7 @@ class ListControllerTest {
         @Test
         void getById() {
                 TDList list = new TDList("list1");
-                given(listService.getById(list.id)).willReturn(list);
+                when(listService.getById(list.id)).thenReturn(list);
                 assertEquals(ResponseEntity.ok(list), listController.getById(list.id));
                 verify(listService).getById(list.id);
         }
@@ -66,7 +67,7 @@ class ListControllerTest {
         @Test
         void getByIdNotExisting() {
                 TDList list = new TDList("list1");
-                given(listService.getById(list.id)).willReturn(null);
+                when(listService.getById(list.id)).thenReturn(null);
                 assertEquals(ResponseEntity.badRequest().build(), listController.getById(list.id));
                 verify(listService).getById(list.id);
         }
@@ -74,7 +75,7 @@ class ListControllerTest {
         @Test
         void update() {
                 TDList list = new TDList("list1");
-                given(listService.update(list)).willReturn(list);
+                when(listService.update(list)).thenReturn(list);
                 assertEquals(ResponseEntity.ok(list), listController.update(list));
                 verify(listService).update(list);
         }
@@ -82,7 +83,7 @@ class ListControllerTest {
         @Test
         void updateNonExisting() {
                 TDList list = new TDList("list1");
-                given(listService.update(list)).willReturn(null);
+                when(listService.update(list)).thenReturn(null);
                 assertEquals(ResponseEntity.badRequest().build(), listController.update(list));
                 verify(listService).update(list);
         }
@@ -90,7 +91,7 @@ class ListControllerTest {
         @Test
         void removeByID() {
                 TDList list = new TDList("lIST 1");
-                given(listService.delete(list.id)).willReturn(true);
+                when(listService.delete(list.id)).thenReturn(true);
                 assertEquals(listController.removeByID(list.id), ResponseEntity.ok().build());
                 verify(listService).delete(list.id);
         }
@@ -98,7 +99,7 @@ class ListControllerTest {
         @Test
         void RemoveNotExist() {
                 TDList list = new TDList("lIST 1");
-                given(listService.delete(list.id)).willReturn(false);
+                when(listService.delete(list.id)).thenReturn(false);
                 assertEquals(listController.removeByID(list.id), ResponseEntity.badRequest().build());
                 verify(listService).delete(list.id);
         }
