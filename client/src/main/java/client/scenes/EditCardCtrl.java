@@ -53,7 +53,7 @@ public class EditCardCtrl {
         mainCtrl.showOverview();
     }
 
-    public void enterPressed(KeyEvent e) {
+    public void keyPressed(KeyEvent e) {
         if (e.getCode() == KeyCode.ENTER) {
             ok();
         }
