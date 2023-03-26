@@ -19,6 +19,7 @@ import server.service.CardService;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CardControllerTest {
@@ -38,7 +39,7 @@ class CardControllerTest {
     @Test
     void add() {
         Card card = new Card("Card 1");
-        given(cardService.addCard(card)).willReturn(card);
+        when(cardService.addCard(card)).thenReturn(card);
         assertEquals(cardController.add(card), ResponseEntity.ok(card));
         verify(cardService).addCard(card);
     }
@@ -46,7 +47,7 @@ class CardControllerTest {
     @Test
     void addAlreadyWhenExists() {
         Card card = new Card("Card 1");
-        given(cardService.addCard(card)).willReturn(null);
+        when(cardService.addCard(card)).thenReturn(null);
         assertEquals(cardController.add(card), ResponseEntity.badRequest().build());
         verify(cardService).addCard(card);
     }
@@ -54,7 +55,7 @@ class CardControllerTest {
     @Test
     void getById() {
         Card card = new Card("Card 1");
-        given(cardService.getById(card.id)).willReturn(card);
+        when(cardService.getById(card.id)).thenReturn(card);
         assertEquals(ResponseEntity.ok(card), cardController.getById(card.id));
         verify(cardService).getById(card.id);
     }
@@ -70,7 +71,7 @@ class CardControllerTest {
     @Test
     void update() {
         Card card = new Card("Card 1");
-        given(cardService.update(card)).willReturn(card);
+        when(cardService.update(card)).thenReturn(card);
         assertEquals(ResponseEntity.ok(card), cardController.update(card));
         verify(cardService).update(card);
     }
@@ -78,7 +79,7 @@ class CardControllerTest {
     @Test
     void updateNonExisting() {
         Card card = new Card("Card 1");
-        given(cardService.update(card)).willReturn(null);
+        when(cardService.update(card)).thenReturn(null);
         assertEquals(ResponseEntity.badRequest().build(), cardController.update(card));
         verify(cardService).update(card);
     }
@@ -86,7 +87,7 @@ class CardControllerTest {
     @Test
     void removeByID() {
         Card card = new Card("Card 1");
-        given(cardService.delete(card.id)).willReturn(true);
+        when(cardService.delete(card.id)).thenReturn(true);
         assertEquals(cardController.removeByID(card.id), ResponseEntity.ok().build());
         verify(cardService).delete(card.id);
     }
@@ -94,7 +95,7 @@ class CardControllerTest {
     @Test
     void RemoveNotExist() {
         Card card = new Card("Card 1");
-        given(cardService.delete(card.id)).willReturn(false);
+        when(cardService.delete(card.id)).thenReturn(false);
         assertEquals(cardController.removeByID(card.id), ResponseEntity.badRequest().build());
         verify(cardService).delete(card.id);
     }

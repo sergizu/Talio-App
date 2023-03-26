@@ -28,6 +28,8 @@ import server.service.BoardService;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
 class BoardControllerTest {
     @Mock BoardService boardService;
@@ -56,7 +58,7 @@ class BoardControllerTest {
     @Test
     void add() {
         Board board = new Board("Board 1");
-        given(boardService.addBoard(board)).willReturn(board);
+        when(boardService.addBoard(board)).thenReturn(board);
         assertEquals(boardController.add(board), ResponseEntity.ok(board));
         verify(boardService).addBoard(board);
     }
@@ -64,7 +66,7 @@ class BoardControllerTest {
     @Test
     void addAlreadyWhenExists() {
         Board board = new Board("Board 1");
-        given(boardService.addBoard(board)).willReturn(null);
+        when(boardService.addBoard(board)).thenReturn(null);
         assertEquals(boardController.add(board), ResponseEntity.badRequest().build());
         verify(boardService).addBoard(board);
     }
@@ -72,7 +74,7 @@ class BoardControllerTest {
     @Test
     void getById() {
         Board board = new Board("Board 1");
-        given(boardService.getById(board.getId())).willReturn(board);
+        when(boardService.getById(board.getId())).thenReturn(board);
         assertEquals(ResponseEntity.ok(board), boardController.getById(board.getId()));
         verify(boardService).getById(board.getId());
     }
@@ -80,7 +82,7 @@ class BoardControllerTest {
     @Test
     void getByIdNotExisting() {
         Board board = new Board("Board 1");
-        given(boardService.getById(board.getId())).willReturn(null);
+        when(boardService.getById(board.getId())).thenReturn(null);
         assertEquals(ResponseEntity.badRequest().build(), boardController.getById(board.getId()));
         verify(boardService).getById(board.getId());
     }
@@ -88,7 +90,7 @@ class BoardControllerTest {
     @Test
     void update() {
         Board board = new Board("Board 1");
-        given(boardService.update(board)).willReturn(board);
+        when(boardService.update(board)).thenReturn(board);
         assertEquals(ResponseEntity.ok(board), boardController.update(board));
         verify(boardService).update(board);
     }
@@ -114,7 +116,7 @@ class BoardControllerTest {
     @Test
     void removeByID() {
         Board board = new Board("Board 1");
-        given(boardService.delete(board.id)).willReturn(true);
+        when(boardService.delete(board.id)).thenReturn(true);
         assertEquals(boardController.removeByID(board.id), ResponseEntity.ok().build());
         verify(boardService).delete(board.id);
     }
@@ -122,7 +124,7 @@ class BoardControllerTest {
     @Test
     void RemoveNotExist() {
         Board board = new Board("Board 1");
-        given(boardService.delete(board.id)).willReturn(false);
+        when(boardService.delete(board.id)).thenReturn(false);
         assertEquals(boardController.removeByID(board.id), ResponseEntity.badRequest().build());
         verify(boardService).delete(board.id);
     }

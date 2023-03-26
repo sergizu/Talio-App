@@ -14,8 +14,7 @@ import server.database.BoardRepository;
 import java.util.Optional;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class BoardServiceTest {
@@ -39,9 +38,9 @@ class BoardServiceTest {
     @Test
     void getByIdIfExists() {
         long id = 0;
-        given(boardRepository.existsById(id)).willReturn(true);
+        when(boardRepository.existsById(id)).thenReturn(true);
         Board board = new Board("new Board");
-        given(boardRepository.findById(id)).willReturn(Optional.of(board));
+        when(boardRepository.findById(id)).thenReturn(Optional.of(board));
         boardService.getById(id);
         verify(boardRepository).findById(id);
     }
@@ -50,7 +49,7 @@ class BoardServiceTest {
     @Test
     void getByIdIfNotExists() {
         long id = 1;
-        given(boardRepository.existsById(id)).willReturn(false);
+        when(boardRepository.existsById(id)).thenReturn(false);
         boardService.getById(id);
         verify(boardRepository, never()).findById(anyLong());
     }
@@ -59,7 +58,7 @@ class BoardServiceTest {
     void addBoard() {
         Board toAdd = new Board("Board");
         toAdd.setId(1);
-        given(boardRepository.existsById(toAdd.getId())).willReturn(false);
+        when(boardRepository.existsById(toAdd.getId())).thenReturn(false);
         boardService.addBoard(toAdd);
         verify(boardRepository).save(toAdd);
     }
@@ -69,7 +68,7 @@ class BoardServiceTest {
 
         Board toAdd = new Board("Board");
         toAdd.setId(1);
-        given(boardRepository.existsById(toAdd.getId())).willReturn(true);
+        when(boardRepository.existsById(toAdd.getId())).thenReturn(true);
         boardService.addBoard(toAdd);
         verify(boardRepository, never()).save(toAdd);
     }
@@ -85,7 +84,8 @@ class BoardServiceTest {
     void update() {
             Board board = new Board("Board 1");
             board.id = 1;
-            given(boardRepository.existsById(board.id)).willReturn(true);
+            when(boardRepository.existsById(board.id)).thenReturn(true);
+            when(boardRepository.save(board)).thenReturn(board);
             boardService.update(board);
             verify(boardRepository).save(board);
     }
