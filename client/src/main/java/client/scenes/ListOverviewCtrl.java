@@ -40,6 +40,8 @@ public class ListOverviewCtrl implements Initializable {
     private ScrollPane scrollPane;
     @FXML
     private AnchorPane anchorPane;
+    @FXML
+    private Label boardTitle;
 
     private TableView<Card> selection;
     private double height = 700;
@@ -55,10 +57,12 @@ public class ListOverviewCtrl implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         //cardColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getTitle()));
         setScrollPane();
+        boardTitle.setAlignment(Pos.TOP_CENTER);
         server.registerForUpdates(updatedBoardID -> {
             if(board.getId() == updatedBoardID)
                 board = server.tempBoardGetter();
             Platform.runLater(() -> {
+                boardTitle.setText(board.title);
                 showLists();
             });
         });
@@ -157,6 +161,7 @@ public class ListOverviewCtrl implements Initializable {
     //boardID is not yet used
     public void refresh(long boardID) {
         board = server.tempBoardGetter();
+        boardTitle.setText(board.title);
         showLists();
 
         //when we can dynamically add tdLists we would need a for loop here

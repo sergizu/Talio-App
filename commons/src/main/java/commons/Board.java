@@ -17,6 +17,8 @@ public class Board {
 
     public String title;
 
+    public long key;
+
     @OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST,
         CascadeType.MERGE, CascadeType.REFRESH})
     @JsonManagedReference
