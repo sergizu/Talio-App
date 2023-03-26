@@ -59,6 +59,7 @@ class ListServiceTest {
         TDList toAdd = new TDList("list1");
         toAdd.id = 1;
         when(listRepository.existsById(toAdd.id)).thenReturn(false);
+        when(listRepository.save(toAdd)).thenReturn(toAdd);
         listService.addList(toAdd);
         verify(listRepository).save(toAdd);
     }

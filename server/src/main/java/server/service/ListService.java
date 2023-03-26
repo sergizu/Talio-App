@@ -34,9 +34,7 @@ public class ListService {
         if(listRepository.existsById(l.id))
             return null;
         TDList saved = listRepository.save(l);
-        System.out.println("HEllo WOrld!");
-        System.out.println(saved.getBoard().getId());
-        boardService.sendUpdates(saved.getBoard().getId());
+//        boardService.sendUpdates(saved.getBoard().getId());
         return saved;
     }
 
