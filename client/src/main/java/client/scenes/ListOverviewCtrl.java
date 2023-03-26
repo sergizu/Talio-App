@@ -25,6 +25,7 @@ import javafx.scene.layout.VBox;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class ListOverviewCtrl implements Initializable {
 
@@ -129,6 +130,7 @@ public class ListOverviewCtrl implements Initializable {
         tableColumn.setText(tdList.title);
         tableColumn.setPrefWidth(tv.getPrefWidth());
         tableColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().title));
+        tableColumn.setSortable(false);
         tv.getColumns().add(tableColumn);
         ObservableList<Card> dataCards = FXCollections.observableList(tdList.cards);
         tv.setItems(dataCards);
@@ -180,16 +182,19 @@ public class ListOverviewCtrl implements Initializable {
                 Card card = tableView.getSelectionModel().getSelectedItem();
                 mainCtrl.showEdit(card);
             }
+<<<<<<< HEAD
 //            else if (tableView.getSelectionModel().getSelectedItem() == null
 //                    && tableView.getItems().get(0) != null && event.getClickCount() == 2) {
 //                mainCtrl.showEditList(tableView.getItems().get(0).list);
                 //This will make it so that when u double-click on a tableview without having
                 //anything selected, you will then be able to change the title of said tableview
            // }
+=======
+>>>>>>> 6f1c17005d9b88105dd5a18e1df81bc73adebcdb
         });
     }
 
-    public void dragAndDrop(TableView<Card> tableView) {
+    public void dragAndDrop(TableView<Card> tableView){
         tableView.setRowFactory(tv -> {
             TableRow<Card> row = new TableRow<>();
             row.setOnDragDetected(e -> { //Method gets called whenever a mouse drags a row
@@ -219,10 +224,11 @@ public class ListOverviewCtrl implements Initializable {
                 if (db.hasContent(serialization) && selection == tableView) {
                     int draggedIndex = (int) db.getContent(serialization);
                     Card card = tableView.getItems().remove(draggedIndex);
-                    //gets the rowIndex and removes the Card at it's position
                     int dropIndex;
-                    if (row.isEmpty()) dropIndex = tableView.getItems().size();
-                    else dropIndex = row.getIndex();
+                    if (row.isEmpty())
+                        dropIndex = tableView.getItems().size();
+                    else
+                        dropIndex = row.getIndex();
                     tableView.getItems().add(dropIndex, card);
                     ArrayList<Card> items = new ArrayList<>();
                     items.addAll(tableView.getItems());
@@ -242,13 +248,12 @@ public class ListOverviewCtrl implements Initializable {
     public void updateList(TDList tdList, ArrayList<Card> items ) {
         tdList.cards.clear();
         tdList.cards.addAll(items);
-        for(Card item : items) {
-            server.addCardToList(tdList.id, item);
+        var ids = tdList.cards.stream().map(Card::getId).sorted().collect(Collectors.toList());
+        for(int i = 0;i<ids.size();i++){
+            tdList.cards.get(i).setId(ids.get(i)); // changing the ids of the cards to store
+            // them in a different order in the database
         }
-        System.out.println(tdList);
-        server.updateList(tdList);
         server.updateBoard(board);
-//        refresh(board.id);
     }
 
     public void dragOtherLists(TableView<Card> tableView) {
