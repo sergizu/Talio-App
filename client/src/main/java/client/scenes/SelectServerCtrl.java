@@ -37,7 +37,7 @@ public class SelectServerCtrl {
         }
     }
 
-    public void KeyPressed(KeyEvent e) {
+    public void keyPressed(KeyEvent e) {
         if(e.getCode() == KeyCode.ENTER) {
             ok();
         }
