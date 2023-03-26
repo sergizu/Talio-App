@@ -56,7 +56,7 @@ public class BoardController {
         }
         Board board = new Board("Default board");
         Random randomGenerator = new Random();
-        board.key = randomGenerator.nextLong();
+        board.key = Math.abs(randomGenerator.nextLong());
         Card card = new Card("Default card");
         TDList tdList = new TDList("TO DO");
         TDList tdList1 = new TDList("DOING");
