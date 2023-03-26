@@ -40,7 +40,6 @@ public class ListOverviewCtrl implements Initializable {
     private ScrollPane scrollPane;
     @FXML
     private AnchorPane anchorPane;
-
     private TableView<Card> selection;
     private double height = 700;
     private double width = 700;

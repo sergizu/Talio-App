@@ -1,0 +1,16 @@
+.table-row-cell{
+    -fx-background-color: #1c1b1b11;
+    -fx-border-color: rgb(0, 0, 0);
+    -fx-text-background-color: rgb(0, 0, 0);
+    -fx-cell-size: 60px;
+    -fx-font-size:20px;
+}
+
+.table-row-cell:empty{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.table-column {
+    -fx-alignment: CENTER;
+  }
