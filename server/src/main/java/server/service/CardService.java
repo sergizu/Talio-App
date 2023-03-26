@@ -1,6 +1,7 @@
 package server.service;
 
 import commons.Card;
+import commons.TDList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import server.database.CardRepository;
@@ -66,6 +67,17 @@ public class CardService {
             toUpdate.setTitle(name);
             toUpdate = cardRepository.save(toUpdate);
             boardService.sendUpdates(toUpdate.getList().getBoard().getId());
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean updateList(long id, TDList list) {
+        try {
+            Card toUpdate = cardRepository.getById(id);
+            toUpdate.setList(list);
+            cardRepository.save(toUpdate);
         } catch (Exception e) {
             return false;
         }

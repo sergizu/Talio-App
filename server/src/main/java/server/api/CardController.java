@@ -1,6 +1,7 @@
 package server.api;
 
 import commons.Card;
+import commons.TDList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,6 @@ import java.util.List;
 public class CardController {
 
     private final CardService cardService;
-
 
     @Autowired
     public CardController(CardService cardService) {
@@ -67,6 +67,13 @@ public class CardController {
     public ResponseEntity updateName(@PathVariable("cardID") long cardID,
                                      @RequestBody String newName) {
         if(cardService.updateName(cardID, newName))
+            return ResponseEntity.ok().build();
+        return ResponseEntity.badRequest().build();
+    }
+
+    @PutMapping("/updateList/{id}")
+    public ResponseEntity updateList(@PathVariable("id") long id, @RequestBody TDList list) {
+        if(cardService.updateList(id, list))
             return ResponseEntity.ok().build();
         return ResponseEntity.badRequest().build();
     }
