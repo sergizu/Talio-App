@@ -198,7 +198,7 @@ public class ServerUtils {
 
     public void updateListName(long listId, String newName){
         ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/lists/updateName/" + listId) //
+                .target(server).path("api/tdLists/updateName/" + listId) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(newName, APPLICATION_JSON));//

@@ -104,7 +104,6 @@ public class ListOverviewCtrl implements Initializable {
             TableView<Card> tv = createTable(tdList);
             cardExpansion(tv);
             dragAndDrop(tv);
-            //setSelection(tv);
             dragOtherLists(tv, tdList);
             flowPane.getChildren().addAll(createVBox(tv,
                     createHBox(buttonAddCard, buttonEditList)));
@@ -264,7 +263,8 @@ public class ListOverviewCtrl implements Initializable {
             int draggedIndex = (int) db.getContent(serialization);
             Card card = selection.getItems().remove(draggedIndex);
             server.updateCardList(card.getId(), tdList);
-            refresh(0);
+            refresh(board.id);
+            server.updateBoard(board);
             e.consume();
         });
     }

@@ -8,7 +8,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import server.database.ListRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,11 +21,12 @@ class ListServiceTest {
     @Mock
     private ListRepository listRepository;
     private ListService listService;
+    private BoardService boardService;
 
 
     @BeforeEach
     void setUp() {
-        listService = new ListService(listRepository);
+        listService = new ListService(listRepository, boardService);
     }
 
     @Test

@@ -11,9 +11,12 @@ import java.util.List;
 public class ListService {
     private final ListRepository listRepository;
 
+    private final BoardService boardService;
+
     @Autowired
-    public ListService(ListRepository listRepository) {
+    public ListService(ListRepository listRepository, BoardService boardService) {
         this.listRepository = listRepository;
+        this.boardService = boardService;
     }
 
     public List<TDList> getAll() {
@@ -30,7 +33,11 @@ public class ListService {
         if(l == null || l.title == null || l.cards == null) return null;
         if(listRepository.existsById(l.id))
             return null;
-        return listRepository.save(l);
+        TDList saved = listRepository.save(l);
+        System.out.println("HEllo WOrld!");
+        System.out.println(saved.getBoard().getId());
+        boardService.sendUpdates(saved.getBoard().getId());
+        return saved;
     }
 
     public boolean existsById(long id) {
@@ -47,7 +54,9 @@ public class ListService {
     public boolean delete(long id) {
         if(!listRepository.existsById(id))
             return false;
+        TDList toDelete = listRepository.getById(id);
         listRepository.deleteById(id);
+        boardService.sendUpdates(toDelete.getBoard().getId());
         return true;
     }
 
@@ -55,7 +64,8 @@ public class ListService {
         try {
             TDList toUpdate = listRepository.getById(id);
             toUpdate.setTitle(newName);
-            listRepository.save(toUpdate);
+            TDList updated = listRepository.save(toUpdate);
+            boardService.sendUpdates(updated.getBoard().getId());
         } catch (Exception e) {
             return false;
         }

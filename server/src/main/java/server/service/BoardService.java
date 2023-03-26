@@ -53,10 +53,10 @@ public class BoardService {
         if(board == null || board.title == null) return null;
         if(!boardRepository.existsById(board.id))
             return null;
-        return boardRepository.save(board);
+        Board toUpdate = boardRepository.save(board);
+        sendUpdates(toUpdate.getId());
+        return toUpdate;
     }
-
-
 
     public boolean delete(long id) {
         if(!boardRepository.existsById(id))
