@@ -13,4 +13,10 @@
 
 .table-column {
     -fx-alignment: CENTER;
-  }
+}
+#copyButton{
+    //-fx-background-color: #2596be;
+}
+#boardKey{
+
+}
