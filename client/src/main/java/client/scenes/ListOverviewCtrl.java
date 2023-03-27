@@ -6,15 +6,10 @@ import com.google.inject.Inject;
 import commons.Board;
 import commons.Card;
 import commons.TDList;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.*;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
@@ -22,12 +17,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.text.Font;
-import javafx.util.Duration;
 
-import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -302,42 +292,8 @@ public class ListOverviewCtrl implements Initializable {
     }
 
 
-    public void copyKey(){
-        copyToClipboard();
-        animateCopyButton();
-    }
-
-    public void copyToClipboard(){
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        StringSelection selection = new StringSelection(String.valueOf(board.key));
-        clipboard.setContents(selection,null);
-    }
-
-    public void afterCopyButton(){
-        copyButton.setFont(new Font(9));
-        copyButton.setText("Copied!");
-        copyButton.setStyle("-fx-background-color: #34eb67;");
-    }
-
-    public void restoreCopyButton(){
-        copyButton.setStyle("-fx-background-color: #2596be;");
-        copyButton.setFont(new Font(12));
-        copyButton.setText("Copy!");
-    }
-
-    public void animateCopyButton(){
-        Platform.runLater(()->
-        {
-            Timeline timeline = new Timeline(
-                    new KeyFrame(Duration.ZERO, event -> {
-                        afterCopyButton();
-                    }),
-                    new KeyFrame(Duration.seconds(2), event -> {
-                        restoreCopyButton();
-                    })
-            );
-            timeline.play();
-        });
+    public void copyKey() {
+        service.copyKey(board.key, copyButton);
     }
 //    public void dragOtherLists(TableView<Card> tableView) {
 //        tableView.setOnDragOver(e -> {

@@ -5,10 +5,15 @@ import client.utils.ServerUtils;
 import commons.Board;
 import commons.Card;
 import commons.TDList;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.*;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
@@ -17,7 +22,12 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.util.Duration;
 
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 
 public class ListOverviewService {
@@ -211,5 +221,42 @@ public class ListOverviewService {
 //            //System.out.println(selection.getItems());
 //        });
 //        selection = arr[0];
+    }
+
+    public void copyKey(long boardKey, Button copyButton){
+        copyToClipboard(boardKey);
+        animateCopyButton(copyButton);
+    }
+    public void copyToClipboard(long boardKey){
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        StringSelection selection = new StringSelection(String.valueOf(boardKey));
+        clipboard.setContents(selection,null);
+    }
+
+    public void afterCopyButton(Button copyButton){
+        copyButton.setFont(new javafx.scene.text.Font(9));
+        copyButton.setText("Copied!");
+        copyButton.setStyle("-fx-background-color: #34eb67;");
+    }
+
+    public void restoreCopyButton(Button copyButton){
+        copyButton.setStyle("-fx-background-color: #2596be;");
+        copyButton.setFont(new Font(12));
+        copyButton.setText("Copy!");
+    }
+
+    public void animateCopyButton(Button copyButton){
+        Platform.runLater(()->
+        {
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.ZERO, event -> {
+                        afterCopyButton(copyButton);
+                    }),
+                    new KeyFrame(Duration.seconds(2), event -> {
+                        restoreCopyButton(copyButton);
+                    })
+            );
+            timeline.play();
+        });
     }
 }
