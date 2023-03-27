@@ -36,16 +36,21 @@ public class AddCardCtrl {
     }
 
     public void ok() {
-        service.ok(cardName, myLabel, server, listId, getCard());
-        mainCtrl.showOverview();
+        if (cardName.getText().isEmpty()) {
+            myLabel.setText("Cant be empty");
+        }
+        else{
+            service.ok(server, listId, getCard());
+            mainCtrl.showOverview();
+        }
     }
 
     private void clearFields() {
-        service.clearFields(cardName);
+        cardName.clear();
     }
 
     public void cancel() {
-        service.setLabelToEmpty(myLabel);
+        myLabel.setText("");
         clearFields();
         mainCtrl.showOverview();
     }
