@@ -78,6 +78,10 @@ public class EditCardCtrl implements Initializable {
         mainCtrl.showOverview();
     }
 
+    public void createSubtask() {
+        mainCtrl.showAddSubtask(card);
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         for(SubTask subTask: card.nestedList) {

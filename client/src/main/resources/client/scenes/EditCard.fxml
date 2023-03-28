@@ -25,6 +25,6 @@
         </columns>
       </TableView>
       <Label fx:id="emptyName" layoutX="241.0" layoutY="69.0" />
-      <Button layoutX="57.0" layoutY="187.0" mnemonicParsing="false" text="Add subtask" />
+      <Button layoutX="57.0" layoutY="187.0" mnemonicParsing="false" onAction="#createSubtask" text="Add subtask" />
    </children>
 </AnchorPane>
