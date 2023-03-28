@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 
 
 @Entity
@@ -21,12 +22,15 @@ public class Card {
     @JsonBackReference
     public TDList list;
 
+    public ArrayList<SubTask> nestedList;
+
     public Card() {
 
     }
 
     public Card(String title) {
         this.title = title;
+        nestedList = new ArrayList<>();
     }
 
     //Equals method, decided to include both the ID and title(maybe we should rethink this later)
@@ -73,4 +77,13 @@ public class Card {
     public void setList(TDList list) {
         this.list = list;
     }
+
+    public void addSubTask(SubTask subTask) {
+        nestedList.add(subTask);
+    }
+
+    public void removeSubTask(SubTask subTask) {
+        nestedList.remove(subTask);
+    }
+
 }
