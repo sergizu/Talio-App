@@ -3,24 +3,36 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
+import commons.SubTask;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-public class EditCardCtrl {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class EditCardCtrl implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
     private Card card;
 
+    private ObservableList<SubTask> data;
+
     @FXML
     private TextField cardName;
 
     @FXML
     private Label emptyName;
+
+    @FXML
+    private TableView<SubTask> tableView;
 
     @Inject
     public EditCardCtrl (MainCtrl mainCtrl, ServerUtils server) {
@@ -64,5 +76,13 @@ public class EditCardCtrl {
 
     public void cancel() {
         mainCtrl.showOverview();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        for(SubTask subTask: card.nestedList) {
+            data.add(subTask);
+        }
+        tableView.setItems(data);
     }
 }
