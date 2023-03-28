@@ -188,7 +188,7 @@ public class ListOverviewCtrl implements Initializable {
     }
 
     public void addList() {
-        mainCtrl.showAddList(board.id);
+        service.addList(mainCtrl,board.id);
     }
 
 //    public void dragAndDrop(TableView<Card> tableView){

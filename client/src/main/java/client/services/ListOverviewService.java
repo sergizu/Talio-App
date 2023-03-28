@@ -176,6 +176,10 @@ public class ListOverviewService {
         server.updateBoard(board);
 //        refresh(board.id);
     }
+
+    public void addList(MainCtrl mainCtrl,Long boardId){
+        mainCtrl.showAddList(boardId);
+    }
     public void dragOtherLists(TableView<Card> tableView, DataFormat serialization,
                                TableView<Card> selection, ServerUtils server,
                                Board board) {
