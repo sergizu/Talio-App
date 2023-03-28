@@ -57,7 +57,9 @@ public class CardService {
     public boolean delete(long id) {
         if(!cardRepository.existsById(id))
             return false;
+        Card toDelete = cardRepository.getById(id);
         cardRepository.deleteById(id);
+        boardService.sendUpdates(toDelete.getList().getBoard().getId());
         return true;
     }
 
@@ -77,7 +79,8 @@ public class CardService {
         try {
             Card toUpdate = cardRepository.getById(id);
             toUpdate.setList(list);
-            cardRepository.save(toUpdate);
+            toUpdate = cardRepository.save(toUpdate);
+            boardService.sendUpdates(toUpdate.getList().getBoard().getId());
         } catch (Exception e) {
             return false;
         }

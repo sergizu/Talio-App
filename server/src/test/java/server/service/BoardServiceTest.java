@@ -85,6 +85,7 @@ class BoardServiceTest {
             Board board = new Board("Board 1");
             board.id = 1;
             when(boardRepository.existsById(board.id)).thenReturn(true);
+            when(boardRepository.save(board)).thenReturn(board);
             boardService.update(board);
             verify(boardRepository).save(board);
     }
