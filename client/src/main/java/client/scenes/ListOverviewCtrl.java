@@ -97,7 +97,8 @@ public class ListOverviewCtrl implements Initializable {
             Button buttonAddCard = createAddCardButton(tdList.id);
             Button buttonEditList = createEditListButton(tdList);
             TableView<Card> tv = service.createTable(tdList);
-            service.cardExpansion(tv,mainCtrl);
+            //service.cardExpansion(tv,mainCtrl);
+            cardExpansion(tv);
             dragAndDrop(tv);
             dragOtherLists(tv, tdList);
             flowPane.getChildren().addAll(service.createVBox(tv,
@@ -196,15 +197,15 @@ public class ListOverviewCtrl implements Initializable {
 //    }
 
     //Method that will pop up a window to change the card name whenever you double-click on a card
-//    public void cardExpansion(TableView<Card> tableView) {
-//        tableView.setOnMouseClicked(event -> {
-//            if (tableView.getSelectionModel().getSelectedItem() != null
-//                    && event.getClickCount() == 2) {
-//                Card card = tableView.getSelectionModel().getSelectedItem();
-//                mainCtrl.showEdit(card);
-//            }
-//        });
-//    }
+    public void cardExpansion(TableView<Card> tableView) {
+        tableView.setOnMouseClicked(event -> {
+            if (tableView.getSelectionModel().getSelectedItem() != null
+                    && event.getClickCount() == 2) {
+                Card card = tableView.getSelectionModel().getSelectedItem();
+                mainCtrl.showEdit(card);
+            }
+        });
+    }
 
     public void dragAndDrop(TableView<Card> tableView){
         tableView.setRowFactory(tv -> {
