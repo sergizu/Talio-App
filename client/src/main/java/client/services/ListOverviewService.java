@@ -31,7 +31,8 @@ import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 
 public class ListOverviewService {
-//    public void initialize(ServerUtils server, Board board, TextField boardTitle, Label boardKey, ScrollPane scrollPane){
+//    public void initialize(ServerUtils server, Board board, TextField boardTitle,
+//    Label boardKey, ScrollPane scrollPane){
 //        server.registerForUpdates(updatedBoardID -> {
 //            if(board.getId() == updatedBoardID)
 //                board = server.tempBoardGetter();
