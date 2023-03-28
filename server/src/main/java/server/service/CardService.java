@@ -1,12 +1,14 @@
 package server.service;
 
 import commons.Card;
+import commons.Subtask;
 import commons.TDList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import server.database.CardRepository;
 import server.database.ListRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -82,6 +84,18 @@ public class CardService {
             toUpdate = cardRepository.save(toUpdate);
             boardService.sendUpdates(toUpdate.getList().getBoard().getId());
         } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean updateNestedList(long id, ArrayList<Subtask> nestedList) {
+        try {
+            Card toUpdate = cardRepository.getById(id);
+            toUpdate.setNestedList(nestedList);
+            toUpdate = cardRepository.save(toUpdate);
+            boardService.sendUpdates(toUpdate.getList().getBoard().getId());
+        } catch(Exception e) {
             return false;
         }
         return true;

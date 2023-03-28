@@ -27,6 +27,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -227,6 +228,14 @@ public class ServerUtils {
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(list, APPLICATION_JSON));
+    }
+
+    public void updateNestedList(long id, ArrayList<Subtask> nestedList) {
+        ClientBuilder.newClient(new ClientConfig())
+                .target(server).path("api/cards/updateNestedList/" + id)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(nestedList, APPLICATION_JSON));
     }
 
     public void stop() {

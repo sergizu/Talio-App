@@ -87,4 +87,12 @@ public class Card {
         nestedList.remove(subtask);
     }
 
+    public ArrayList<Subtask> getNestedList() {
+        return nestedList;
+    }
+
+    public void setNestedList(ArrayList<Subtask> updatedList) {
+        this.nestedList = updatedList;
+    }
+
 }

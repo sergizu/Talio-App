@@ -37,8 +37,10 @@ public class AddSubTaskCtrl {
             myLabel.setText("Name cannot be empty!");
         } else {
             String name = subtaskName.getText();
+            subtaskName.setText("");
             Subtask subtask = new Subtask(name);
             card.addSubTask(subtask);
+            server.updateNestedList(card.id, card.nestedList);
             mainCtrl.showEdit(card);
         }
     }

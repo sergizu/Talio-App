@@ -72,7 +72,6 @@ public class BoardController {
         board.addList(tdList2);
         tdList2.board =board;
         board = boardService.addBoard(board);
-        System.out.println(board);
         defaultBoardID = board.id;
         return ResponseEntity.ok(board);
     }

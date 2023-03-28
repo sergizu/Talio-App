@@ -1,12 +1,14 @@
 package server.api;
 
 import commons.Card;
+import commons.Subtask;
 import commons.TDList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.service.CardService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -74,6 +76,14 @@ public class CardController {
     @PutMapping("/updateList/{id}")
     public ResponseEntity updateList(@PathVariable("id") long id, @RequestBody TDList list) {
         if(cardService.updateList(id, list))
+            return ResponseEntity.ok().build();
+        return ResponseEntity.badRequest().build();
+    }
+
+    @PutMapping("/updateNestedList/{id}")
+    public ResponseEntity updateNestedList(@PathVariable("id") long id,
+                                           @RequestBody ArrayList<Subtask> nestedList) {
+        if(cardService.updateNestedList(id, nestedList))
             return ResponseEntity.ok().build();
         return ResponseEntity.badRequest().build();
     }

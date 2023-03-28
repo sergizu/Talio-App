@@ -172,7 +172,6 @@ public class ListOverviewService {
         for(Card item : items) {
             server.addCardToList(tdList.id, item);
         }
-        System.out.println(tdList);
         server.updateList(tdList);
         server.updateBoard(board);
 //        refresh(board.id);

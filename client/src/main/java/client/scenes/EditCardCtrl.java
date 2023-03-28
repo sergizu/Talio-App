@@ -16,6 +16,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EditCardCtrl {
 
     private final ServerUtils server;
@@ -43,6 +46,7 @@ public class EditCardCtrl {
 
     public void init(Card card) {
         this.card = card;
+        System.out.println(card.getNestedList());
         cardName.setText(card.title);
         tableColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getName()));
         ObservableList<Subtask> data = FXCollections.observableList(card.nestedList);
