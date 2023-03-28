@@ -3,11 +3,11 @@ package commons;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-public class SubTask {
+public class Subtask {
 
     public String name;
 
-    public SubTask(String name) {
+    public Subtask(String name) {
         this.name = name;
     }
 

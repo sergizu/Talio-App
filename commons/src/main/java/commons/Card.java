@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -22,7 +23,7 @@ public class Card {
     @JsonBackReference
     public TDList list;
 
-    public ArrayList<SubTask> nestedList;
+    public ArrayList<Subtask> nestedList;
 
     public Card() {
 
@@ -78,12 +79,12 @@ public class Card {
         this.list = list;
     }
 
-    public void addSubTask(SubTask subTask) {
-        nestedList.add(subTask);
+    public void addSubTask(Subtask subtask) {
+        nestedList.add(subtask);
     }
 
-    public void removeSubTask(SubTask subTask) {
-        nestedList.remove(subTask);
+    public void removeSubTask(Subtask subtask) {
+        nestedList.remove(subtask);
     }
 
 }

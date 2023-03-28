@@ -1,8 +1,9 @@
 package client.scenes;
 
 import client.utils.ServerUtils;
+import com.google.inject.Inject;
 import commons.Card;
-import commons.SubTask;
+import commons.Subtask;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -21,6 +22,7 @@ public class AddSubTaskCtrl {
 
     private Card card;
 
+    @Inject
     public AddSubTaskCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
@@ -31,10 +33,17 @@ public class AddSubTaskCtrl {
     }
 
     public void create() {
-        String name = subtaskName.getText();
-        SubTask subTask = new SubTask(name);
-        card.addSubTask(subTask);
-        mainCtrl.showEdit(card);
+        if(subtaskName.getText().isEmpty()) {
+            myLabel.setText("Name cannot be empty!");
+        } else {
+            String name = subtaskName.getText();
+            Subtask subtask = new Subtask(name);
+            card.addSubTask(subtask);
+            mainCtrl.showEdit(card);
+        }
     }
-
+    public void cancel() {
+        myLabel.setText("");
+        mainCtrl.showOverview();
+    }
 }

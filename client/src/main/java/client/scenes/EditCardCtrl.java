@@ -3,27 +3,25 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
-import commons.SubTask;
+import commons.Subtask;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-public class EditCardCtrl implements Initializable {
+public class EditCardCtrl {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
     private Card card;
-
-    private ObservableList<SubTask> data;
 
     @FXML
     private TextField cardName;
@@ -32,7 +30,10 @@ public class EditCardCtrl implements Initializable {
     private Label emptyName;
 
     @FXML
-    private TableView<SubTask> tableView;
+    private TableView<Subtask> tableView;
+
+    @FXML
+    private TableColumn<Subtask, String> tableColumn;
 
     @Inject
     public EditCardCtrl (MainCtrl mainCtrl, ServerUtils server) {
@@ -43,6 +44,9 @@ public class EditCardCtrl implements Initializable {
     public void init(Card card) {
         this.card = card;
         cardName.setText(card.title);
+        tableColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getName()));
+        ObservableList<Subtask> data = FXCollections.observableList(card.nestedList);
+        tableView.setItems(data);
     }
 
     public void ok() {
@@ -80,13 +84,5 @@ public class EditCardCtrl implements Initializable {
 
     public void createSubtask() {
         mainCtrl.showAddSubtask(card);
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        for(SubTask subTask: card.nestedList) {
-            data.add(subTask);
-        }
-        tableView.setItems(data);
     }
 }
