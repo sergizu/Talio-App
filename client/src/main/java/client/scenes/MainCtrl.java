@@ -50,7 +50,8 @@ public class MainCtrl {
     public void initialize(Stage primaryStage, Pair<ListOverviewCtrl, Parent> overview,
                            Pair<AddCardCtrl, Parent> addCard, Pair<AddListCtrl, Parent> addList,
                            Pair<EditCardCtrl, Parent> edit, Pair<EditListCtrl, Parent> editList,
-                           Pair<SelectServerCtrl, Parent> selectServer, Pair<AddSubTaskCtrl, Parent> addSubtask) {
+                           Pair<SelectServerCtrl, Parent> selectServer,
+                           Pair<AddSubTaskCtrl, Parent> addSubtask) {
 
         this.primaryStage = primaryStage;
         this.listOverviewCtrl = overview.getKey();

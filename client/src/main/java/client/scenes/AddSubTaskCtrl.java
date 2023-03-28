@@ -14,7 +14,7 @@ public class AddSubTaskCtrl {
     private final MainCtrl mainCtrl;
 
     @FXML
-    private TextField SubtaskName;
+    private TextField subtaskName;
 
     @FXML
     private Label myLabel;
@@ -31,7 +31,7 @@ public class AddSubTaskCtrl {
     }
 
     public void create() {
-        String name = SubtaskName.getText();
+        String name = subtaskName.getText();
         SubTask subTask = new SubTask(name);
         card.addSubTask(subTask);
         mainCtrl.showEdit(card);
