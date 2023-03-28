@@ -36,11 +36,9 @@ public class SelectServerCtrl {
             myLabel.setText("Couldn't find the server!");
         }
     }
-
     public void keyPressed(KeyEvent e) {
-        if(e.getCode() == KeyCode.ENTER) {
+        if (e.getCode() == KeyCode.ENTER) {
             ok();
         }
     }
-
 }

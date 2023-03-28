@@ -1,6 +1,8 @@
 package server.api;
 
-import commons.*;
+import commons.Board;
+import commons.Card;
+import commons.TDList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,7 @@ import server.database.ListRepository;
 import server.service.BoardService;
 
 import java.util.List;
+import java.util.Random;
 
 @RestController
 @RequestMapping("/api/boards")
@@ -52,14 +55,22 @@ public class BoardController {
             return ResponseEntity.ok(board);
         }
         Board board = new Board("Default board");
+        Random randomGenerator = new Random();
+        board.key = Math.abs(randomGenerator.nextLong());
         Card card = new Card("Default card");
-        TDList tdList = new TDList("Default list");
+        TDList tdList = new TDList("TO DO");
+        TDList tdList1 = new TDList("DOING");
+        TDList tdList2 = new TDList("DONE");
         card.list = tdList;
         //card = cardRepository.save(card);
         tdList.addCard(card);
         tdList.board = board;
         //tdList = listRepository.save(tdList);
         board.addList(tdList);
+        board.addList(tdList1);
+        tdList1.board =board;
+        board.addList(tdList2);
+        tdList2.board =board;
         board = boardService.addBoard(board);
         System.out.println(board);
         defaultBoardID = board.id;
