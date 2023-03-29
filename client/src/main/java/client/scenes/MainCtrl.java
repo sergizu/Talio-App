@@ -50,25 +50,28 @@ public class MainCtrl {
 
         this.primaryStage = primaryStage;
         this.listOverviewCtrl = overview.getKey();
-        this.overview = new Scene(overview.getValue());
+        this.overview = new Scene(overview.getValue(), 1080, 720);
 
         this.addCardCtrl = addCard.getKey();
         this.addListCtrl = addList.getKey();
-        this.sceneAddCard = new Scene(addCard.getValue());
-        this.sceneAddList = new Scene(addList.getValue());
+        this.sceneAddCard = new Scene(addCard.getValue(), 1080, 720);
+        this.sceneAddList = new Scene(addList.getValue(), 1080, 720);
 
         this.editCardCtrl = edit.getKey();
-        this.edit = new Scene(edit.getValue());
+        this.edit = new Scene(edit.getValue(), 1080, 720);
 
         this.editListCtrl = editList.getKey();
-        this.editList = new Scene(editList.getValue());
+        this.editList = new Scene(editList.getValue(), 1080, 720);
 
         this.selectServerCtrl = selectServer.getKey();
-        this.selectServer = new Scene(selectServer.getValue());
-        System.out.println("working");
+        this.selectServer = new Scene(selectServer.getValue(), 1080, 720);
+
         showSelectServer();
+        this.primaryStage.setWidth(1080);
+        this.primaryStage.setHeight(720);
         primaryStage.show();
     }
+
     public void showSelectServer(){
         primaryStage.setTitle("Server: selecting server");
         primaryStage.setScene(selectServer);
@@ -76,42 +79,43 @@ public class MainCtrl {
 
     public void showOverview() {
         primaryStage.setTitle("Lists: Overview");
-//        primaryStage.setMinWidth(350);
-//        primaryStage.setMinHeight(360);
-//        primaryStage.setHeight(500);
-//        primaryStage.setWidth(800);
-        listOverviewCtrl.setAnchorPaneHeightWidth();
         primaryStage.setScene(overview);
+        setSizeScene();
+        //primaryStage.sizeToScene();
         listOverviewCtrl.refresh(1L);
-        //temporarily hardcoded boardID(which might even not be the correct ID)
     }
 
     public void showAdd(long listId) {
-        listOverviewCtrl.saveAnchorPaneHeightWidth();
         primaryStage.setTitle("Board: Adding Card");
         primaryStage.setScene(sceneAddCard);
         addCardCtrl.setListId(listId);
         sceneAddCard.setOnKeyPressed(e -> addCardCtrl.keyPressed(e));
+        setSizeScene();
     }
     public void showAddList(long boardId) {
-        listOverviewCtrl.saveAnchorPaneHeightWidth();
         primaryStage.setTitle("Board: Adding List");
         primaryStage.setScene(sceneAddList);
         addListCtrl.setBoard(boardId);
         sceneAddList.setOnKeyPressed(e -> addListCtrl.keyPressed(e));
+        setSizeScene();
     }
 
     public void showEdit(Card card) {
-        listOverviewCtrl.saveAnchorPaneHeightWidth();
         primaryStage.setTitle("Card: Edit Card");
         primaryStage.setScene(edit);
         editCardCtrl.init(card);
+        setSizeScene();
     }
 
     public void showEditList(TDList list){
-        listOverviewCtrl.saveAnchorPaneHeightWidth();
         primaryStage.setTitle("List: Rename list");
         primaryStage.setScene(editList);
         editListCtrl.init(list);
+        setSizeScene();
+    }
+
+    public void setSizeScene(){
+        primaryStage.setWidth(primaryStage.getWidth()+1);
+        primaryStage.setHeight(primaryStage.getHeight()+1);
     }
 }
