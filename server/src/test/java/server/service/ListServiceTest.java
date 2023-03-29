@@ -1,5 +1,6 @@
 package server.service;
 
+import commons.Board;
 import commons.TDList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ class ListServiceTest {
     @Mock
     private ListRepository listRepository;
     private ListService listService;
+    @Mock
     private BoardService boardService;
 
 
@@ -97,4 +99,49 @@ class ListServiceTest {
         listService.update(list);
         verify(listRepository, never()).save(list);
     }
+
+    @Test
+    public void testDelete() {
+        TDList list = new TDList("list1");
+        Board board = new Board("board1");
+        list.id = 1;
+        list.setBoard(board);
+        when(listRepository.existsById(list.getId())).thenReturn(true);
+        when(listRepository.getById(list.getId())).thenReturn(list);
+        listService.delete(list.getId());
+        verify(listRepository).deleteById(list.getId());
+    }
+
+    @Test
+    public void testDeleteNotExists() {
+        TDList list = new TDList("list1");
+        list.id = 1;
+        when(listRepository.existsById(list.getId())).thenReturn(false);
+        listService.delete(list.getId());
+        verify(listRepository, never()).deleteById(list.getId());
+    }
+
+    @Test
+    public void testUpdateNameExists() {
+        TDList list = new TDList("list1");
+        Board board = new Board("board1");
+        list.id = 1;
+        list.setBoard(board);
+        when(listRepository.existsById(list.id)).thenReturn(true);
+        when(listRepository.getById(list.id)).thenReturn(list);
+        list.setTitle("new name");
+        when(listRepository.save(list)).thenReturn(list);
+        listService.updateName(list.id, "new name");
+        verify(listRepository).save(list);
+    }
+
+    @Test
+    public void testUpdateNameNotExists() {
+        TDList list = new TDList("list1");
+        list.id = 1;
+        when(listRepository.existsById(list.id)).thenReturn(false);
+        listService.updateName(list.id, "new name");
+        verify(listRepository, never()).save(list);
+    }
+
 }
