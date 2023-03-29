@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.helperClass.SubtaskWrapper;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
@@ -9,10 +10,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
@@ -33,10 +32,16 @@ public class EditCardCtrl {
     private Label emptyName;
 
     @FXML
-    private TableView<Subtask> tableView;
+    private TableView<SubtaskWrapper> tableView;
 
     @FXML
-    private TableColumn<Subtask, String> tableColumn;
+    private TableColumn<SubtaskWrapper, String> tableColumnSubtask;
+
+    @FXML
+    private TableColumn<SubtaskWrapper, CheckBox> tableColumnCheckbox;
+
+    @FXML
+    private TableColumn<SubtaskWrapper, Button> tableColumnButton;
 
     @Inject
     public EditCardCtrl (MainCtrl mainCtrl, ServerUtils server) {
@@ -46,10 +51,21 @@ public class EditCardCtrl {
 
     public void init(Card card) {
         this.card = card;
-        System.out.println(card.getNestedList());
         cardName.setText(card.title);
-        tableColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getName()));
-        ObservableList<Subtask> data = FXCollections.observableList(card.nestedList);
+        tableColumnSubtask.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getSubtask().getName()));
+        tableColumnCheckbox.setCellValueFactory(new PropertyValueFactory<SubtaskWrapper, CheckBox>("checkBox"));
+        tableColumnButton.setCellValueFactory(new PropertyValueFactory<SubtaskWrapper, Button>("button"));
+        List<SubtaskWrapper> subtaskWrappers = new ArrayList<>();
+        for(Subtask subtask : card.nestedList) {
+            CheckBox checkBox = new CheckBox();
+            Button button = new Button("X");
+            button.setOnAction(event -> {
+                card.nestedList.remove(subtask);
+                mainCtrl.showEdit(card);
+            });
+            subtaskWrappers.add(new SubtaskWrapper(subtask, checkBox, button));
+        }
+        ObservableList<SubtaskWrapper> data = FXCollections.observableList(subtaskWrappers);
         tableView.setItems(data);
     }
 
