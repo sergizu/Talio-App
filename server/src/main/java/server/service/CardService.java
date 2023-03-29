@@ -96,6 +96,7 @@ public class CardService {
             toUpdate = cardRepository.save(toUpdate);
             boardService.sendUpdates(toUpdate.getList().getBoard().getId());
         } catch(Exception e) {
+            e.printStackTrace();
             return false;
         }
         return true;

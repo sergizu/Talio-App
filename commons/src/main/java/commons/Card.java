@@ -95,4 +95,13 @@ public class Card {
         this.nestedList = updatedList;
     }
 
+    public void updateSubtask(Subtask subtask) {
+        boolean b = subtask.checked;
+        int index = this.nestedList.indexOf(subtask);
+        if(index == -1) {
+            return;
+        }
+        Subtask toUpdate = this.nestedList.get(index);
+        toUpdate.setChecked(b);
+    }
 }

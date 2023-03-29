@@ -58,9 +58,24 @@ public class EditCardCtrl {
         List<SubtaskWrapper> subtaskWrappers = new ArrayList<>();
         for(Subtask subtask : card.nestedList) {
             CheckBox checkBox = new CheckBox();
+            if(subtask.checked) {
+                checkBox.setSelected(true);
+            }
+            checkBox.setOnMouseClicked(event -> {
+                if(checkBox.isSelected()) {
+                    subtask.setChecked(true);
+                    server.updateNestedList(card.id, card.nestedList);
+                }
+                if(!checkBox.isSelected()) {
+                    subtask.setChecked(false);
+                    server.updateNestedList(card.id, card.nestedList);
+                }
+                System.out.println(subtask.checked);
+            });
             Button button = new Button("X");
             button.setOnAction(event -> {
                 card.nestedList.remove(subtask);
+                server.updateNestedList(card.id, card.nestedList);
                 mainCtrl.showEdit(card);
             });
             subtaskWrappers.add(new SubtaskWrapper(subtask, checkBox, button));
