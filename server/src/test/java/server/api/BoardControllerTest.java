@@ -13,7 +13,7 @@ import server.database.ListRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
+import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -88,11 +88,15 @@ class BoardControllerTest {
     }
 
     @Test
-    void update() {
+    void updateIfExists() {
         Board board = new Board("Board 1");
         when(boardService.update(board)).thenReturn(board);
         assertEquals(ResponseEntity.ok(board), boardController.update(board));
         verify(boardService).update(board);
+    }
+    @Test
+    void updateIfNotExists(){
+        assertEquals(ResponseEntity.badRequest().build(), boardController.update(null));
     }
 
     @Test
@@ -127,5 +131,27 @@ class BoardControllerTest {
         when(boardService.delete(board.id)).thenReturn(false);
         assertEquals(boardController.removeByID(board.id), ResponseEntity.badRequest().build());
         verify(boardService).delete(board.id);
+    }
+//    @Test
+//    void tempGetterWhenNotInDBTest(){
+//        ResponseEntity<Board> response = boardController.tempGetter();
+//        Board board = response.getBody();
+//        Board board1 = new Board("Default board");
+//        Card card = new Card("Default card");
+//        TDList tdList = new TDList("TO DO");
+//        TDList tdList1 = new TDList("DOING");
+//        TDList tdList2 = new TDList("DONE");
+//        tdList.addCard(card);
+//        board1.addList(tdList);
+//        board1.addList(tdList1);
+//        board1.addList(tdList2);
+//        assertEquals(board1.title, board.title);
+//    }
+//    @Test
+//    void tempGetterWhenInDBTest(){
+//        Board board1 = boardController.tempGetter().
+//    }
+    @Test
+    void subscribeForUpdates(){
     }
 }
