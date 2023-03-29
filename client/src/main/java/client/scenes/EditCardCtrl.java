@@ -174,7 +174,7 @@ public class EditCardCtrl {
                     for(SubtaskWrapper item : items) {
                         subtasks.add(item.getSubtask());
                     }
-                    server.updateNestedList(card.id, card.nestedList);
+                    server.updateNestedList(card.id, subtasks);
                     e.setDropCompleted(true); //marks the end of the drag event
                     tableView.getSelectionModel().select(dropIndex);
                     e.consume();

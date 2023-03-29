@@ -9,12 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
 
-@Entity
-public class Subtask implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public long id;
+public class Subtask implements Serializable {
 
     public String name;
 
@@ -48,6 +44,11 @@ public class Subtask implements Serializable {
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
     }
-
-
+    @Override
+    public String toString() {
+        return "Subtask{" +
+                "name='" + name + '\'' +
+                ", checked=" + checked +
+                '}';
+    }
 }

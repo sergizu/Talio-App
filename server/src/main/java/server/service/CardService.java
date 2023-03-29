@@ -92,7 +92,10 @@ public class CardService {
     public boolean updateNestedList(long id, ArrayList<Subtask> nestedList) {
         try {
             Card toUpdate = cardRepository.getById(id);
+            System.out.println(toUpdate.getNestedList());
+            System.out.println(nestedList);
             toUpdate.setNestedList(nestedList);
+            System.out.println(toUpdate.getNestedList());
             toUpdate = cardRepository.save(toUpdate);
             boardService.sendUpdates(toUpdate.getList().getBoard().getId());
         } catch(Exception e) {
