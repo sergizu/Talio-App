@@ -23,14 +23,13 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+import static client.helperClass.SubtaskWrapper.serialization;
+
 public class ListOverviewCtrl implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private Board board;
-    private static final DataFormat serialization =
-            new DataFormat("application/x-java-serialized-object");
-
     @FXML
     private ScrollPane scrollPane;
     @FXML
