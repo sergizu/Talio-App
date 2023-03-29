@@ -1,18 +1,20 @@
 package client.scenes;
 
-import client.services.AddCardService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
+import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Modality;
 
 public class AddCardCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-    private final AddCardService service;
 
     @FXML
     private Label myLabel;
@@ -21,22 +23,24 @@ public class AddCardCtrl {
     private long listId;
 
     @Inject
-    public AddCardCtrl(ServerUtils server, MainCtrl mainCtrl, AddCardService service) {
+    public AddCardCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
-        this.service = service;
     }
 
     public void setListId(long listId) {
         this.listId = listId;
     }
 
-    private Card getCard() {
-        return service.createCard(cardName.getText());
-    }
-
     public void ok() {
-        service.ok(server, listId, getCard());
+        try {
+            server.addCardToList(listId, new Card(cardName.getText()));
+        } catch (WebApplicationException e) {
+            var alert = new Alert(Alert.AlertType.ERROR);
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
         mainCtrl.showOverview();
 
     }
@@ -52,11 +56,9 @@ public class AddCardCtrl {
     }
 
     public void keyPressed(KeyEvent e) {
-        if (service.keyEnter(e)) {
+        if(e.getCode() == KeyCode.ENTER)
             ok();
-        }
-        else if (service.keyEscape(e)) {
+        else if(e.getCode() == KeyCode.ESCAPE)
             cancel();
-        }
     }
 }

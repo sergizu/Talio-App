@@ -1,23 +1,37 @@
 package client.scenes;
 
-import client.services.ListOverviewService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Board;
 import commons.Card;
 import commons.TDList;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.util.Duration;
 
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -42,20 +56,18 @@ public class ListOverviewCtrl implements Initializable {
     @FXML
     private Button copyButton;
     private TableView<Card> selection;
-    private ListOverviewService service;
     private double height = 700;
     private double width = 700;
 
     @Inject
-    public ListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl, ListOverviewService service) {
+    public ListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
-        this.service = service;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        service.setScrollPane(scrollPane);
+        setScrollPane();
         server.registerForUpdates(updatedBoardID -> {
             if(board.getId() == updatedBoardID)
                 board = server.tempBoardGetter();
@@ -96,24 +108,31 @@ public class ListOverviewCtrl implements Initializable {
         for (var tdList : lists) {
             Button buttonAddCard = createAddCardButton(tdList.id);
             Button buttonEditList = createEditListButton(tdList);
-            TableView<Card> tv = service.createTable(tdList);
-            //service.cardExpansion(tv,mainCtrl);
+            TableView<Card> tv = createTable(tdList);
             cardExpansion(tv);
             dragAndDrop(tv);
             dragOtherLists(tv, tdList);
-            flowPane.getChildren().addAll(service.createVBox(tv,
-                    service.createHBox(buttonAddCard, buttonEditList)));
+            flowPane.getChildren().addAll(createVBox(tv,
+                    createHBox(buttonAddCard, buttonEditList)));
         }
         return flowPane;
     }
 
 
     public Button createAddCardButton(long id) {
-        return service.createAddCardButton(id, mainCtrl);
+        Button button = new Button("Add Card");
+        button.setOnAction(e -> {
+            mainCtrl.showAdd(id);
+        });
+        return button;
     }
 
     public Button createEditListButton(TDList list) {
-        return service.createEditListButton(list, mainCtrl);
+        Button button = new Button("Edit");
+        button.setOnAction(e -> {
+            mainCtrl.showEditList(list);
+        });
+        return button;
     }
 
 //    public FlowPane createFlowPane() {
@@ -129,20 +148,20 @@ public class ListOverviewCtrl implements Initializable {
 
 
 
-//    public TableView<Card> createTable(TDList tdList) {
-//        TableView<Card> tv = new TableView<>();
-//        tv.setPrefSize(157, 270);
-//        tv.setId(Long.toString(tdList.getId()));
-//        TableColumn<Card, String> tableColumn = new TableColumn<>();
-//        tableColumn.setText(tdList.title);
-//        tableColumn.setPrefWidth(tv.getPrefWidth());
-//        tableColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().title));
-//        tableColumn.setSortable(false);
-//        tv.getColumns().add(tableColumn);
-//        ObservableList<Card> dataCards = FXCollections.observableList(tdList.cards);
-//        tv.setItems(dataCards);
-//        return tv;
-//    }
+    public TableView<Card> createTable(TDList tdList) {
+        TableView<Card> tv = new TableView<>();
+        tv.setPrefSize(157, 270);
+        tv.setId(Long.toString(tdList.getId()));
+        TableColumn<Card, String> tableColumn = new TableColumn<>();
+        tableColumn.setText(tdList.title);
+        tableColumn.setPrefWidth(tv.getPrefWidth());
+        tableColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().title));
+        tableColumn.setSortable(false);
+        tv.getColumns().add(tableColumn);
+        ObservableList<Card> dataCards = FXCollections.observableList(tdList.cards);
+        tv.setItems(dataCards);
+        return tv;
+    }
 
 //    public TableView<Card> createTable(TDList tdList) {
 //        TableView<Card> tv = new TableView<>();
@@ -158,21 +177,21 @@ public class ListOverviewCtrl implements Initializable {
 //    }
 
 
-//    public HBox createHBox(Button button1, Button button2) {
-//        HBox hBox = new HBox();
-//        hBox.getChildren().addAll(button2, button1);
-//        //hBox.setAlignment(Pos.BASELINE_CENTER);
-//        hBox.setSpacing(100);
-//        return hBox;
-//    }
+    public HBox createHBox(Button button1, Button button2) {
+        HBox hBox = new HBox();
+        hBox.getChildren().addAll(button2, button1);
+        //hBox.setAlignment(Pos.BASELINE_CENTER);
+        hBox.setSpacing(100);
+        return hBox;
+    }
 
-//    public VBox createVBox(TableView<Card> cards, HBox hBox) {
-//        VBox vBox = new VBox();
-//        vBox.getChildren().addAll(hBox, cards);
-//        vBox.setAlignment(Pos.TOP_RIGHT);
-//        vBox.setSpacing(3);
-//        return vBox;
-//    }
+    public VBox createVBox(TableView<Card> cards, HBox hBox) {
+        VBox vBox = new VBox();
+        vBox.getChildren().addAll(hBox, cards);
+        vBox.setAlignment(Pos.TOP_RIGHT);
+        vBox.setSpacing(3);
+        return vBox;
+    }
 
     //boardID is not yet used
     public void refresh(long boardID) {
@@ -180,21 +199,14 @@ public class ListOverviewCtrl implements Initializable {
         boardTitle.setText(board.title);
         boardKey.setText("key: " + board.key);
         showLists();
-
-        //when we can dynamically add tdLists we would need a for loop here
-        //tableView.setItems(dataLists.get(0));
     }
     public void stop() {
         server.stop();
     }
 
     public void addList() {
-        service.addList(mainCtrl,board.id);
+        mainCtrl.showAddList(board.id);
     }
-
-//    public void dragAndDrop(TableView<Card> tableView){
-//        service.dragAndDrop(tableView,serialization,selection,server,board);
-//    }
 
     //Method that will pop up a window to change the card name whenever you double-click on a card
     public void cardExpansion(TableView<Card> tableView) {
@@ -294,39 +306,41 @@ public class ListOverviewCtrl implements Initializable {
 
 
     public void copyKey() {
-        service.copyKey(board.key, copyButton);
+        copyToClipboard(board.key);
+        animateCopyButton(copyButton);
     }
-//    public void dragOtherLists(TableView<Card> tableView) {
-//        tableView.setOnDragOver(e -> {
-//            Dragboard db = e.getDragboard();
-//            if (db.hasContent(serialization)) {
-//                e.acceptTransferModes(TransferMode.MOVE);
-//                e.consume();
-//            }
-//        });
-//        tableView.setOnDragDropped(e -> {
-//            Dragboard db = e.getDragboard();
-//            int draggedIndex = (int) db.getContent(serialization);
-//            Card card = selection.getItems().remove(draggedIndex);
-//            tableView.getItems().add(card);
-//            ArrayList<Card> items = new ArrayList<>();
-//            items.addAll(tableView.getItems());
-//            updateList(card.list, items);
-//            //I have to find a way to get a reference to the TDList that it's dropped on
-//            //Don't know how to do that yet
-//            e.consume();
-//        });
-//    }
 
-    //Sets whatever tableview the drag starts with to be the selection tableview
-    //This allows dragOtherLists to work because otherwise there would be no
-    //reference to the tableview from which the card is removed
-//    public void setSelection(TableView<Card> tableView) {
-//        tableView.setOnMousePressed(e ->  {
-//            selection = tableView;
-//            System.out.println(selection.getItems());
-//        });
-//    }
+    public void copyToClipboard(long boardKey){
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        StringSelection selection = new StringSelection(String.valueOf(boardKey));
+        clipboard.setContents(selection,null);
+    }
+
+    public void animateCopyButton(Button copyButton){
+        Platform.runLater(()->
+        {
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.ZERO, event -> {
+                        afterCopyButton(copyButton);
+                    }),
+                    new KeyFrame(Duration.seconds(2), event -> {
+                        restoreCopyButton(copyButton);
+                    })
+            );
+            timeline.play();
+        });
+    }
+
+    public void afterCopyButton(Button copyButton){
+        copyButton.setFont(new javafx.scene.text.Font(9));
+        copyButton.setText("Copied!");
+        copyButton.setStyle("-fx-background-color: #34eb67;");
+    }
+
+    public void restoreCopyButton(Button copyButton){
+        copyButton.setStyle("-fx-background-color: #2596be;");
+        copyButton.setFont(new Font(12));
+        copyButton.setText("Copy!");
+    }
 }
-
 
