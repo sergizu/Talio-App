@@ -5,7 +5,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
-
+import java.util.ArrayList;
 
 @Entity
 public class Card {
@@ -21,17 +21,19 @@ public class Card {
     @JsonBackReference
     public TDList list;
 
+    public ArrayList<Subtask> nestedList;
+
     /**
      * Default constructor for JPA
      */
     public Card() {}
-
     /**
      * Constructor for creating a card with a title
      * @param title of the card
      */
     public Card(String title) {
         this.title = title;
+        nestedList = new ArrayList<>();
     }
 
     /**
@@ -111,5 +113,39 @@ public class Card {
      */
     public void setList(TDList list) {
         this.list = list;
+    }
+
+    public void addSubTask(Subtask subtask) {
+        nestedList.add(subtask);
+    }
+
+    public void removeSubTask(Subtask subtask) {
+        nestedList.remove(subtask);
+    }
+
+    public ArrayList<Subtask> getNestedList() {
+        return nestedList;
+    }
+
+    public void setNestedList(ArrayList<Subtask> updatedList) {
+        this.nestedList = updatedList;
+    }
+
+    public int amountSelected() {
+        int i = 0;
+        for(Subtask subtask : this.nestedList) {
+            if(subtask.checked) {
+                i++;
+            }
+        }
+        return i;
+    }
+
+    public String cellFactory() {
+        String titleString = this.title;
+        if(nestedList.isEmpty()) {
+            return titleString;
+        }
+        return this.title + "\n" + amountSelected() + "/" + nestedList.size();
     }
 }

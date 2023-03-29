@@ -22,6 +22,7 @@ import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 import org.springframework.http.HttpStatus;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -34,12 +35,10 @@ public class ServerUtils {
     private static String server = "http://localhost:8080/";
     private static final ExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadExecutor();
 
-
     public void changeServer(String s){
         server = "http://"+s+"/";
     }
     public static String getServer(){return server;}
-
 
     public List<Card> getCard() {
         return ClientBuilder.newClient(new ClientConfig()) //
@@ -138,7 +137,7 @@ public class ServerUtils {
     }
 
 
-    public void registerForUpdates(Consumer<Long> consumer) {
+    public void registerForBoardUpdates(Consumer<Long> consumer) {
         EXECUTOR_SERVICE.submit(() -> {
             while (!Thread.interrupted()) {
                 Response result = ClientBuilder.newClient(new ClientConfig())
@@ -152,6 +151,20 @@ public class ServerUtils {
             }
         });
     }
+//    public void registerForCardUpdates(Consumer<Long> consumer) {
+//        EXECUTOR_SERVICE.submit(() -> {
+//            while (!Thread.interrupted()) {
+//                Response result = ClientBuilder.newClient(new ClientConfig())
+//                        .target(server).path("/api/cards/updates")
+//                        .request(APPLICATION_JSON)
+//                        .accept(APPLICATION_JSON)
+//                        .get();
+//                if(result.getStatus() == HttpStatus.NO_CONTENT.value())
+//                    continue;
+//                consumer.accept(result.readEntity(Long.class));
+//            }
+//        });
+//    }
 
     public Card updateCard(Card card) {
         return ClientBuilder.newClient(new ClientConfig()) //
@@ -200,6 +213,14 @@ public class ServerUtils {
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(list, APPLICATION_JSON));
+    }
+
+    public void updateNestedList(long id, ArrayList<Subtask> nestedList) {
+        ClientBuilder.newClient(new ClientConfig())
+                .target(server).path("api/cards/updateNestedList/" + id)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(nestedList, APPLICATION_JSON));
     }
 
     public void stop() {
