@@ -84,10 +84,10 @@ public class MainCtrl {
 
     public void showOverview() {
         primaryStage.setTitle("Lists: Overview");
-        primaryStage.setMinWidth(350);
-        primaryStage.setMinHeight(360);
-        primaryStage.setHeight(500);
-        primaryStage.setWidth(800);
+//        primaryStage.setMinWidth(350);
+//        primaryStage.setMinHeight(360);
+//        primaryStage.setHeight(500);
+//        primaryStage.setWidth(800);
         listOverviewCtrl.setAnchorPaneHeightWidth();
         primaryStage.setScene(overview);
         listOverviewCtrl.refresh(1L);
