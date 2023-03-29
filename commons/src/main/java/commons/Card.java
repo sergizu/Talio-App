@@ -95,13 +95,21 @@ public class Card {
         this.nestedList = updatedList;
     }
 
-    public void updateSubtask(Subtask subtask) {
-        boolean b = subtask.checked;
-        int index = this.nestedList.indexOf(subtask);
-        if(index == -1) {
-            return;
+    public int amountSelected() {
+        int i = 0;
+        for(Subtask subtask : this.nestedList) {
+            if(subtask.checked) {
+                i++;
+            }
         }
-        Subtask toUpdate = this.nestedList.get(index);
-        toUpdate.setChecked(b);
+        return i;
+    }
+
+    public String cellFactory() {
+        String titleString = this.title;
+        if(nestedList.isEmpty()) {
+            return titleString;
+        }
+        return this.title + "\n" + amountSelected() + "/" + nestedList.size();
     }
 }

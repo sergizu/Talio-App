@@ -95,7 +95,7 @@ public class ListOverviewService {
         TableColumn<Card, String> tableColumn = new TableColumn<>();
         tableColumn.setText(tdList.title);
         tableColumn.setPrefWidth(tv.getPrefWidth());
-        tableColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().title));
+        tableColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().cellFactory()));
         tv.getColumns().add(tableColumn);
         ObservableList<Card> dataCards = FXCollections.observableList(tdList.cards);
         tv.setItems(dataCards);
