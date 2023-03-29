@@ -13,7 +13,6 @@ import server.database.ListRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
