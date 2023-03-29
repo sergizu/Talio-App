@@ -5,7 +5,6 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
 import commons.Subtask;
-import commons.TDList;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

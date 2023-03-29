@@ -2,11 +2,6 @@ package commons;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.io.Serializable;
 
 
@@ -35,6 +30,10 @@ public class Subtask implements Serializable {
         this.checked = b;
     }
 
+    public boolean getChecked() {
+        return this.checked;
+    }
+
     @Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this,o);
@@ -44,6 +43,7 @@ public class Subtask implements Serializable {
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
     }
+
     @Override
     public String toString() {
         return "Subtask{" +
