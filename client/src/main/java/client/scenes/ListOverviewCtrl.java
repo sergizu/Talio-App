@@ -52,12 +52,8 @@ public class ListOverviewCtrl implements Initializable {
     @FXML
     private Label boardTitle;
     @FXML
-    private Label boardKey;
-    @FXML
     private Button copyButton;
     private TableView<Card> selection;
-    private double height = 700;
-    private double width = 700;
 
     @Inject
     public ListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
@@ -72,25 +68,16 @@ public class ListOverviewCtrl implements Initializable {
             if(board.getId() == updatedBoardID)
                 board = server.tempBoardGetter();
             Platform.runLater(() -> {
-                boardTitle.setText(board.title);
-                boardKey.setText("key: " + board.key);
-                showLists();
+                refresh(1);
             });
         });
-    }
-    public void setAnchorPaneHeightWidth(){
-        anchorPane.setPrefHeight(height);
-        anchorPane.setPrefWidth(width);
-    }
-    public void saveAnchorPaneHeightWidth(){
-        height = anchorPane.getHeight();
-        width = anchorPane.getWidth();
     }
 
     private void setScrollPane() {
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
     }
+
     public void showLists() {
         scrollPane.setContent(createFlowPane());
     }
@@ -135,18 +122,6 @@ public class ListOverviewCtrl implements Initializable {
         return button;
     }
 
-//    public FlowPane createFlowPane() {
-//        return service.createFlowPane(board, mainCtrl,
-//                serialization, selection, server);
-//    }
-
-//    public void setFlowPane(FlowPane flowPane) {
-//        flowPane.setAlignment(Pos.BASELINE_CENTER);
-//        flowPane.setHgap(50);
-//        flowPane.setVgap(5);
-//    }
-
-
 
     public TableView<Card> createTable(TDList tdList) {
         TableView<Card> tv = new TableView<>();
@@ -163,25 +138,11 @@ public class ListOverviewCtrl implements Initializable {
         return tv;
     }
 
-//    public TableView<Card> createTable(TDList tdList) {
-//        TableView<Card> tv = new TableView<>();
-//        tv.setPrefSize(157, 270);
-//        TableColumn<Card, String> tableColumn = new TableColumn<>();
-//        tableColumn.setText(tdList.title);
-//        tableColumn.setPrefWidth(tv.getPrefWidth());
-//        tableColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().title));
-//        tv.getColumns().add(tableColumn);
-//        ObservableList<Card> dataCards = FXCollections.observableList(tdList.cards);
-//        tv.setItems(dataCards);
-//        return tv;
-//    }
-
 
     public HBox createHBox(Button button1, Button button2) {
         HBox hBox = new HBox();
         hBox.getChildren().addAll(button2, button1);
-        //hBox.setAlignment(Pos.BASELINE_CENTER);
-        hBox.setSpacing(100);
+        hBox.setSpacing(55);
         return hBox;
     }
 
@@ -197,7 +158,6 @@ public class ListOverviewCtrl implements Initializable {
     public void refresh(long boardID) {
         board = server.tempBoardGetter();
         boardTitle.setText(board.title);
-        boardKey.setText("key: " + board.key);
         showLists();
     }
     public void stop() {
@@ -303,7 +263,6 @@ public class ListOverviewCtrl implements Initializable {
             e.consume();
         });
     }
-
 
     public void copyKey() {
         copyToClipboard(board.key);
