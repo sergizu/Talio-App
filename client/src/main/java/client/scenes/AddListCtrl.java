@@ -56,7 +56,7 @@ public class AddListCtrl {
 
     public void cancel() {
         clearFields();
-        mainCtrl.showOverview();
+        mainCtrl.showOverview(1);
     }
 
     public void ok() {
@@ -74,7 +74,7 @@ public class AddListCtrl {
         }
 
         clearFields();
-        mainCtrl.showOverview();
+        mainCtrl.showOverview(1);
     }
 
     private void clearFields() {

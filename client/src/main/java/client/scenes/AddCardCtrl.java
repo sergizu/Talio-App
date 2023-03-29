@@ -41,7 +41,7 @@ public class AddCardCtrl {
             alert.setContentText(e.getMessage());
             alert.showAndWait();
         }
-        mainCtrl.showOverview();
+        mainCtrl.showOverview(1);
 
     }
 
@@ -52,7 +52,7 @@ public class AddCardCtrl {
     public void cancel() {
         myLabel.setText("");
         clearFields();
-        mainCtrl.showOverview();
+        mainCtrl.showOverview(1);
     }
 
     public void keyPressed(KeyEvent e) {

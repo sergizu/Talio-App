@@ -35,7 +35,7 @@ public class EditCardCtrl {
 
     public void ok() {
         if (cardName.getText().equals(card.title)) {
-            mainCtrl.showOverview();
+            mainCtrl.showOverview(1);
             return;
         }
         else if(cardName.getText().equals("")){
@@ -44,13 +44,13 @@ public class EditCardCtrl {
         }
         emptyName.setText("");
         server.updateCardName(card.getId(), cardName.getText());
-        mainCtrl.showOverview();
+        mainCtrl.showOverview(1);
     }
 
     public void delete() {
         server.removeCard(card);
         emptyName.setText("");
-        mainCtrl.showOverview();
+        mainCtrl.showOverview(1);
     }
 
     public void keyPressed(KeyEvent e) {
@@ -63,6 +63,6 @@ public class EditCardCtrl {
     }
 
     public void cancel() {
-        mainCtrl.showOverview();
+        mainCtrl.showOverview(1);
     }
 }

@@ -36,7 +36,7 @@ public class EditListCtrl {
 
     public void ok() {
         if (listName.getText().equals(taskList.title)) {
-            mainCtrl.showOverview();
+            mainCtrl.showOverview(1);
             return;
         }
         if(listName.getText().equals(""))
@@ -44,7 +44,7 @@ public class EditListCtrl {
         else {
             emptyName.setText("");
             server.updateListName(taskList.getId(), listName.getText());
-            mainCtrl.showOverview();
+            mainCtrl.showOverview(1);
         }
     }
 
@@ -62,9 +62,9 @@ public class EditListCtrl {
             server.removeCard(card);
         }
         server.removeList(taskList);
-        mainCtrl.showOverview();
+        mainCtrl.showOverview(1);
     }
     public void cancel() {
-        mainCtrl.showOverview();
+        mainCtrl.showOverview(1);
     }
 }
