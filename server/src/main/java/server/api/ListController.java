@@ -59,8 +59,8 @@ public class ListController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{listId}/addCard")
-    public ResponseEntity addCardToList(@PathVariable("listId") long listId, @RequestBody Card card) {
+    @PutMapping("/{id}/addCard")
+    public ResponseEntity addCardToList(@PathVariable("id") long listId, @RequestBody Card card) {
         if (!listService.addCardToList(listId, card))
             return ResponseEntity.badRequest().build();
         return ResponseEntity.ok().build();
