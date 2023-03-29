@@ -17,10 +17,13 @@ public class Subtask {
 
     public String name;
 
+    public boolean checked;
+
     public Subtask() {}
 
     public Subtask(String name) {
         this.name = name;
+        checked = false;
     }
 
     public String getName() {
@@ -29,6 +32,10 @@ public class Subtask {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setChecked(boolean b) {
+        this.checked = b;
     }
 
     @Override
@@ -40,4 +47,6 @@ public class Subtask {
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
     }
+
+
 }
