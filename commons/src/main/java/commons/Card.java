@@ -21,27 +21,42 @@ public class Card {
     @JsonBackReference
     public TDList list;
 
-    public Card() {
+    /**
+     * Default constructor for JPA
+     */
+    public Card() {}
 
-    }
-
+    /**
+     * Constructor for creating a card with a title
+     * @param title of the card
+     */
     public Card(String title) {
         this.title = title;
     }
 
-    //Equals method, decided to include both the ID and title(maybe we should rethink this later)
+    /**
+     * Equals method using EqualsBuilder from Apache Commons Lang
+     * @param o other object
+     * @return true iff the objects are equal
+     */
     @Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this,o);
-        // I suggest we could use EqualsBuilder - reliable and shorter implementation
     }
 
-    //Hashcode method, decided to include both the ID and title(maybe we should rethink this later)
+    /**
+     * Hashcode method using HashCodeBuilder from Apache Commons Lang
+     * @return hashcode
+     */
     @Override
     public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this); ///also reliable and less code
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
+    /**
+     * toString method
+     * @return string representation of the card
+     */
     @Override
     public String toString() {
         return "Card{" +
@@ -50,26 +65,50 @@ public class Card {
                 '}';
     }
 
+    /**
+     * Getter for id
+     * @return id of this card
+     */
     public long getId() {
         return id;
     }
 
+    /**
+     * Setter for id
+     * @param id for this card
+     */
     public void setId(long id) {
         this.id = id;
     }
 
+    /**
+     * Getter for title
+     * @return title of this card
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Setter for title
+     * @param title for this card
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * Getter for list
+     * @return list of this card
+     */
     public TDList getList() {
         return list;
     }
 
+    /**
+     * Setter for list
+     * @param list for this card
+     */
     public void setList(TDList list) {
         this.list = list;
     }

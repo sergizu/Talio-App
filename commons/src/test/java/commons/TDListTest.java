@@ -20,6 +20,18 @@ class TDListTest {
     }
 
     @Test
+    public void testEmptyConstructor() {
+        TDList list = new TDList();
+        assertNotNull(list);
+    }
+
+    @Test
+    public void testConstructor() {
+        TDList list = new TDList("test list");
+        assertEquals("test list", list.title);
+    }
+
+    @Test
     void testNotEqual() {
         assertNotEquals(list, list1);
     }
@@ -30,12 +42,12 @@ class TDListTest {
     }
 
     @Test
-    void testEqualOtherAddress() {
+    void testEqualsSameName() {
         assertEquals(list, list2);
     }
 
     @Test
-    void testHash() {
+    void testHashSameAttributes() {
         assertEquals(list.hashCode(), list2.hashCode());
     }
 
@@ -47,7 +59,7 @@ class TDListTest {
                 "Cards:\nCard{" +
                 "id=" + card1.getId() +
                 ", title='card1'}" ;
-        assertEquals(list.toString(), toString);
+        assertEquals(toString, list.toString());
     }
 
     @Test
@@ -65,5 +77,35 @@ class TDListTest {
         list.addCard(card1);
         list.removeCard(card1.getId());
         assertTrue(list.isEmpty());
+    }
+
+    @Test
+    public void testGetTitle() {
+        assertEquals(list.title, list.getTitle());
+    }
+
+    @Test
+    public void testSetTitle() {
+        list.setTitle("test card 3");
+        assertEquals("test card 3", list.getTitle());
+    }
+
+    @Test
+    public void testGetId() {
+        assertEquals(list.id, list.getId());
+    }
+
+    @Test
+    public void testSetBoard() {
+        Board board = new Board("test board");
+        list.setBoard(board);
+        assertEquals(board, list.getBoard());
+    }
+
+    @Test
+    public void testGetBoard() {
+        Board board = new Board("test board");
+        list.setBoard(board);
+        assertEquals(board, list.getBoard());
     }
 }

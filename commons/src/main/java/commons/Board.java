@@ -2,11 +2,11 @@ package commons;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 public class Board {
@@ -24,22 +24,52 @@ public class Board {
     @JsonManagedReference
     public List<TDList> tdLists = new ArrayList<>();
 
+    /**
+     * Default constructor for JPA
+     */
     public Board(){}
 
+    /**
+     * Constructor for creating a board with a title
+     * @param title of the board
+     */
     public Board(String title) {
         this.title = title;
     }
 
+    /**
+     * Equals method using EqualsBuilder from Apache Commons Lang
+     * Beware that the equals method does not check for equality of keys and ids
+     * @param obj other object
+     * @return true iff the objects are equal
+     */
     @Override
     public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(this, obj);
+        if (this == obj) return true;
+
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        Board board = (Board) obj;
+
+        return new EqualsBuilder()
+                .append(title, board.title)
+                .append(tdLists, board.tdLists)
+                .isEquals();
     }
 
+    /**
+     * Hashcode method using HashCodeBuilder from Apache Commons Lang
+     * @return hashcode
+     */
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, tdLists);
+        return HashCodeBuilder.reflectionHashCode(this);
     }
-    // To string method does not work, because class TDList doesn't have toString method
+
+    /**
+     * toString method
+     * @return string representation of the board
+     */
     @Override
     public String toString() {
         return "Board{" +
@@ -49,24 +79,49 @@ public class Board {
                 '}';
     }
 
+    /**
+     * Getter for id
+     * @return id
+     */
     public long getId() {
         return id;
     }
 
+    /**
+     * Setter for id
+     * @param id of the board
+     */
     public void setId(long id) {
         this.id = id;
     }
 
+    /**
+     * Getter for title
+     * @return title
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Setter for title
+     * @param title of the board
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * Method that adds a TDList to the board
+     * @param l TDList to be added
+     */
     public void addList(TDList l){ tdLists.add(l); }
 
+    /**
+     * Method that removes a TDList from the board
+     * @param id of the TDList to be removed
+     * @return true iff the TDList was removed
+     */
     public boolean removeList(long id){
         return tdLists.removeIf(n -> (n.id == id));
     }
