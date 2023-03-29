@@ -1,6 +1,7 @@
 package server.api;
 
 import commons.Card;
+import commons.TDList;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import server.service.CardService;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -99,5 +101,24 @@ class CardControllerTest {
         assertEquals(cardController.removeByID(card.id), ResponseEntity.badRequest().build());
         verify(cardService).delete(card.id);
     }
-
+    @Test
+    void updateNameIfExists(){
+        when(cardService.updateName(any(Long.class), any(String.class))).thenReturn(true);
+        assertEquals(ResponseEntity.ok().build(), cardController.updateName(1L, "a"));
+    }
+    @Test
+    void updateNameIfNotExists(){
+        when(cardService.updateName(any(Long.class), any(String.class))).thenReturn(false);
+        assertEquals(ResponseEntity.badRequest().build(), cardController.updateName(1L, "a"));
+    }
+    @Test
+    void updateListIfExists(){
+        when(cardService.updateList(any(Long.class), any(TDList.class))).thenReturn(true);
+        assertEquals(ResponseEntity.ok().build(), cardController.updateList(1L, new TDList("l1")));
+    }
+    @Test
+    void updateListIfNotExists(){
+        when(cardService.updateList(any(Long.class), any(TDList.class))).thenReturn(false);
+        assertEquals(ResponseEntity.badRequest().build(), cardController.updateList(1L, new TDList("l1")));
+    }
 }

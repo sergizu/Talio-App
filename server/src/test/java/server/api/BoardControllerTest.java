@@ -24,7 +24,7 @@ import org.springframework.http.ResponseEntity;
 import server.service.BoardService;
 
 
-
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -131,26 +131,45 @@ class BoardControllerTest {
         assertEquals(boardController.removeByID(board.id), ResponseEntity.badRequest().build());
         verify(boardService).delete(board.id);
     }
-//    @Test
-//    void tempGetterWhenNotInDBTest(){
-//        ResponseEntity<Board> response = boardController.tempGetter();
-//        Board board = response.getBody();
-//        Board board1 = new Board("Default board");
-//        Card card = new Card("Default card");
-//        TDList tdList = new TDList("TO DO");
-//        TDList tdList1 = new TDList("DOING");
-//        TDList tdList2 = new TDList("DONE");
-//        tdList.addCard(card);
-//        board1.addList(tdList);
-//        board1.addList(tdList1);
-//        board1.addList(tdList2);
-//        assertEquals(board1.title, board.title);
-//    }
-//    @Test
-//    void tempGetterWhenInDBTest(){
-//        Board board1 = boardController.tempGetter().
-//    }
+    @Test
+    void tempGetterWhenNotInDBTest(){
+        Board board1 = new Board("Default board");
+        Card card = new Card("Default card");
+        TDList tdList = new TDList("TO DO");
+        TDList tdList1 = new TDList("DOING");
+        TDList tdList2 = new TDList("DONE");
+        tdList.addCard(card);
+        board1.addList(tdList);
+        board1.addList(tdList1);
+        board1.addList(tdList2);
+        when(boardService.addBoard(any(Board.class))).thenReturn(board1);
+        ResponseEntity<Board> response = boardController.tempGetter();
+        Board board = response.getBody();
+        assertEquals(board1.title, board.title);
+    }
+    @Test
+    void tempGetterWhenInDBTest(){
+        Board board1 = new Board("Default board");
+        Card card = new Card("Default card");
+        TDList tdList = new TDList("TO DO");
+        TDList tdList1 = new TDList("DOING");
+        TDList tdList2 = new TDList("DONE");
+        tdList.addCard(card);
+        board1.addList(tdList);
+        board1.addList(tdList1);
+        board1.addList(tdList2);
+        when(boardService.addBoard(any(Board.class))).thenReturn(board1);
+        when(boardService.existsById(any(Long.class))).thenReturn(true);
+        when(boardService.getById(any(Long.class))).thenReturn(board1);
+        boardController.tempGetter();
+        assertEquals(board1.id, boardController.getDefaultId());
+        ResponseEntity<Board> response = boardController.tempGetter();
+        Board board = response.getBody();
+        assertEquals(board1, board);
+    }
     @Test
     void subscribeForUpdates(){
+        boardController.subscribeForUpdates();
+        verify(boardService).subscribeForUpdates();
     }
 }

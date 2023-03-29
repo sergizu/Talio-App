@@ -14,6 +14,7 @@ import server.service.BoardService;
 import server.service.ListService;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -102,5 +103,23 @@ class ListControllerTest {
                 when(listService.delete(list.id)).thenReturn(false);
                 assertEquals(listController.removeByID(list.id), ResponseEntity.badRequest().build());
                 verify(listService).delete(list.id);
+        }
+        @Test
+        void addCardToListIfNotExists(){
+                when(listService.existsById(any(Long.class))).thenReturn(false);
+                assertEquals(ResponseEntity.badRequest().build(),
+                        listController.addCardToList(1L, new Card("c1")));
+        }
+        @Test
+        void updateListNameIfExists(){
+                when(listService.updateName(any(Long.class), any(String.class))).thenReturn(true);
+                assertEquals(ResponseEntity.ok().build(),
+                        listController.updateListName(1L, "a"));
+        }
+        @Test
+        void updateListNameIfNotExists(){
+                when(listService.updateName(any(Long.class), any(String.class))).thenReturn(false);
+                assertEquals(ResponseEntity.badRequest().build(),
+                        listController.updateListName(1L, "a"));
         }
 }
