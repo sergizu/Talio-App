@@ -1,6 +1,7 @@
 package server.service;
 
 import commons.Board;
+import commons.Card;
 import commons.TDList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -144,4 +145,28 @@ class ListServiceTest {
         verify(listRepository, never()).save(list);
     }
 
+    @Test
+    public void testAddCardToList() {
+        TDList list = new TDList("list1");
+        Board board = new Board("board1");
+        Card card = new Card("card1");
+        list.id = 1;
+        board.id = 2;
+        card.id = 3;
+        list.setBoard(board);
+        when(listRepository.existsById(list.id)).thenReturn(true);
+        when(listRepository.getById(list.id)).thenReturn(list);
+        when(listRepository.save(list)).thenReturn(list);
+        listService.addCardToList(list.id, card);
+        verify(listRepository).save(list);
+    }
+
+    @Test
+    public void testAddCardToListNotExists() {
+        TDList list = new TDList("list1");
+        list.id = 1;
+        when(listRepository.existsById(list.id)).thenReturn(false);
+        listService.addCardToList(list.id, new Card());
+        verify(listRepository, never()).save(list);
+    }
 }
