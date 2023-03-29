@@ -54,7 +54,7 @@ public class ListOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         service.setScrollPane(scrollPane);
-        server.registerForUpdates(updatedBoardID -> {
+        server.registerForBoardUpdates(updatedBoardID -> {
             if(board.getId() == updatedBoardID)
                 board = server.tempBoardGetter();
             Platform.runLater(() -> {

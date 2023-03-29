@@ -87,4 +87,9 @@ public class CardController {
             return ResponseEntity.ok().build();
         return ResponseEntity.badRequest().build();
     }
+
+//    @GetMapping("/updates")
+//    public DeferredResult<ResponseEntity<Long>> subscribeForUpdates() {
+//        return cardService.subscribeForUpdates();
+//    }
 }

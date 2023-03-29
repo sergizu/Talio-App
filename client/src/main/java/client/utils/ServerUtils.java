@@ -166,7 +166,7 @@ public class ServerUtils {
     }
 
 
-    public void registerForUpdates(Consumer<Long> consumer) {
+    public void registerForBoardUpdates(Consumer<Long> consumer) {
         EXECUTOR_SERVICE.submit(() -> {
             while (!Thread.interrupted()) {
                 Response result = ClientBuilder.newClient(new ClientConfig())
@@ -180,6 +180,20 @@ public class ServerUtils {
             }
         });
     }
+//    public void registerForCardUpdates(Consumer<Long> consumer) {
+//        EXECUTOR_SERVICE.submit(() -> {
+//            while (!Thread.interrupted()) {
+//                Response result = ClientBuilder.newClient(new ClientConfig())
+//                        .target(server).path("/api/cards/updates")
+//                        .request(APPLICATION_JSON)
+//                        .accept(APPLICATION_JSON)
+//                        .get();
+//                if(result.getStatus() == HttpStatus.NO_CONTENT.value())
+//                    continue;
+//                consumer.accept(result.readEntity(Long.class));
+//            }
+//        });
+//    }
 
     public Card updateCard(Card card) {
         return ClientBuilder.newClient(new ClientConfig()) //

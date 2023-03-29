@@ -17,7 +17,6 @@ import javafx.scene.input.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import static client.helperClass.SubtaskWrapper.serialization;
 
 public class EditCardCtrl {
@@ -75,7 +74,6 @@ public class EditCardCtrl {
                     subtask.setChecked(false);
                     server.updateNestedList(card.id, card.nestedList);
                 }
-                System.out.println(subtask.checked);
             });
             Button button = new Button("X");
             button.setOnAction(event -> {
@@ -182,4 +180,13 @@ public class EditCardCtrl {
             return row;
         });
     }
+
+//    @Override
+//    public void initialize(URL location, ResourceBundle resources) {
+//        server.registerForCardUpdates(updatedCardID -> {
+//            System.out.println("CARD!");
+//            if(card.getId() == updatedCardID);
+//            mainCtrl.showEdit(card);
+//        });
+//    }
 }
