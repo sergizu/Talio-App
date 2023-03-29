@@ -67,7 +67,7 @@ public class BoardService {
 
     public DeferredResult<ResponseEntity<Long>> subscribeForUpdates() {
         ResponseEntity<Long> noContent = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        DeferredResult<ResponseEntity<Long>> result = new DeferredResult<>(10000L, noContent);
+        DeferredResult<ResponseEntity<Long>> result = new DeferredResult<>(1000L, noContent);
 
         Object key = new Object(); //trick to uniquely identify every key
 
@@ -81,12 +81,7 @@ public class BoardService {
     }
 
     public void sendUpdates(long id) {
-        try {
-            listeners.forEach((key, listener) -> listener.accept(id));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
+        listeners.forEach((key, listener) -> listener.accept(id));
     }
 }
 
