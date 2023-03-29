@@ -1,9 +1,12 @@
 package server.api;
 
 import commons.Card;
+import commons.CardListId;
 import commons.TDList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 import server.database.ListRepository;
 import server.service.BoardService;
@@ -74,7 +77,7 @@ public class ListController {
         card.list = tdlist;
         tdlist.addCard(card);
         TDList update = listRepository.save(tdlist);
-        boardService.sendUpdates(update.getBoard().getId());
+        //boardService.sendUpdates(update.getBoard().getId()); was used for long polling
         return ResponseEntity.ok().build();
     }
 
@@ -85,6 +88,12 @@ public class ListController {
             return ResponseEntity.ok().build();
         else return ResponseEntity.badRequest().build();
 
+    }
+
+    @MessageMapping("/tdLists/addCard")
+    @SendTo("/topic/addCard")
+    public CardListId addMessage(CardListId cardList) {
+        return cardList;
     }
 
 }

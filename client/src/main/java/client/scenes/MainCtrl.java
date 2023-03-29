@@ -86,6 +86,12 @@ public class MainCtrl {
         //temporarily hardcoded boardID(which might even not be the correct ID)
     }
 
+    public void showOverviewNoRefresh(){
+        primaryStage.setTitle("Lists: Overview");
+        listOverviewCtrl.setAnchorPaneHeightWidth();
+        primaryStage.setScene(overview);
+    }
+
     public void showAdd(long listId) {
         listOverviewCtrl.saveAnchorPaneHeightWidth();
         primaryStage.setTitle("Board: Adding Card");
