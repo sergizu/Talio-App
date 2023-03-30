@@ -15,7 +15,7 @@
         <top>
             <HBox fx:id="topHBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                 <children>
-                    <Button alignment="TOP_LEFT" contentDisplay="CENTER" mnemonicParsing="false" text="Create new board" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+                    <Button alignment="TOP_LEFT" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#showCreateBoard" text="Create new board" textAlignment="CENTER" HBox.hgrow="ALWAYS">
                         <HBox.margin>
                             <Insets left="10.0" top="10.0" />
                         </HBox.margin>

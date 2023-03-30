@@ -80,6 +80,10 @@ public class JoinedBoardsCtrl implements Initializable {
         return new Board(title);
     }
 
+    public void showCreateBoard() {
+        mainCtrl.showCreateBoard();
+    }
+
     public void createBoard() {
         Board board = getBoard();
         try {
