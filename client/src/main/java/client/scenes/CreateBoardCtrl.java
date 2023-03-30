@@ -47,6 +47,7 @@ public class CreateBoardCtrl {
     public void createBoard() {
         client = mainCtrl.getClient();
         Board board = getBoardWithTitle();
+        boardTitle.setText("");
         try {
             board = server.addBoard(board);
             addBoardToClient(board);
@@ -68,7 +69,7 @@ public class CreateBoardCtrl {
         client.boards.put(ServerUtils.getServer(),boards);
     }
     public void escape(){
-        mainCtrl.showJoinedBoards(client);
+        mainCtrl.showJoinedBoards(mainCtrl.getClient());
     }
     public void keyPressed(KeyEvent e) {
         switch (e.getCode()) {

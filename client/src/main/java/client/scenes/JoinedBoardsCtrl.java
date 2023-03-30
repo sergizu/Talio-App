@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -99,6 +100,7 @@ public class JoinedBoardsCtrl implements Initializable {
 
     public void showJoinedBoards(ArrayList<Board> boards) {
         if(boards.isEmpty()) {
+            clearBoardList();
             Label noBoards = new Label("You have not joined any boards yet!");
             noBoards.setFont(Font.font(25.0));
             noBoards.setPadding(new Insets(30,30,30,30));
@@ -110,8 +112,7 @@ public class JoinedBoardsCtrl implements Initializable {
     }
 
     public void displayBoards(ArrayList<Board> boards) {
-        while(!boardsList.getChildren().isEmpty())
-            boardsList.getChildren().remove(0);///removeAll did not work!?
+        clearBoardList();
         boardsList.setSpacing(3);
         for(Board board:boards)
             boardsList.getChildren().add(createHBox(board));
@@ -124,8 +125,13 @@ public class JoinedBoardsCtrl implements Initializable {
             enterBoard(board);
         });
         tableLine.getChildren().add(createLabel(board.title));
-
+        tableLine.getChildren().add(createLeaveButton(board));
         return tableLine;
+    }
+
+    public void clearBoardList() {
+        while(!boardsList.getChildren().isEmpty())
+            boardsList.getChildren().remove(0);///removeAll did not work!?
     }
 
     public Label createLabel(String title){
@@ -137,9 +143,26 @@ public class JoinedBoardsCtrl implements Initializable {
 
     public HBox createTableLine(){
         HBox tableLine = new HBox();
-        tableLine.setBorder(new Border(new BorderStroke(Color.GREEN, BorderStrokeStyle.SOLID, null , null)));
+        tableLine.setBorder(new Border(new BorderStroke(Color.GREEN,
+                BorderStrokeStyle.SOLID, null , null)));//will change color, was added for testing
         tableLine.setPrefHeight(50);
         return tableLine;
+    }
+
+    public Button createLeaveButton(Board board) {
+        Button leaveButton = new Button("leave");
+        leaveButton.setStyle("-fx-background-color: red;");
+        leaveButton.setOnMouseClicked(event -> {
+            leaveBoard(board);
+        });
+        return leaveButton;
+    }
+
+    public void leaveBoard(Board board) {
+        ArrayList<Board> boards = client.boards.get(ServerUtils.getServer());
+        boards.remove(board);
+        client.boards.put(ServerUtils.getServer(),boards);
+        showJoinedBoards(boards);
     }
 
     public void keyPressed(KeyEvent e) {
