@@ -174,6 +174,7 @@ public class MainCtrl {
 
     public void showCreateBoard(){
         primaryStage.setScene(createBoardScene);
+
     }
 
     public AppClient getClient(){

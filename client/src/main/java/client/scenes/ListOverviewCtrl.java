@@ -183,7 +183,6 @@ public class ListOverviewCtrl implements Initializable {
     //boardID is not yet used
     public void refresh(long boardID) {
         board = server.getBoardById(boardID);
-        System.out.println(board);
         boardTitle.setText(board.title);
         boardKey.setText("key: " + board.key);
         showLists();
@@ -335,6 +334,10 @@ public class ListOverviewCtrl implements Initializable {
     public void setBoard(long boardId) {
         board = server.getBoardById(boardId);
         refresh(boardId);
+    }
+
+    public void backPressed() {
+        mainCtrl.showJoinedBoards(mainCtrl.getClient());
     }
 }
 

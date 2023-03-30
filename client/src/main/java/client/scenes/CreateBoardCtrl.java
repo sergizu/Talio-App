@@ -47,9 +47,9 @@ public class CreateBoardCtrl {
     public void createBoard() {
         client = mainCtrl.getClient();
         Board board = getBoardWithTitle();
-        addBoardToClient(board);
         try {
             board = server.addBoard(board);
+            addBoardToClient(board);
         } catch (WebApplicationException e) {
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
@@ -67,10 +67,16 @@ public class CreateBoardCtrl {
         boards.add(board);
         client.boards.put(ServerUtils.getServer(),boards);
     }
+    public void escape(){
+
+    }
     public void keyPressed(KeyEvent e) {
         switch (e.getCode()) {
             case ENTER:
                 createBoard();
+                break;
+            case ESCAPE:
+                escape();
                 break;
             default:
                 break;
