@@ -34,10 +34,12 @@ public class JoinedBoardsCtrl implements Initializable {
     private Label boardOverviewTitle;
     @FXML
     private HBox topHBox;
-
     @FXML
     private VBox boardsList;
-
+    @FXML
+    private Button disconnectButton;
+    @FXML
+    private Button createBoardButton;
 
 
     @Inject
@@ -51,6 +53,8 @@ public class JoinedBoardsCtrl implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         //boardOverviewTitle.setMaxWidth(3000.0);
         HBox.setHgrow(boardOverviewTitle, Priority.ALWAYS);
+        disconnectButton.setStyle("-fx-background-color: red;");
+        createBoardButton.setStyle("-fx-background-color: #2596be");
     }
 
     public void init(AppClient client) {
@@ -179,6 +183,7 @@ public class JoinedBoardsCtrl implements Initializable {
         mainCtrl.showOverview(board.id);
     }
     public void disconnectPressed(){
+        mainCtrl.showSelectServer();
 
     }
 

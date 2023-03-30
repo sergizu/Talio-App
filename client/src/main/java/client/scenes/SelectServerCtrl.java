@@ -34,6 +34,7 @@ public class SelectServerCtrl {
             myLabel.setText("Can not be empty!");
             return;
         }
+        myLabel.setText("");
         server.changeServer(s);
         try {
             server.getLists();
