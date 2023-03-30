@@ -148,4 +148,5 @@ public class BoardController {
     public DeferredResult<ResponseEntity<Long>> subscribeForUpdates() {
         return boardService.subscribeForUpdates();
     }
+
 }

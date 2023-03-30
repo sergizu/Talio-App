@@ -241,6 +241,14 @@ public class ServerUtils {
                 .put(Entity.entity(list, APPLICATION_JSON));
     }
 
+    public List<Board> getBoards() {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(server).path("api/boards/")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<List<Board>>() {});
+    }
+
     private StompSession session = connect("ws://localhost:8080/websocket");
     private StompSession connect(String url) {
         var client = new StandardWebSocketClient();

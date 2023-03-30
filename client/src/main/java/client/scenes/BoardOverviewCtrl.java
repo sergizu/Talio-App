@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.AppClient;
 import commons.Board;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
@@ -15,6 +16,7 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class BoardOverviewCtrl implements Initializable {
@@ -69,6 +71,15 @@ public class BoardOverviewCtrl implements Initializable {
             default:
                 break;
         }
+    }
+
+    public void showOtherBoards(AppClient client) {
+        ArrayList<Board> allBoards = (ArrayList<Board>) server.getBoards();
+        if(allBoards.isEmpty())
+            displayNoBoardsMessage();
+    }
+    public void displayNoBoardsMessage(){
+
     }
 
 
