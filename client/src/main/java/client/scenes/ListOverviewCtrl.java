@@ -14,10 +14,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -46,8 +46,6 @@ public class ListOverviewCtrl implements Initializable {
     @FXML
     private ScrollPane scrollPane;
     @FXML
-    private AnchorPane anchorPane;
-    @FXML
     private Label boardTitle;
     @FXML
     private Button copyButton;
@@ -62,6 +60,12 @@ public class ListOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setScrollPane();
+        server.registerForMessages("/topic/addCard", c-> {
+            Platform.runLater(() -> {
+                addCardToList(c.card,c.listId);
+                showLists();
+            });
+        });
         server.registerForBoardUpdates(updatedBoardID -> {
             if(board.getId() == updatedBoardID)
                 board = server.tempBoardGetter();
@@ -69,6 +73,11 @@ public class ListOverviewCtrl implements Initializable {
                 refresh(1);
             });
         });
+    }
+    public void addCardToList(Card card, long listId) {
+        for(int i=0;i<board.tdLists.size();i++)
+            if(board.tdLists.get(i).id==listId)
+                board.tdLists.get(i).addCard(card);
     }
 
     private void setScrollPane() {
@@ -297,7 +306,7 @@ public class ListOverviewCtrl implements Initializable {
     public void restoreCopyButton(Button copyButton){
         copyButton.setStyle("-fx-background-color: #2596be;");
         copyButton.setFont(new Font(12));
-        copyButton.setText("Copy!");
+        copyButton.setText("Copy Invite Key");
     }
 }
 

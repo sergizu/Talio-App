@@ -45,13 +45,9 @@ public class BoardController {
     public ResponseEntity<Board> tempGetter() {
         if (defaultBoardID != -1L) {
             boolean existsById = boardService.existsById(defaultBoardID);
-            //System.out.println(existsById);
             Board board = null;
-            try {
+            if(existsById)
                 board = boardService.getById(defaultBoardID);
-            } catch (Exception e) {
-                System.out.println("problems");
-            }
             return ResponseEntity.ok(board);
         }
         Board board = new Board("Default board");
@@ -145,4 +141,5 @@ public class BoardController {
     public DeferredResult<ResponseEntity<Long>> subscribeForUpdates() {
         return boardService.subscribeForUpdates();
     }
+    public long getDefaultId(){return defaultBoardID;}
 }

@@ -95,6 +95,12 @@ public class MainCtrl {
         listOverviewCtrl.refresh(1L);
     }
 
+    public void showOverviewNoRefresh(){
+        primaryStage.setTitle("Lists: Overview");
+        primaryStage.setScene(overview);
+        setSizeScene();
+    }
+
     public void showAdd(long listId) {
         primaryStage.setTitle("Board: Adding Card");
         primaryStage.setScene(sceneAddCard);
