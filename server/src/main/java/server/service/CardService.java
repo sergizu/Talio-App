@@ -6,7 +6,6 @@ import commons.TDList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import server.database.CardRepository;
-import server.database.ListRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,16 +17,13 @@ import java.util.function.Consumer;
 public class CardService {
     private final CardRepository cardRepository;
     private final BoardService boardService;
-    private final ListRepository listRepository;
 
     private final Map<Object, Consumer<Long>> listeners = new HashMap<>();
 
     @Autowired
-    public CardService(CardRepository cardRepository, BoardService boardService,
-                       ListRepository listRepository) {
+    public CardService(CardRepository cardRepository, BoardService boardService) {
         this.cardRepository = cardRepository;
         this.boardService = boardService;
-        this.listRepository = listRepository;
     }
 
     public List<Card> getAll() {
@@ -71,26 +67,20 @@ public class CardService {
     }
 
     public boolean updateName(long cardID, String name) {
-        try {
-            Card toUpdate = cardRepository.getById(cardID); //only get a proxy/reference
-            toUpdate.setTitle(name);
-            toUpdate = cardRepository.save(toUpdate);
-            boardService.sendUpdates(toUpdate.getList().getBoard().getId());
-        } catch (Exception e) {
-            return false;
-        }
+        if (name == null || name.equals("") || !cardRepository.existsById(cardID)) return false;
+        Card toUpdate = cardRepository.getById(cardID); //only get a proxy/reference
+        toUpdate.setTitle(name);
+        toUpdate = cardRepository.save(toUpdate);
+        boardService.sendUpdates(toUpdate.getList().getBoard().getId());
         return true;
     }
 
     public boolean updateList(long id, TDList list) {
-        try {
-            Card toUpdate = cardRepository.getById(id);
-            toUpdate.setList(list);
-            toUpdate = cardRepository.save(toUpdate);
-            boardService.sendUpdates(toUpdate.getList().getBoard().getId());
-        } catch (Exception e) {
-            return false;
-        }
+        if (list == null || !cardRepository.existsById(id)) return false;
+        Card toUpdate = cardRepository.getById(id);
+        toUpdate.setList(list);
+        toUpdate = cardRepository.save(toUpdate);
+        boardService.sendUpdates(toUpdate.getList().getBoard().getId());
         return true;
     }
 

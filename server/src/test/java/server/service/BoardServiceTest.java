@@ -10,8 +10,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.UpperCase;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.context.request.async.DeferredResult;
 import server.database.BoardRepository;
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -81,13 +86,33 @@ class BoardServiceTest {
     }
 
     @Test
-    void update() {
+    void updateIfExists() {
             Board board = new Board("Board 1");
             board.id = 1;
             when(boardRepository.existsById(board.id)).thenReturn(true);
             when(boardRepository.save(board)).thenReturn(board);
             boardService.update(board);
             verify(boardRepository).save(board);
+    }
+    @Test
+    void updateIfNotExists(){
+        when(boardRepository.existsById(any(Long.class))).thenReturn(false);
+        assertEquals(null, boardService.update(new Board("b1")));
+    }
+    @Test
+    void deleteIfExists(){
+        when(boardRepository.existsById(any(Long.class))).thenReturn(true);
+        assertTrue(boardService.delete(1L));
+    }
+    @Test
+    void deleteIfNotExists(){
+        when(boardRepository.existsById(any(Long.class))).thenReturn(false);
+        assertFalse(boardService.delete(1L));
+    }
+    @Test
+    void subscribeForUpdates(){
+        DeferredResult<ResponseEntity<Long>> df = boardService.subscribeForUpdates();
+        assertEquals(null, df.getResult());
     }
 }
 

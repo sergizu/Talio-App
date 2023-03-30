@@ -5,8 +5,6 @@ import commons.TDList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import server.database.ListRepository;
-import server.service.BoardService;
 import server.service.ListService;
 
 import java.util.List;
@@ -16,16 +14,11 @@ import java.util.List;
 public class ListController {
 
     private final ListService listService;
-    private final BoardService boardService;
 
-    private final ListRepository listRepository;
 
     @Autowired
-    public ListController(ListService listService, BoardService boardService,
-                          ListRepository listRepository) {
+    public ListController(ListService listService) {
         this.listService = listService;
-        this.boardService = boardService;
-        this.listRepository = listRepository;
     }
 
     @GetMapping("/{id}")
@@ -67,14 +60,9 @@ public class ListController {
     }
 
     @PutMapping("/{id}/addCard")
-    public ResponseEntity addCardToList(@PathVariable("id") long id, @RequestBody Card card) {
-        if (!listService.existsById(id))
+    public ResponseEntity addCardToList(@PathVariable("id") long listId, @RequestBody Card card) {
+        if (!listService.addCardToList(listId, card))
             return ResponseEntity.badRequest().build();
-        TDList tdlist = listRepository.getById(id);
-        card.list = tdlist;
-        tdlist.addCard(card);
-        TDList update = listRepository.save(tdlist);
-        boardService.sendUpdates(update.getBoard().getId());
         return ResponseEntity.ok().build();
     }
 
