@@ -75,6 +75,7 @@ public class BoardController {
         defaultBoardID = board.id;
         return ResponseEntity.ok(board);
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<Board> getById(@PathVariable("id") long id) {
 
@@ -115,12 +116,14 @@ public class BoardController {
         return  boardService.getAll();
     }
 
-    @PostMapping()
+    @PostMapping(path = { "", "/" })
     public ResponseEntity<Board> add(@RequestBody Board board) {
+        boardService.generateKey(board);
         Board response = boardService.addBoard(board);
         if(response == null) {
             return ResponseEntity.badRequest().build();
         }
+        boardService.sendUpdates(board.getId());
         return ResponseEntity.ok(response);
     }
 

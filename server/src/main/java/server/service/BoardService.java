@@ -13,6 +13,7 @@ import server.database.BoardRepository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.function.Consumer;
 
 @Service
@@ -86,6 +87,11 @@ public class BoardService {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void generateKey(Board board){
+        Random randomGenerator = new Random();
+        board.key = randomGenerator.nextLong();
     }
 }
 

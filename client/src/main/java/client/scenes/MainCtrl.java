@@ -47,10 +47,15 @@ public class MainCtrl {
 
     private AddSubTaskCtrl addSubTaskCtrl;
 
+    private Scene boardOverviewScene;
+    private BoardOverviewCtrl boardOverviewCtrl;
+
+
     public void initialize(Stage primaryStage, Pair<ListOverviewCtrl, Parent> overview,
                            Pair<AddCardCtrl, Parent> addCard, Pair<AddListCtrl, Parent> addList,
                            Pair<EditCardCtrl, Parent> edit, Pair<EditListCtrl, Parent> editList,
                            Pair<SelectServerCtrl, Parent> selectServer,
+                           Pair<BoardOverviewCtrl, Parent> boardOverview,
                            Pair<AddSubTaskCtrl, Parent> addSubtask) {
 
         this.primaryStage = primaryStage;
@@ -74,24 +79,30 @@ public class MainCtrl {
         this.addSubTaskCtrl = addSubtask.getKey();
         this.addSubtask = new Scene(addSubtask.getValue());
 
+        this.boardOverviewCtrl = boardOverview.getKey();
+        this.boardOverviewScene = new Scene(boardOverview.getValue());
+
         showSelectServer();
         primaryStage.show();
     }
-    public void showSelectServer(){
+
+    public void showSelectServer() {
         primaryStage.setTitle("Server: selecting server");
         primaryStage.setScene(selectServer);
     }
 
-    public void showOverview() {
+    public void showOverview(long boardId) {
         primaryStage.setTitle("Lists: Overview");
-//        primaryStage.setMinWidth(350);
-//        primaryStage.setMinHeight(360);
-//        primaryStage.setHeight(500);
-//        primaryStage.setWidth(800);
+        primaryStage.setMinWidth(350);
+        primaryStage.setMinHeight(360);
         listOverviewCtrl.setAnchorPaneHeightWidth();
+        listOverviewCtrl.setBoard(boardId);
         primaryStage.setScene(overview);
-        listOverviewCtrl.refresh(1L);
-        //temporarily hardcoded boardID(which might even not be the correct ID)
+    }
+
+    public void showBoardOverview() {
+        primaryStage.setTitle("Boards: Overview");
+        primaryStage.setScene(boardOverviewScene);
     }
 
     public void showOverviewNoRefresh(){
@@ -107,6 +118,7 @@ public class MainCtrl {
         addCardCtrl.setListId(listId);
         sceneAddCard.setOnKeyPressed(e -> addCardCtrl.keyPressed(e));
     }
+
     public void showAddList(long boardId) {
         listOverviewCtrl.saveAnchorPaneHeightWidth();
         primaryStage.setTitle("Board: Adding List");
@@ -122,7 +134,7 @@ public class MainCtrl {
         editCardCtrl.init(card);
     }
 
-    public void showEditList(TDList list){
+    public void showEditList(TDList list) {
         listOverviewCtrl.saveAnchorPaneHeightWidth();
         primaryStage.setTitle("List: Rename list");
         primaryStage.setScene(editList);

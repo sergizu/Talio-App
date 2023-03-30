@@ -103,6 +103,14 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(card, APPLICATION_JSON), Card.class);
     }
+
+    public Board addBoard(Board board) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(server).path("api/boards") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(board, APPLICATION_JSON), Board.class);
+    }
     
 
     public Board tempBoardGetter() {
@@ -120,6 +128,14 @@ public class ServerUtils {
             }
         }
         return null;
+    }
+
+    public Board getBoardById(long boardId){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(server).path("/api/boards/" + boardId) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<>() {});
     }
 
     public void addCardToList(long listId, Card card) {

@@ -36,6 +36,7 @@ public class AddCardCtrl {
         server.send("/app/tdLists/addCard", new CardListId(toSend,listId));
         mainCtrl.showOverviewNoRefresh();// I don't want to refresh
         // because each client is registered for this change already
+        mainCtrl.showOverview(1);
     }
 
     private void clearFields() {
@@ -45,7 +46,7 @@ public class AddCardCtrl {
     public void cancel() {
         myLabel.setText("");
         clearFields();
-        mainCtrl.showOverview();
+        mainCtrl.showOverview(1);
     }
 
     public void keyPressed(KeyEvent e) {
