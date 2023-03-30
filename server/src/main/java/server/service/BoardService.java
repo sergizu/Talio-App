@@ -86,7 +86,6 @@ public class BoardService {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
     }
 }
 

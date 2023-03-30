@@ -43,10 +43,15 @@ public class MainCtrl {
     private Scene selectServer;
     private SelectServerCtrl selectServerCtrl;
 
+    private Scene addSubtask;
+
+    private AddSubTaskCtrl addSubTaskCtrl;
+
     public void initialize(Stage primaryStage, Pair<ListOverviewCtrl, Parent> overview,
                            Pair<AddCardCtrl, Parent> addCard, Pair<AddListCtrl, Parent> addList,
                            Pair<EditCardCtrl, Parent> edit, Pair<EditListCtrl, Parent> editList,
-                           Pair<SelectServerCtrl, Parent> selectServer) {
+                           Pair<SelectServerCtrl, Parent> selectServer,
+                           Pair<AddSubTaskCtrl, Parent> addSubtask) {
 
         this.primaryStage = primaryStage;
         this.listOverviewCtrl = overview.getKey();
@@ -66,9 +71,14 @@ public class MainCtrl {
         this.selectServerCtrl = selectServer.getKey();
         this.selectServer = new Scene(selectServer.getValue(), 1080, 720);
 
+        this.addSubTaskCtrl = addSubtask.getKey();
+        this.addSubtask = new Scene(addSubtask.getValue(), 1080, 720);
+
         showSelectServer();
         this.primaryStage.setWidth(1080);
         this.primaryStage.setHeight(720);
+        this.primaryStage.setMinWidth(425.0);
+        this.primaryStage.setMinHeight(409);
         primaryStage.show();
     }
 
@@ -111,6 +121,13 @@ public class MainCtrl {
         primaryStage.setTitle("List: Rename list");
         primaryStage.setScene(editList);
         editListCtrl.init(list);
+        setSizeScene();
+    }
+
+    public void showAddSubtask(Card card) {
+        primaryStage.setTitle("Subtask: Create subtask");
+        primaryStage.setScene(addSubtask);
+        addSubTaskCtrl.init(card);
         setSizeScene();
     }
 
