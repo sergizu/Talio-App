@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.AppClient;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -12,6 +13,7 @@ import javafx.scene.input.KeyEvent;
 public class SelectServerCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    private final AppClient client;
 
     @FXML
     private TextField serverName;
@@ -20,9 +22,10 @@ public class SelectServerCtrl {
     private Label myLabel;
 
     @Inject
-    public SelectServerCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public SelectServerCtrl(ServerUtils server, MainCtrl mainCtrl, AppClient client) {
         this.mainCtrl = mainCtrl;
         this.server = server;
+        this.client = client;
     }
 
     public void ok() {
@@ -34,7 +37,7 @@ public class SelectServerCtrl {
         server.changeServer(s);
         try {
             server.getLists();
-            mainCtrl.showBoardOverview();
+            mainCtrl.showJoinedBoards(client);
         } catch (Exception e) {
             myLabel.setText("Couldn't find the server!");
         }

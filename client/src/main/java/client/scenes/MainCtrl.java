@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import commons.AppClient;
 import commons.Card;
 import commons.TDList;
 import javafx.scene.Parent;
@@ -50,13 +51,19 @@ public class MainCtrl {
     private Scene boardOverviewScene;
     private BoardOverviewCtrl boardOverviewCtrl;
 
+    private JoinedBoardsCtrl joinedBoardsCtrl;
+    private Scene joinedBoardsScene;
+
+    private AppClient client;
+
     @SuppressWarnings("checkstyle:ParameterNumber")
     public void initialize(Stage primaryStage, Pair<ListOverviewCtrl, Parent> overview,
                            Pair<AddCardCtrl, Parent> addCard, Pair<AddListCtrl, Parent> addList,
                            Pair<EditCardCtrl, Parent> edit, Pair<EditListCtrl, Parent> editList,
                            Pair<SelectServerCtrl, Parent> selectServer,
                            Pair<BoardOverviewCtrl, Parent> boardOverview,
-                           Pair<AddSubTaskCtrl, Parent> addSubtask) {
+                           Pair<AddSubTaskCtrl, Parent> addSubtask,
+                           Pair<JoinedBoardsCtrl,Parent> joinedBoards,AppClient client) {
 
         this.primaryStage = primaryStage;
         this.listOverviewCtrl = overview.getKey();
@@ -82,6 +89,10 @@ public class MainCtrl {
         this.boardOverviewCtrl = boardOverview.getKey();
         this.boardOverviewScene = new Scene(boardOverview.getValue());
 
+        this.joinedBoardsCtrl = joinedBoards.getKey();
+        this.joinedBoardsScene = new Scene(joinedBoards.getValue());
+
+        this.client = client;
         showSelectServer();
         primaryStage.show();
     }
@@ -146,5 +157,10 @@ public class MainCtrl {
         primaryStage.setTitle("Subtask: Create subtask");
         primaryStage.setScene(addSubtask);
         addSubTaskCtrl.init(card);
+    }
+
+    public void showJoinedBoards(AppClient client) {
+        primaryStage.setScene(joinedBoardsScene);
+        joinedBoardsCtrl.init(client);
     }
 }

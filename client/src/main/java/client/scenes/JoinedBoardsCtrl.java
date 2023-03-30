@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.AppClient;
 import commons.Board;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
@@ -17,7 +18,7 @@ import javafx.stage.Modality;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class BoardOverviewCtrl implements Initializable {
+public class JoinedBoardsCtrl implements Initializable {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
@@ -30,7 +31,7 @@ public class BoardOverviewCtrl implements Initializable {
     private HBox topHBox;
 
     @Inject
-    public BoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public JoinedBoardsCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
 
@@ -40,6 +41,10 @@ public class BoardOverviewCtrl implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         boardOverviewTitle.setMaxWidth(3000.0);
         HBox.setHgrow(boardOverviewTitle, Priority.ALWAYS);
+    }
+
+    public void init(AppClient client) {
+        //System.out.println(client.id);
     }
 
     private Board getBoard() {
