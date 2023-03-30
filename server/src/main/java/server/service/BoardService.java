@@ -42,6 +42,7 @@ public class BoardService {
         if( board == null || board.getTitle() == null) return null;
         if(boardRepository.existsById(board.getId()))
             return null;
+        generateKey(board);
         return boardRepository.save(board);
     }
 
@@ -91,7 +92,7 @@ public class BoardService {
 
     public void generateKey(Board board){
         Random randomGenerator = new Random();
-        board.key = randomGenerator.nextLong();
+        board.key = Math.abs(randomGenerator.nextLong());
     }
 }
 
