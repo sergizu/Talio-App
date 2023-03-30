@@ -1,9 +1,12 @@
 package server.api;
 
 import commons.Card;
+import commons.CardListId;
 import commons.TDList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 import server.service.ListService;
 
@@ -73,6 +76,12 @@ public class ListController {
             return ResponseEntity.ok().build();
         else return ResponseEntity.badRequest().build();
 
+    }
+
+    @MessageMapping("/tdLists/addCard")
+    @SendTo("/topic/addCard")
+    public CardListId addMessage(CardListId cardList) {
+        return cardList;
     }
 
 }

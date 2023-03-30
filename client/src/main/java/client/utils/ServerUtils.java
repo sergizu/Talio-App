@@ -22,8 +22,18 @@ import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.simp.stomp.StompFrameHandler;
+import org.springframework.messaging.simp.stomp.StompHeaders;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -58,7 +68,7 @@ public class ServerUtils {
 
     public TDList getList(long listId) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("/api/lists" + listId) //
+                .target(server).path("/api/tdLists/" + listId) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<>() {});
@@ -215,6 +225,37 @@ public class ServerUtils {
                 .put(Entity.entity(list, APPLICATION_JSON));
     }
 
+    private StompSession session = connect("ws://localhost:8080/websocket");
+    private StompSession connect(String url) {
+        var client = new StandardWebSocketClient();
+        var stomp = new WebSocketStompClient(client);
+        stomp.setMessageConverter(new MappingJackson2MessageConverter());
+        try {
+            return stomp.connect(url, new StompSessionHandlerAdapter() {}).get();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+        throw new IllegalStateException();
+    }
+    public void registerForMessages(String dest, Consumer<CardListId> consumer) {
+        session.subscribe(dest, new StompFrameHandler() {
+            @Override
+            public Type getPayloadType(StompHeaders headers) {
+                return CardListId.class;
+            }
+
+            @Override
+            public void handleFrame(StompHeaders headers, Object payload) {
+                consumer.accept((CardListId)payload);
+            }
+        });
+    }
+
+    public void send(String dest,Object o) {
+        session.send(dest,o);
+    }
     public void updateNestedList(long id, ArrayList<Subtask> nestedList) {
         ClientBuilder.newClient(new ClientConfig())
                 .target(server).path("api/cards/updateNestedList/" + id)

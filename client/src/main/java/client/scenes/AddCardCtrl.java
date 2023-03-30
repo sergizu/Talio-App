@@ -3,14 +3,12 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
-import jakarta.ws.rs.WebApplicationException;
+import commons.CardListId;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Modality;
 
 public class AddCardCtrl {
     private final ServerUtils server;
@@ -33,16 +31,11 @@ public class AddCardCtrl {
     }
 
     public void ok() {
-        try {
-            server.addCardToList(listId, new Card(cardName.getText()));
-        } catch (WebApplicationException e) {
-            var alert = new Alert(Alert.AlertType.ERROR);
-            alert.initModality(Modality.APPLICATION_MODAL);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-        }
-        mainCtrl.showOverview();
-
+        Card toSend = new Card(cardName.getText());
+        server.addCardToList(listId,toSend);
+        server.send("/app/tdLists/addCard", new CardListId(toSend,listId));
+        mainCtrl.showOverviewNoRefresh();// I don't want to refresh
+        // because each client is registered for this change already
     }
 
     private void clearFields() {

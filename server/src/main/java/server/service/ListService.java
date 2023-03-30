@@ -74,7 +74,6 @@ public class ListService {
         cardToAdd.list = tdlist;
         tdlist.addCard(cardToAdd);
         TDList update = listRepository.save(tdlist);
-        boardService.sendUpdates(update.getBoard().getId());
         return true;
     }
 }
