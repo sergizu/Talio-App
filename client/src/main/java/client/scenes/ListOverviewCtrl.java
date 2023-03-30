@@ -19,7 +19,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
@@ -37,14 +36,13 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+import static client.helperClass.SubtaskWrapper.serialization;
+
 public class ListOverviewCtrl implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private Board board;
-    private static final DataFormat serialization =
-            new DataFormat("application/x-java-serialized-object");
-
     @FXML
     private ScrollPane scrollPane;
     @FXML
@@ -68,7 +66,7 @@ public class ListOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setScrollPane();
-        server.registerForUpdates(updatedBoardID -> {
+        server.registerForBoardUpdates(updatedBoardID -> {
             if(board.getId() == updatedBoardID)
                 board = server.tempBoardGetter();
             Platform.runLater(() -> {
@@ -155,7 +153,7 @@ public class ListOverviewCtrl implements Initializable {
         TableColumn<Card, String> tableColumn = new TableColumn<>();
         tableColumn.setText(tdList.title);
         tableColumn.setPrefWidth(tv.getPrefWidth());
-        tableColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().title));
+        tableColumn.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().cellFactory()));
         tableColumn.setSortable(false);
         tv.getColumns().add(tableColumn);
         ObservableList<Card> dataCards = FXCollections.observableList(tdList.cards);
