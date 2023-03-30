@@ -50,7 +50,7 @@ public class MainCtrl {
     private Scene boardOverviewScene;
     private BoardOverviewCtrl boardOverviewCtrl;
 
-
+    @SuppressWarnings("checkstyle:ParameterNumber")
     public void initialize(Stage primaryStage, Pair<ListOverviewCtrl, Parent> overview,
                            Pair<AddCardCtrl, Parent> addCard, Pair<AddListCtrl, Parent> addList,
                            Pair<EditCardCtrl, Parent> edit, Pair<EditListCtrl, Parent> editList,
