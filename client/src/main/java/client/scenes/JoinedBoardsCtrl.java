@@ -12,9 +12,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 
@@ -102,16 +101,45 @@ public class JoinedBoardsCtrl implements Initializable {
         if(boards.isEmpty()) {
             Label noBoards = new Label("You have not joined any boards yet!");
             noBoards.setFont(Font.font(25.0));
-            //noBoards.setAlignment(Pos.CENTER);
-            //noBoards.set
             noBoards.setPadding(new Insets(30,30,30,30));
             boardsList.getChildren().add(noBoards);
-//            Label noBoards2 = new Label("You have not joined any boards yet!");
-//            boardsList.getChildren().add(noBoards2);
         }
         else {
-
+            displayBoards(boards);
         }
+    }
+
+    public void displayBoards(ArrayList<Board> boards) {
+        while(!boardsList.getChildren().isEmpty())
+            boardsList.getChildren().remove(0);///removeAll did not work!?
+        boardsList.setSpacing(3);
+        for(Board board:boards)
+            boardsList.getChildren().add(createHBox(board));
+        ///System.out.println(boardsList.getChildren().size());
+    }
+
+    public HBox createHBox(Board board) {
+        HBox tableLine = createTableLine();
+        tableLine.setOnMouseClicked(event -> {
+            enterBoard(board);
+        });
+        tableLine.getChildren().add(createLabel(board.title));
+
+        return tableLine;
+    }
+
+    public Label createLabel(String title){
+        Label boardTitle = new Label(title);
+        boardTitle.setFont(Font.font(20));
+        boardTitle.setPadding(new Insets(10,50,10,100));
+        return boardTitle;
+    }
+
+    public HBox createTableLine(){
+        HBox tableLine = new HBox();
+        tableLine.setBorder(new Border(new BorderStroke(Color.GREEN, BorderStrokeStyle.SOLID, null , null)));
+        tableLine.setPrefHeight(50);
+        return tableLine;
     }
 
     public void keyPressed(KeyEvent e) {
@@ -124,6 +152,9 @@ public class JoinedBoardsCtrl implements Initializable {
         }
     }
 
+    public void enterBoard(Board board) {
+        mainCtrl.showOverview(board.id);
+    }
     public void disconnectPressed(){
 
     }

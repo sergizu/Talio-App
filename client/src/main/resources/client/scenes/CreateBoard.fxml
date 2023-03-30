@@ -14,7 +14,7 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Button layoutX="339.0" layoutY="228.0" mnemonicParsing="false" onMousePressed="#createBoard" text="Join" />
+      <Button layoutX="325.0" layoutY="228.0" mnemonicParsing="false" onMousePressed="#createBoard" text="Create" />
       <Button layoutX="226.0" layoutY="228.0" mnemonicParsing="false" onKeyPressed="#keyPressed" onMouseClicked="#escape" text="Cancel" />
    </children>
 </AnchorPane>

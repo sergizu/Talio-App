@@ -68,7 +68,7 @@ public class CreateBoardCtrl {
         client.boards.put(ServerUtils.getServer(),boards);
     }
     public void escape(){
-
+        mainCtrl.showJoinedBoards(client);
     }
     public void keyPressed(KeyEvent e) {
         switch (e.getCode()) {
