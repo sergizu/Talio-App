@@ -36,7 +36,7 @@ public class AddCardCtrl {
         server.send("/app/tdLists/addCard", new CardListId(toSend,listId));
         mainCtrl.showOverviewNoRefresh();// I don't want to refresh
         // because each client is registered for this change already
-        mainCtrl.showOverview(1);
+        //mainCtrl.showOverview(1);
     }
 
     private void clearFields() {

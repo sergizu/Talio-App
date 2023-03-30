@@ -70,14 +70,9 @@ public class ListController {
     }
 
     @PutMapping("/{id}/addCard")
-    public ResponseEntity addCardToList(@PathVariable("id") long id, @RequestBody Card card) {
-        if (!listService.existsById(id))
+    public ResponseEntity addCardToList(@PathVariable("id") long listId, @RequestBody Card card) {
+        if (!listService.addCardToList(listId, card))
             return ResponseEntity.badRequest().build();
-        TDList tdlist = listRepository.getById(id);
-        card.list = tdlist;
-        tdlist.addCard(card);
-        TDList update = listRepository.save(tdlist);
-        //boardService.sendUpdates(update.getBoard().getId()); was used for long polling
         return ResponseEntity.ok().build();
     }
 

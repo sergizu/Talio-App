@@ -1,5 +1,6 @@
 package server.service;
 
+import commons.Card;
 import commons.TDList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,6 +68,15 @@ public class ListService {
         } catch (Exception e) {
             return false;
         }
+        return true;
+    }
+    public boolean addCardToList(Long listId, Card cardToAdd) {
+        if(!listRepository.existsById(listId) || cardToAdd == null)
+            return false;
+        TDList tdlist = listRepository.getById(listId);
+        cardToAdd.list = tdlist;
+        tdlist.addCard(cardToAdd);
+        TDList update = listRepository.save(tdlist);
         return true;
     }
 }
