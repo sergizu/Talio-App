@@ -1,19 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="314.0" prefWidth="426.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EditCardCtrl">
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="399.0" prefWidth="509.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EditCardCtrl">
    <children>
-      <TextField fx:id="cardName" layoutX="139.0" layoutY="111.0" onKeyPressed="#keyPressed" />
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="139.0" layoutY="63.0" prefHeight="37.0" prefWidth="149.0" text="Card title:">
+      <TextField fx:id="cardName" layoutX="181.0" layoutY="86.0" onKeyPressed="#keyPressed" />
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="181.0" layoutY="39.0" prefHeight="37.0" prefWidth="149.0" text="Card title:">
          <font>
             <Font size="26.0" />
          </font>
       </Label>
-      <Button layoutX="369.0" layoutY="275.0" mnemonicParsing="false" onAction="#ok" text="Okay" />
-      <Button layoutX="14.0" layoutY="275.0" mnemonicParsing="false" onAction="#delete" text="Delete" />
+      <Button layoutX="453.0" layoutY="360.0" mnemonicParsing="false" onAction="#ok" text="Okay" />
+      <Button layoutX="15.0" layoutY="360.0" mnemonicParsing="false" onAction="#delete" text="Delete" />
       <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
-      <Label fx:id="emptyName" contentDisplay="CENTER" layoutX="135.0" layoutY="150.0" textAlignment="CENTER" textFill="RED" wrapText="true" />
+      <TableView fx:id="tableView" layoutX="57.0" layoutY="223.0" prefHeight="123.0" prefWidth="396.0">
+        <columns>
+          <TableColumn fx:id="tableColumnSubtask" onEditCommit="#changeSubtask" prefWidth="327.0" text="Subtasks" />
+            <TableColumn fx:id="tableColumnCheckbox" prefWidth="34.0" />
+            <TableColumn fx:id="tableColumnButton" prefWidth="34.0" />
+        </columns>
+      </TableView>
+      <Label fx:id="emptyName" layoutX="241.0" layoutY="69.0" />
+      <Button layoutX="57.0" layoutY="187.0" mnemonicParsing="false" onAction="#createSubtask" text="Add subtask" />
    </children>
 </AnchorPane>

@@ -43,10 +43,15 @@ public class MainCtrl {
     private Scene selectServer;
     private SelectServerCtrl selectServerCtrl;
 
+    private Scene addSubtask;
+
+    private AddSubTaskCtrl addSubTaskCtrl;
+
     public void initialize(Stage primaryStage, Pair<ListOverviewCtrl, Parent> overview,
                            Pair<AddCardCtrl, Parent> addCard, Pair<AddListCtrl, Parent> addList,
                            Pair<EditCardCtrl, Parent> edit, Pair<EditListCtrl, Parent> editList,
-                           Pair<SelectServerCtrl, Parent> selectServer) {
+                           Pair<SelectServerCtrl, Parent> selectServer,
+                           Pair<AddSubTaskCtrl, Parent> addSubtask) {
 
         this.primaryStage = primaryStage;
         this.listOverviewCtrl = overview.getKey();
@@ -65,7 +70,10 @@ public class MainCtrl {
 
         this.selectServerCtrl = selectServer.getKey();
         this.selectServer = new Scene(selectServer.getValue());
-        System.out.println("working");
+
+        this.addSubTaskCtrl = addSubtask.getKey();
+        this.addSubtask = new Scene(addSubtask.getValue());
+
         showSelectServer();
         primaryStage.show();
     }
@@ -119,5 +127,12 @@ public class MainCtrl {
         primaryStage.setTitle("List: Rename list");
         primaryStage.setScene(editList);
         editListCtrl.init(list);
+    }
+
+    public void showAddSubtask(Card card) {
+        listOverviewCtrl.saveAnchorPaneHeightWidth();
+        primaryStage.setTitle("Subtask: Create subtask");
+        primaryStage.setScene(addSubtask);
+        addSubTaskCtrl.init(card);
     }
 }
