@@ -13,7 +13,6 @@ import javafx.scene.input.KeyEvent;
 public class SelectServerCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-    private final AppClient client;
 
     @FXML
     private TextField serverName;
@@ -22,13 +21,13 @@ public class SelectServerCtrl {
     private Label myLabel;
 
     @Inject
-    public SelectServerCtrl(ServerUtils server, MainCtrl mainCtrl, AppClient client) {
+    public SelectServerCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
-        this.client = client;
     }
 
     public void ok() {
+        AppClient client = mainCtrl.getClient();
         String s = serverName.getText();
         if (serverName.getText().isEmpty()) {
             myLabel.setText("Can not be empty!");

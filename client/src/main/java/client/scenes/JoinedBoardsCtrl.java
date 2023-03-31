@@ -59,6 +59,7 @@ public class JoinedBoardsCtrl implements Initializable {
 
     public void init(AppClient client) {
         this.client = client;
+        System.out.println(client.id);
         String serverString = ServerUtils.getServer();
         addServerKeyIntoMap(serverString);
         getBoardsForServer(serverString);
@@ -74,6 +75,7 @@ public class JoinedBoardsCtrl implements Initializable {
     public void getBoardsForServer(String serverString) {
         ArrayList<Board> boards = new ArrayList<>();
         if(client.boards.containsKey(serverString)){
+            System.out.println(client.id);
             boards = client.boards.get(serverString);
         }
         showJoinedBoards(boards);
@@ -120,7 +122,6 @@ public class JoinedBoardsCtrl implements Initializable {
         boardsList.setSpacing(3);
         for(Board board:boards)
             boardsList.getChildren().add(createHBox(board));
-        ///System.out.println(boardsList.getChildren().size());
     }
 
     public HBox createHBox(Board board) {
@@ -184,7 +185,6 @@ public class JoinedBoardsCtrl implements Initializable {
     }
     public void disconnectPressed(){
         mainCtrl.showSelectServer();
-
     }
 
 
