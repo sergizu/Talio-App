@@ -4,13 +4,23 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="210.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AddListCtrl">
    <children>
-      <Button layoutX="145.0" layoutY="210.0" mnemonicParsing="false" onAction="#ok" text="Create" />
-      <Button layoutX="14.0" layoutY="210.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
-      <Label layoutX="31.0" layoutY="73.0" text="List Name:" />
-      <TextField fx:id="listTitle" layoutX="31.0" layoutY="100.0" />
-      <Label fx:id="emptyName" alignment="CENTER" layoutX="31.0" layoutY="134.0" text="" textFill="RED" />
+      <VBox alignment="CENTER" layoutX="14.0" layoutY="73.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label alignment="CENTER" text="List Name:" />
+            <TextField fx:id="listTitle" maxWidth="200.0" />
+            <Label fx:id="emptyName" alignment="CENTER" text="" textFill="RED" />
+            <HBox alignment="CENTER" spacing="100.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#cancel" text="Cancel" />
+                  <Button mnemonicParsing="false" onAction="#ok" text="Create" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>
