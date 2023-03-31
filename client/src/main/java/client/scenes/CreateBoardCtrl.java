@@ -66,6 +66,7 @@ public class CreateBoardCtrl {
         if(boards == null)
             boards = new ArrayList<>();
         boards.add(board);
+        System.out.println("Board id on creation:" + board.id);
         client.boards.put(ServerUtils.getServer(),boards);
     }
     public void escape(){

@@ -73,14 +73,15 @@ public class ListOverviewCtrl implements Initializable {
             });
         });
         server.registerForBoardUpdates(updatedBoardID -> {
-            if(board.getId() == updatedBoardID)
+            if(board.getId() == updatedBoardID){
                 setBoard(updatedBoardID);
 
-            Platform.runLater(() -> {
-                boardTitle.setText(board.title);
-                boardKey.setText("key: " + board.key);
-                refresh(updatedBoardID);
-            });
+                Platform.runLater(() -> {
+                    boardTitle.setText(board.title);
+                    boardKey.setText("key: " + board.key);
+                    refresh(updatedBoardID);
+                });
+            }
 
         });
     }
