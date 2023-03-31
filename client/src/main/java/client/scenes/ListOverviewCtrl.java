@@ -67,7 +67,7 @@ public class ListOverviewCtrl implements Initializable {
         server.registerForMessages("/topic/addCard", c-> {
             Platform.runLater(() -> {
                 addCardToList(c.card,c.listId);
-                showLists();
+                setBoard(board.id);
             });
         });
         server.registerForBoardUpdates(updatedBoardID -> {
