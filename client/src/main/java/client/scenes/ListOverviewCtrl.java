@@ -21,7 +21,6 @@ import javafx.scene.control.*;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -46,16 +45,10 @@ public class ListOverviewCtrl implements Initializable {
     @FXML
     private ScrollPane scrollPane;
     @FXML
-    private AnchorPane anchorPane;
-    @FXML
     private Label boardTitle;
-    @FXML
-    private Label boardKey;
     @FXML
     private Button copyButton;
     private TableView<Card> selection;
-    private double height = 700;
-    private double width = 700;
 
     @Inject
     public ListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
@@ -78,27 +71,15 @@ public class ListOverviewCtrl implements Initializable {
 
                 Platform.runLater(() -> {
                     boardTitle.setText(board.title);
-                    boardKey.setText("key: " + board.key);
                     refresh(updatedBoardID);
                 });
             }
-
         });
     }
     public void addCardToList(Card card, long listId) {
         for(int i=0;i<board.tdLists.size();i++)
             if(board.tdLists.get(i).id==listId)
                 board.tdLists.get(i).addCard(card);
-    }
-
-    public void setAnchorPaneHeightWidth() {
-        anchorPane.setPrefHeight(height);
-        anchorPane.setPrefWidth(width);
-    }
-
-    public void saveAnchorPaneHeightWidth() {
-        height = anchorPane.getHeight();
-        width = anchorPane.getWidth();
     }
 
     private void setScrollPane() {
@@ -168,8 +149,7 @@ public class ListOverviewCtrl implements Initializable {
     public HBox createHBox(Button button1, Button button2) {
         HBox hBox = new HBox();
         hBox.getChildren().addAll(button2, button1);
-        //hBox.setAlignment(Pos.BASELINE_CENTER);
-        hBox.setSpacing(100);
+        hBox.setSpacing(55);
         return hBox;
     }
 
@@ -181,11 +161,9 @@ public class ListOverviewCtrl implements Initializable {
         return vBox;
     }
 
-    //boardID is not yet used
     public void refresh(long boardID) {
         board = server.getBoardById(boardID);
         boardTitle.setText(board.title);
-        boardKey.setText("key: " + board.key);
         showLists();
     }
 
@@ -293,7 +271,6 @@ public class ListOverviewCtrl implements Initializable {
         });
     }
 
-
     public void copyKey() {
         copyToClipboard(board.key);
         animateCopyButton(copyButton);
@@ -329,7 +306,7 @@ public class ListOverviewCtrl implements Initializable {
     public void restoreCopyButton(Button copyButton) {
         copyButton.setStyle("-fx-background-color: #2596be;");
         copyButton.setFont(new Font(12));
-        copyButton.setText("Copy!");
+        copyButton.setText("Copy Invite Key");
     }
 
     public void setBoard(long boardId) {
