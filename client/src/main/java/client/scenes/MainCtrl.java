@@ -122,6 +122,7 @@ public class MainCtrl {
     public void showBoardOverview() {
         primaryStage.setTitle("Boards: Overview");
         primaryStage.setScene(boardOverviewScene);
+        boardOverviewCtrl.showOtherBoards();
     }
 
     public void showOverviewNoRefresh(){

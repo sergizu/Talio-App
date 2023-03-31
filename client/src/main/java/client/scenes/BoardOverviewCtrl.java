@@ -7,16 +7,20 @@ import commons.Board;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class BoardOverviewCtrl implements Initializable {
@@ -30,6 +34,8 @@ public class BoardOverviewCtrl implements Initializable {
     private Label boardOverviewTitle;
     @FXML
     private HBox topHBox;
+    @FXML
+    private VBox boardsList;
 
     @Inject
     public BoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
@@ -73,12 +79,79 @@ public class BoardOverviewCtrl implements Initializable {
         }
     }
 
-    public void showOtherBoards(AppClient client) {
+    public void showOtherBoards() {
         ArrayList<Board> allBoards = (ArrayList<Board>) server.getBoards();
         if(allBoards.isEmpty())
             displayNoBoardsMessage();
+        else displayBoards(allBoards);
     }
     public void displayNoBoardsMessage(){
+        clearBoardList();
+        Label noBoards = new Label("There are no other boards");
+        noBoards.setFont(Font.font(25.0));
+        noBoards.setPadding(new Insets(30,30,30,30));
+        boardsList.getChildren().add(noBoards);
+    }
+
+    public void displayBoards(List<Board> allBoards){
+        ArrayList<Board> boards = (ArrayList<Board>) getLeftBoards(allBoards);
+        for(Board board:boards)
+            boardsList.getChildren().add(createHBox(board));
+    }
+
+    public List<Board> getLeftBoards(List<Board> allBoards){
+        ArrayList<Board> boards = new ArrayList<>();
+        AppClient client = mainCtrl.getClient();
+        ArrayList<Board> clientBoards = client.boards.get(ServerUtils.getServer());
+        for(Board board:allBoards)
+            if(!clientBoards.contains(board))
+                boards.add(board);
+        return boards;
+    }
+
+    public HBox createHBox(Board board) {
+        HBox tableLine = createTableLine();
+//        tableLine.setOnMouseClicked(event -> {
+//            enterBoard(board);
+//        });
+        tableLine.getChildren().add(createLabel(board.title));
+        tableLine.getChildren().add(createJoinButton(board));
+        return tableLine;
+    }
+
+    public HBox createTableLine(){
+        HBox tableLine = new HBox();
+        tableLine.setBorder(new Border(new BorderStroke(Color.BLACK,
+                BorderStrokeStyle.SOLID, null , null)));//will change color, was added for testing
+        tableLine.setPrefHeight(50);
+        return tableLine;
+    }
+    public Label createLabel(String title){
+        Label boardTitle = new Label(title);
+        boardTitle.setFont(Font.font(20));
+        boardTitle.setPadding(new Insets(10,50,10,100));
+        return boardTitle;
+    }
+
+    public Button createJoinButton(Board board) {
+        Button leaveButton = new Button("leave");
+        leaveButton.setStyle("-fx-background-color: red;");
+        leaveButton.setOnMouseClicked(event -> {
+            joinBoard(board);
+        });
+        return leaveButton;
+    }
+
+    public void clearBoardList() {
+        while(!boardsList.getChildren().isEmpty())
+            boardsList.getChildren().remove(0);///removeAll did not work!?
+    }
+
+    public void backToMyBoards() {
+        mainCtrl.showJoinedBoards(mainCtrl.getClient());
+    }
+
+    public void joinBoard(Board board){
 
     }
 

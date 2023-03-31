@@ -40,6 +40,8 @@ public class JoinedBoardsCtrl implements Initializable {
     private Button disconnectButton;
     @FXML
     private Button createBoardButton;
+    @FXML
+    private Button browseButton;
 
 
     @Inject
@@ -146,7 +148,7 @@ public class JoinedBoardsCtrl implements Initializable {
 
     public HBox createTableLine(){
         HBox tableLine = new HBox();
-        tableLine.setBorder(new Border(new BorderStroke(Color.GREEN,
+        tableLine.setBorder(new Border(new BorderStroke(Color.BLACK,
                 BorderStrokeStyle.SOLID, null , null)));//will change color, was added for testing
         tableLine.setPrefHeight(50);
         return tableLine;
@@ -178,6 +180,9 @@ public class JoinedBoardsCtrl implements Initializable {
         }
     }
 
+    public void browsePressed() {
+        mainCtrl.showBoardOverview();
+    }
     public void enterBoard(Board board) {
         mainCtrl.showOverview(board.id);
     }
