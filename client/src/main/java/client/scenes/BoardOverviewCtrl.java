@@ -95,6 +95,7 @@ public class BoardOverviewCtrl implements Initializable {
 
     public void displayBoards(List<Board> allBoards){
         ArrayList<Board> boards = (ArrayList<Board>) getLeftBoards(allBoards);
+        clearBoardList();
         for(Board board:boards)
             boardsList.getChildren().add(createHBox(board));
     }
@@ -134,8 +135,8 @@ public class BoardOverviewCtrl implements Initializable {
     }
 
     public Button createJoinButton(Board board) {
-        Button leaveButton = new Button("leave");
-        leaveButton.setStyle("-fx-background-color: red;");
+        Button leaveButton = new Button("Join");
+        leaveButton.setStyle("-fx-background-color: #34eb67;");
         leaveButton.setOnMouseClicked(event -> {
             joinBoard(board);
         });
@@ -152,7 +153,12 @@ public class BoardOverviewCtrl implements Initializable {
     }
 
     public void joinBoard(Board board){
-
+        AppClient client = mainCtrl.getClient();
+        ArrayList<Board> joinedBoards = client.boards.get(ServerUtils.getServer());
+        if(!joinedBoards.contains(board))
+            joinedBoards.add(board);
+        client.boards.put(ServerUtils.getServer(),joinedBoards);
+        mainCtrl.showOverview(board.id);
     }
 
 
