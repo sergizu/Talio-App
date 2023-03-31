@@ -44,6 +44,7 @@ public class ListOverviewCtrl implements Initializable {
     private Board board;
     @FXML
     private ScrollPane scrollPane;
+    boolean toRefresh = false;
     @FXML
     private Label boardTitle;
     @FXML
@@ -59,6 +60,10 @@ public class ListOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setScrollPane();
+        if(toRefresh) {
+            toRefresh = false;
+            setBoard(board.id);
+        }
         server.registerForMessages("/topic/addCard", c-> {
             Platform.runLater(() -> {
                 addCardToList(c.card,c.listId);
@@ -67,13 +72,14 @@ public class ListOverviewCtrl implements Initializable {
         });
         server.registerForBoardUpdates(updatedBoardID -> {
             if(board.getId() == updatedBoardID){
-                setBoard(updatedBoardID);
-
                 Platform.runLater(() -> {
+                    setBoard(updatedBoardID);
                     boardTitle.setText(board.title);
                     refresh(updatedBoardID);
+                    toRefresh = false;
                 });
             }
+            else toRefresh = true;
         });
     }
     public void addCardToList(Card card, long listId) {
