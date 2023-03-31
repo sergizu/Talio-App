@@ -76,13 +76,4 @@ public class ListService {
         TDList update = listRepository.save(tdlist);
         return true;
     }
-    public boolean addCardToList(Long listId, Card cardToAdd) {
-        if(!listRepository.existsById(listId) || cardToAdd == null)
-            return false;
-        TDList tdlist = listRepository.getById(listId);
-        cardToAdd.list = tdlist;
-        tdlist.addCard(cardToAdd);
-        TDList update = listRepository.save(tdlist);
-        return true;
-    }
 }
