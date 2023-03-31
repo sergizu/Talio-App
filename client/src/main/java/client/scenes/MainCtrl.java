@@ -92,13 +92,13 @@ public class MainCtrl {
         this.addSubtask = new Scene(addSubtask.getValue(), 1080, 720);
 
         this.boardOverviewCtrl = boardOverview.getKey();
-        this.boardOverviewScene = new Scene(boardOverview.getValue());
+        this.boardOverviewScene = new Scene(boardOverview.getValue(),1080,720);
 
         this.joinedBoardsCtrl = joinedBoards.getKey();
-        this.joinedBoardsScene = new Scene(joinedBoards.getValue());
+        this.joinedBoardsScene = new Scene(joinedBoards.getValue(),1080,720);
 
         this.createBoardCtrl = createBoard.getKey();
-        this.createBoardScene = new Scene(createBoard.getValue());
+        this.createBoardScene = new Scene(createBoard.getValue(),1080,720);
 
         this.client = client;
         showSelectServer();
@@ -112,6 +112,7 @@ public class MainCtrl {
     public void showSelectServer(){
         primaryStage.setTitle("Server: selecting server");
         primaryStage.setScene(selectServer);
+        setSizeScene();
     }
 
     public void showOverview(long boardId) {
@@ -120,6 +121,7 @@ public class MainCtrl {
         primaryStage.setMinHeight(360);
         listOverviewCtrl.setBoard(boardId);
         primaryStage.setScene(overview);
+        setSizeScene();
     }
 
     public void showBoardOverview() {
@@ -186,6 +188,7 @@ public class MainCtrl {
 
     public void showCreateBoard(){
         primaryStage.setScene(createBoardScene);
+        setSizeScene();
 
     }
     public AppClient getClient(){
