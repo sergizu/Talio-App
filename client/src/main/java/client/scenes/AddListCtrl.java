@@ -56,7 +56,7 @@ public class AddListCtrl {
 
     public void cancel() {
         clearFields();
-        mainCtrl.showOverview(1);
+        mainCtrl.showOverview(boardId);
     }
 
     public void ok() {
@@ -74,7 +74,7 @@ public class AddListCtrl {
         }
 
         clearFields();
-        mainCtrl.showOverview(1);
+        mainCtrl.showOverview(boardId);
     }
 
     private void clearFields() {
