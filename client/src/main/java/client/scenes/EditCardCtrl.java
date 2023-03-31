@@ -9,7 +9,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -17,6 +16,7 @@ import javafx.scene.input.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import static client.helperClass.SubtaskWrapper.serialization;
 
 public class EditCardCtrl {
@@ -92,7 +92,7 @@ public class EditCardCtrl {
 
     public void ok() {
         if (cardName.getText().equals(card.title)) {
-            mainCtrl.showOverview(1);
+            mainCtrl.showOverview(card.list.board.id);
             return;
         }
         else if(cardName.getText().equals("")){
@@ -101,13 +101,14 @@ public class EditCardCtrl {
         }
         emptyName.setText("");
         server.updateCardName(card.getId(), cardName.getText());
-        mainCtrl.showOverview(1);
+        mainCtrl.showOverview(card.list.board.id);
     }
 
     public void delete() {
+        long boardId = card.list.board.id;
         server.removeCard(card);
         emptyName.setText("");
-        mainCtrl.showOverview(1);
+        mainCtrl.showOverview(boardId);
     }
 
     public void keyPressed(KeyEvent e) {
@@ -120,7 +121,7 @@ public class EditCardCtrl {
     }
 
     public void cancel() {
-        mainCtrl.showOverview(1);
+        mainCtrl.showOverview(card.list.board.id);
     }
 
     public void createSubtask() {

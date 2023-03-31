@@ -118,7 +118,7 @@ public class ListOverviewCtrl implements Initializable {
     public Button createAddCardButton(long id) {
         Button button = new Button("Add Card");
         button.setOnAction(e -> {
-            mainCtrl.showAdd(id);
+            mainCtrl.showAdd(id,board.id);
         });
         return button;
     }

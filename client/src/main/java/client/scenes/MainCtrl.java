@@ -118,7 +118,6 @@ public class MainCtrl {
         primaryStage.setTitle("Lists: Overview");
         primaryStage.setMinWidth(350);
         primaryStage.setMinHeight(360);
-        //listOverviewCtrl.setAnchorPaneHeightWidth();
         listOverviewCtrl.setBoard(boardId);
         primaryStage.setScene(overview);
     }
@@ -136,10 +135,10 @@ public class MainCtrl {
         setSizeScene();
     }
 
-    public void showAdd(long listId) {
+    public void showAdd(long listId,long boardId) {
         primaryStage.setTitle("Board: Adding Card");
         primaryStage.setScene(sceneAddCard);
-        addCardCtrl.setListId(listId);
+        addCardCtrl.setListBoardId(listId,boardId);
         sceneAddCard.setOnKeyPressed(e -> addCardCtrl.keyPressed(e));
         setSizeScene();
     }
