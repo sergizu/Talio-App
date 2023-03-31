@@ -34,9 +34,7 @@ public class ListService {
         if(l == null || l.title == null || l.cards == null) return null;
         if(listRepository.existsById(l.id))
             return null;
-        TDList saved = listRepository.save(l);
-//        boardService.sendUpdates(saved.getBoard().getId());
-        return saved;
+        return listRepository.save(l);
     }
 
     public boolean existsById(long id) {
@@ -60,14 +58,22 @@ public class ListService {
     }
 
     public boolean updateName(long id,String newName){
-        try {
-            TDList toUpdate = listRepository.getById(id);
-            toUpdate.setTitle(newName);
-            TDList updated = listRepository.save(toUpdate);
-            boardService.sendUpdates(updated.getBoard().getId());
-        } catch (Exception e) {
+        if(!listRepository.existsById(id))
             return false;
-        }
+        TDList toUpdate = listRepository.getById(id);
+        toUpdate.setTitle(newName);
+        TDList updated = listRepository.save(toUpdate);
+        boardService.sendUpdates(updated.getBoard().getId());
+        return true;
+    }
+
+    public boolean addCardToList(Long listId, Card cardToAdd) {
+        if(!listRepository.existsById(listId) || cardToAdd == null)
+            return false;
+        TDList tdlist = listRepository.getById(listId);
+        cardToAdd.list = tdlist;
+        tdlist.addCard(cardToAdd);
+        TDList update = listRepository.save(tdlist);
         return true;
     }
     public boolean addCardToList(Long listId, Card cardToAdd) {

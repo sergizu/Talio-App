@@ -1,19 +1,17 @@
 package server.service;
 
+import commons.Board;
 import commons.Card;
-import org.junit.jupiter.api.AfterEach;
+import commons.TDList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import server.api.BoardController;
 import server.database.CardRepository;
-import server.database.ListRepository;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -26,15 +24,23 @@ class CardServiceTest {
 
     @Mock
     private BoardService boardService;
-
-    @Mock
-    private ListRepository listRepository;
     private CardService cardService;
+    private Card card;
+    private TDList list;
+    private Board board;
 
 
     @BeforeEach
     void setUp() {
-        cardService = new CardService(cardRepository, boardService, listRepository);
+        cardService = new CardService(cardRepository, boardService);
+        card = new Card("Card");
+        list = new TDList("List");
+        board = new Board("Board");
+        list.id = 1;
+        card.id = 2;
+        board.id = 3;
+        card.setList(list);
+        list.setBoard(board);
     }
 
     @Test
@@ -101,6 +107,70 @@ class CardServiceTest {
         card.id = 1;
         when(cardRepository.existsById(card.id)).thenReturn(false);
         cardService.update(card);
+        verify(cardRepository, never()).save(card);
+    }
+
+    @Test
+    public void deleteIfExists() {
+        when(cardRepository.existsById(card.getId())).thenReturn(true);
+        when(cardRepository.getById(card.getId())).thenReturn(card);
+        cardService.delete(card.getId());
+        verify(cardRepository).deleteById(card.getId());
+    }
+
+    @Test
+    public void deleteIfNotExists() {
+        when(cardRepository.existsById(card.getId())).thenReturn(false);
+        cardService.delete(card.getId());
+        verify(cardRepository, never()).deleteById(card.getId());
+    }
+
+    @Test
+    public void testUpdateName() {
+        String newName = "New Name";
+        when(cardRepository.existsById(card.getId())).thenReturn(true);
+        when(cardRepository.getById(card.getId())).thenReturn(card);
+        card.setTitle(newName);
+        when(cardRepository.save(card)).thenReturn(card);
+        cardService.updateName(card.getId(), newName);
+        verify(cardRepository).save(card);
+    }
+
+    @Test
+    public void testUpdateNameIfNotExists() {
+        String newName = "New Name";
+        when(cardRepository.existsById(card.getId())).thenReturn(false);
+        cardService.updateName(card.getId(), newName);
+        verify(cardRepository, never()).save(card);
+    }
+
+    @Test
+    public void testRefuseEmptyName() {
+        String newName = "";
+        cardService.updateName(card.getId(), newName);
+        verify(cardRepository, never()).save(card);
+    }
+
+    @Test
+    public void testUpdateList() {
+        TDList newList = new TDList("New List");
+        newList.id = 1;
+        newList.setBoard(board);
+        when(cardRepository.existsById(card.getId())).thenReturn(true);
+        when(cardRepository.getById(card.getId())).thenReturn(card);
+        card.setList(newList);
+        when(cardRepository.save(card)).thenReturn(card);
+        cardService.updateList(card.getId(), newList);
+        verify(cardRepository).save(card);
+    }
+
+    @Test
+    public void testUpdateListIfNotExists() {
+        TDList newList = new TDList("New List");
+        newList.id = 1;
+        newList.setBoard(board);
+        when(cardRepository.existsById(card.getId())).thenReturn(false);
+        cardService.updateList(card.getId(), newList);
         verify(cardRepository, never()).save(card);
     }
 }
