@@ -95,9 +95,13 @@ public class BoardOverviewCtrl implements Initializable {
 
     public void displayBoards(List<Board> allBoards){
         ArrayList<Board> boards = (ArrayList<Board>) getLeftBoards(allBoards);
-        clearBoardList();
-        for(Board board:boards)
-            boardsList.getChildren().add(createHBox(board));
+        if(boards.size() == 0)
+            displayNoBoardsMessage();
+        else {
+            clearBoardList();
+            for (Board board : boards)
+                boardsList.getChildren().add(createHBox(board));
+        }
     }
 
     public List<Board> getLeftBoards(List<Board> allBoards){
@@ -105,9 +109,16 @@ public class BoardOverviewCtrl implements Initializable {
         AppClient client = mainCtrl.getClient();
         ArrayList<Board> clientBoards = client.boards.get(ServerUtils.getServer());
         for(Board board:allBoards)
-            if(!clientBoards.contains(board))
+            if(!containsId(clientBoards,board.id) && !containsId(boards,board.id))
                 boards.add(board);
         return boards;
+    }
+
+    boolean containsId(ArrayList<Board> boards, long boardId){
+        for(Board board : boards)
+            if(board.id == boardId)
+                return true;
+        return false;
     }
 
     public HBox createHBox(Board board) {

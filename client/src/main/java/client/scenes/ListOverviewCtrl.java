@@ -60,26 +60,44 @@ public class ListOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setScrollPane();
-        if(toRefresh) {
-            toRefresh = false;
-            setBoard(board.id);
-        }
+//        if(toRefresh) {
+//            toRefresh = false;
+//            setBoard(board.id);
+//        }
+//        server.registerForBoardUpdates(updatedBoardID -> {
+//            System.out.println("Updattteeeeee");
+//            if(board.getId() == updatedBoardID){
+//                Platform.runLater(() -> {
+//                    setBoard(updatedBoardID);
+//                    toRefresh = false;
+//                });
+//            }
+//            else toRefresh = true;
+//        });
+//        server.registerForMessages("/topic/addCard", c-> {
+//            Platform.runLater(() -> {
+//                addCardToList(c.card,c.listId);
+//                setBoard(board.id);
+//            });
+//        });
+
+    }
+
+    public void registerForUpdates() {
+        server.registerForBoardUpdates(updatedBoardID -> {
+            if(board.getId() == updatedBoardID){
+                Platform.runLater(() -> {
+                    setBoard(updatedBoardID);
+                    toRefresh = false;
+                });
+            }
+            else toRefresh = true;
+        });
         server.registerForMessages("/topic/addCard", c-> {
             Platform.runLater(() -> {
                 addCardToList(c.card,c.listId);
                 setBoard(board.id);
             });
-        });
-        server.registerForBoardUpdates(updatedBoardID -> {
-            if(board.getId() == updatedBoardID){
-                Platform.runLater(() -> {
-                    setBoard(updatedBoardID);
-                    boardTitle.setText(board.title);
-                    refresh(updatedBoardID);
-                    toRefresh = false;
-                });
-            }
-            else toRefresh = true;
         });
     }
     public void addCardToList(Card card, long listId) {
@@ -271,7 +289,7 @@ public class ListOverviewCtrl implements Initializable {
             int draggedIndex = (int) db.getContent(serialization);
             Card card = selection.getItems().remove(draggedIndex);
             server.updateCardList(card.getId(), tdList);
-            refresh(board.id);
+            setBoard(board.id);
             server.updateBoard(board);
             e.consume();
         });

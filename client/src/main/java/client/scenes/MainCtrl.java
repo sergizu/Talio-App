@@ -120,6 +120,7 @@ public class MainCtrl {
         primaryStage.setMinWidth(350);
         primaryStage.setMinHeight(360);
         listOverviewCtrl.setBoard(boardId);
+        listOverviewCtrl.registerForUpdates();
         primaryStage.setScene(overview);
         setSizeScene();
     }
