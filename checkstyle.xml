@@ -100,6 +100,7 @@
             <message key="name.invalidPattern"
                      value="Class type name ''{0}'' must match pattern ''{1}''."/>
         </module>
+        <module name="SuppressWarningsHolder"/>
     </module>
 
     <module name="LineLength">
@@ -108,5 +109,5 @@
         <property name="max" value="100"/>
         <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
     </module>
-
+    <module name="SuppressWarningsFilter"/>
 </module>

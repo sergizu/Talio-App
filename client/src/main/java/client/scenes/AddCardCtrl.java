@@ -20,21 +20,26 @@ public class AddCardCtrl {
     private TextField cardName;
     private long listId;
 
+    private long boardId;
+
     @Inject
     public AddCardCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
     }
 
-    public void setListId(long listId) {
+    public void setListBoardId(long listId,long boardId) {
         this.listId = listId;
+        this.boardId = boardId;
     }
 
     public void ok() {
         Card toSend = new Card(cardName.getText());
         server.addCardToList(listId,toSend);
         server.send("/app/tdLists/addCard", new CardListId(toSend,listId));
-        mainCtrl.showOverviewNoRefresh();// I don't want to refresh
+        mainCtrl.showOverviewNoRefresh();
+        clearFields();
+        // I don't want to refresh
         // because each client is registered for this change already
     }
 
@@ -45,7 +50,7 @@ public class AddCardCtrl {
     public void cancel() {
         myLabel.setText("");
         clearFields();
-        mainCtrl.showOverview();
+        mainCtrl.showOverview(boardId);
     }
 
     public void keyPressed(KeyEvent e) {

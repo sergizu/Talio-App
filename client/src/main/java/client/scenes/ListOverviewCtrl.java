@@ -44,6 +44,7 @@ public class ListOverviewCtrl implements Initializable {
     private Board board;
     @FXML
     private ScrollPane scrollPane;
+    boolean toRefresh = false;
     @FXML
     private Label boardTitle;
     @FXML
@@ -59,17 +60,43 @@ public class ListOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setScrollPane();
+//        if(toRefresh) {
+//            toRefresh = false;
+//            setBoard(board.id);
+//        }
+//        server.registerForBoardUpdates(updatedBoardID -> {
+//            System.out.println("Updattteeeeee");
+//            if(board.getId() == updatedBoardID){
+//                Platform.runLater(() -> {
+//                    setBoard(updatedBoardID);
+//                    toRefresh = false;
+//                });
+//            }
+//            else toRefresh = true;
+//        });
+//        server.registerForMessages("/topic/addCard", c-> {
+//            Platform.runLater(() -> {
+//                addCardToList(c.card,c.listId);
+//                setBoard(board.id);
+//            });
+//        });
+
+    }
+
+    public void registerForUpdates() {
+        server.registerForBoardUpdates(updatedBoardID -> {
+            if(board.getId() == updatedBoardID){
+                Platform.runLater(() -> {
+                    setBoard(updatedBoardID);
+                    toRefresh = false;
+                });
+            }
+            else toRefresh = true;
+        });
         server.registerForMessages("/topic/addCard", c-> {
             Platform.runLater(() -> {
                 addCardToList(c.card,c.listId);
-                showLists();
-            });
-        });
-        server.registerForBoardUpdates(updatedBoardID -> {
-            if(board.getId() == updatedBoardID)
-                board = server.tempBoardGetter();
-            Platform.runLater(() -> {
-                refresh(1);
+                setBoard(board.id);
             });
         });
     }
@@ -115,7 +142,7 @@ public class ListOverviewCtrl implements Initializable {
     public Button createAddCardButton(long id) {
         Button button = new Button("Add Card");
         button.setOnAction(e -> {
-            mainCtrl.showAdd(id);
+            mainCtrl.showAdd(id,board.id);
         });
         return button;
     }
@@ -127,7 +154,6 @@ public class ListOverviewCtrl implements Initializable {
         });
         return button;
     }
-
 
     public TableView<Card> createTable(TDList tdList) {
         TableView<Card> tv = new TableView<>();
@@ -144,7 +170,6 @@ public class ListOverviewCtrl implements Initializable {
         return tv;
     }
 
-
     public HBox createHBox(Button button1, Button button2) {
         HBox hBox = new HBox();
         hBox.getChildren().addAll(button2, button1);
@@ -160,12 +185,12 @@ public class ListOverviewCtrl implements Initializable {
         return vBox;
     }
 
-    //boardID is not yet used
     public void refresh(long boardID) {
-        board = server.tempBoardGetter();
+        board = server.getBoardById(boardID);
         boardTitle.setText(board.title);
         showLists();
     }
+
     public void stop() {
         server.stop();
     }
@@ -185,7 +210,7 @@ public class ListOverviewCtrl implements Initializable {
         });
     }
 
-    public void dragAndDrop(TableView<Card> tableView){
+    public void dragAndDrop(TableView<Card> tableView) {
         tableView.setRowFactory(tv -> {
             TableRow<Card> row = new TableRow<>();
             row.setOnDragDetected(e -> { //Method gets called whenever a mouse drags a row
@@ -237,11 +262,11 @@ public class ListOverviewCtrl implements Initializable {
     }
 
 
-    public void updateList(TDList tdList, ArrayList<Card> items ) {
+    public void updateList(TDList tdList, ArrayList<Card> items) {
         tdList.cards.clear();
         tdList.cards.addAll(items);
         var ids = tdList.cards.stream().map(Card::getId).sorted().collect(Collectors.toList());
-        for(int i = 0;i<ids.size();i++){
+        for (int i = 0; i < ids.size(); i++) {
             tdList.cards.get(i).setId(ids.get(i)); // changing the ids of the cards to store
             // them in a different order in the database
         }
@@ -249,7 +274,7 @@ public class ListOverviewCtrl implements Initializable {
     }
 
     public void dragOtherLists(TableView<Card> tableView, TDList tdList) {
-        tableView.setOnMousePressed(e ->  {
+        tableView.setOnMousePressed(e -> {
             selection = tableView;
         });
         tableView.setOnDragOver(e -> {
@@ -264,7 +289,7 @@ public class ListOverviewCtrl implements Initializable {
             int draggedIndex = (int) db.getContent(serialization);
             Card card = selection.getItems().remove(draggedIndex);
             server.updateCardList(card.getId(), tdList);
-            refresh(board.id);
+            setBoard(board.id);
             server.updateBoard(board);
             e.consume();
         });
@@ -275,14 +300,14 @@ public class ListOverviewCtrl implements Initializable {
         animateCopyButton(copyButton);
     }
 
-    public void copyToClipboard(long boardKey){
+    public void copyToClipboard(long boardKey) {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         StringSelection selection = new StringSelection(String.valueOf(boardKey));
-        clipboard.setContents(selection,null);
+        clipboard.setContents(selection, null);
     }
 
-    public void animateCopyButton(Button copyButton){
-        Platform.runLater(()->
+    public void animateCopyButton(Button copyButton) {
+        Platform.runLater(() ->
         {
             Timeline timeline = new Timeline(
                     new KeyFrame(Duration.ZERO, event -> {
@@ -296,16 +321,25 @@ public class ListOverviewCtrl implements Initializable {
         });
     }
 
-    public void afterCopyButton(Button copyButton){
+    public void afterCopyButton(Button copyButton) {
         copyButton.setFont(new javafx.scene.text.Font(9));
         copyButton.setText("Copied!");
         copyButton.setStyle("-fx-background-color: #34eb67;");
     }
 
-    public void restoreCopyButton(Button copyButton){
+    public void restoreCopyButton(Button copyButton) {
         copyButton.setStyle("-fx-background-color: #2596be;");
         copyButton.setFont(new Font(12));
         copyButton.setText("Copy Invite Key");
+    }
+
+    public void setBoard(long boardId) {
+        board = server.getBoardById(boardId);
+        refresh(boardId);
+    }
+
+    public void backPressed() {
+        mainCtrl.showJoinedBoards(mainCtrl.getClient());
     }
 }
 

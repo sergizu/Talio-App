@@ -13,6 +13,7 @@ import server.database.BoardRepository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.function.Consumer;
 
 @Service
@@ -41,6 +42,7 @@ public class BoardService {
         if( board == null || board.getTitle() == null) return null;
         if(boardRepository.existsById(board.getId()))
             return null;
+        generateKey(board);
         return boardRepository.save(board);
     }
 
@@ -82,6 +84,11 @@ public class BoardService {
 
     public void sendUpdates(long id) {
         listeners.forEach((key, listener) -> listener.accept(id));
+    }
+
+    public void generateKey(Board board){
+        Random randomGenerator = new Random();
+        board.key = Math.abs(randomGenerator.nextLong());
     }
 }
 

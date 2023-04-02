@@ -15,6 +15,7 @@ public class EditListCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
+    private long boardId;
     private TDList taskList;
 
     @FXML
@@ -31,12 +32,13 @@ public class EditListCtrl {
 
     public void init(TDList list) {
         this.taskList = list;
+        boardId = list.board.id;
         listName.setText(list.title);
     }
 
     public void ok() {
         if (listName.getText().equals(taskList.title)) {
-            mainCtrl.showOverview();
+            mainCtrl.showOverview(boardId);
             return;
         }
         if(listName.getText().equals(""))
@@ -44,7 +46,7 @@ public class EditListCtrl {
         else {
             emptyName.setText("");
             server.updateListName(taskList.getId(), listName.getText());
-            mainCtrl.showOverview();
+            mainCtrl.showOverview(boardId);
         }
     }
 
@@ -62,9 +64,9 @@ public class EditListCtrl {
             server.removeCard(card);
         }
         server.removeList(taskList);
-        mainCtrl.showOverview();
+        mainCtrl.showOverview(boardId);
     }
     public void cancel() {
-        mainCtrl.showOverview();
+        mainCtrl.showOverview(boardId);
     }
 }

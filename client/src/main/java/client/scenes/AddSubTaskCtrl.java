@@ -46,6 +46,6 @@ public class AddSubTaskCtrl {
     }
     public void cancel() {
         myLabel.setText("");
-        mainCtrl.showOverview();
+        mainCtrl.showOverview(card.list.board.id);
     }
 }
