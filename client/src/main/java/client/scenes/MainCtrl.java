@@ -29,17 +29,12 @@ public class MainCtrl {
     private Scene overview;
 
     private ListOverviewCtrl listOverviewCtrl;
-    private AddCardCtrl addCardCtrl;
     private AddListCtrl addListCtrl;
 
-
-    private Scene sceneAddCard;
     private Scene sceneAddList;
 
     private EditCardCtrl editCardCtrl;
-    private EditListCtrl editListCtrl;
     private Scene edit;
-    private Scene editList;
 
     private Scene selectServer;
     private SelectServerCtrl selectServerCtrl;
@@ -62,7 +57,7 @@ public class MainCtrl {
     @SuppressWarnings("checkstyle:ParameterNumber")
     public void initialize(Stage primaryStage, Pair<ListOverviewCtrl, Parent> overview,
                            Pair<AddListCtrl, Parent> addList,
-                           Pair<EditCardCtrl, Parent> edit, Pair<EditListCtrl, Parent> editList,
+                           Pair<EditCardCtrl, Parent> edit,
                            Pair<SelectServerCtrl, Parent> selectServer,
                            Pair<BoardOverviewCtrl, Parent> boardOverview,
                            Pair<AddSubTaskCtrl, Parent> addSubtask,
@@ -79,9 +74,6 @@ public class MainCtrl {
 
         this.editCardCtrl = edit.getKey();
         this.edit = new Scene(edit.getValue(), 1080, 720);
-
-        this.editListCtrl = editList.getKey();
-        this.editList = new Scene(editList.getValue(), 1080, 720);
 
         this.selectServerCtrl = selectServer.getKey();
         this.selectServer = new Scene(selectServer.getValue(), 1080, 720);
@@ -120,6 +112,7 @@ public class MainCtrl {
         listOverviewCtrl.setBoard(boardId);
         listOverviewCtrl.registerForUpdates();
         listOverviewCtrl.setAddCard();
+        listOverviewCtrl.setEditList();
         primaryStage.setScene(overview);
         setSizeScene();
     }
@@ -161,9 +154,9 @@ public class MainCtrl {
     }
 
 
-    public void showEditList(TDList list) {
+    public void showEditList(TDList list, EditListCtrl editListCtrl, Scene editListScene) {
         primaryStage.setTitle("List: Rename list");
-        primaryStage.setScene(editList);
+        primaryStage.setScene(editListScene);
         editListCtrl.init(list);
         setSizeScene();
     }

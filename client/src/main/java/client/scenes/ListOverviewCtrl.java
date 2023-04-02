@@ -27,7 +27,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.awt.*;
@@ -47,8 +46,9 @@ public class ListOverviewCtrl implements Initializable {
     private final MainCtrl mainCtrl;
 
     private Scene addCardScene;
-    private Stage primaryStage;
     private AddCardCtrl addCard;
+    private Scene editListScene;
+    private EditListCtrl editListCtrl;
     private Board board;
     @FXML
     private ScrollPane scrollPane;
@@ -60,10 +60,9 @@ public class ListOverviewCtrl implements Initializable {
     private TableView<Card> selection;
 
     @Inject
-    public ListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl, Stage primaryStage) {
+    public ListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
-        this.primaryStage = primaryStage;
     }
 
     @Override
@@ -76,6 +75,17 @@ public class ListOverviewCtrl implements Initializable {
                 addCard = new AddCardCtrl(server,mainCtrl));
         try {
             addCardScene = new Scene(addCardLoader.load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setEditList() {
+        FXMLLoader editListLoader = new FXMLLoader(getClass().getResource("/client/scenes/RenameList.fxml"));
+        editListLoader.setControllerFactory(c ->
+                editListCtrl = new EditListCtrl(server,mainCtrl));
+        try {
+            editListScene = new Scene(editListLoader.load());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -148,7 +158,7 @@ public class ListOverviewCtrl implements Initializable {
     public Button createEditListButton(TDList list) {
         Button button = new Button("Edit");
         button.setOnAction(e -> {
-            mainCtrl.showEditList(list);
+            mainCtrl.showEditList(list,editListCtrl,editListScene);
         });
         return button;
     }

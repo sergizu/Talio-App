@@ -25,7 +25,7 @@ public class EditListCtrl {
     private Label emptyName;
 
     @Inject
-    public EditListCtrl (MainCtrl mainCtrl, ServerUtils server) {
+    public EditListCtrl (ServerUtils server,MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
     }
