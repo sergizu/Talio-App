@@ -8,6 +8,7 @@ import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -148,6 +149,7 @@ public class JoinedBoardsCtrl implements Initializable {
 
     public HBox createTableLine(){
         HBox tableLine = new HBox();
+        tableLine.setAlignment(Pos.CENTER);
         tableLine.setBorder(new Border(new BorderStroke(Color.BLACK,
                 BorderStrokeStyle.SOLID, null , null)));//will change color, was added for testing
         tableLine.setPrefHeight(50);

@@ -61,7 +61,7 @@ public class MainCtrl {
 
     @SuppressWarnings("checkstyle:ParameterNumber")
     public void initialize(Stage primaryStage, Pair<ListOverviewCtrl, Parent> overview,
-                           Pair<AddCardCtrl, Parent> addCard, Pair<AddListCtrl, Parent> addList,
+                           Pair<AddListCtrl, Parent> addList,
                            Pair<EditCardCtrl, Parent> edit, Pair<EditListCtrl, Parent> editList,
                            Pair<SelectServerCtrl, Parent> selectServer,
                            Pair<BoardOverviewCtrl, Parent> boardOverview,
@@ -74,9 +74,7 @@ public class MainCtrl {
         this.listOverviewCtrl = overview.getKey();
         this.overview = new Scene(overview.getValue(), 1080, 720);
 
-        this.addCardCtrl = addCard.getKey();
         this.addListCtrl = addList.getKey();
-        this.sceneAddCard = new Scene(addCard.getValue(), 1080, 720);
         this.sceneAddList = new Scene(addList.getValue(), 1080, 720);
 
         this.editCardCtrl = edit.getKey();
@@ -121,6 +119,7 @@ public class MainCtrl {
         primaryStage.setMinHeight(360);
         listOverviewCtrl.setBoard(boardId);
         listOverviewCtrl.registerForUpdates();
+        listOverviewCtrl.setAddCard();
         primaryStage.setScene(overview);
         setSizeScene();
     }
@@ -138,10 +137,10 @@ public class MainCtrl {
         setSizeScene();
     }
 
-    public void showAdd(long listId,long boardId) {
+    public void showAdd(long listId,long boardId, AddCardCtrl addCardCtrl, Scene sceneAddCard) {
         primaryStage.setTitle("Board: Adding Card");
-        primaryStage.setScene(sceneAddCard);
         addCardCtrl.setListBoardId(listId,boardId);
+        primaryStage.setScene(sceneAddCard);
         sceneAddCard.setOnKeyPressed(e -> addCardCtrl.keyPressed(e));
         setSizeScene();
     }

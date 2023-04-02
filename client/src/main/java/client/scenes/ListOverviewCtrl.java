@@ -12,8 +12,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -25,11 +27,13 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -41,6 +45,10 @@ public class ListOverviewCtrl implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+
+    private Scene addCardScene;
+    private Stage primaryStage;
+    private AddCardCtrl addCard;
     private Board board;
     @FXML
     private ScrollPane scrollPane;
@@ -52,35 +60,25 @@ public class ListOverviewCtrl implements Initializable {
     private TableView<Card> selection;
 
     @Inject
-    public ListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public ListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl, Stage primaryStage) {
         this.server = server;
         this.mainCtrl = mainCtrl;
+        this.primaryStage = primaryStage;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setScrollPane();
-//        if(toRefresh) {
-//            toRefresh = false;
-//            setBoard(board.id);
-//        }
-//        server.registerForBoardUpdates(updatedBoardID -> {
-//            System.out.println("Updattteeeeee");
-//            if(board.getId() == updatedBoardID){
-//                Platform.runLater(() -> {
-//                    setBoard(updatedBoardID);
-//                    toRefresh = false;
-//                });
-//            }
-//            else toRefresh = true;
-//        });
-//        server.registerForMessages("/topic/addCard", c-> {
-//            Platform.runLater(() -> {
-//                addCardToList(c.card,c.listId);
-//                setBoard(board.id);
-//            });
-//        });
-
+    }
+    public void setAddCard() {
+        FXMLLoader addCardLoader = new FXMLLoader(getClass().getResource("/client/scenes/AddCard.fxml"));
+        addCardLoader.setControllerFactory(c ->
+                addCard = new AddCardCtrl(server,mainCtrl));
+        try {
+            addCardScene = new Scene(addCardLoader.load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void registerForUpdates() {
@@ -142,7 +140,7 @@ public class ListOverviewCtrl implements Initializable {
     public Button createAddCardButton(long id) {
         Button button = new Button("Add Card");
         button.setOnAction(e -> {
-            mainCtrl.showAdd(id,board.id);
+            mainCtrl.showAdd(id,board.id,addCard,addCardScene);
         });
         return button;
     }
