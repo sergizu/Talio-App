@@ -49,6 +49,8 @@ public class ListOverviewCtrl implements Initializable {
     private AddCardCtrl addCard;
     private Scene editListScene;
     private EditListCtrl editListCtrl;
+    private Scene addListScene;
+    private AddListCtrl addListCtrl;
     private Board board;
     @FXML
     private ScrollPane scrollPane;
@@ -70,7 +72,8 @@ public class ListOverviewCtrl implements Initializable {
         setScrollPane();
     }
     public void setAddCard() {
-        FXMLLoader addCardLoader = new FXMLLoader(getClass().getResource("/client/scenes/AddCard.fxml"));
+        FXMLLoader addCardLoader = new FXMLLoader(getClass().
+                getResource("/client/scenes/AddCard.fxml"));
         addCardLoader.setControllerFactory(c ->
                 addCard = new AddCardCtrl(server,mainCtrl));
         try {
@@ -81,11 +84,24 @@ public class ListOverviewCtrl implements Initializable {
     }
 
     public void setEditList() {
-        FXMLLoader editListLoader = new FXMLLoader(getClass().getResource("/client/scenes/RenameList.fxml"));
+        FXMLLoader editListLoader = new FXMLLoader(getClass().
+                getResource("/client/scenes/RenameList.fxml"));
         editListLoader.setControllerFactory(c ->
                 editListCtrl = new EditListCtrl(server,mainCtrl));
         try {
             editListScene = new Scene(editListLoader.load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setAddList() {
+        FXMLLoader addListLoader = new FXMLLoader(getClass().
+                getResource("/client/scenes/AddList.fxml"));
+        addListLoader.setControllerFactory(c ->
+                addListCtrl = new AddListCtrl(server,mainCtrl));
+        try {
+            addListScene = new Scene(addListLoader.load());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -204,7 +220,7 @@ public class ListOverviewCtrl implements Initializable {
     }
 
     public void addList() {
-        mainCtrl.showAddList(board.id);
+        mainCtrl.showAddList(board.id,addListCtrl,addListScene);
     }
 
     //Method that will pop up a window to change the card name whenever you double-click on a card

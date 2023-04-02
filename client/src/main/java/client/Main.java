@@ -32,8 +32,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         var overview = FXML.load(ListOverviewCtrl.class, "client", "scenes", "ListOverview.fxml");
 
-        var addList = FXML.load(AddListCtrl.class, "client", "scenes", "AddList.fxml");
-
         var edit = FXML.load(EditCardCtrl.class, "client", "scenes", "EditCard.fxml");
 
         var selectServer = FXML.load(SelectServerCtrl.class,"client",
@@ -47,7 +45,7 @@ public class Main extends Application {
         var createBoard = FXML.load(CreateBoardCtrl.class, "client",
                 "scenes", "CreateBoard.fxml");
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, overview, addList, edit,
+        mainCtrl.initialize(primaryStage, overview, edit,
                 selectServer, boardOverview, addSubTask,
                 joinedBoards, createBoard, new AppClient());
 
