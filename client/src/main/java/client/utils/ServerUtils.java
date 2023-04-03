@@ -233,6 +233,15 @@ public class ServerUtils {
                 .put(Entity.entity(name, APPLICATION_JSON));
     }
 
+    public void updateCardDescription(long id, String name) {
+        ClientBuilder.newClient(new ClientConfig())
+                .target(server).path("api/cards/updateDescription/" + id)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(name, APPLICATION_JSON));
+    }
+
+
     public void updateCardList(long id, TDList list) {
         ClientBuilder.newClient(new ClientConfig())
                 .target(server).path("api/cards/updateList/" + id)

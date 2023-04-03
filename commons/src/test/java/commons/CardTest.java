@@ -7,9 +7,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CardTest {
     Card card;
+    Card cardDescription;
     @BeforeEach
     public void setup() {
         card = new Card("test card");
+        cardDescription = new Card("title", "descritpion");
+
     }
 
     @Test
@@ -67,6 +70,13 @@ public class CardTest {
         TDList list = new TDList("test list");
         card.setList(list);
         assertEquals(list, card.getList());
+    }
+
+    @Test
+    public void testSetDescription() {
+        cardDescription.setDescription("Desc");
+        assertEquals("Desc", cardDescription.description);
+
     }
 
     @Test

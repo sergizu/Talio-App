@@ -75,6 +75,15 @@ public class CardService {
         return true;
     }
 
+    public boolean updateDescription(long cardID, String name) {
+        if (name == null || name.equals("") || !cardRepository.existsById(cardID)) return false;
+        Card toUpdate = cardRepository.getById(cardID); //only get a proxy/reference
+        toUpdate.setDescription(name);
+        toUpdate = cardRepository.save(toUpdate);
+        boardService.sendUpdates(toUpdate.getList().getBoard().getId());
+        return true;
+    }
+
     public boolean updateList(long id, TDList list) {
         if (list == null || !cardRepository.existsById(id)) return false;
         Card toUpdate = cardRepository.getById(id);
