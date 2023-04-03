@@ -5,21 +5,26 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
 import commons.Subtask;
+import commons.TDList;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.*;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import static client.helperClass.SubtaskWrapper.serialization;
 
-public class EditCardCtrl {
+public class EditCardCtrl implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
@@ -64,7 +69,7 @@ public class EditCardCtrl {
         tableColumnButton.setCellValueFactory(
                 new PropertyValueFactory<SubtaskWrapper, Button>("button"));
         List<SubtaskWrapper> subtaskWrappers = new ArrayList<>();
-        for(Subtask subtask : card.nestedList) {
+        for(Subtask subtask : card.getNestedList()) {
             CheckBox checkBox = new CheckBox();
             if(subtask.checked) {
                 checkBox.setSelected(true);
@@ -72,17 +77,17 @@ public class EditCardCtrl {
             checkBox.setOnMouseClicked(event -> {
                 if(checkBox.isSelected()) {
                     subtask.setChecked(true);
-                    server.updateNestedList(card.id, card.nestedList);
+                    server.updateNestedList(card.id, card.getNestedList());
                 }
                 if(!checkBox.isSelected()) {
                     subtask.setChecked(false);
-                    server.updateNestedList(card.id, card.nestedList);
+                    server.updateNestedList(card.id, card.getNestedList());
                 }
             });
             Button button = new Button("X");
             button.setOnAction(event -> {
-                card.nestedList.remove(subtask);
-                server.updateNestedList(card.id, card.nestedList);
+                card.getNestedList().remove(subtask);
+                server.updateNestedList(card.id, card.getNestedList());
                 mainCtrl.showEdit(card);
             });
             subtaskWrappers.add(new SubtaskWrapper(subtask, checkBox, button));
@@ -95,8 +100,9 @@ public class EditCardCtrl {
     }
 
     public void ok() {
-        if(cardName.getText().equals(card.title)&&description.getText().equals(card.description) ){
-            mainCtrl.showOverview(card.list.board.id);
+        if(cardName.getText().equals(card.title )&&
+                (description.getText() == null || description.getText().equals(card.description))){
+            mainCtrl.showOverview(card.getList().getBoard().getId());
             return;
         }
         else if(cardName.getText().equals("")){
@@ -110,11 +116,11 @@ public class EditCardCtrl {
         } else {
             server.updateCardDescription(card.getId(), description.getText());
         }
-        mainCtrl.showOverview(card.list.board.id);
+        mainCtrl.showOverview(card.getList().getBoard().getId());
     }
 
     public void delete() {
-        long boardId = card.list.board.id;
+        long boardId = card.getList().getBoard().getId();
         server.removeCard(card);
         emptyName.setText("");
         mainCtrl.showOverview(boardId);
@@ -130,7 +136,7 @@ public class EditCardCtrl {
     }
 
     public void cancel() {
-        mainCtrl.showOverview(card.list.board.id);
+        mainCtrl.showOverview(card.getList().getBoard().getId());
     }
 
     public void createSubtask() {
@@ -141,7 +147,7 @@ public class EditCardCtrl {
         SubtaskWrapper subtaskWrapper = tableView.getSelectionModel().getSelectedItem();
         Subtask subtask = subtaskWrapper.getSubtask();
         subtask.setName(edit.getNewValue());
-        server.updateNestedList(card.id, card.nestedList);
+        server.updateNestedList(card.id, card.getNestedList());
     }
     public void dragAndDrop(TableView<SubtaskWrapper> tableView){
         tableView.setRowFactory(tv -> {
@@ -191,12 +197,17 @@ public class EditCardCtrl {
         });
     }
 
-//    @Override
-//    public void initialize(URL location, ResourceBundle resources) {
-//        server.registerForCardUpdates(updatedCardID -> {
-//            System.out.println("CARD!");
-//            if(card.getId() == updatedCardID);
-//            mainCtrl.showEdit(card);
-//        });
-//    }
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        server.registerForCardUpdates(updatedCardID -> {
+            if(card.getId() == updatedCardID) {
+                Platform.runLater(() -> {
+                    TDList tdList = card.getList();
+                    card = server.getCardById(card.id);
+                    card.setList(tdList);
+                    mainCtrl.showEdit(card);
+                });
+            }
+        });
+    }
 }

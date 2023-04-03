@@ -4,7 +4,10 @@ import commons.Card;
 import commons.Subtask;
 import commons.TDList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.async.DeferredResult;
 import server.database.CardRepository;
 
 import java.util.ArrayList;
@@ -100,7 +103,7 @@ public class CardService {
             toUpdate.setNestedList(nestedList);
             toUpdate = cardRepository.save(toUpdate);
             boardService.sendUpdates(toUpdate.getList().getBoard().getId());
-//            sendUpdates(toUpdate.getId());
+            sendUpdates(toUpdate.getId());
         } catch(Exception e) {
             e.printStackTrace();
             return false;
@@ -108,26 +111,26 @@ public class CardService {
         return true;
     }
 
-//    public DeferredResult<ResponseEntity<Long>> subscribeForUpdates() {
-//        ResponseEntity<Long> noContent = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//        org.springframework.web.context.request.async.DeferredResult<ResponseEntity<Long>>
-//        result = new DeferredResult<>(10000L, noContent);
-//
-//        Object key = new Object(); //trick to uniquely identify every key
-//        listeners.put(key, id -> {
-//            result.setResult(ResponseEntity.ok(id));
-//        });
-//        result.onCompletion(() -> {
-//            listeners.remove(key);
-//        });
-//        return result;
-//    }
-//
-//    public void sendUpdates(long id) {
-//        try {
-//            listeners.forEach((key, listener) -> listener.accept(id));
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
-//    }
+    public DeferredResult<ResponseEntity<Long>> subscribeForUpdates() {
+        ResponseEntity<Long> noContent = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        org.springframework.web.context.request.async.DeferredResult<ResponseEntity<Long>>
+        result = new DeferredResult<>(10000L, noContent);
+
+        Object key = new Object(); //trick to uniquely identify every key
+        listeners.put(key, id -> {
+            result.setResult(ResponseEntity.ok(id));
+        });
+        result.onCompletion(() -> {
+            listeners.remove(key);
+        });
+        return result;
+    }
+
+    public void sendUpdates(long id) {
+        try {
+            listeners.forEach((key, listener) -> listener.accept(id));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

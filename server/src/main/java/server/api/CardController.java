@@ -6,6 +6,7 @@ import commons.TDList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.async.DeferredResult;
 import server.service.CardService;
 
 import java.util.ArrayList;
@@ -96,8 +97,8 @@ public class CardController {
         return ResponseEntity.badRequest().build();
     }
 
-//    @GetMapping("/updates")
-//    public DeferredResult<ResponseEntity<Long>> subscribeForUpdates() {
-//        return cardService.subscribeForUpdates();
-//    }
+    @GetMapping("/updates")
+    public DeferredResult<ResponseEntity<Long>> subscribeForUpdates() {
+        return cardService.subscribeForUpdates();
+    }
 }

@@ -138,6 +138,14 @@ public class ServerUtils {
                 .get(new GenericType<>() {});
     }
 
+    public Card getCardById(long cardId) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(server).path("/api/cards/" + cardId) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<>() {});
+    }
+
     public void addCardToList(long listId, Card card) {
         Response result = ClientBuilder.newClient(new ClientConfig())
                 .target(server).path("/api/tdLists/" + listId + "/addCard")
@@ -177,20 +185,20 @@ public class ServerUtils {
             }
         });
     }
-//    public void registerForCardUpdates(Consumer<Long> consumer) {
-//        EXECUTOR_SERVICE.submit(() -> {
-//            while (!Thread.interrupted()) {
-//                Response result = ClientBuilder.newClient(new ClientConfig())
-//                        .target(server).path("/api/cards/updates")
-//                        .request(APPLICATION_JSON)
-//                        .accept(APPLICATION_JSON)
-//                        .get();
-//                if(result.getStatus() == HttpStatus.NO_CONTENT.value())
-//                    continue;
-//                consumer.accept(result.readEntity(Long.class));
-//            }
-//        });
-//    }
+    public void registerForCardUpdates(Consumer<Long> consumer) {
+        EXECUTOR_SERVICE.submit(() -> {
+            while (!Thread.interrupted()) {
+                Response result = ClientBuilder.newClient(new ClientConfig())
+                        .target(server).path("/api/cards/updates")
+                        .request(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON)
+                        .get();
+                if(result.getStatus() == HttpStatus.NO_CONTENT.value())
+                    continue;
+                consumer.accept(result.readEntity(Long.class));
+            }
+        });
+    }
 
     public Card updateCard(Card card) {
         return ClientBuilder.newClient(new ClientConfig()) //
