@@ -35,16 +35,13 @@ public class Main extends Application {
 
         var selectServer = FXML.load(SelectServerCtrl.class,"client",
                 "scenes", "SelectServer.fxml");
-        var addSubTask = FXML.load(AddSubTaskCtrl.class,
-                "client", "scenes", "AddSubtask.fxml");
         var boardOverview = FXML.load(BoardOverviewCtrl.class,"client",
                 "scenes", "BoardOverview.fxml");
         var joinedBoards = FXML.load(JoinedBoardsCtrl.class, "client",
                 "scenes", "JoinedBoards.fxml");
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
         mainCtrl.initialize(primaryStage, overview, edit,
-                selectServer, boardOverview, addSubTask,
-                joinedBoards);
+                selectServer, boardOverview, joinedBoards);
 
         primaryStage.setOnCloseRequest(event -> {
             overview.getKey().stop();

@@ -52,7 +52,6 @@ public class MainCtrl {
                            Pair<EditCardCtrl, Parent> edit,
                            Pair<SelectServerCtrl, Parent> selectServer,
                            Pair<BoardOverviewCtrl, Parent> boardOverview,
-                           Pair<AddSubTaskCtrl, Parent> addSubtask,
                            Pair<JoinedBoardsCtrl,Parent> joinedBoards) {
 
         this.primaryStage = primaryStage;
@@ -64,9 +63,6 @@ public class MainCtrl {
 
         this.selectServerCtrl = selectServer.getKey();
         this.selectServer = new Scene(selectServer.getValue(), 1080, 720);
-
-        this.addSubTaskCtrl = addSubtask.getKey();
-        this.addSubtask = new Scene(addSubtask.getValue(), 1080, 720);
 
         this.boardOverviewCtrl = boardOverview.getKey();
         this.boardOverviewScene = new Scene(boardOverview.getValue(),1080,720);
@@ -133,8 +129,8 @@ public class MainCtrl {
 
     public void showEdit(Card card) {
         primaryStage.setTitle("Card: Edit Card");
-        primaryStage.setScene(edit);
         editCardCtrl.init(card);
+        primaryStage.setScene(edit);
         setSizeScene();
     }
 
@@ -146,9 +142,9 @@ public class MainCtrl {
         setSizeScene();
     }
 
-    public void showAddSubtask(Card card) {
+    public void showAddSubtask(Card card,Scene addSubTaskScene, AddSubTaskCtrl addSubTaskCtrl) {
         primaryStage.setTitle("Subtask: Create subtask");
-        primaryStage.setScene(addSubtask);
+        primaryStage.setScene(addSubTaskScene);
         addSubTaskCtrl.init(card);
         setSizeScene();
     }
