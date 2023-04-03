@@ -66,7 +66,7 @@ public class MainCtrl {
                            Pair<SelectServerCtrl, Parent> selectServer,
                            Pair<BoardOverviewCtrl, Parent> boardOverview,
                            Pair<AddSubTaskCtrl, Parent> addSubtask,
-                           Pair<JoinedBoardsCtrl,Parent> joinedBoards,
+                           Pair<JoinedBoardsCtrl, Parent> joinedBoards,
                            Pair<CreateBoardCtrl, Parent> createBoard,
                            AppClient client) {
 
@@ -92,13 +92,13 @@ public class MainCtrl {
         this.addSubtask = new Scene(addSubtask.getValue(), 1080, 720);
 
         this.boardOverviewCtrl = boardOverview.getKey();
-        this.boardOverviewScene = new Scene(boardOverview.getValue(),1080,720);
+        this.boardOverviewScene = new Scene(boardOverview.getValue(), 1080, 720);
 
         this.joinedBoardsCtrl = joinedBoards.getKey();
-        this.joinedBoardsScene = new Scene(joinedBoards.getValue(),1080,720);
+        this.joinedBoardsScene = new Scene(joinedBoards.getValue(), 1080, 720);
 
         this.createBoardCtrl = createBoard.getKey();
-        this.createBoardScene = new Scene(createBoard.getValue(),1080,720);
+        this.createBoardScene = new Scene(createBoard.getValue(), 1080, 720);
 
         this.client = client;
         showSelectServer();
@@ -109,7 +109,7 @@ public class MainCtrl {
         primaryStage.show();
     }
 
-    public void showSelectServer(){
+    public void showSelectServer() {
         primaryStage.setTitle("Server: selecting server");
         primaryStage.setScene(selectServer);
         setSizeScene();
@@ -117,31 +117,39 @@ public class MainCtrl {
 
     public void showOverview(long boardId) {
         primaryStage.setTitle("Lists: Overview");
-        primaryStage.setMinWidth(350);
-        primaryStage.setMinHeight(360);
         listOverviewCtrl.setBoard(boardId);
-        listOverviewCtrl.registerForUpdates();
+        //listOverviewCtrl.registerForUpdates();
         primaryStage.setScene(overview);
         setSizeScene();
     }
 
+    public void showOverview(long boardId, Object parent) {
+        primaryStage.setTitle("Lists: Overview");
+        listOverviewCtrl.setBoard(boardId);
+        listOverviewCtrl.setParent(parent);
+        //listOverviewCtrl.registerForUpdates();
+        primaryStage.setScene(overview);
+        setSizeScene();
+    }
+
+
     public void showBoardOverview() {
         primaryStage.setTitle("Boards: Overview");
         primaryStage.setScene(boardOverviewScene);
+        boardOverviewCtrl.showAllBoards();
         setSizeScene();
-        boardOverviewCtrl.showOtherBoards();
     }
 
-    public void showOverviewNoRefresh(){
+    public void showOverviewNoRefresh() {
         primaryStage.setTitle("Lists: Overview");
         primaryStage.setScene(overview);
         setSizeScene();
     }
 
-    public void showAdd(long listId,long boardId) {
+    public void showAdd(long listId, long boardId) {
         primaryStage.setTitle("Board: Adding Card");
         primaryStage.setScene(sceneAddCard);
-        addCardCtrl.setListBoardId(listId,boardId);
+        addCardCtrl.setListBoardId(listId, boardId);
         sceneAddCard.setOnKeyPressed(e -> addCardCtrl.keyPressed(e));
         setSizeScene();
     }
@@ -176,9 +184,9 @@ public class MainCtrl {
         setSizeScene();
     }
 
-    public void setSizeScene(){
-        primaryStage.setWidth(primaryStage.getWidth()+1);
-        primaryStage.setHeight(primaryStage.getHeight()+1);
+    public void setSizeScene() {
+        primaryStage.setWidth(primaryStage.getWidth() + 1);
+        primaryStage.setHeight(primaryStage.getHeight() + 1);
     }
 
     public void showJoinedBoards(AppClient client) {
@@ -188,13 +196,15 @@ public class MainCtrl {
         setSizeScene();
     }
 
-    public void showCreateBoard(){
+    public void showCreateBoard(Object parent) {
         primaryStage.setTitle("Create a new board");
         primaryStage.setScene(createBoardScene);
+        createBoardCtrl.setParent(parent);
+        listOverviewCtrl.setParent(parent);
         setSizeScene();
-
     }
-    public AppClient getClient(){
+
+    public AppClient getClient() {
         return client;
     }
 }

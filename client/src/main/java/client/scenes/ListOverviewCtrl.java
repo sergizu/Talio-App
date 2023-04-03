@@ -38,13 +38,12 @@ import java.util.stream.Collectors;
 import static client.helperClass.SubtaskWrapper.serialization;
 
 public class ListOverviewCtrl implements Initializable {
-
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private Board board;
+    private Object parent;
     @FXML
     private ScrollPane scrollPane;
-    boolean toRefresh = false;
     @FXML
     private Label boardTitle;
     @FXML
@@ -60,49 +59,28 @@ public class ListOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setScrollPane();
-//        if(toRefresh) {
-//            toRefresh = false;
-//            setBoard(board.id);
-//        }
-//        server.registerForBoardUpdates(updatedBoardID -> {
-//            System.out.println("Updattteeeeee");
-//            if(board.getId() == updatedBoardID){
-//                Platform.runLater(() -> {
-//                    setBoard(updatedBoardID);
-//                    toRefresh = false;
-//                });
-//            }
-//            else toRefresh = true;
-//        });
-//        server.registerForMessages("/topic/addCard", c-> {
-//            Platform.runLater(() -> {
-//                addCardToList(c.card,c.listId);
-//                setBoard(board.id);
-//            });
-//        });
-
+        registerForUpdates();
     }
 
     public void registerForUpdates() {
         server.registerForBoardUpdates(updatedBoardID -> {
-            if(board.getId() == updatedBoardID){
-                Platform.runLater(() -> {
-                    setBoard(updatedBoardID);
-                    toRefresh = false;
-                });
-            }
-            else toRefresh = true;
-        });
-        server.registerForMessages("/topic/addCard", c-> {
             Platform.runLater(() -> {
-                addCardToList(c.card,c.listId);
+                if (board.getId() == updatedBoardID) {
+                    setBoard(updatedBoardID);
+                }
+            });
+        });
+        server.registerForMessages("/topic/addCard", c -> {
+            Platform.runLater(() -> {
+                addCardToList(c.card, c.listId);
                 setBoard(board.id);
             });
         });
     }
+
     public void addCardToList(Card card, long listId) {
-        for(int i=0;i<board.tdLists.size();i++)
-            if(board.tdLists.get(i).id==listId)
+        for (int i = 0; i < board.tdLists.size(); i++)
+            if (board.tdLists.get(i).id == listId)
                 board.tdLists.get(i).addCard(card);
     }
 
@@ -142,7 +120,7 @@ public class ListOverviewCtrl implements Initializable {
     public Button createAddCardButton(long id) {
         Button button = new Button("Add Card");
         button.setOnAction(e -> {
-            mainCtrl.showAdd(id,board.id);
+            mainCtrl.showAdd(id, board.id);
         });
         return button;
     }
@@ -290,7 +268,6 @@ public class ListOverviewCtrl implements Initializable {
             Card card = selection.getItems().remove(draggedIndex);
             server.updateCardList(card.getId(), tdList);
             setBoard(board.id);
-            server.updateBoard(board);
             e.consume();
         });
     }
@@ -338,8 +315,16 @@ public class ListOverviewCtrl implements Initializable {
         refresh(boardId);
     }
 
+    public void setParent(Object parent) {
+        this.parent = parent;
+    }
+
     public void backPressed() {
-        mainCtrl.showJoinedBoards(mainCtrl.getClient());
+        if (parent == JoinedBoardsCtrl.class)
+            mainCtrl.showJoinedBoards(mainCtrl.getClient());
+        else if (parent == BoardOverviewCtrl.class) {
+            mainCtrl.showBoardOverview();
+        }
     }
 }
 

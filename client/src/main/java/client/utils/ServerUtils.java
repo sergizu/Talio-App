@@ -45,17 +45,21 @@ public class ServerUtils {
     private static String server = "http://localhost:8080/";
     private static final ExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadExecutor();
 
-    public void changeServer(String s){
-        server = "http://"+s+"/";
+    public void changeServer(String s) {
+        server = "http://" + s + "/";
     }
-    public static String getServer(){return server;}
+
+    public static String getServer() {
+        return server;
+    }
 
     public List<Card> getCard() {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(server).path("api/cards") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Card>>() {});
+                .get(new GenericType<List<Card>>() {
+                });
     }
 
     public List<TDList> getLists() {
@@ -63,7 +67,8 @@ public class ServerUtils {
                 .target(server).path("/api/tdLists") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<TDList>>() {});
+                .get(new GenericType<List<TDList>>() {
+                });
     }
 
     public TDList getList(long listId) {
@@ -71,7 +76,8 @@ public class ServerUtils {
                 .target(server).path("/api/tdLists/" + listId) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<>() {});
+                .get(new GenericType<>() {
+                });
     }
 
     public TDList addList(TDList list) {
@@ -81,6 +87,7 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(list, APPLICATION_JSON), TDList.class);
     }
+
     public void removeList(TDList list) {
         ClientBuilder.newClient(new ClientConfig()) //
                 .target(server).path("api/tdLists/" + list.id) //
@@ -88,6 +95,7 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .delete();
     }
+
     public void removeCard(Card card) {
         ClientBuilder.newClient(new ClientConfig()) //
                 .target(server).path("api/cards/" + card.id) //
@@ -111,7 +119,7 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(board, APPLICATION_JSON), Board.class);
     }
-    
+
 
     public Board tempBoardGetter() {
         Response result = ClientBuilder.newClient(new ClientConfig())
@@ -119,7 +127,7 @@ public class ServerUtils {
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get();
-        if(result.getStatus() == HttpStatus.OK.value()) {
+        if (result.getStatus() == HttpStatus.OK.value()) {
             try {
                 Board board = result.readEntity(Board.class);
                 return board;
@@ -130,12 +138,13 @@ public class ServerUtils {
         return null;
     }
 
-    public Board getBoardById(long boardId){
+    public Board getBoardById(long boardId) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(server).path("/api/boards/" + boardId) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<>() {});
+                .get(new GenericType<>() {
+                });
     }
 
     public void addCardToList(long listId, Card card) {
@@ -171,7 +180,7 @@ public class ServerUtils {
                         .request(APPLICATION_JSON)
                         .accept(APPLICATION_JSON)
                         .get();
-                if(result.getStatus() == HttpStatus.NO_CONTENT.value())
+                if (result.getStatus() == HttpStatus.NO_CONTENT.value())
                     continue;
                 consumer.accept(result.readEntity(Long.class));
             }
@@ -200,7 +209,7 @@ public class ServerUtils {
                 .put(Entity.entity(card, APPLICATION_JSON), Card.class);//
     }
 
-    public void updateList(TDList list){
+    public void updateList(TDList list) {
         ClientBuilder.newClient(new ClientConfig()) //
                 .target(server).path("api/tdLists/update") //
                 .request(APPLICATION_JSON) //
@@ -208,7 +217,7 @@ public class ServerUtils {
                 .put(Entity.entity(list, APPLICATION_JSON));//
     }
 
-    public void updateListName(long listId, String newName){
+    public void updateListName(long listId, String newName) {
         ClientBuilder.newClient(new ClientConfig()) //
                 .target(server).path("api/tdLists/updateName/" + listId) //
                 .request(APPLICATION_JSON) //
@@ -238,7 +247,7 @@ public class ServerUtils {
                 .target(server).path("api/cards/updateList/" + id)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .put(Entity.entity(list, APPLICATION_JSON));
+                .put(Entity.entity(list.getId(), APPLICATION_JSON));
     }
 
     public List<Board> getBoards() {
@@ -246,16 +255,19 @@ public class ServerUtils {
                 .target(server).path("api/boards/")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .get(new GenericType<List<Board>>() {});
+                .get(new GenericType<List<Board>>() {
+                });
     }
 
     private StompSession session = connect("ws://localhost:8080/websocket");
+
     private StompSession connect(String url) {
         var client = new StandardWebSocketClient();
         var stomp = new WebSocketStompClient(client);
         stomp.setMessageConverter(new MappingJackson2MessageConverter());
         try {
-            return stomp.connect(url, new StompSessionHandlerAdapter() {}).get();
+            return stomp.connect(url, new StompSessionHandlerAdapter() {
+            }).get();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         } catch (ExecutionException e) {
@@ -263,6 +275,7 @@ public class ServerUtils {
         }
         throw new IllegalStateException();
     }
+
     public void registerForMessages(String dest, Consumer<CardListId> consumer) {
         session.subscribe(dest, new StompFrameHandler() {
             @Override
@@ -272,14 +285,15 @@ public class ServerUtils {
 
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
-                consumer.accept((CardListId)payload);
+                consumer.accept((CardListId) payload);
             }
         });
     }
 
-    public void send(String dest,Object o) {
-        session.send(dest,o);
+    public void send(String dest, Object o) {
+        session.send(dest, o);
     }
+
     public void updateNestedList(long id, ArrayList<Subtask> nestedList) {
         ClientBuilder.newClient(new ClientConfig())
                 .target(server).path("api/cards/updateNestedList/" + id)
