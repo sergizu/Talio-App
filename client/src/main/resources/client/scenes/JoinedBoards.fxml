@@ -37,7 +37,7 @@
             </HBox>
         </top>
         <center>
-            <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <content>
                <VBox fx:id="boardsList" alignment="CENTER" prefHeight="315.0" prefWidth="598.0" />
             </content>
