@@ -76,8 +76,9 @@ public class CardService {
     }
 
     public boolean updateDescription(long cardID, String name) {
-        if (name == null || name.equals("") || !cardRepository.existsById(cardID)) return false;
+        if (name == null || !cardRepository.existsById(cardID)) return false;
         Card toUpdate = cardRepository.getById(cardID); //only get a proxy/reference
+        System.out.println("Hello" + name + "There");
         toUpdate.setDescription(name);
         toUpdate = cardRepository.save(toUpdate);
         boardService.sendUpdates(toUpdate.getList().getBoard().getId());

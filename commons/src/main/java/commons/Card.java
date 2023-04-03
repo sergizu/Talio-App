@@ -161,12 +161,12 @@ public class Card {
         String titleString = this.title;
         String descriptionIndicator = "";
         String amountSelected = "";
-        if(description != null && !description.isEmpty()) {
+        if(description != null && !description.isEmpty() && !description.equals(" ")) {
             descriptionIndicator = "\n~";
         }
         if(!nestedList.isEmpty()) {
-            amountSelected = amountSelected() + "/" + nestedList.size();
+            amountSelected = "\n" + amountSelected() + "/" + nestedList.size();
         }
-        return titleString + "\n" +  amountSelected + descriptionIndicator;
+        return titleString + amountSelected + descriptionIndicator;
     }
 }

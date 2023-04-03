@@ -105,7 +105,11 @@ public class EditCardCtrl {
         }
         emptyName.setText("");
         server.updateCardName(card.getId(), cardName.getText());
-        server.updateCardDescription(card.getId(), description.getText());
+        if(description.getText().isEmpty()) {
+            server.updateCardDescription(card.getId(), " ");
+        } else {
+            server.updateCardDescription(card.getId(), description.getText());
+        }
         mainCtrl.showOverview(card.list.board.id);
     }
 
