@@ -42,12 +42,10 @@ public class Main extends Application {
                 "scenes", "BoardOverview.fxml");
         var joinedBoards = FXML.load(JoinedBoardsCtrl.class, "client",
                 "scenes", "JoinedBoards.fxml");
-        var createBoard = FXML.load(CreateBoardCtrl.class, "client",
-                "scenes", "CreateBoard.fxml");
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
         mainCtrl.initialize(primaryStage, overview, edit,
                 selectServer, boardOverview, addSubTask,
-                joinedBoards, createBoard, new AppClient());
+                joinedBoards, new AppClient());
 
         primaryStage.setOnCloseRequest(event -> {
             overview.getKey().stop();

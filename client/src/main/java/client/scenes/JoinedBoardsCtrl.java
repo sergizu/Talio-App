@@ -6,9 +6,11 @@ import commons.AppClient;
 import commons.Board;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,6 +21,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -27,6 +30,7 @@ public class JoinedBoardsCtrl implements Initializable {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private AppClient client;
+    private Scene createBoardScene;
 
     @FXML
     private TextField boardTitle;
@@ -65,6 +69,16 @@ public class JoinedBoardsCtrl implements Initializable {
         String serverString = ServerUtils.getServer();
         addServerKeyIntoMap(serverString);
         getBoardsForServer(serverString);
+
+        FXMLLoader createBoardLoader = new FXMLLoader((getClass().
+                getResource("/client/scenes/CreateBoard.fxml")));
+        createBoardLoader.setControllerFactory(c ->
+                new CreateBoardCtrl(server,mainCtrl));
+        try {
+            createBoardScene = new Scene(createBoardLoader.load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void addServerKeyIntoMap(String serverString) {
@@ -88,7 +102,7 @@ public class JoinedBoardsCtrl implements Initializable {
     }
 
     public void showCreateBoard() {
-        mainCtrl.showCreateBoard();
+        mainCtrl.showCreateBoard(createBoardScene);
     }
 
     public void createBoard() {

@@ -45,9 +45,6 @@ public class MainCtrl {
     private JoinedBoardsCtrl joinedBoardsCtrl;
     private Scene joinedBoardsScene;
 
-    private CreateBoardCtrl createBoardCtrl;
-    private Scene createBoardScene;
-
     private AppClient client;
 
     @SuppressWarnings("checkstyle:ParameterNumber")
@@ -57,7 +54,6 @@ public class MainCtrl {
                            Pair<BoardOverviewCtrl, Parent> boardOverview,
                            Pair<AddSubTaskCtrl, Parent> addSubtask,
                            Pair<JoinedBoardsCtrl,Parent> joinedBoards,
-                           Pair<CreateBoardCtrl, Parent> createBoard,
                            AppClient client) {
 
         this.primaryStage = primaryStage;
@@ -78,9 +74,6 @@ public class MainCtrl {
 
         this.joinedBoardsCtrl = joinedBoards.getKey();
         this.joinedBoardsScene = new Scene(joinedBoards.getValue(),1080,720);
-
-        this.createBoardCtrl = createBoard.getKey();
-        this.createBoardScene = new Scene(createBoard.getValue(),1080,720);
 
         this.client = client;
         showSelectServer();
@@ -173,7 +166,7 @@ public class MainCtrl {
         setSizeScene();
     }
 
-    public void showCreateBoard(){
+    public void showCreateBoard(Scene createBoardScene){
         primaryStage.setTitle("Create a new board");
         primaryStage.setScene(createBoardScene);
         setSizeScene();
