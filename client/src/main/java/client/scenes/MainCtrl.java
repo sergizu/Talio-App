@@ -96,6 +96,9 @@ public class MainCtrl {
         primaryStage.setTitle("Lists: Overview");
         listOverviewCtrl.setBoard(boardId);
         listOverviewCtrl.setParent(parent);
+        listOverviewCtrl.setAddCard();
+        listOverviewCtrl.setEditList();
+        listOverviewCtrl.setAddList();
         primaryStage.setScene(overview);
         setSizeScene();
     }
@@ -105,12 +108,6 @@ public class MainCtrl {
         primaryStage.setTitle("Boards: Overview");
         primaryStage.setScene(boardOverviewScene);
         boardOverviewCtrl.showAllBoards();
-        setSizeScene();
-    }
-
-    public void showOverviewNoRefresh() {
-        primaryStage.setTitle("Lists: Overview");
-        primaryStage.setScene(overview);
         setSizeScene();
     }
 
