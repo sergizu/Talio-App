@@ -159,9 +159,14 @@ public class Card {
 
     public String cellFactory() {
         String titleString = this.title;
-        if(nestedList.isEmpty()) {
-            return titleString;
+        String descriptionIndicator = "";
+        String amountSelected = "";
+        if(description != null && !description.isEmpty()) {
+            descriptionIndicator = "\n~";
         }
-        return this.title + "\n" + amountSelected() + "/" + nestedList.size();
+        if(!nestedList.isEmpty()) {
+            amountSelected = amountSelected() + "/" + nestedList.size();
+        }
+        return titleString + "\n" +  amountSelected + descriptionIndicator;
     }
 }
