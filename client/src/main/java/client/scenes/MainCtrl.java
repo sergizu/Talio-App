@@ -161,7 +161,8 @@ public class MainCtrl {
         setSizeScene();
     }
 
-    public void showCreateBoard(Scene createBoardScene, Object parent, CreateBoardCtrl createBoardCtrl){
+    public void showCreateBoard(Scene createBoardScene, Object parent,
+                                CreateBoardCtrl createBoardCtrl){
         primaryStage.setTitle("Create a new board");
         primaryStage.setScene(createBoardScene);
         createBoardCtrl.setParent(parent);
