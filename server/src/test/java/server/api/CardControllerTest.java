@@ -106,11 +106,26 @@ class CardControllerTest {
         when(cardService.updateName(any(Long.class), any(String.class))).thenReturn(true);
         assertEquals(ResponseEntity.ok().build(), cardController.updateName(1L, "a"));
     }
+
     @Test
     void updateNameIfNotExists(){
         when(cardService.updateName(any(Long.class), any(String.class))).thenReturn(false);
         assertEquals(ResponseEntity.badRequest().build(), cardController.updateName(1L, "a"));
     }
+
+    @Test
+    void updateDescriptionIfExists(){
+        when(cardService.updateDescription(any(Long.class), any(String.class))).thenReturn(true);
+        assertEquals(ResponseEntity.ok().build(), cardController.updateDescription(1L, "a"));
+    }
+
+    @Test
+    void updateDescriptionIfNotExists(){
+        when(cardService.updateDescription(any(Long.class), any(String.class))).thenReturn(false);
+        assertEquals(ResponseEntity.badRequest().build(), cardController.updateDescription(1L, "a"));
+    }
+
+
     @Test
     void updateListIfExists(){
         when(cardService.updateList(any(Long.class), any(TDList.class))).thenReturn(true);

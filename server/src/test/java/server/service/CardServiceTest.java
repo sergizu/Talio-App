@@ -26,7 +26,11 @@ class CardServiceTest {
     private BoardService boardService;
     private CardService cardService;
     private Card card;
+
+    private Card cardDescription;
     private TDList list;
+
+    private TDList list2;
     private Board board;
 
 
@@ -34,10 +38,16 @@ class CardServiceTest {
     void setUp() {
         cardService = new CardService(cardRepository, boardService);
         card = new Card("Card");
+        cardDescription = new Card("title", "Description");
         list = new TDList("List");
+        list2 = new TDList("List 2");
         board = new Board("Board");
         list.id = 1;
         card.id = 2;
+        cardDescription.id = 4;
+        list2.id =5;
+        cardDescription.setList(list2);
+        list2.setBoard(board);
         board.id = 3;
         card.setList(list);
         list.setBoard(board);
@@ -136,6 +146,24 @@ class CardServiceTest {
         verify(cardRepository).save(card);
     }
 
+    @Test
+    public void testUpdateDescription() {
+        String newDescription = "New Description";
+        when(cardRepository.existsById(cardDescription.getId())).thenReturn(true);
+        when(cardRepository.getById(cardDescription.getId())).thenReturn(cardDescription);
+        cardDescription.setDescription(newDescription);
+        when(cardRepository.save(cardDescription)).thenReturn(cardDescription);
+        cardService.updateDescription(cardDescription.getId(), newDescription);
+        verify(cardRepository).save(cardDescription);
+    }
+
+    @Test
+    public void testUpdateDescriptionIfNotExists() {
+        String newDescription = "New Description";
+        when(cardRepository.existsById(cardDescription.getId())).thenReturn(false);
+        cardService.updateDescription(cardDescription.getId(), newDescription);
+        verify(cardRepository, never()).save(card);
+    }
     @Test
     public void testUpdateNameIfNotExists() {
         String newName = "New Name";
