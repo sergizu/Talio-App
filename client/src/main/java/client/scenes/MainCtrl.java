@@ -194,6 +194,10 @@ public class MainCtrl {
         setSizeScene();
 
     }
+
+    public Stage getPrimaryStage() {
+        return this.primaryStage;
+    }
     public AppClient getClient(){
         return client;
     }

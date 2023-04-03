@@ -203,9 +203,17 @@ public class EditCardCtrl implements Initializable {
             if(card.getId() == updatedCardID) {
                 Platform.runLater(() -> {
                     TDList tdList = card.getList();
-                    card = server.getCardById(card.id);
+                    Card boardReference = card;
+                    try {
+                        card = server.getCardById(card.id);
+                    } catch (Exception e) {
+                        System.out.println("Hello World!");
+                        mainCtrl.showOverview(boardReference.getList().getBoard().getId());
+                    }
                     card.setList(tdList);
-                    mainCtrl.showEdit(card);
+                    if(mainCtrl.getPrimaryStage().getTitle().equals("Card: Edit Card")) {
+                        mainCtrl.showEdit(card);
+                    }
                 });
             }
         });

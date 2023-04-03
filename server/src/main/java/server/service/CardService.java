@@ -66,6 +66,7 @@ public class CardService {
         Card toDelete = cardRepository.getById(id);
         cardRepository.deleteById(id);
         boardService.sendUpdates(toDelete.getList().getBoard().getId());
+        sendUpdates(toDelete.getId());
         return true;
     }
 
@@ -75,6 +76,7 @@ public class CardService {
         toUpdate.setTitle(name);
         toUpdate = cardRepository.save(toUpdate);
         boardService.sendUpdates(toUpdate.getList().getBoard().getId());
+        sendUpdates(toUpdate.getId());
         return true;
     }
 
@@ -85,6 +87,7 @@ public class CardService {
         toUpdate.setDescription(name);
         toUpdate = cardRepository.save(toUpdate);
         boardService.sendUpdates(toUpdate.getList().getBoard().getId());
+        sendUpdates(toUpdate.getId());
         return true;
     }
 
