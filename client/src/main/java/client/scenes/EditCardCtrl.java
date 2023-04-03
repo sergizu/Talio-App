@@ -96,7 +96,7 @@ public class EditCardCtrl {
 
     public void ok() {
         if(cardName.getText().equals(card.title)&&description.getText().equals(card.description) ){
-             mainCtrl.showOverview(card.list.board.id);
+            mainCtrl.showOverview(card.list.board.id);
             return;
         }
         else if(cardName.getText().equals("")){
