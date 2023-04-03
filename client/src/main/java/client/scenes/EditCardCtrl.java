@@ -30,6 +30,9 @@ public class EditCardCtrl {
     private TextField cardName;
 
     @FXML
+    private TextArea description;
+
+    @FXML
     private Label emptyName;
 
     @FXML
@@ -53,6 +56,7 @@ public class EditCardCtrl {
     public void init(Card card) {
         this.card = card;
         cardName.setText(card.title);
+        description.setText(card.description);
         tableColumnSubtask.setCellValueFactory(q ->
                 new SimpleStringProperty(q.getValue().getSubtask().getName()));
         tableColumnCheckbox.setCellValueFactory(
@@ -91,7 +95,7 @@ public class EditCardCtrl {
     }
 
     public void ok() {
-        if (cardName.getText().equals(card.title)) {
+        if(cardName.getText().equals(card.title)&&description.getText().equals(card.description) ){
             mainCtrl.showOverview(card.list.board.id);
             return;
         }
@@ -101,6 +105,7 @@ public class EditCardCtrl {
         }
         emptyName.setText("");
         server.updateCardName(card.getId(), cardName.getText());
+        server.updateCardDescription(card.getId(), description.getText());
         mainCtrl.showOverview(card.list.board.id);
     }
 
