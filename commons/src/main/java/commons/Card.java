@@ -16,6 +16,8 @@ public class Card {
 
     public String title;
 
+    public String description;
+
     @ManyToOne(cascade = {CascadeType.REFRESH})
     @JoinColumn(name = "list_id")
     @JsonBackReference
@@ -33,6 +35,12 @@ public class Card {
      */
     public Card(String title) {
         this.title = title;
+        nestedList = new ArrayList<>();
+    }
+
+    public Card(String title, String description) {
+        this.title = title;
+        this.description = description;
         nestedList = new ArrayList<>();
     }
 
@@ -73,6 +81,14 @@ public class Card {
      */
     public long getId() {
         return id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**

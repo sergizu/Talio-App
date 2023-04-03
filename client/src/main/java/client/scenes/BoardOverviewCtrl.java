@@ -4,9 +4,11 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Board;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
@@ -15,6 +17,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -28,6 +31,9 @@ public class BoardOverviewCtrl implements Initializable {
     @FXML
     private VBox boardsList;
 
+    private Scene createBoardScene;
+    private CreateBoardCtrl createBoardCtrl;
+
     @Inject
     public BoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
@@ -38,10 +44,20 @@ public class BoardOverviewCtrl implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         boardOverviewTitle.setMaxWidth(3000.0);
         HBox.setHgrow(boardOverviewTitle, Priority.ALWAYS);
+        FXMLLoader createBoardLoader = new FXMLLoader((getClass().
+                getResource("/client/scenes/CreateBoard.fxml")));
+        createBoardLoader.setControllerFactory(c ->
+                createBoardCtrl = new CreateBoardCtrl(server, mainCtrl));
+        try {
+            createBoardScene = new Scene(createBoardLoader.load());
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void createBoard() {
-        mainCtrl.showCreateBoard(BoardOverviewCtrl.class);
+        mainCtrl.showCreateBoard(createBoardScene, BoardOverviewCtrl.class, createBoardCtrl);
     }
 
     public void keyPressed(KeyEvent e) {

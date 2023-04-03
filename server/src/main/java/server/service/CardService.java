@@ -78,6 +78,15 @@ public class CardService {
         return true;
     }
 
+    public boolean updateDescription(long cardID, String name) {
+        if (name == null || name.equals("") || !cardRepository.existsById(cardID)) return false;
+        Card toUpdate = cardRepository.getById(cardID); //only get a proxy/reference
+        toUpdate.setDescription(name);
+        toUpdate = cardRepository.save(toUpdate);
+        boardService.sendUpdates(toUpdate.getList().getBoard().getId());
+        return true;
+    }
+
     public boolean updateList(long id, long listId) {
         if (!listService.existsById(listId) || !cardRepository.existsById(id)) return false;
         Card toUpdate = cardRepository.getById(id);
@@ -100,27 +109,4 @@ public class CardService {
         }
         return true;
     }
-
-//    public DeferredResult<ResponseEntity<Long>> subscribeForUpdates() {
-//        ResponseEntity<Long> noContent = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//        org.springframework.web.context.request.async.DeferredResult<ResponseEntity<Long>>
-//        result = new DeferredResult<>(10000L, noContent);
-//
-//        Object key = new Object(); //trick to uniquely identify every key
-//        listeners.put(key, id -> {
-//            result.setResult(ResponseEntity.ok(id));
-//        });
-//        result.onCompletion(() -> {
-//            listeners.remove(key);
-//        });
-//        return result;
-//    }
-//
-//    public void sendUpdates(long id) {
-//        try {
-//            listeners.forEach((key, listener) -> listener.accept(id));
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
-//    }
 }

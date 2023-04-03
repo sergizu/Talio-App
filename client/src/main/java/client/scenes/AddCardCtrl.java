@@ -6,6 +6,7 @@ import commons.Card;
 import commons.CardListId;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -18,6 +19,9 @@ public class AddCardCtrl {
     private Label myLabel;
     @FXML
     private TextField cardName;
+
+    @FXML
+    private TextArea description;
     private long listId;
 
     private long boardId;
@@ -34,10 +38,10 @@ public class AddCardCtrl {
     }
 
     public void ok() {
-        Card toSend = new Card(cardName.getText());
+        Card toSend = new Card(cardName.getText(), description.getText());
         server.addCardToList(listId,toSend);
         server.send("/app/tdLists/addCard", new CardListId(toSend,listId));
-        mainCtrl.showOverviewNoRefresh();
+        mainCtrl.showOverview(boardId);
         clearFields();
         // I don't want to refresh
         // because each client is registered for this change already
@@ -45,6 +49,7 @@ public class AddCardCtrl {
 
     private void clearFields() {
         cardName.clear();
+        description.clear();
     }
 
     public void cancel() {

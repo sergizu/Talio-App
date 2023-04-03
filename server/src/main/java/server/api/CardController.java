@@ -72,6 +72,14 @@ public class CardController {
         return ResponseEntity.badRequest().build();
     }
 
+    @PutMapping("/updateDescription/{cardID}")
+    public ResponseEntity updateDescription(@PathVariable("cardID") long cardID,
+                                     @RequestBody String newName) {
+        if(cardService.updateDescription(cardID, newName))
+            return ResponseEntity.ok().build();
+        return ResponseEntity.badRequest().build();
+    }
+
     @PutMapping("/updateList/{id}")
     public ResponseEntity updateList(@PathVariable("id") long id, @RequestBody long listId) {
         if (cardService.updateList(id, listId))
