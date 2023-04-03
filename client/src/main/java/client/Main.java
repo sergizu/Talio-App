@@ -17,7 +17,6 @@ package client;
 
 import client.scenes.*;
 import com.google.inject.Injector;
-import commons.AppClient;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -45,7 +44,7 @@ public class Main extends Application {
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
         mainCtrl.initialize(primaryStage, overview, edit,
                 selectServer, boardOverview, addSubTask,
-                joinedBoards, new AppClient());
+                joinedBoards);
 
         primaryStage.setOnCloseRequest(event -> {
             overview.getKey().stop();

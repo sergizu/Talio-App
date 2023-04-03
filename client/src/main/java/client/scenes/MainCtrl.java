@@ -53,8 +53,7 @@ public class MainCtrl {
                            Pair<SelectServerCtrl, Parent> selectServer,
                            Pair<BoardOverviewCtrl, Parent> boardOverview,
                            Pair<AddSubTaskCtrl, Parent> addSubtask,
-                           Pair<JoinedBoardsCtrl,Parent> joinedBoards,
-                           AppClient client) {
+                           Pair<JoinedBoardsCtrl,Parent> joinedBoards) {
 
         this.primaryStage = primaryStage;
         this.listOverviewCtrl = overview.getKey();
@@ -75,7 +74,7 @@ public class MainCtrl {
         this.joinedBoardsCtrl = joinedBoards.getKey();
         this.joinedBoardsScene = new Scene(joinedBoards.getValue(),1080,720);
 
-        this.client = client;
+        this.client = new AppClient();
         showSelectServer();
         this.primaryStage.setWidth(1080);
         this.primaryStage.setHeight(720);
@@ -116,7 +115,7 @@ public class MainCtrl {
         setSizeScene();
     }
 
-    public void showAdd(long listId,long boardId, AddCardCtrl addCardCtrl, Scene sceneAddCard) {
+    public void showAddCard(long listId,long boardId, AddCardCtrl addCardCtrl, Scene sceneAddCard) {
         primaryStage.setTitle("Board: Adding Card");
         addCardCtrl.setListBoardId(listId,boardId);
         primaryStage.setScene(sceneAddCard);
