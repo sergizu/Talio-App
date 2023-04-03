@@ -38,6 +38,11 @@ public class AddCardCtrl {
     }
 
     public void ok() {
+        if(cardName.getText().isEmpty()) {
+            myLabel.setText("Card name cannot be empty!");
+            return;
+        }
+        myLabel.setText("");
         Card toSend = new Card(cardName.getText(), description.getText());
         server.addCardToList(listId,toSend);
         server.send("/app/tdLists/addCard", new CardListId(toSend,listId));
