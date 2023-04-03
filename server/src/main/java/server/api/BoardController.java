@@ -25,8 +25,6 @@ public class BoardController {
     private final BoardRepository boardRepository;
     private Long defaultBoardID; //temporary default board to return to all requests
 
-
-
     @Autowired
     public BoardController(BoardService boardService,
                            ListRepository listRepository, CardRepository cardRepository,
@@ -107,7 +105,7 @@ public class BoardController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping()
+    @GetMapping(path = { "", "/" })
     public List<Board> getAll() {
         return  boardService.getAll();
     }

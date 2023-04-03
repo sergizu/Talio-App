@@ -2,7 +2,6 @@ package server.api;
 
 import commons.Card;
 import commons.Subtask;
-import commons.TDList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +21,7 @@ public class CardController {
         this.cardService = cardService;
     }
 
-    @GetMapping(path = { "", "/" })
+    @GetMapping(path = {"", "/"})
     public List<Card> getAll() {
         return cardService.getAll();
     }
@@ -30,7 +29,7 @@ public class CardController {
     @GetMapping("/{id}")
     public ResponseEntity<Card> getById(@PathVariable("id") long id) {
         Card retrievedCard = cardService.getById(id);
-        if(retrievedCard == null)
+        if (retrievedCard == null)
             return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(retrievedCard);
     }
@@ -38,10 +37,10 @@ public class CardController {
     //this method adds a card to the database and generates an ID for the card
     //if the id is already set, and there already exists a card with that id in the database
     //an error will be thrown, if you want to update the card send a put request
-    @PostMapping(path = { "", "/" })
+    @PostMapping(path = {"", "/"})
     public ResponseEntity<Card> add(@RequestBody Card card) {
         Card response = cardService.addCard(card);
-        if(response == null)
+        if (response == null)
             return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(response);
     }
@@ -49,7 +48,7 @@ public class CardController {
     @DeleteMapping("/{id}")
     public ResponseEntity removeByID(@PathVariable("id") long id) {
         boolean result = cardService.delete(id);
-        if(!result) {
+        if (!result) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();
@@ -58,7 +57,7 @@ public class CardController {
     @PutMapping("/update")
     public ResponseEntity<Card> update(@RequestBody Card card) {
         Card response = cardService.update(card);
-        if(response == null)
+        if (response == null)
             return ResponseEntity.badRequest().build();
 
         return ResponseEntity.ok(response);
@@ -68,14 +67,14 @@ public class CardController {
     @PutMapping("/updateName/{cardID}")
     public ResponseEntity updateName(@PathVariable("cardID") long cardID,
                                      @RequestBody String newName) {
-        if(cardService.updateName(cardID, newName))
+        if (cardService.updateName(cardID, newName))
             return ResponseEntity.ok().build();
         return ResponseEntity.badRequest().build();
     }
 
     @PutMapping("/updateList/{id}")
-    public ResponseEntity updateList(@PathVariable("id") long id, @RequestBody TDList list) {
-        if(cardService.updateList(id, list))
+    public ResponseEntity updateList(@PathVariable("id") long id, @RequestBody long listId) {
+        if (cardService.updateList(id, listId))
             return ResponseEntity.ok().build();
         return ResponseEntity.badRequest().build();
     }
@@ -83,7 +82,7 @@ public class CardController {
     @PutMapping("/updateNestedList/{id}")
     public ResponseEntity updateNestedList(@PathVariable("id") long id,
                                            @RequestBody ArrayList<Subtask> nestedList) {
-        if(cardService.updateNestedList(id, nestedList))
+        if (cardService.updateNestedList(id, nestedList))
             return ResponseEntity.ok().build();
         return ResponseEntity.badRequest().build();
     }
