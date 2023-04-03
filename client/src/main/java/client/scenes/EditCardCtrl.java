@@ -111,7 +111,7 @@ public class EditCardCtrl implements Initializable {
         }
         emptyName.setText("");
         server.updateCardName(card.getId(), cardName.getText());
-        if(description.getText().isEmpty()) {
+        if(description.getText().isEmpty() || description.getText() == null) {
             server.updateCardDescription(card.getId(), " ");
         } else {
             server.updateCardDescription(card.getId(), description.getText());
