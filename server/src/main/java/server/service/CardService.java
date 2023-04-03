@@ -117,7 +117,7 @@ public class CardService {
     public DeferredResult<ResponseEntity<Long>> subscribeForUpdates() {
         ResponseEntity<Long> noContent = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         org.springframework.web.context.request.async.DeferredResult<ResponseEntity<Long>>
-        result = new DeferredResult<>(10000L, noContent);
+            result = new DeferredResult<>(10000L, noContent);
 
         Object key = new Object(); //trick to uniquely identify every key
         listeners.put(key, id -> {
