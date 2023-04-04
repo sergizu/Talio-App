@@ -84,4 +84,12 @@ public class AddCardCtrlTest{
         verify(addCardService).clearFields();
         verify(mainCtrl).showOverview(anyLong());
     }
+
+    @Test
+    public void testKeyPressedOther() {
+        addCardCtrl.keyPressed(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.A, false, false, false, false));
+        verify(addCardService, never()).setMyLabelText("Card name cannot be empty!");
+        verify(addCardService, never()).clearFields();
+        verify(mainCtrl, never()).showOverview(anyLong());
+    }
 }
