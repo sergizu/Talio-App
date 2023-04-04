@@ -5,26 +5,21 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
 import commons.Subtask;
-import commons.TDList;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.*;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import static client.helperClass.SubtaskWrapper.serialization;
 
-public class EditCardCtrl implements Initializable {
+public class EditCardCtrl {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
@@ -197,25 +192,26 @@ public class EditCardCtrl implements Initializable {
         });
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        server.registerForCardUpdates(updatedCardID -> {
-            if(card.getId() == updatedCardID) {
-                Platform.runLater(() -> {
-                    TDList tdList = card.getList();
-                    Card boardReference = card;
-                    try {
-                        card = server.getCardById(card.id);
-                    } catch (Exception e) {
-                        System.out.println("Hello World!");
-                        mainCtrl.showOverview(boardReference.getList().getBoard().getId());
-                    }
-                    card.setList(tdList);
-                    if(mainCtrl.getPrimaryStage().getTitle().equals("Card: Edit Card")) {
-                        mainCtrl.showEdit(card);
-                    }
-                });
-            }
-        });
-    }
+//    @Override
+//    public void initialize(URL location, ResourceBundle resources) {
+//        server.registerForCardUpdates(updatedCardID -> {
+//                Platform.runLater(() -> {
+//                    if(card.getId() == updatedCardID) {
+//                        TDList tdList = card.getList();
+//                    Card boardReference = card;
+//                    try {
+//                        card = server.getCardById(card.id);
+//                        System.out.println(card.getList());
+//                        card.setList(tdList);
+//                    } catch (Exception e) {
+//                        System.out.println("Hello World!");
+//                        mainCtrl.showOverview(boardReference.getList().getBoard().getId());
+//                    }
+//                        if (mainCtrl.getPrimaryStage().getTitle().equals("Card: Edit Card")) {
+//                            mainCtrl.showEdit(card);
+//                        }
+//                    }
+//                });
+//        });
+//    }
 }
