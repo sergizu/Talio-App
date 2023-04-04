@@ -41,7 +41,7 @@ public class AddSubTaskCtrl {
     }
     public void cancel() {
         addSubTaskService.setMyLabelText("");
-        mainCtrl.showOverview();
+        mainCtrl.showOverview(card.list.board.id);
     }
 
     public Card getCard() {
