@@ -46,7 +46,6 @@ public class ListOverviewCtrl implements Initializable {
     private final MainCtrl mainCtrl;
 
     private Scene addCardScene;
-    @Inject
     private AddCardCtrl addCardCtrl;
     private Scene editListScene;
     private EditListCtrl editListCtrl;
@@ -83,7 +82,7 @@ public class ListOverviewCtrl implements Initializable {
         addCardLoader.setControllerFactory(injector::getInstance);
         try {
             addCardScene = new Scene(addCardLoader.load());
-            //addCardCtrl = addCardLoader.getController();
+            addCardCtrl = injector.getInstance(AddCardCtrl.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
