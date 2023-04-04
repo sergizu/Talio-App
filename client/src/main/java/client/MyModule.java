@@ -28,7 +28,7 @@ public class MyModule implements Module {
     @Override
     public void configure(Binder binder) {
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(AddCardCtrl.class).to(AddCardCtrlImpl.class).in(Scopes.SINGLETON);
+        binder.bind(AddCardCtrl.class).in(Scopes.SINGLETON);
         binder.bind(ListOverviewCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AddListCtrl.class).in(Scopes.SINGLETON);
         binder.bind(EditListCtrl.class).in(Scopes.SINGLETON);
