@@ -20,8 +20,6 @@ public class CreateBoardCtrl {
     private final MainCtrl mainCtrl;
     private Object parent;
 
-    private AppClient client;
-
     @FXML
     TextField boardTitle;
 
@@ -44,7 +42,6 @@ public class CreateBoardCtrl {
     }
 
     public void createBoard() {
-        client = mainCtrl.getClient();
         Board board = getBoardWithTitle();
         boardTitle.setText("");
         try {
@@ -62,6 +59,7 @@ public class CreateBoardCtrl {
     }
 
     public void addBoardToClient(Board board) {
+        AppClient client = mainCtrl.getClient();
         ArrayList<Board> boards = client.boards.get(ServerUtils.getServer());
         if (boards == null)
             boards = new ArrayList<>();
@@ -71,7 +69,7 @@ public class CreateBoardCtrl {
 
     public void escape() {
         if (parent == JoinedBoardsCtrl.class)
-            mainCtrl.showJoinedBoards(mainCtrl.getClient());
+            mainCtrl.showJoinedBoards();
         else if (parent == BoardOverviewCtrl.class) {
             mainCtrl.showBoardOverview();
         }

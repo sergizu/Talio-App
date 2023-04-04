@@ -2,7 +2,6 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.AppClient;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -39,7 +38,6 @@ public class SelectServerCtrl {
     }
 
     public void ok() {
-        AppClient client = mainCtrl.getClient();
         String s = serverName.getText();
         if (serverName.getText().isEmpty()) {
             myLabel.setText("Can not be empty!");
@@ -49,11 +47,13 @@ public class SelectServerCtrl {
         server.changeServer(s);
         try {
             server.getLists();
+
             if (checkPass()) {
                 mainCtrl.showBoardOverview();
                 adminPass.setText("");
                 hbox.setVisible(false);
-            } else mainCtrl.showJoinedBoards(client);
+            } else mainCtrl.showJoinedBoards();
+
         } catch (Exception e) {
             myLabel.setText("Couldn't find the server!");
         }
