@@ -111,7 +111,8 @@ public class MainCtrl {
         setSizeScene();
     }
 
-    public void showAddCard(long listId, long boardId, AddCardCtrl addCardCtrl, Scene sceneAddCard) {
+    public void showAddCard(long listId, long boardId,
+                            AddCardCtrl addCardCtrl, Scene sceneAddCard) {
         primaryStage.setTitle("Board: Adding Card");
         addCardCtrl.setListBoardId(listId,boardId);
         primaryStage.setScene(sceneAddCard);
