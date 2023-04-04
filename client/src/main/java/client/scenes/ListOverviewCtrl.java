@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import commons.Board;
 import commons.Card;
 import commons.TDList;
@@ -45,6 +46,7 @@ public class ListOverviewCtrl implements Initializable {
     private final MainCtrl mainCtrl;
 
     private Scene addCardScene;
+    @Inject
     private AddCardCtrl addCardCtrl;
     private Scene editListScene;
     private EditListCtrl editListCtrl;
@@ -60,10 +62,13 @@ public class ListOverviewCtrl implements Initializable {
     private Button copyButton;
     private TableView<Card> selection;
 
+    private final Injector injector;
+
     @Inject
-    public ListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public ListOverviewCtrl(Injector injector, ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
+        this.injector = injector;
     }
 
     @Override
@@ -75,10 +80,10 @@ public class ListOverviewCtrl implements Initializable {
     public void setAddCard() {
         FXMLLoader addCardLoader = new FXMLLoader(getClass().
                 getResource("/client/scenes/AddCard.fxml"));
-        addCardLoader.setControllerFactory(c ->
-                addCardCtrl = new AddCardCtrl(server, mainCtrl));
+        addCardLoader.setControllerFactory(injector::getInstance);
         try {
             addCardScene = new Scene(addCardLoader.load());
+            //addCardCtrl = addCardLoader.getController();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
