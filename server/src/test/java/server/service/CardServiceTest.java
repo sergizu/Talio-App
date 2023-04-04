@@ -24,6 +24,9 @@ class CardServiceTest {
 
     @Mock
     private BoardService boardService;
+    @Mock
+    private ListService listService;
+
     private CardService cardService;
     private Card card;
 
@@ -36,7 +39,7 @@ class CardServiceTest {
 
     @BeforeEach
     void setUp() {
-        cardService = new CardService(cardRepository, boardService);
+        cardService = new CardService(cardRepository, boardService, listService);
         card = new Card("Card");
         cardDescription = new Card("title", "Description");
         list = new TDList("List");
@@ -188,7 +191,9 @@ class CardServiceTest {
         when(cardRepository.getById(card.getId())).thenReturn(card);
         card.setList(newList);
         when(cardRepository.save(card)).thenReturn(card);
-        cardService.updateList(card.getId(), newList);
+        when(listService.getById(1)).thenReturn(newList);
+        when(listService.existsById(newList.getId())).thenReturn(true);
+        cardService.updateList(card.getId(), newList.getId());
         verify(cardRepository).save(card);
     }
 
@@ -198,7 +203,8 @@ class CardServiceTest {
         newList.id = 1;
         newList.setBoard(board);
         when(cardRepository.existsById(card.getId())).thenReturn(false);
-        cardService.updateList(card.getId(), newList);
+        when(listService.existsById(newList.getId())).thenReturn(true);
+        cardService.updateList(card.getId(), newList.getId());
         verify(cardRepository, never()).save(card);
     }
 }

@@ -12,8 +12,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -30,6 +32,7 @@ import javafx.util.Duration;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -38,13 +41,19 @@ import java.util.stream.Collectors;
 import static client.helperClass.SubtaskWrapper.serialization;
 
 public class ListOverviewCtrl implements Initializable {
-
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+
+    private Scene addCardScene;
+    private AddCardCtrl addCardCtrl;
+    private Scene editListScene;
+    private EditListCtrl editListCtrl;
+    private Scene addListScene;
+    private AddListCtrl addListCtrl;
     private Board board;
+    private Object parent;
     @FXML
     private ScrollPane scrollPane;
-    boolean toRefresh = false;
     @FXML
     private Label boardTitle;
     @FXML
@@ -60,49 +69,64 @@ public class ListOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setScrollPane();
-//        if(toRefresh) {
-//            toRefresh = false;
-//            setBoard(board.id);
-//        }
-//        server.registerForBoardUpdates(updatedBoardID -> {
-//            System.out.println("Updattteeeeee");
-//            if(board.getId() == updatedBoardID){
-//                Platform.runLater(() -> {
-//                    setBoard(updatedBoardID);
-//                    toRefresh = false;
-//                });
-//            }
-//            else toRefresh = true;
-//        });
-//        server.registerForMessages("/topic/addCard", c-> {
-//            Platform.runLater(() -> {
-//                addCardToList(c.card,c.listId);
-//                setBoard(board.id);
-//            });
-//        });
+        registerForUpdates();
+    }
 
+    public void setAddCard() {
+        FXMLLoader addCardLoader = new FXMLLoader(getClass().
+                getResource("/client/scenes/AddCard.fxml"));
+        addCardLoader.setControllerFactory(c ->
+                addCardCtrl = new AddCardCtrl(server, mainCtrl));
+        try {
+            addCardScene = new Scene(addCardLoader.load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setEditList() {
+        FXMLLoader editListLoader = new FXMLLoader(getClass().
+                getResource("/client/scenes/RenameList.fxml"));
+        editListLoader.setControllerFactory(c ->
+                editListCtrl = new EditListCtrl(server, mainCtrl));
+        try {
+            editListScene = new Scene(editListLoader.load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setAddList() {
+        FXMLLoader addListLoader = new FXMLLoader(getClass().
+                getResource("/client/scenes/AddList.fxml"));
+        addListLoader.setControllerFactory(c ->
+                addListCtrl = new AddListCtrl(server, mainCtrl));
+        try {
+            addListScene = new Scene(addListLoader.load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void registerForUpdates() {
         server.registerForBoardUpdates(updatedBoardID -> {
-            if(board.getId() == updatedBoardID){
-                Platform.runLater(() -> {
-                    setBoard(updatedBoardID);
-                    toRefresh = false;
-                });
-            }
-            else toRefresh = true;
-        });
-        server.registerForMessages("/topic/addCard", c-> {
             Platform.runLater(() -> {
-                addCardToList(c.card,c.listId);
+                if (board.getId() == updatedBoardID) {
+                    setBoard(updatedBoardID);
+                }
+            });
+        });
+        server.registerForMessages("/topic/addCard", c -> {
+            Platform.runLater(() -> {
+                addCardToList(c.card, c.listId);
                 setBoard(board.id);
             });
         });
     }
+
     public void addCardToList(Card card, long listId) {
-        for(int i=0;i<board.tdLists.size();i++)
-            if(board.tdLists.get(i).id==listId)
+        for (int i = 0; i < board.tdLists.size(); i++)
+            if (board.tdLists.get(i).id == listId)
                 board.tdLists.get(i).addCard(card);
     }
 
@@ -142,7 +166,7 @@ public class ListOverviewCtrl implements Initializable {
     public Button createAddCardButton(long id) {
         Button button = new Button("Add Card");
         button.setOnAction(e -> {
-            mainCtrl.showAdd(id,board.id);
+            mainCtrl.showAddCard(id, board.id, addCardCtrl, addCardScene);
         });
         return button;
     }
@@ -150,7 +174,7 @@ public class ListOverviewCtrl implements Initializable {
     public Button createEditListButton(TDList list) {
         Button button = new Button("Edit");
         button.setOnAction(e -> {
-            mainCtrl.showEditList(list);
+            mainCtrl.showEditList(list, editListCtrl, editListScene);
         });
         return button;
     }
@@ -196,7 +220,7 @@ public class ListOverviewCtrl implements Initializable {
     }
 
     public void addList() {
-        mainCtrl.showAddList(board.id);
+        mainCtrl.showAddList(board.id, addListCtrl, addListScene);
     }
 
     //Method that will pop up a window to change the card name whenever you double-click on a card
@@ -290,7 +314,6 @@ public class ListOverviewCtrl implements Initializable {
             Card card = selection.getItems().remove(draggedIndex);
             server.updateCardList(card.getId(), tdList);
             setBoard(board.id);
-            server.updateBoard(board);
             e.consume();
         });
     }
@@ -338,8 +361,16 @@ public class ListOverviewCtrl implements Initializable {
         refresh(boardId);
     }
 
+    public void setParent(Object parent) {
+        this.parent = parent;
+    }
+
     public void backPressed() {
-        mainCtrl.showJoinedBoards(mainCtrl.getClient());
+        if (parent == JoinedBoardsCtrl.class)
+            mainCtrl.showJoinedBoards(mainCtrl.getClient());
+        else if (parent == BoardOverviewCtrl.class) {
+            mainCtrl.showBoardOverview();
+        }
     }
 }
 

@@ -4,20 +4,20 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.AppClient;
 import commons.Board;
-import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.control.Alert;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.stage.Modality;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -26,6 +26,8 @@ public class JoinedBoardsCtrl implements Initializable {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private AppClient client;
+    private Scene createBoardScene;
+    private CreateBoardCtrl createBoardCtrl;
 
     @FXML
     private TextField boardTitle;
@@ -40,8 +42,6 @@ public class JoinedBoardsCtrl implements Initializable {
     private Button disconnectButton;
     @FXML
     private Button createBoardButton;
-    @FXML
-    private Button browseButton;
 
 
     @Inject
@@ -64,55 +64,45 @@ public class JoinedBoardsCtrl implements Initializable {
         String serverString = ServerUtils.getServer();
         addServerKeyIntoMap(serverString);
         getBoardsForServer(serverString);
+
+        FXMLLoader createBoardLoader = new FXMLLoader((getClass().
+                getResource("/client/scenes/CreateBoard.fxml")));
+        createBoardLoader.setControllerFactory(c ->
+                createBoardCtrl = new CreateBoardCtrl(server, mainCtrl));
+        try {
+            createBoardScene = new Scene(createBoardLoader.load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void addServerKeyIntoMap(String serverString) {
-        if(!client.boards.containsKey(serverString)){
+        if (!client.boards.containsKey(serverString)) {
             ArrayList<Board> boards = new ArrayList<>();
-            client.boards.put(serverString,boards);
+            client.boards.put(serverString, boards);
         }
     }
 
     public void getBoardsForServer(String serverString) {
         ArrayList<Board> boards = new ArrayList<>();
-        if(client.boards.containsKey(serverString)){
+        if (client.boards.containsKey(serverString)) {
             boards = client.boards.get(serverString);
         }
         showJoinedBoards(boards);
     }
 
-    private Board getBoard() {
-        String title = boardTitle.getText();
-        return new Board(title);
-    }
-
     public void showCreateBoard() {
-        mainCtrl.showCreateBoard();
-    }
-
-    public void createBoard() {
-        Board board = getBoard();
-        try {
-            board = server.addBoard(board);
-        } catch (WebApplicationException e) {
-            var alert = new Alert(Alert.AlertType.ERROR);
-            alert.initModality(Modality.APPLICATION_MODAL);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-            return;
-        }
-        mainCtrl.showOverview(board.getId());
+        mainCtrl.showCreateBoard(createBoardScene, JoinedBoardsCtrl.class, createBoardCtrl);
     }
 
     public void showJoinedBoards(ArrayList<Board> boards) {
-        if(boards.isEmpty()) {
+        if (boards.isEmpty()) {
             clearBoardList();
             Label noBoards = new Label("You have not joined any boards yet!");
             noBoards.setFont(Font.font(25.0));
-            noBoards.setPadding(new Insets(30,30,30,30));
+            noBoards.setPadding(new Insets(30, 30, 30, 30));
             boardsList.getChildren().add(noBoards);
-        }
-        else {
+        } else {
             displayBoards(boards);
         }
     }
@@ -120,7 +110,7 @@ public class JoinedBoardsCtrl implements Initializable {
     public void displayBoards(ArrayList<Board> boards) {
         clearBoardList();
         boardsList.setSpacing(3);
-        for(Board board:boards)
+        for (Board board : boards)
             boardsList.getChildren().add(createHBox(board));
     }
 
@@ -135,21 +125,22 @@ public class JoinedBoardsCtrl implements Initializable {
     }
 
     public void clearBoardList() {
-        while(!boardsList.getChildren().isEmpty())
+        while (!boardsList.getChildren().isEmpty())
             boardsList.getChildren().remove(0);///removeAll did not work!?
     }
 
-    public Label createLabel(String title){
+    public Label createLabel(String title) {
         Label boardTitle = new Label(title);
         boardTitle.setFont(Font.font(20));
-        boardTitle.setPadding(new Insets(10,50,10,100));
+        boardTitle.setPadding(new Insets(10, 50, 10, 100));
         return boardTitle;
     }
 
-    public HBox createTableLine(){
+    public HBox createTableLine() {
         HBox tableLine = new HBox();
+        tableLine.setAlignment(Pos.CENTER);
         tableLine.setBorder(new Border(new BorderStroke(Color.BLACK,
-                BorderStrokeStyle.SOLID, null , null)));//will change color, was added for testing
+                BorderStrokeStyle.SOLID, null, null)));//will change color, was added for testing
         tableLine.setPrefHeight(50);
         return tableLine;
     }
@@ -166,29 +157,15 @@ public class JoinedBoardsCtrl implements Initializable {
     public void leaveBoard(Board board) {
         ArrayList<Board> boards = client.boards.get(ServerUtils.getServer());
         boards.remove(board);
-        client.boards.put(ServerUtils.getServer(),boards);
+        client.boards.put(ServerUtils.getServer(), boards);
         showJoinedBoards(boards);
     }
 
-    public void keyPressed(KeyEvent e) {
-        switch (e.getCode()) {
-            case ENTER:
-                createBoard();
-                break;
-            default:
-                break;
-        }
+    public void enterBoard(Board board) {
+        mainCtrl.showOverview(board.id, JoinedBoardsCtrl.class);
     }
 
-    public void browsePressed() {
-        mainCtrl.showBoardOverview();
-    }
-    public void enterBoard(Board board) {
-        mainCtrl.showOverview(board.id);
-    }
-    public void disconnectPressed(){
+    public void disconnectPressed() {
         mainCtrl.showSelectServer();
     }
-
-
 }
