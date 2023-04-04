@@ -16,10 +16,7 @@
 package client;
 
 import client.scenes.*;
-import client.services.AddCardService;
-import client.services.AddCardServiceImpl;
-import client.services.AddListService;
-import client.services.AddListServiceImpl;
+import client.services.*;
 import client.utils.ServerUtils;
 import com.google.inject.Binder;
 import com.google.inject.Module;
@@ -38,6 +35,8 @@ public class MyModule implements Module {
         binder.bind(SelectServerCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AddCardService.class).to(AddCardServiceImpl.class).in(Scopes.SINGLETON);
         binder.bind(AddListService.class).to(AddListServiceImpl.class).in(Scopes.SINGLETON);
+        binder.bind(AddSubTaskCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(AddSubTaskService.class).to(AddSubTaskServiceImpl.class).in(Scopes.SINGLETON);
         binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
     }
 }
