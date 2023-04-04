@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import client.services.AddListService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.TDList;
@@ -33,22 +34,19 @@ public class AddListCtrl {
 
     private long boardId;
 
-    @FXML
-    private TextField listTitle;
-
-    @FXML
-    private Label emptyName;
+    private final AddListService addListService;
 
     @Inject
-    public AddListCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public AddListCtrl(ServerUtils server, MainCtrl mainCtrl, AddListService addListService) {
         this.mainCtrl = mainCtrl;
         this.server = server;
+        this.addListService = addListService;
     }
 
-    private TDList getList() {
-        String title = listTitle.getText();
+    protected TDList getList() {
+        String title = addListService.getListTitle();
         if(title.equals("")) {
-            emptyName.setText("List name can not be empty!");
+            addListService.setEmptyNameText("List name can not be empty!");
             return null;
         }
         return new TDList(title);
@@ -60,26 +58,16 @@ public class AddListCtrl {
     }
 
     public void ok() {
-        try {
-            TDList list = getList();
-            if(list == null)
-                return;
-            server.addListToBoard(boardId, list);
-        } catch (WebApplicationException e) {
-            var alert = new Alert(Alert.AlertType.ERROR);
-            alert.initModality(Modality.APPLICATION_MODAL);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+        TDList list = getList();
+        if(list == null)
             return;
-        }
-
+        server.addListToBoard(boardId, list);
         clearFields();
         mainCtrl.showOverview(boardId);
     }
 
-    private void clearFields() {
-        listTitle.clear();
-        emptyName.setText("");
+    protected void clearFields() {
+        addListService.clearFields();
     }
 
     public void keyPressed(KeyEvent e) {
@@ -97,5 +85,9 @@ public class AddListCtrl {
 
     public void setBoard(long boardId) {
         this.boardId = boardId;
+    }
+
+    public long getBoardId() {
+        return boardId;
     }
 }
