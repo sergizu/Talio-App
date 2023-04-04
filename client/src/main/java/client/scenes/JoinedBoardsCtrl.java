@@ -13,6 +13,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -31,7 +33,8 @@ public class JoinedBoardsCtrl implements Initializable {
 
     @FXML
     private TextField boardTitle;
-
+    @FXML
+    private TextField joinByKey;
     @FXML
     private Label boardOverviewTitle;
     @FXML
@@ -61,6 +64,7 @@ public class JoinedBoardsCtrl implements Initializable {
 
     public void init(AppClient client) {
         this.client = client;
+        joinByKey.setPromptText("Join by key");
         String serverString = ServerUtils.getServer();
         addServerKeyIntoMap(serverString);
         getBoardsForServer(serverString);
@@ -167,5 +171,33 @@ public class JoinedBoardsCtrl implements Initializable {
 
     public void disconnectPressed() {
         mainCtrl.showSelectServer();
+    }
+
+    public void joinByKey() {
+        long key = -1;
+        try {
+            key = Long.parseLong(joinByKey.getText());
+        } catch (NumberFormatException e) {
+            joinByKey.setPromptText("Please enter a valid key!");
+            joinByKey.clear();
+            return;
+        }
+        ArrayList<Board> allBoards = (ArrayList<Board>) server.getBoards();
+        for(Board board : allBoards)
+            if(board.key == key) {
+                joinBoard(board);
+                return;
+            }
+        joinByKey.clear();
+        joinByKey.setPromptText("There is no board ");
+    }
+
+    public void joinBoard(Board board) {
+        enterBoard(board);
+    }
+
+    public void joinPressed(KeyEvent e) {
+        if(e.getCode() == KeyCode.ENTER)
+            joinByKey();
     }
 }

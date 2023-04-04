@@ -120,24 +120,6 @@ public class ServerUtils {
                 .post(Entity.entity(board, APPLICATION_JSON), Board.class);
     }
 
-
-    public Board tempBoardGetter() {
-        Response result = ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("/api/boards/tempGetter")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .get();
-        if (result.getStatus() == HttpStatus.OK.value()) {
-            try {
-                Board board = result.readEntity(Board.class);
-                return board;
-            } catch (Exception e) {
-                System.out.println("problems: couldnt parse the incoming board");
-            }
-        }
-        return null;
-    }
-
     public Board getBoardById(long boardId) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(server).path("/api/boards/" + boardId) //
@@ -266,6 +248,14 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<List<Board>>() {
                 });
+    }
+
+    public void deleteBoard(long boardId) {
+        ClientBuilder.newClient(new ClientConfig())
+                .target(server).path("api/boards/")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .delete();
     }
 
     private StompSession session = connect("ws://localhost:8080/websocket");
