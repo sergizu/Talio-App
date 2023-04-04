@@ -1,8 +1,6 @@
 package client.scenes;
 
-import client.services.AddListService;
 import client.services.AddSubTaskService;
-import client.services.AddSubTaskServiceImpl;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
@@ -18,7 +16,8 @@ public class AddSubTaskCtrl {
     private Card card;
 
     @Inject
-    public AddSubTaskCtrl(ServerUtils server, MainCtrl mainCtrl, AddSubTaskService addSubTaskService) {
+    public AddSubTaskCtrl(ServerUtils server, MainCtrl mainCtrl,
+              AddSubTaskService addSubTaskService) {
         this.server = server;
         this.mainCtrl = mainCtrl;
         this.addSubTaskService = addSubTaskService;
@@ -42,7 +41,7 @@ public class AddSubTaskCtrl {
     }
     public void cancel() {
         addSubTaskService.setMyLabelText("");
-        mainCtrl.showOverview(card.list.board.id);
+        mainCtrl.showOverview();
     }
 
     public Card getCard() {
