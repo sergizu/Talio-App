@@ -69,7 +69,7 @@ public class EditCardCtrl {
         tableColumnButton.setCellValueFactory(
                 new PropertyValueFactory<SubtaskWrapper, Button>("button"));
         List<SubtaskWrapper> subtaskWrappers = new ArrayList<>();
-        for(Subtask subtask : card.nestedList) {
+        for(Subtask subtask : card.getNestedList()) {
             CheckBox checkBox = new CheckBox();
             if(subtask.checked) {
                 checkBox.setSelected(true);
@@ -77,17 +77,17 @@ public class EditCardCtrl {
             checkBox.setOnMouseClicked(event -> {
                 if(checkBox.isSelected()) {
                     subtask.setChecked(true);
-                    server.updateNestedList(card.id, card.nestedList);
+                    server.updateNestedList(card.id, card.getNestedList());
                 }
                 if(!checkBox.isSelected()) {
                     subtask.setChecked(false);
-                    server.updateNestedList(card.id, card.nestedList);
+                    server.updateNestedList(card.id, card.getNestedList());
                 }
             });
             Button button = new Button("X");
             button.setOnAction(event -> {
-                card.nestedList.remove(subtask);
-                server.updateNestedList(card.id, card.nestedList);
+                card.getNestedList().remove(subtask);
+                server.updateNestedList(card.id, card.getNestedList());
                 mainCtrl.showEdit(card);
             });
             subtaskWrappers.add(new SubtaskWrapper(subtask, checkBox, button));
@@ -112,8 +112,9 @@ public class EditCardCtrl {
     }
 
     public void ok() {
-        if(cardName.getText().equals(card.title)&&description.getText().equals(card.description) ){
-            mainCtrl.showOverview(card.list.board.id);
+        if(cardName.getText().equals(card.title )&&
+                (description.getText() == null || description.getText().equals(card.description))){
+            mainCtrl.showOverview(card.getList().getBoard().getId());
             return;
         }
         else if(cardName.getText().equals("")){
@@ -122,12 +123,16 @@ public class EditCardCtrl {
         }
         emptyName.setText("");
         server.updateCardName(card.getId(), cardName.getText());
-        server.updateCardDescription(card.getId(), description.getText());
-        mainCtrl.showOverview(card.list.board.id);
+        if(description.getText().isEmpty() || description.getText() == null) {
+            server.updateCardDescription(card.getId(), " ");
+        } else {
+            server.updateCardDescription(card.getId(), description.getText());
+        }
+        mainCtrl.showOverview(card.getList().getBoard().getId());
     }
 
     public void delete() {
-        long boardId = card.list.board.id;
+        long boardId = card.getList().getBoard().getId();
         server.removeCard(card);
         emptyName.setText("");
         mainCtrl.showOverview(boardId);
@@ -143,7 +148,7 @@ public class EditCardCtrl {
     }
 
     public void cancel() {
-        mainCtrl.showOverview(card.list.board.id);
+        mainCtrl.showOverview(card.getList().getBoard().getId());
     }
 
     public void createSubtask() {
@@ -154,7 +159,7 @@ public class EditCardCtrl {
         SubtaskWrapper subtaskWrapper = tableView.getSelectionModel().getSelectedItem();
         Subtask subtask = subtaskWrapper.getSubtask();
         subtask.setName(edit.getNewValue());
-        server.updateNestedList(card.id, card.nestedList);
+        server.updateNestedList(card.id, card.getNestedList());
     }
     public void dragAndDrop(TableView<SubtaskWrapper> tableView){
         tableView.setRowFactory(tv -> {
@@ -207,9 +212,23 @@ public class EditCardCtrl {
 //    @Override
 //    public void initialize(URL location, ResourceBundle resources) {
 //        server.registerForCardUpdates(updatedCardID -> {
-//            System.out.println("CARD!");
-//            if(card.getId() == updatedCardID);
-//            mainCtrl.showEdit(card);
+//                Platform.runLater(() -> {
+//                    if(card.getId() == updatedCardID) {
+//                        TDList tdList = card.getList();
+//                    Card boardReference = card;
+//                    try {
+//                        card = server.getCardById(card.id);
+//                        System.out.println(card.getList());
+//                        card.setList(tdList);
+//                    } catch (Exception e) {
+//                        System.out.println("Hello World!");
+//                        mainCtrl.showOverview(boardReference.getList().getBoard().getId());
+//                    }
+//                        if (mainCtrl.getPrimaryStage().getTitle().equals("Card: Edit Card")) {
+//                            mainCtrl.showEdit(card);
+//                        }
+//                    }
+//                });
 //        });
 //    }
 }
