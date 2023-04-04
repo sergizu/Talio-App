@@ -4,6 +4,9 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.AppClient;
 import commons.Board;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,6 +21,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -178,21 +182,49 @@ public class JoinedBoardsCtrl implements Initializable {
         try {
             key = Long.parseLong(joinByKey.getText());
         } catch (NumberFormatException e) {
-            joinByKey.setPromptText("Please enter a valid key!");
-            joinByKey.clear();
+            adjustPromptText("Please enter a valid key!");
             return;
         }
         ArrayList<Board> allBoards = (ArrayList<Board>) server.getBoards();
         for(Board board : allBoards)
             if(board.key == key) {
                 joinBoard(board);
+                joinByKey.clear();
                 return;
             }
-        joinByKey.clear();
-        joinByKey.setPromptText("There is no board ");
+        if(!lookForBoardKey(key))
+            adjustPromptText("No board with that key!");
+    }
+
+    public boolean lookForBoardKey(long key) {
+        ArrayList<Board> allBoards = (ArrayList<Board>) server.getBoards();
+        for(Board board : allBoards)
+            if(board.key == key) {
+                joinBoard(board);
+                joinByKey.clear();
+                return true;
+            }
+        return false;
+    }
+
+    public void adjustPromptText(String information) {
+        Platform.runLater(() ->
+        {
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.ZERO, event -> {
+                        joinByKey.clear();
+                        joinByKey.setPromptText(information);
+                    }),
+                    new KeyFrame(Duration.seconds(5), event -> {
+                        joinByKey.setPromptText("Join by key");
+                    })
+            );
+            timeline.play();
+        });
     }
 
     public void joinBoard(Board board) {
+        containsBoardId(board);
         enterBoard(board);
     }
 
@@ -200,4 +232,14 @@ public class JoinedBoardsCtrl implements Initializable {
         if(e.getCode() == KeyCode.ENTER)
             joinByKey();
     }
+    public boolean containsBoardId(Board newBoard) {
+        ArrayList<Board> clientBoards = client.boards.get(ServerUtils.getServer());
+        for(Board board : clientBoards)
+            if(board.id == newBoard.id)
+                return true;
+        clientBoards.add(newBoard);
+        client.boards.put(ServerUtils.getServer(),clientBoards);
+        return false;
+    }
+
 }
