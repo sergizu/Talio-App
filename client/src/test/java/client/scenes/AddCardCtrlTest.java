@@ -32,7 +32,7 @@ public class AddCardCtrlTest{
     public void setUp() {
         addCardCtrl = new AddCardCtrl(serverUtils, mainCtrl, addCardService);
     }
-    
+
     @Test
     public void testConstructor() {
         assertNotNull(new AddCardCtrl(serverUtils, mainCtrl, addCardService));
