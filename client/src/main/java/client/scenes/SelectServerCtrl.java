@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 
 
 public class SelectServerCtrl {
@@ -20,10 +21,21 @@ public class SelectServerCtrl {
     @FXML
     private Label myLabel;
 
+    @FXML
+    private TextField adminPass;
+
+    @FXML
+    private HBox hbox;
+
     @Inject
     public SelectServerCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
+    }
+
+    public boolean checkPass() {
+        String password = adminPass.getText();
+        return password.equals("1010");
     }
 
     public void ok() {
@@ -37,10 +49,18 @@ public class SelectServerCtrl {
         server.changeServer(s);
         try {
             server.getLists();
-            mainCtrl.showJoinedBoards(client);
+            if (checkPass()) {
+                mainCtrl.showBoardOverview();
+                adminPass.setText("");
+                hbox.setVisible(false);
+            } else mainCtrl.showJoinedBoards(client);
         } catch (Exception e) {
             myLabel.setText("Couldn't find the server!");
         }
+    }
+
+    public void adminLogIn() {
+        hbox.setVisible(true);
     }
 
     public void keyPressed(KeyEvent e) {

@@ -128,12 +128,12 @@ class CardControllerTest {
 
     @Test
     void updateListIfExists(){
-        when(cardService.updateList(any(Long.class), any(TDList.class))).thenReturn(true);
-        assertEquals(ResponseEntity.ok().build(), cardController.updateList(1L, new TDList("l1")));
+        when(cardService.updateList(any(Long.class), any(long.class))).thenReturn(true);
+        assertEquals(ResponseEntity.ok().build(), cardController.updateList(1L, 2L));
     }
     @Test
     void updateListIfNotExists(){
-        when(cardService.updateList(any(Long.class), any(TDList.class))).thenReturn(false);
-        assertEquals(ResponseEntity.badRequest().build(), cardController.updateList(1L, new TDList("l1")));
+        when(cardService.updateList(any(Long.class), any(long.class))).thenReturn(false);
+        assertEquals(ResponseEntity.badRequest().build(), cardController.updateList(1L, 2L));
     }
 }

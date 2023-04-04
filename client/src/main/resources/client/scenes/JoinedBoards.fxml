@@ -44,7 +44,7 @@
             </ScrollPane>
         </center>
       <bottom>
-         <Button fx:id="browseButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#browsePressed" text="Browse..." BorderPane.alignment="CENTER">
+         <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Browse..." BorderPane.alignment="CENTER">
             <BorderPane.margin>
                <Insets bottom="5.0" top="5.0" />
             </BorderPane.margin>

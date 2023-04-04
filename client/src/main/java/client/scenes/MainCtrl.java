@@ -35,10 +35,6 @@ public class MainCtrl {
     private Scene selectServer;
     private SelectServerCtrl selectServerCtrl;
 
-    private Scene addSubtask;
-
-    private AddSubTaskCtrl addSubTaskCtrl;
-
     private Scene boardOverviewScene;
     private BoardOverviewCtrl boardOverviewCtrl;
 
@@ -65,12 +61,13 @@ public class MainCtrl {
         this.selectServer = new Scene(selectServer.getValue(), 1080, 720);
 
         this.boardOverviewCtrl = boardOverview.getKey();
-        this.boardOverviewScene = new Scene(boardOverview.getValue(),1080,720);
+        this.boardOverviewScene = new Scene(boardOverview.getValue(), 1080, 720);
 
         this.joinedBoardsCtrl = joinedBoards.getKey();
-        this.joinedBoardsScene = new Scene(joinedBoards.getValue(),1080,720);
+        this.joinedBoardsScene = new Scene(joinedBoards.getValue(), 1080, 720);
 
         this.client = new AppClient();
+
         showSelectServer();
         this.primaryStage.setWidth(1080);
         this.primaryStage.setHeight(720);
@@ -79,7 +76,7 @@ public class MainCtrl {
         primaryStage.show();
     }
 
-    public void showSelectServer(){
+    public void showSelectServer() {
         primaryStage.setTitle("Server: selecting server");
         primaryStage.setScene(selectServer);
         setSizeScene();
@@ -87,10 +84,7 @@ public class MainCtrl {
 
     public void showOverview(long boardId) {
         primaryStage.setTitle("Lists: Overview");
-        primaryStage.setMinWidth(350);
-        primaryStage.setMinHeight(360);
         listOverviewCtrl.setBoard(boardId);
-        listOverviewCtrl.registerForUpdates();
         listOverviewCtrl.setAddCard();
         listOverviewCtrl.setEditList();
         listOverviewCtrl.setAddList();
@@ -98,16 +92,22 @@ public class MainCtrl {
         setSizeScene();
     }
 
+    public void showOverview(long boardId, Object parent) {
+        primaryStage.setTitle("Lists: Overview");
+        listOverviewCtrl.setBoard(boardId);
+        listOverviewCtrl.setParent(parent);
+        listOverviewCtrl.setAddCard();
+        listOverviewCtrl.setEditList();
+        listOverviewCtrl.setAddList();
+        primaryStage.setScene(overview);
+        setSizeScene();
+    }
+
+
     public void showBoardOverview() {
         primaryStage.setTitle("Boards: Overview");
         primaryStage.setScene(boardOverviewScene);
-        setSizeScene();
-        boardOverviewCtrl.showOtherBoards();
-    }
-
-    public void showOverviewNoRefresh(){
-        primaryStage.setTitle("Lists: Overview");
-        primaryStage.setScene(overview);
+        boardOverviewCtrl.showAllBoards();
         setSizeScene();
     }
 
@@ -142,16 +142,16 @@ public class MainCtrl {
         setSizeScene();
     }
 
-    public void showAddSubtask(Card card,Scene addSubTaskScene, AddSubTaskCtrl addSubTaskCtrl) {
+    public void showAddSubtask(Card card, Scene addSubTaskScene, AddSubTaskCtrl addSubTaskCtrl) {
         primaryStage.setTitle("Subtask: Create subtask");
         primaryStage.setScene(addSubTaskScene);
         addSubTaskCtrl.init(card);
         setSizeScene();
     }
 
-    public void setSizeScene(){
-        primaryStage.setWidth(primaryStage.getWidth()+1);
-        primaryStage.setHeight(primaryStage.getHeight()+1);
+    public void setSizeScene() {
+        primaryStage.setWidth(primaryStage.getWidth() + 1);
+        primaryStage.setHeight(primaryStage.getHeight() + 1);
     }
 
     public void showJoinedBoards(AppClient client) {
@@ -161,13 +161,16 @@ public class MainCtrl {
         setSizeScene();
     }
 
-    public void showCreateBoard(Scene createBoardScene){
+    public void showCreateBoard(Scene createBoardScene, Object parent,
+                                CreateBoardCtrl createBoardCtrl){
         primaryStage.setTitle("Create a new board");
         primaryStage.setScene(createBoardScene);
+        createBoardCtrl.setParent(parent);
+        listOverviewCtrl.setParent(parent);
         setSizeScene();
-
     }
-    public AppClient getClient(){
+
+    public AppClient getClient() {
         return client;
     }
 }
