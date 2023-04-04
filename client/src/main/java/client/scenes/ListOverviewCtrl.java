@@ -103,10 +103,10 @@ public class ListOverviewCtrl implements Initializable {
     public void setAddList() {
         FXMLLoader addListLoader = new FXMLLoader(getClass().
                 getResource("/client/scenes/AddList.fxml"));
-        addListLoader.setControllerFactory(c ->
-                addListCtrl = new AddListCtrl(server, mainCtrl));
+        addListLoader.setControllerFactory(injector::getInstance);
         try {
             addListScene = new Scene(addListLoader.load());
+            addListCtrl = injector.getInstance(AddListCtrl.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
