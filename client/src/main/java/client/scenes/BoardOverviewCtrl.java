@@ -40,7 +40,8 @@ public class BoardOverviewCtrl implements Initializable {
     private VBox boardsList;
     @FXML
     private Button createBoardButton;
-
+    @FXML
+    private Button disconnectButton;
     private Scene createBoardScene;
     private CreateBoardCtrl createBoardCtrl;
 
@@ -64,6 +65,8 @@ public class BoardOverviewCtrl implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        disconnectButton.setStyle("-fx-background-color: red;");
+        createBoardButton.setStyle("-fx-background-color: #2596be");
     }
 
     public void createBoard() {
@@ -183,7 +186,7 @@ public class BoardOverviewCtrl implements Initializable {
             joinByKey();
     }
     public void showCreateBoard() {
-        //mainCtrl.showCreateBoard();
+        mainCtrl.showCreateBoard(createBoardScene, BoardOverviewCtrl.class, createBoardCtrl);
     }
     public void disconnectPressed() {
         mainCtrl.showSelectServer();
