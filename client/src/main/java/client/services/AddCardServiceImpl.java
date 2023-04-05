@@ -2,11 +2,13 @@ package client.services;
 
 import client.scenes.AddCardCtrl;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
+@Singleton
 public class AddCardServiceImpl implements AddCardService {
     @FXML
     private Label myLabel;
@@ -16,8 +18,12 @@ public class AddCardServiceImpl implements AddCardService {
     @FXML
     private TextArea description;
 
+    private final AddCardCtrl addCardCtrl;
+
     @Inject
-    private AddCardCtrl addCardCtrl;
+    public AddCardServiceImpl(AddCardCtrl addCardCtrl) {
+        this.addCardCtrl = addCardCtrl;
+    }
 
 
     public void setMyLabelText(String text) {
@@ -38,18 +44,12 @@ public class AddCardServiceImpl implements AddCardService {
         return description.getText();
     }
 
-    public void setCardName(String name) {
-        cardName.setText(name);
-    }
-
-    public void setDescription(String description) {
-        this.description.setText(description);
-    }
-
+    //method that gets called when the ok button is pressed
     public void ok() {
         addCardCtrl.ok();
     }
 
+    //method that gets called when the cancel button is pressed
     public void cancel() {
         addCardCtrl.cancel();
     }
