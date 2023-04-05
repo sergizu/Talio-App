@@ -1,9 +1,9 @@
 package client.scenes;
 
 import client.helperClass.SubtaskWrapper;
+import client.services.AddSubTaskService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import commons.Card;
 import commons.Subtask;
 import javafx.beans.property.SimpleStringProperty;
@@ -30,7 +30,8 @@ public class EditCardCtrl {
 
     private Card card;
     private Scene addSubTaskScene;
-    private AddSubTaskCtrl addSubTaskCtrl;
+    private final AddSubTaskCtrl addSubTaskCtrl;
+    private final AddSubTaskService addSubTaskService;
     @FXML
     private TextField cardName;
 
@@ -51,14 +52,13 @@ public class EditCardCtrl {
 
     @FXML
     private TableColumn<SubtaskWrapper, Button> tableColumnButton;
-
-    private final Injector injector;
-
     @Inject
-    public EditCardCtrl (MainCtrl mainCtrl, ServerUtils server, Injector injector) {
+    public EditCardCtrl (MainCtrl mainCtrl, ServerUtils server, AddSubTaskCtrl addSubTaskCtrl,
+                         AddSubTaskService addSubTaskService) {
         this.mainCtrl = mainCtrl;
         this.server = server;
-        this.injector = injector;
+        this.addSubTaskCtrl = addSubTaskCtrl;
+        this.addSubTaskService = addSubTaskService;
     }
 
     public void init(Card card) {
@@ -106,10 +106,9 @@ public class EditCardCtrl {
     public void setAddSubtask(){
         FXMLLoader addSubTaskLoader = new FXMLLoader(getClass().
                 getResource("/client/scenes/AddSubtask.fxml"));
-        addSubTaskLoader.setControllerFactory(injector::getInstance);
+        addSubTaskLoader.setController(addSubTaskService);
         try {
             addSubTaskScene = new Scene(addSubTaskLoader.load());
-            addSubTaskCtrl = injector.getInstance(AddSubTaskCtrl.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
