@@ -1,68 +1,15 @@
 package client.scenes;
 
-import client.services.AddCardService;
-import client.utils.ServerUtils;
-import com.google.inject.Inject;
-import commons.Card;
-import commons.CardListId;
-import javafx.scene.input.KeyCode;
+import com.google.inject.ImplementedBy;
 import javafx.scene.input.KeyEvent;
 
-public class AddCardCtrl{
-    private final ServerUtils server;
-    private final MainCtrl mainCtrl;
-    private final AddCardService addCardService;
-    private long listId;
+@ImplementedBy(AddCardCtrlImpl.class)
+public interface AddCardCtrl {
+    void setListBoardId(long listId,long boardId);
+    void ok();
+    void cancel();
+    void keyPressed(KeyEvent e);
+    long getListId();
+    long getBoardId();
 
-    private long boardId;
-
-    @Inject
-    public AddCardCtrl(ServerUtils server, MainCtrl mainCtrl, AddCardService addCardService) {
-        this.mainCtrl = mainCtrl;
-        this.server = server;
-        this.addCardService = addCardService;
-    }
-
-    public void setListBoardId(long listId,long boardId) {
-        this.listId = listId;
-        this.boardId = boardId;
-    }
-
-    public void ok() {
-        if(addCardService.getCardName().isEmpty()) {
-            addCardService.setMyLabelText("Card name cannot be empty!");
-            return;
-        }
-        Card toSend = new Card(addCardService.getCardName(), addCardService.getDescription());
-        server.addCardToList(listId,toSend);
-        server.send("/app/tdLists/addCard", new CardListId(toSend,listId));
-        mainCtrl.showOverview(boardId);
-        clearFields();
-        // I don't want to refresh
-        // because each client is registered for this change already
-    }
-
-    private void clearFields() {
-        addCardService.clearFields();
-    }
-
-    public void cancel() {
-        addCardService.clearFields();
-        mainCtrl.showOverview(boardId);
-    }
-
-    public void keyPressed(KeyEvent e) {
-        if(e.getCode() == KeyCode.ENTER)
-            ok();
-        else if(e.getCode() == KeyCode.ESCAPE)
-            cancel();
-    }
-
-    public long getListId() {
-        return listId;
-    }
-
-    public long getBoardId() {
-        return boardId;
-    }
 }
