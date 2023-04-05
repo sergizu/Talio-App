@@ -15,6 +15,7 @@
  */
 package client.utils;
 
+import client.scenes.EditCardCtrl;
 import commons.*;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -27,15 +28,18 @@ import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.web.bind.EscapedErrors;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -152,7 +156,8 @@ public class ServerUtils {
                 .target(server).path("/api/cards/" + cardId) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<>() {});
+                .get(new GenericType<>() {
+                });
     }
 
     public void addCardToList(long listId, Card card) {
@@ -194,6 +199,7 @@ public class ServerUtils {
             }
         });
     }
+
     public void registerForCardUpdates(Consumer<Long> consumer) {
         EXECUTOR_SERVICE.submit(() -> {
             while (!Thread.interrupted()) {
@@ -202,7 +208,7 @@ public class ServerUtils {
                         .request(APPLICATION_JSON)
                         .accept(APPLICATION_JSON)
                         .get();
-                if(result.getStatus() == HttpStatus.NO_CONTENT.value())
+                if (result.getStatus() == HttpStatus.NO_CONTENT.value())
                     continue;
                 consumer.accept(result.readEntity(Long.class));
             }
@@ -276,7 +282,26 @@ public class ServerUtils {
                 });
     }
 
-    private StompSession session = connect("ws://localhost:8080/websocket");
+    public boolean serverRunning() {
+        try {
+            ClientBuilder.newClient(new ClientConfig())
+                    .target(server)
+                    .request().get();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private static StompSession session;
+
+    public void initSession(){
+        session = connect("ws://localhost:8080/websocket");
+    }
+
+    public void stopSession(){
+        session.disconnect();
+    }
 
     private StompSession connect(String url) {
         var client = new StandardWebSocketClient();
