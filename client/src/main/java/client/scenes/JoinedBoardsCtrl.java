@@ -129,6 +129,7 @@ public class JoinedBoardsCtrl implements Initializable {
         });
         tableLine.getChildren().add(createLabel(board.title));
         tableLine.getChildren().add(createLeaveButton(board));
+        tableLine.getChildren().add(createSettingsButoon(board));
         return tableLine;
     }
 
@@ -150,16 +151,36 @@ public class JoinedBoardsCtrl implements Initializable {
         tableLine.setBorder(new Border(new BorderStroke(Color.BLACK,
                 BorderStrokeStyle.SOLID, null, null)));//will change color, was added for testing
         tableLine.setPrefHeight(50);
+        tableLine.setSpacing(20);
         return tableLine;
     }
 
     public Button createLeaveButton(Board board) {
-        Button leaveButton = new Button("leave");
+        Button leaveButton = new Button("Leave");
         leaveButton.setStyle("-fx-background-color: red;");
+        leaveButton.setPadding(new Insets(10, 12, 10, 12));
         leaveButton.setOnMouseClicked(event -> {
             leaveBoard(board);
         });
         return leaveButton;
+    }
+
+    public Button createSettingsButoon(Board board) {
+        Button settingsButton = new Button("Options");
+        settingsButton.setStyle("-fx-background-color: #2596be;");
+        settingsButton.setPadding(new Insets(10, 5, 10, 5));
+        //        String imageFilePath = "../../resources/Images/SettingsButton.png";
+//        String settingsImagePath2 = "file:/C:/Users/stanc/oopp-team-10/" +
+//                "client/src/main/resources/Images/Settings.png";//only the absoulte path works
+//        settingsButton.setStyle("-fx-background-image: url('" + imageFilePath + "');" +
+//                "-fx-background-size: cover; " +
+//                "-fx-background-repeat: no-repeat; " +
+//                "-fx-background-position: center; " +
+//                "-fx-padding: 10;");
+        settingsButton.setOnMouseClicked(event -> {
+            showOptions(board);
+        });
+        return settingsButton;
     }
 
     public void leaveBoard(Board board) {
@@ -167,6 +188,10 @@ public class JoinedBoardsCtrl implements Initializable {
         boards.remove(board);
         client.boards.put(ServerUtils.getServer(), boards);
         showJoinedBoards(boards);
+    }
+
+    public void showOptions(Board board) {
+        mainCtrl.showBoardOptions(board);
     }
 
     public void enterBoard(Board board) {

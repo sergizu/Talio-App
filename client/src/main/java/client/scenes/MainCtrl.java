@@ -16,6 +16,7 @@
 package client.scenes;
 
 import commons.AppClient;
+import commons.Board;
 import commons.Card;
 import commons.TDList;
 import javafx.scene.Parent;
@@ -41,6 +42,10 @@ public class MainCtrl {
     private JoinedBoardsCtrl joinedBoardsCtrl;
     private Scene joinedBoardsScene;
 
+    private BoardOptionsCtrl boardOptionsCtrl;
+    private Scene boardOptionsScene;
+
+
     private AppClient client;
 
     @SuppressWarnings("checkstyle:ParameterNumber")
@@ -48,7 +53,8 @@ public class MainCtrl {
                            Pair<EditCardCtrl, Parent> edit,
                            Pair<SelectServerCtrl, Parent> selectServer,
                            Pair<BoardOverviewCtrl, Parent> boardOverview,
-                           Pair<JoinedBoardsCtrl,Parent> joinedBoards) {
+                           Pair<JoinedBoardsCtrl,Parent> joinedBoards,
+                           Pair<BoardOptionsCtrl, Parent> boardOptions) {
 
         this.primaryStage = primaryStage;
         this.listOverviewCtrl = overview.getKey();
@@ -66,6 +72,8 @@ public class MainCtrl {
         this.joinedBoardsCtrl = joinedBoards.getKey();
         this.joinedBoardsScene = new Scene(joinedBoards.getValue(), 1080, 720);
 
+        this.boardOptionsCtrl = boardOptions.getKey();
+        this.boardOptionsScene = new Scene(boardOptions.getValue(), 1080, 720);
         this.client = new AppClient();
 
         showSelectServer();
@@ -167,6 +175,12 @@ public class MainCtrl {
         primaryStage.setScene(createBoardScene);
         createBoardCtrl.setParent(parent);
         listOverviewCtrl.setParent(parent);
+        setSizeScene();
+    }
+
+    public void showBoardOptions(Board board) {
+        primaryStage.setTitle("Board options");
+        primaryStage.setScene(boardOptionsScene);
         setSizeScene();
     }
 

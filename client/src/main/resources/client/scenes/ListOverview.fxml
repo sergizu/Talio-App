@@ -30,12 +30,12 @@
       <children>
          <Button alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#addList" text="Add list">
             <font>
-               <Font name="Segoe Script" size="12.0" />
+               <Font size="12.0" />
             </font>
          </Button>
          <Label fx:id="boardTitle" alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="190.0" style="-fx-padding: 0;" text="BOARD NAME" textAlignment="CENTER" textOverrun="LEADING_WORD_ELLIPSIS">
             <font>
-               <Font name="Segoe Script" size="22.0" />
+               <Font size="22.0" />
             </font>
          </Label>
          <Button fx:id="copyButton" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onMouseClicked="#copyKey" prefHeight="26.0" prefWidth="106.0" text="Copy Invite Key" textAlignment="CENTER" textOverrun="CLIP" />
