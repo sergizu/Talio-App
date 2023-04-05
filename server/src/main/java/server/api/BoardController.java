@@ -5,6 +5,8 @@ import commons.Card;
 import commons.TDList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 import server.database.BoardRepository;
@@ -140,6 +142,11 @@ public class BoardController {
     @GetMapping("/updates")
     public DeferredResult<ResponseEntity<Long>> subscribeForUpdates() {
         return boardService.subscribeForUpdates();
+    }
+    @MessageMapping("/boards/renameBoard")
+    @SendTo("/topic/renameBoard")
+    public Board sendBoardRename(Board board) {
+        return board;
     }
     public long getDefaultId(){return defaultBoardID;}
 }

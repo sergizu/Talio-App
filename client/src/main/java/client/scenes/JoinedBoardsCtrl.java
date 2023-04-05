@@ -62,6 +62,11 @@ public class JoinedBoardsCtrl implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         //boardOverviewTitle.setMaxWidth(3000.0);
         HBox.setHgrow(boardOverviewTitle, Priority.ALWAYS);
+        server.registerForMessages("/topic/renameBoard", Board.class, renamedBoard -> {
+            Platform.runLater(() -> {
+                updateBoard(renamedBoard);
+            });
+        });
         disconnectButton.setStyle("-fx-background-color: red;");
         createBoardButton.setStyle("-fx-background-color: #2596be");
     }
@@ -211,20 +216,20 @@ public class JoinedBoardsCtrl implements Initializable {
             return;
         }
         ArrayList<Board> allBoards = (ArrayList<Board>) server.getBoards();
-        for(Board board : allBoards)
-            if(board.key == key) {
+        for (Board board : allBoards)
+            if (board.key == key) {
                 joinBoard(board);
                 joinByKey.clear();
                 return;
             }
-        if(!lookForBoardKey(key))
+        if (!lookForBoardKey(key))
             adjustPromptText("No board with that key!");
     }
 
     public boolean lookForBoardKey(long key) {
         ArrayList<Board> allBoards = (ArrayList<Board>) server.getBoards();
-        for(Board board : allBoards)
-            if(board.key == key) {
+        for (Board board : allBoards)
+            if (board.key == key) {
                 joinBoard(board);
                 joinByKey.clear();
                 return true;
@@ -254,17 +259,29 @@ public class JoinedBoardsCtrl implements Initializable {
     }
 
     public void joinPressed(KeyEvent e) {
-        if(e.getCode() == KeyCode.ENTER)
+        if (e.getCode() == KeyCode.ENTER)
             joinByKey();
     }
+
     public boolean containsBoardId(Board newBoard) {
         ArrayList<Board> clientBoards = client.boards.get(ServerUtils.getServer());
-        for(Board board : clientBoards)
-            if(board.id == newBoard.id)
+        for (Board board : clientBoards)
+            if (board.id == newBoard.id)
                 return true;
         clientBoards.add(newBoard);
-        client.boards.put(ServerUtils.getServer(),clientBoards);
+        client.boards.put(ServerUtils.getServer(), clientBoards);
         return false;
+    }
+
+    public void updateBoard(Board board){
+        ArrayList<Board> allBoards = client.boards.get(ServerUtils.getServer());
+        for(int i = 0;i <= allBoards.size();i++)
+            if(allBoards.get(i).id == board.id){
+                allBoards.get(i).title = board.title;
+                break;
+            }
+        client.boards.put(ServerUtils.getServer(),allBoards);
+        showJoinedBoards(allBoards);
     }
 
 }

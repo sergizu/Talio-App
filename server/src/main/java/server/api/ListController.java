@@ -80,7 +80,7 @@ public class ListController {
 
     @MessageMapping("/tdLists/addCard")
     @SendTo("/topic/addCard")
-    public CardListId addMessage(CardListId cardList) {
+    public CardListId sentCardListId(CardListId cardList) {
         return cardList;
     }
 

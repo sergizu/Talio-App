@@ -4,6 +4,7 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Board;
 import commons.Card;
+import commons.CardListId;
 import commons.TDList;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -118,7 +119,7 @@ public class ListOverviewCtrl implements Initializable {
                 }
             });
         });
-        server.registerForMessages("/topic/addCard", c -> {
+        server.registerForMessages("/topic/addCard", CardListId.class, c -> {
             Platform.runLater(() -> {
                 addCardToList(c.card, c.listId);
                 setBoard(board.id);

@@ -15,7 +15,10 @@
  */
 package client.utils;
 
-import commons.*;
+import commons.Board;
+import commons.Card;
+import commons.Subtask;
+import commons.TDList;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
@@ -67,7 +70,7 @@ public class ServerUtils {
                 .target(server).path("/api/tdLists") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<TDList>>() {
+                .get(new GenericType<List<>>() {
                 });
     }
 
@@ -130,7 +133,7 @@ public class ServerUtils {
     }
 
     public void addCardToList(long listId, Card card) {
-        Response result = ClientBuilder.newClient(new ClientConfig())
+        ClientBuilder.newClient(new ClientConfig())
                 .target(server).path("/api/tdLists/" + listId + "/addCard")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
@@ -275,16 +278,16 @@ public class ServerUtils {
         throw new IllegalStateException();
     }
 
-    public void registerForMessages(String dest, Consumer<CardListId> consumer) {
+    public <T> void registerForMessages(String dest, Class<T> type,  Consumer<T> consumer) {
         session.subscribe(dest, new StompFrameHandler() {
             @Override
             public Type getPayloadType(StompHeaders headers) {
-                return CardListId.class;
+                return type;
             }
 
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
-                consumer.accept((CardListId) payload);
+                consumer.accept((T) payload);
             }
         });
     }

@@ -181,6 +181,7 @@ public class MainCtrl {
     public void showBoardOptions(Board board) {
         primaryStage.setTitle("Board options");
         primaryStage.setScene(boardOptionsScene);
+        boardOptionsCtrl.init(board);
         setSizeScene();
     }
 
