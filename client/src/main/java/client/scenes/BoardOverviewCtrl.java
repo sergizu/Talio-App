@@ -88,7 +88,7 @@ public class BoardOverviewCtrl implements Initializable {
     public HBox createHBox(Board board) {
         HBox tableLine = createTableLine();
         tableLine.getChildren().add(createLabel(board.title));
-        tableLine.getChildren().add(createJoinButton(board));
+        tableLine.getChildren().add(createOptionsButton(board));
         return tableLine;
     }
 
@@ -101,20 +101,21 @@ public class BoardOverviewCtrl implements Initializable {
         return tableLine;
     }
 
+    public Button createOptionsButton(Board board) {
+        Button settingsButton = new Button("Options");
+        settingsButton.setStyle("-fx-background-color: #2596be;");
+        settingsButton.setPadding(new Insets(10, 5, 10, 5));
+        settingsButton.setOnMouseClicked(event -> {
+            mainCtrl.showBoardOptions(board);
+        });
+        return settingsButton;
+    }
+
     public Label createLabel(String title) {
         Label boardTitle = new Label(title);
         boardTitle.setFont(Font.font(20));
         boardTitle.setPadding(new Insets(10, 50, 10, 100));
         return boardTitle;
-    }
-
-    public Button createJoinButton(Board board) {
-        Button joinButton = new Button("Join");
-        joinButton.setStyle("-fx-background-color: #34eb67;");
-        joinButton.setOnMouseClicked(event -> {
-            mainCtrl.showOverview(board.id, BoardOverviewCtrl.class);
-        });
-        return joinButton;
     }
 
     public void disconnect() {

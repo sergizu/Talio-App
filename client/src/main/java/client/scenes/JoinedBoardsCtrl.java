@@ -147,7 +147,7 @@ public class JoinedBoardsCtrl implements Initializable {
         });
         tableLine.getChildren().add(createLabel(board.title));
         tableLine.getChildren().add(createLeaveButton(board));
-        tableLine.getChildren().add(createSettingsButoon(board));
+        tableLine.getChildren().add(createOptionsButoon(board));
         return tableLine;
     }
 
@@ -183,7 +183,7 @@ public class JoinedBoardsCtrl implements Initializable {
         return leaveButton;
     }
 
-    public Button createSettingsButoon(Board board) {
+    public Button createOptionsButoon(Board board) {
         Button settingsButton = new Button("Options");
         settingsButton.setStyle("-fx-background-color: #2596be;");
         settingsButton.setPadding(new Insets(10, 5, 10, 5));
