@@ -19,7 +19,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class AddListCtrlTest {
+class AddListCtrlImplTest {
 
     @Mock
     ServerUtils serverUtils;
@@ -29,11 +29,11 @@ class AddListCtrlTest {
 
     @Mock
     AddListService addListService;
-    static AddListCtrl addListCtrl;
+    static AddListCtrlImpl addListCtrl;
 
     @BeforeEach
     void setUp() {
-        addListCtrl = new AddListCtrl(serverUtils, mainCtrl, addListService);
+        addListCtrl = new AddListCtrlImpl(serverUtils, mainCtrl, addListService);
     }
 
     @Test
