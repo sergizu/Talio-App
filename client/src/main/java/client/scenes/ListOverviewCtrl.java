@@ -125,6 +125,13 @@ public class ListOverviewCtrl implements Initializable {
                 setBoard(board.id);
             });
         });
+        server.registerForMessages("/topic/boardDeletion", Long.class, deletedBoardId -> {
+            Platform.runLater(() -> {
+                if(board.getId() == deletedBoardId)
+                    mainCtrl.showJoinedBoards(mainCtrl.getClient());
+            });
+        });
+
     }
 
     public void addCardToList(Card card, long listId) {
