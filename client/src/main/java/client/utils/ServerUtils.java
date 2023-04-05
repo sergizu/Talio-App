@@ -140,14 +140,6 @@ public class ServerUtils {
                 .put(Entity.entity(card, APPLICATION_JSON));
     }
 
-    public void addToList(long boardId, Card card) {
-        Response result = ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("/api/boards/" + boardId + "/addCard")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .put(Entity.entity(card, APPLICATION_JSON));
-    }
-
     public void addListToBoard(long boardId, TDList tdList) {
         Response result = ClientBuilder.newClient(new ClientConfig())
                 .target(server).path("/api/boards/" + boardId + "/addList")
@@ -255,7 +247,7 @@ public class ServerUtils {
 
     public void deleteBoard(long boardId) {
         ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/boards/")
+                .target(server).path("api/boards/" + boardId)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .delete();

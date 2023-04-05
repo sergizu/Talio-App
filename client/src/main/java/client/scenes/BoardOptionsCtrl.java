@@ -44,11 +44,13 @@ public class BoardOptionsCtrl {
     }
 
     public void cancel() {
-
+        mainCtrl.showJoinedBoards(mainCtrl.getClient());
     }
 
     public void delete() {
-
+        server.deleteBoard(board.id);
+        server.send("/app/boards/deleteBoard",board.id);
+        mainCtrl.showJoinedBoards(mainCtrl.getClient());
     }
 
     public void keyPressed(KeyEvent e) {

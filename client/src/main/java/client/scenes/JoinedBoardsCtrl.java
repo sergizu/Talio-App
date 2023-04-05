@@ -62,13 +62,26 @@ public class JoinedBoardsCtrl implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         //boardOverviewTitle.setMaxWidth(3000.0);
         HBox.setHgrow(boardOverviewTitle, Priority.ALWAYS);
+        registerForBoardRename();
+        registerForBoardDeletion();
+        disconnectButton.setStyle("-fx-background-color: red;");
+        createBoardButton.setStyle("-fx-background-color: #2596be");
+    }
+
+    public void registerForBoardRename() {
         server.registerForMessages("/topic/renameBoard", Board.class, renamedBoard -> {
             Platform.runLater(() -> {
                 updateBoard(renamedBoard);
             });
         });
-        disconnectButton.setStyle("-fx-background-color: red;");
-        createBoardButton.setStyle("-fx-background-color: #2596be");
+    }
+
+    public void registerForBoardDeletion() {
+        server.registerForMessages("/topic/boardDeletion", Long.class, deletedBoardId -> {
+            Platform.runLater(() -> {
+                removeBoardById(deletedBoardId);
+            });
+        });
     }
 
     public void init(AppClient client) {
@@ -278,6 +291,17 @@ public class JoinedBoardsCtrl implements Initializable {
         for(int i = 0;i <= allBoards.size();i++)
             if(allBoards.get(i).id == board.id){
                 allBoards.get(i).title = board.title;
+                break;
+            }
+        client.boards.put(ServerUtils.getServer(),allBoards);
+        showJoinedBoards(allBoards);
+    }
+
+    public void removeBoardById(long  boardId){
+        ArrayList<Board> allBoards = client.boards.get(ServerUtils.getServer());
+        for(int i = 0;i <= allBoards.size();i++)
+            if(allBoards.get(i).id == boardId){
+                allBoards.remove(i);
                 break;
             }
         client.boards.put(ServerUtils.getServer(),allBoards);
