@@ -1,5 +1,7 @@
 package client.scenes;
 
+import client.services.AddCardService;
+import client.services.AddListService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Board;
@@ -48,6 +50,7 @@ public class ListOverviewCtrl {
     private Button copyButton;
     private TableView<Card> selection;
 
+
     @Inject
     public ListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
@@ -59,20 +62,17 @@ public class ListOverviewCtrl {
         registerForUpdates();
     }
 
+
     public void registerForUpdates() {
-        server.registerForBoardUpdates(updatedBoardID -> {
-            Platform.runLater(() -> {
-                if (board.getId() == updatedBoardID) {
-                    setBoard(updatedBoardID);
-                }
-            });
-        });
-        server.registerForMessages("/topic/addCard", c -> {
-            Platform.runLater(() -> {
-                addCardToList(c.card, c.listId);
-                setBoard(board.id);
-            });
-        });
+        server.registerForBoardUpdates(updatedBoardID -> Platform.runLater(() -> {
+            if (board.getId() == updatedBoardID) {
+                setBoard(updatedBoardID);
+            }
+        }));
+        server.registerForMessages("/topic/addCard", c -> Platform.runLater(() -> {
+            addCardToList(c.card, c.listId);
+            setBoard(board.id);
+        }));
     }
 
     public void addCardToList(Card card, long listId) {
@@ -221,8 +221,7 @@ public class ListOverviewCtrl {
                     else
                         dropIndex = row.getIndex();
                     tableView.getItems().add(dropIndex, card);
-                    ArrayList<Card> items = new ArrayList<>();
-                    items.addAll(tableView.getItems());
+                    ArrayList<Card> items = new ArrayList<>(tableView.getItems());
                     TDList tdList = card.list;
                     updateList(tdList, items);
                     e.setDropCompleted(true); //marks the end of the drag event
@@ -249,9 +248,7 @@ public class ListOverviewCtrl {
     }
 
     public void dragOtherLists(TableView<Card> tableView, TDList tdList) {
-        tableView.setOnMousePressed(e -> {
-            selection = tableView;
-        });
+        tableView.setOnMousePressed(e -> selection = tableView);
         tableView.setOnDragOver(e -> {
             Dragboard db = e.getDragboard();
             if (db.hasContent(serialization)) {
@@ -284,12 +281,8 @@ public class ListOverviewCtrl {
         Platform.runLater(() ->
         {
             Timeline timeline = new Timeline(
-                    new KeyFrame(Duration.ZERO, event -> {
-                        afterCopyButton(copyButton);
-                    }),
-                    new KeyFrame(Duration.seconds(2), event -> {
-                        restoreCopyButton(copyButton);
-                    })
+                    new KeyFrame(Duration.ZERO, event -> afterCopyButton(copyButton)),
+                    new KeyFrame(Duration.seconds(2), event -> restoreCopyButton(copyButton))
             );
             timeline.play();
         });

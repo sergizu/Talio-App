@@ -28,6 +28,5 @@ public class Main extends Application {
         SceneFactory sceneFactory = new SceneFactory();
         var mainCtrl = sceneFactory.getInjector().getInstance(MainCtrl.class);
         mainCtrl.initialize(primaryStage, sceneFactory);
-
     }
 }

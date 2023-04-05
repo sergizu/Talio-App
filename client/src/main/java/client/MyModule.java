@@ -16,6 +16,7 @@
 package client;
 
 import client.scenes.*;
+import client.utils.ServerUtils;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
@@ -25,9 +26,7 @@ public class MyModule implements Module {
     @Override
     public void configure(Binder binder) {
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(AddCardCtrl.class).in(Scopes.SINGLETON);
         binder.bind(ListOverviewCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(AddListCtrl.class).in(Scopes.SINGLETON);
         binder.bind(EditListCtrl.class).in(Scopes.SINGLETON);
         binder.bind(EditCardCtrl.class).in(Scopes.SINGLETON);
         binder.bind(SelectServerCtrl.class).in(Scopes.SINGLETON);
@@ -35,5 +34,6 @@ public class MyModule implements Module {
         binder.bind(BoardOverviewCtrl.class).in(Scopes.SINGLETON);
         binder.bind(CreateBoardCtrl.class).in(Scopes.SINGLETON);
         binder.bind(JoinedBoardsCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
     }
 }

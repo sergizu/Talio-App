@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.helperClass.SubtaskWrapper;
+import client.services.AddSubTaskService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
@@ -25,6 +26,7 @@ public class EditCardCtrl {
     private final MainCtrl mainCtrl;
 
     private Card card;
+
     @FXML
     private TextField cardName;
 
@@ -45,7 +47,6 @@ public class EditCardCtrl {
 
     @FXML
     private TableColumn<SubtaskWrapper, Button> tableColumnButton;
-
     @Inject
     public EditCardCtrl (MainCtrl mainCtrl, ServerUtils server) {
         this.mainCtrl = mainCtrl;
@@ -92,6 +93,7 @@ public class EditCardCtrl {
         tableColumnSubtask.setCellFactory(TextFieldTableCell.forTableColumn());
         dragAndDrop(tableView);
     }
+
 
     public void ok() {
         if(cardName.getText().equals(card.title )&&
