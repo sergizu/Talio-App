@@ -2,10 +2,12 @@ package client.services;
 
 import client.scenes.AddSubTaskCtrl;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+@Singleton
 public class AddSubTaskServiceImpl implements AddSubTaskService{
     @FXML
     private TextField subtaskName;
@@ -13,8 +15,12 @@ public class AddSubTaskServiceImpl implements AddSubTaskService{
     @FXML
     private Label myLabel;
 
+    private final AddSubTaskCtrl addSubTaskCtrl;
+
     @Inject
-    private AddSubTaskCtrl addSubTaskCtrl;
+    public AddSubTaskServiceImpl(AddSubTaskCtrl addSubTaskCtrl) {
+        this.addSubTaskCtrl = addSubTaskCtrl;
+    }
 
     public String getSubtaskName() {
         return subtaskName.getText();
@@ -28,10 +34,12 @@ public class AddSubTaskServiceImpl implements AddSubTaskService{
         myLabel.setText(text);
     }
 
+    //method that gets called when the create button is pressed
     public void create() {
         addSubTaskCtrl.create();
     }
 
+    //method that gets called when the cancel button is pressed
     public void cancel() {
         addSubTaskCtrl.cancel();
     }
