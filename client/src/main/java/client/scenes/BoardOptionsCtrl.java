@@ -4,6 +4,7 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Board;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -17,7 +18,10 @@ public class BoardOptionsCtrl {
     private Board board;
     @FXML
     private TextField boardName;
-
+    @FXML
+    private Button saveButton;
+    @FXML
+    private Button deleteButton;
     @FXML
     private Label emptyName;
 
@@ -31,6 +35,9 @@ public class BoardOptionsCtrl {
     public void init(Board board) {
         this.board = board;
         boardName.setText(board.title);
+        deleteButton.setStyle("-fx-background-color: red;");
+        saveButton.setStyle("-fx-background-color: #2596be");
+
     }
 
 
