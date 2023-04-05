@@ -13,8 +13,13 @@ public class AddListServiceImpl implements AddListService {
     @FXML
     private Label emptyName;
 
+    private final AddListCtrl addListCtrl;
+
     @Inject
-    private AddListCtrl addListCtrl;
+    public AddListServiceImpl(AddListCtrl addListCtrl) {
+        this.addListCtrl = addListCtrl;
+    }
+
 
     public void setEmptyNameText(String text) {
         emptyName.setText(text);
@@ -29,10 +34,12 @@ public class AddListServiceImpl implements AddListService {
         emptyName.setText("");
     }
 
+    //method that gets called when the ok button is pressed
     public void ok() {
         addListCtrl.ok();
     }
 
+    //method that gets called when the cancel button is pressed
     public void cancel() {
         addListCtrl.cancel();
     }
