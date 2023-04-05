@@ -68,7 +68,8 @@ public class ListOverviewCtrl implements Initializable {
 
     @Inject
     public ListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl, AddCardCtrl addCardCtrl,
-                            AddListCtrl addListCtrl, AddCardService addCardService, AddListService addListService) {
+                            AddListCtrl addListCtrl, AddCardService addCardService,
+                            AddListService addListService) {
         this.server = server;
         this.mainCtrl = mainCtrl;
         this.addCardCtrl = addCardCtrl;
