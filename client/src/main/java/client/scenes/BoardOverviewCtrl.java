@@ -3,6 +3,9 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Board;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,14 +14,17 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -27,9 +33,13 @@ public class BoardOverviewCtrl implements Initializable {
     private final MainCtrl mainCtrl;
 
     @FXML
+    private TextField joinByKey;
+    @FXML
     private Label boardOverviewTitle;
     @FXML
     private VBox boardsList;
+    @FXML
+    private Button createBoardButton;
 
     private Scene createBoardScene;
     private CreateBoardCtrl createBoardCtrl;
@@ -118,7 +128,64 @@ public class BoardOverviewCtrl implements Initializable {
         return boardTitle;
     }
 
-    public void disconnect() {
+    public void joinByKey() {
+        long key = -1;
+        try {
+            key = Long.parseLong(joinByKey.getText());
+        } catch (NumberFormatException e) {
+            adjustPromptText("Please enter a valid key!");
+            return;
+        }
+        ArrayList<Board> allBoards = (ArrayList<Board>) server.getBoards();
+        for (Board board : allBoards)
+            if (board.key == key) {
+                joinBoard(board);
+                joinByKey.clear();
+                return;
+            }
+        if (!lookForBoardKey(key))
+            adjustPromptText("No board with that key!");
+    }
+
+    public boolean lookForBoardKey(long key) {
+        ArrayList<Board> allBoards = (ArrayList<Board>) server.getBoards();
+        for (Board board : allBoards)
+            if (board.key == key) {
+                joinBoard(board);
+                joinByKey.clear();
+                return true;
+            }
+        return false;
+    }
+
+    public void adjustPromptText(String information) {
+        Platform.runLater(() ->
+        {
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.ZERO, event -> {
+                        joinByKey.clear();
+                        joinByKey.setPromptText(information);
+                    }),
+                    new KeyFrame(Duration.seconds(5), event -> {
+                        joinByKey.setPromptText("Join by key");
+                    })
+            );
+            timeline.play();
+        });
+    }
+
+    public void joinBoard(Board board) {
+        mainCtrl.showOverview(board.id);
+    }
+
+    public void joinPressed(KeyEvent e) {
+        if (e.getCode() == KeyCode.ENTER)
+            joinByKey();
+    }
+    public void showCreateBoard() {
+        //mainCtrl.showCreateBoard();
+    }
+    public void disconnectPressed() {
         mainCtrl.showSelectServer();
     }
 }
