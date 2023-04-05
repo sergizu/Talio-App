@@ -1,5 +1,8 @@
 package client.services;
 
+import com.google.inject.ImplementedBy;
+
+@ImplementedBy(AddSubTaskServiceImpl.class)
 public interface AddSubTaskService{
     String getSubtaskName();
     void setSubtaskName(String text);
