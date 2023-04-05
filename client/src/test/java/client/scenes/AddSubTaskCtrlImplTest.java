@@ -13,23 +13,22 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class AddSubTaskCtrlTest {
+class AddSubTaskCtrlImplTest {
     @Mock
     private ServerUtils server;
     @Mock
     private MainCtrl mainCtrl;
     @Mock
     private AddSubTaskService addSubTaskService;
-    private AddSubTaskCtrl addSubTaskCtrl;
+    private AddSubTaskCtrlImpl addSubTaskCtrl;
 
     @BeforeEach
     void setUp() {
-        addSubTaskCtrl = new AddSubTaskCtrl(server, mainCtrl, addSubTaskService);
+        addSubTaskCtrl = new AddSubTaskCtrlImpl(server, mainCtrl, addSubTaskService);
     }
 
     @Test
