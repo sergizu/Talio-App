@@ -3,6 +3,9 @@ package client.factory;
 import client.MyFXML;
 import client.MyModule;
 import client.scenes.*;
+import client.services.AddCardService;
+import client.services.AddListService;
+import client.services.AddSubTaskService;
 import com.google.inject.Injector;
 import javafx.scene.Parent;
 import javafx.util.Pair;
@@ -41,16 +44,16 @@ public class SceneFactory {
         return fxml.load(CreateBoardCtrl.class, "client", "scenes", "CreateBoard.fxml");
     }
 
-    public Pair<AddSubTaskCtrl, Parent> createAddSubtaskScene(){
-        return fxml.load(AddSubTaskCtrl.class, "client", "scenes", "AddSubtask.fxml");
+    public Pair<AddSubTaskService, Parent> createAddSubtaskScene(){
+        return fxml.load(AddSubTaskService.class, "client", "scenes", "AddSubtask.fxml");
     }
 
-    public Pair<AddCardCtrl, Parent> createAddCardScene(){
-        return fxml.load(AddCardCtrl.class, "client", "scenes", "AddCard.fxml");
+    public Pair<AddCardService, Parent> createAddCardScene(){
+        return fxml.load(AddCardService.class, "client", "scenes", "AddCard.fxml");
     }
 
-    public Pair<AddListCtrl, Parent> createAddListScene(){
-        return fxml.load(AddListCtrl.class, "client", "scenes", "AddList.fxml");
+    public Pair<AddListService, Parent> createAddListScene(){
+        return fxml.load(AddListService.class, "client", "scenes", "AddList.fxml");
     }
 
     public Pair<EditListCtrl, Parent> createEditListScene(){

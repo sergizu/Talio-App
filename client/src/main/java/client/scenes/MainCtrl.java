@@ -16,6 +16,10 @@
 package client.scenes;
 
 import client.factory.SceneFactory;
+import client.services.AddCardService;
+import client.services.AddListService;
+import client.services.AddSubTaskService;
+import com.google.inject.Inject;
 import commons.AppClient;
 import commons.Card;
 import commons.TDList;
@@ -29,33 +33,43 @@ public class MainCtrl {
     private Stage primaryStage;
 
     private Scene overview;
+    @Inject
     private ListOverviewCtrl listOverviewCtrl;
 
     private Scene edit;
+    @Inject
     private EditCardCtrl editCardCtrl;
 
     private Scene editListScene;
+    @Inject
     private EditListCtrl editListCtrl;
 
     private Scene selectServer;
+    @Inject
     private SelectServerCtrl selectServerCtrl;
 
     private Scene boardOverviewScene;
+    @Inject
     private BoardOverviewCtrl boardOverviewCtrl;
 
     private Scene joinedBoardsScene;
+    @Inject
     private JoinedBoardsCtrl joinedBoardsCtrl;
 
     private Scene createBoardScene;
+    @Inject
     private CreateBoardCtrl createBoardCtrl;
 
     private Scene createAddCardScene;
+    @Inject
     private AddCardCtrl createAddCardCtrl;
 
     private Scene createAddListScene;
+    @Inject
     private AddListCtrl createAddListCtrl;
 
     private Scene createAddSubtaskScene;
+    @Inject
     private AddSubTaskCtrl createAddSubtaskCtrl;
 
     private AppClient client;
@@ -66,43 +80,43 @@ public class MainCtrl {
         this.primaryStage = primaryStage;
 
         Pair<ListOverviewCtrl, Parent> overview = sceneFactory.createListOverviewScene();
-        this.listOverviewCtrl = overview.getKey();
+        //this.listOverviewCtrl = overview.getKey();
         this.overview = new Scene(overview.getValue(), 1080, 720);
 
         Pair<EditCardCtrl, Parent> edit = sceneFactory.createEditCardScene();
-        this.editCardCtrl = edit.getKey();
+        //this.editCardCtrl = edit.getKey();
         this.edit = new Scene(edit.getValue(), 1080, 720);
 
         Pair<EditListCtrl, Parent> editList = sceneFactory.createEditListScene();
-        this.editListCtrl = editList.getKey();
+        //this.editListCtrl = editList.getKey();
         this.editListScene = new Scene(editList.getValue(), 1080, 720);
 
         Pair<SelectServerCtrl, Parent> selectServer = sceneFactory.createSelectServerScene();
         this.selectServer = new Scene(selectServer.getValue(), 1080, 720);
-        this.selectServerCtrl = selectServer.getKey();
+        //this.selectServerCtrl = selectServer.getKey();
 
         Pair<BoardOverviewCtrl, Parent> boardOverview = sceneFactory.createBoardOverviewScene();
-        this.boardOverviewCtrl = boardOverview.getKey();
+        //this.boardOverviewCtrl = boardOverview.getKey();
         this.boardOverviewScene = new Scene(boardOverview.getValue(), 1080, 720);
 
         Pair<JoinedBoardsCtrl, Parent> joinedBoards = sceneFactory.createJoinedBoardsScene();
-        this.joinedBoardsCtrl = joinedBoards.getKey();
+        //this.joinedBoardsCtrl = joinedBoards.getKey();
         this.joinedBoardsScene = new Scene(joinedBoards.getValue(), 1080, 720);
 
         Pair<CreateBoardCtrl, Parent> createBoard = sceneFactory.createNewBoardScene();
-        this.createBoardCtrl = createBoard.getKey();
+        //this.createBoardCtrl = createBoard.getKey();
         this.createBoardScene = new Scene(createBoard.getValue(), 1080, 720);
 
-        Pair<AddCardCtrl, Parent> createAddCard = sceneFactory.createAddCardScene();
-        this.createAddCardCtrl = createAddCard.getKey();
+        Pair<AddCardService, Parent> createAddCard = sceneFactory.createAddCardScene();
+        //this.createAddCardCtrl = createAddCard.getKey();
         this.createAddCardScene = new Scene(createAddCard.getValue(), 1080, 720);
 
-        Pair<AddListCtrl, Parent> createAddList = sceneFactory.createAddListScene();
-        this.createAddListCtrl = createAddList.getKey();
+        Pair<AddListService, Parent> createAddList = sceneFactory.createAddListScene();
+        //this.createAddListCtrl = createAddList.getKey();
         this.createAddListScene = new Scene(createAddList.getValue(), 1080, 720);
 
-        Pair<AddSubTaskCtrl, Parent> createAddSubtask = sceneFactory.createAddSubtaskScene();
-        this.createAddSubtaskCtrl = createAddSubtask.getKey();
+        Pair<AddSubTaskService, Parent> createAddSubtask = sceneFactory.createAddSubtaskScene();
+        //this.createAddSubtaskCtrl = createAddSubtask.getKey();
         this.createAddSubtaskScene = new Scene(createAddSubtask.getValue(), 1080, 720);
 
         this.client = new AppClient();
