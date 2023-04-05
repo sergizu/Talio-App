@@ -70,7 +70,7 @@ public class ServerUtils {
                 .target(server).path("/api/tdLists") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<>>() {
+                .get(new GenericType<List<TDList>>() {
                 });
     }
 
