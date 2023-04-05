@@ -14,6 +14,8 @@ public class SelectServerCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
+    private ListOverviewCtrl listOverviewCtrl;
+
     @FXML
     private TextField serverName;
 
@@ -45,16 +47,16 @@ public class SelectServerCtrl {
         }
         myLabel.setText("");
         server.changeServer(s);
-        try {
-            server.getLists();
-
+        if(server.serverRunning()){
+            server.initSession();
+            listOverviewCtrl.init();
             if (checkPass()) {
                 mainCtrl.showBoardOverview();
                 adminPass.setText("");
                 hbox.setVisible(false);
             } else mainCtrl.showJoinedBoards();
-
-        } catch (Exception e) {
+        }
+        else{
             myLabel.setText("Couldn't find the server!");
         }
     }
@@ -67,5 +69,9 @@ public class SelectServerCtrl {
         if (e.getCode() == KeyCode.ENTER) {
             ok();
         }
+    }
+
+    public void setListOverviewCtrl(ListOverviewCtrl listOverviewCtrl) {
+        this.listOverviewCtrl = listOverviewCtrl;
     }
 }

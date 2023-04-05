@@ -145,5 +145,6 @@ public class JoinedBoardsCtrl implements Initializable {
 
     public void disconnectPressed() {
         mainCtrl.showSelectServer();
+        server.stopSession();
     }
 }

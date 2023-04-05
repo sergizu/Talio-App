@@ -103,5 +103,6 @@ public class BoardOverviewCtrl implements Initializable {
 
     public void disconnect() {
         mainCtrl.showSelectServer();
+        server.stopSession();
     }
 }

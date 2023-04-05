@@ -38,6 +38,7 @@ public class MainCtrl {
     private EditListCtrl editListCtrl;
 
     private Scene selectServer;
+    private SelectServerCtrl selectServerCtrl;
 
     private Scene boardOverviewScene;
     private BoardOverviewCtrl boardOverviewCtrl;
@@ -78,6 +79,7 @@ public class MainCtrl {
 
         Pair<SelectServerCtrl, Parent> selectServer = sceneFactory.createSelectServerScene();
         this.selectServer = new Scene(selectServer.getValue(), 1080, 720);
+        this.selectServerCtrl = selectServer.getKey();
 
         Pair<BoardOverviewCtrl, Parent> boardOverview = sceneFactory.createBoardOverviewScene();
         this.boardOverviewCtrl = boardOverview.getKey();
@@ -112,6 +114,7 @@ public class MainCtrl {
 
     public void showSelectServer() {
         primaryStage.setTitle("Server: selecting server");
+        selectServerCtrl.setListOverviewCtrl(listOverviewCtrl);
         primaryStage.setScene(selectServer);
         setSizeScene();
     }
@@ -160,7 +163,6 @@ public class MainCtrl {
         primaryStage.setScene(edit);
         setSizeScene();
     }
-
 
     public void showEditList(TDList list) {
         primaryStage.setTitle("List: Rename list");

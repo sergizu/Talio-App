@@ -10,50 +10,50 @@ import javafx.util.Pair;
 import static com.google.inject.Guice.createInjector;
 
 public class SceneFactory {
-    private static final Injector INJECTOR = createInjector(new MyModule());
-    private static final MyFXML FXML = new MyFXML(INJECTOR);
+    private final Injector injector = createInjector(new MyModule());
+    private final MyFXML fxml = new MyFXML(injector);
 
     public Injector getInjector(){
-        return INJECTOR;
+        return injector;
     }
 
     public Pair<ListOverviewCtrl, Parent> createListOverviewScene(){
-        return FXML.load(ListOverviewCtrl.class, "client", "scenes", "ListOverview.fxml");
+        return fxml.load(ListOverviewCtrl.class, "client", "scenes", "ListOverview.fxml");
     }
 
     public Pair<EditCardCtrl, Parent> createEditCardScene(){
-        return FXML.load(EditCardCtrl.class, "client", "scenes", "EditCard.fxml");
+        return fxml.load(EditCardCtrl.class, "client", "scenes", "EditCard.fxml");
     }
 
     public Pair<SelectServerCtrl, Parent> createSelectServerScene(){
-        return FXML.load(SelectServerCtrl.class,"client","scenes", "SelectServer.fxml");
+        return fxml.load(SelectServerCtrl.class,"client","scenes", "SelectServer.fxml");
     }
 
     public Pair<BoardOverviewCtrl, Parent> createBoardOverviewScene(){
-        return FXML.load(BoardOverviewCtrl.class,"client", "scenes", "BoardOverview.fxml");
+        return fxml.load(BoardOverviewCtrl.class,"client", "scenes", "BoardOverview.fxml");
     }
 
     public Pair<JoinedBoardsCtrl, Parent> createJoinedBoardsScene(){
-        return FXML.load(JoinedBoardsCtrl.class, "client", "scenes", "JoinedBoards.fxml");
+        return fxml.load(JoinedBoardsCtrl.class, "client", "scenes", "JoinedBoards.fxml");
     }
 
     public Pair<CreateBoardCtrl, Parent> createNewBoardScene(){
-        return FXML.load(CreateBoardCtrl.class, "client", "scenes", "CreateBoard.fxml");
+        return fxml.load(CreateBoardCtrl.class, "client", "scenes", "CreateBoard.fxml");
     }
 
     public Pair<AddSubTaskCtrl, Parent> createAddSubtaskScene(){
-        return FXML.load(AddSubTaskCtrl.class, "client", "scenes", "AddSubtask.fxml");
+        return fxml.load(AddSubTaskCtrl.class, "client", "scenes", "AddSubtask.fxml");
     }
 
     public Pair<AddCardCtrl, Parent> createAddCardScene(){
-        return FXML.load(AddCardCtrl.class, "client", "scenes", "AddCard.fxml");
+        return fxml.load(AddCardCtrl.class, "client", "scenes", "AddCard.fxml");
     }
 
     public Pair<AddListCtrl, Parent> createAddListScene(){
-        return FXML.load(AddListCtrl.class, "client", "scenes", "AddList.fxml");
+        return fxml.load(AddListCtrl.class, "client", "scenes", "AddList.fxml");
     }
 
     public Pair<EditListCtrl, Parent> createEditListScene(){
-        return FXML.load(EditListCtrl.class, "client", "scenes", "RenameList.fxml");
+        return fxml.load(EditListCtrl.class, "client", "scenes", "RenameList.fxml");
     }
 }

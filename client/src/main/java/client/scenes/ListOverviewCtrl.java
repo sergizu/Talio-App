@@ -12,7 +12,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -30,14 +29,12 @@ import javafx.util.Duration;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import static client.helperClass.SubtaskWrapper.serialization;
 
-public class ListOverviewCtrl implements Initializable {
+public class ListOverviewCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
@@ -57,8 +54,7 @@ public class ListOverviewCtrl implements Initializable {
         this.mainCtrl = mainCtrl;
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void init(){
         setScrollPane();
         registerForUpdates();
     }
