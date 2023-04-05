@@ -45,6 +45,7 @@ public class MainCtrl {
     private BoardOptionsCtrl boardOptionsCtrl;
     private Scene boardOptionsScene;
 
+    boolean isAdmin;
 
     private AppClient client;
 
@@ -187,5 +188,12 @@ public class MainCtrl {
 
     public AppClient getClient() {
         return client;
+    }
+
+    public void setAdmin(boolean value) {
+        isAdmin = value;
+    }
+    public boolean getAdmin() {
+        return isAdmin;
     }
 }

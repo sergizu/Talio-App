@@ -100,6 +100,9 @@ public class BoardOverviewCtrl implements Initializable {
 
     public HBox createHBox(Board board) {
         HBox tableLine = createTableLine();
+        tableLine.setOnMouseClicked(event -> {
+            enterBoard(board);
+        });
         tableLine.getChildren().add(createLabel(board.title));
         tableLine.getChildren().add(createOptionsButton(board));
         return tableLine;
@@ -142,7 +145,7 @@ public class BoardOverviewCtrl implements Initializable {
         ArrayList<Board> allBoards = (ArrayList<Board>) server.getBoards();
         for (Board board : allBoards)
             if (board.key == key) {
-                joinBoard(board);
+                enterBoard(board);
                 joinByKey.clear();
                 return;
             }
@@ -154,7 +157,7 @@ public class BoardOverviewCtrl implements Initializable {
         ArrayList<Board> allBoards = (ArrayList<Board>) server.getBoards();
         for (Board board : allBoards)
             if (board.key == key) {
-                joinBoard(board);
+                enterBoard(board);
                 joinByKey.clear();
                 return true;
             }
@@ -177,7 +180,7 @@ public class BoardOverviewCtrl implements Initializable {
         });
     }
 
-    public void joinBoard(Board board) {
+    public void enterBoard(Board board) {
         mainCtrl.showOverview(board.id);
     }
 

@@ -50,10 +50,14 @@ public class SelectServerCtrl {
         try {
             server.getLists();
             if (checkPass()) {
+                mainCtrl.setAdmin(true);
                 mainCtrl.showBoardOverview();
                 adminPass.setText("");
                 hbox.setVisible(false);
-            } else mainCtrl.showJoinedBoards(client);
+            } else {
+                mainCtrl.showJoinedBoards(client);
+                mainCtrl.setAdmin(false);
+            }
         } catch (Exception e) {
             myLabel.setText("Couldn't find the server!");
         }

@@ -71,7 +71,8 @@ public class JoinedBoardsCtrl implements Initializable {
     public void registerForBoardRename() {
         server.registerForMessages("/topic/renameBoard", Board.class, renamedBoard -> {
             Platform.runLater(() -> {
-                updateBoard(renamedBoard);
+                if (!mainCtrl.getAdmin())
+                    updateBoard(renamedBoard);
             });
         });
     }
@@ -79,7 +80,8 @@ public class JoinedBoardsCtrl implements Initializable {
     public void registerForBoardDeletion() {
         server.registerForMessages("/topic/boardDeletion", Long.class, deletedBoardId -> {
             Platform.runLater(() -> {
-                removeBoardById(deletedBoardId);
+                if (!mainCtrl.getAdmin())
+                    removeBoardById(deletedBoardId);
             });
         });
     }
@@ -286,25 +288,25 @@ public class JoinedBoardsCtrl implements Initializable {
         return false;
     }
 
-    public void updateBoard(Board board){
+    public void updateBoard(Board board) {
         ArrayList<Board> allBoards = client.boards.get(ServerUtils.getServer());
-        for(int i = 0;i <= allBoards.size();i++)
-            if(allBoards.get(i).id == board.id){
+        for (int i = 0; i < allBoards.size(); i++)
+            if (allBoards.get(i).id == board.id) {
                 allBoards.get(i).title = board.title;
                 break;
             }
-        client.boards.put(ServerUtils.getServer(),allBoards);
+        client.boards.put(ServerUtils.getServer(), allBoards);
         showJoinedBoards(allBoards);
     }
 
-    public void removeBoardById(long  boardId){
+    public void removeBoardById(long boardId) {
         ArrayList<Board> allBoards = client.boards.get(ServerUtils.getServer());
-        for(int i = 0;i <= allBoards.size();i++)
-            if(allBoards.get(i).id == boardId){
+        for (int i = 0; i < allBoards.size(); i++)
+            if (allBoards.get(i).id == boardId) {
                 allBoards.remove(i);
                 break;
             }
-        client.boards.put(ServerUtils.getServer(),allBoards);
+        client.boards.put(ServerUtils.getServer(), allBoards);
         showJoinedBoards(allBoards);
     }
 

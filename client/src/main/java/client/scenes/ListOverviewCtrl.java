@@ -127,7 +127,7 @@ public class ListOverviewCtrl implements Initializable {
         });
         server.registerForMessages("/topic/boardDeletion", Long.class, deletedBoardId -> {
             Platform.runLater(() -> {
-                if(board.getId() == deletedBoardId)
+                if (board.getId() == deletedBoardId)
                     mainCtrl.showJoinedBoards(mainCtrl.getClient());
             });
         });
@@ -376,11 +376,10 @@ public class ListOverviewCtrl implements Initializable {
     }
 
     public void backPressed() {
-        if (parent == JoinedBoardsCtrl.class)
+        if (!mainCtrl.getAdmin())
             mainCtrl.showJoinedBoards(mainCtrl.getClient());
-        else if (parent == BoardOverviewCtrl.class) {
+        else
             mainCtrl.showBoardOverview();
-        }
     }
 }
 

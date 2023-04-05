@@ -47,17 +47,23 @@ public class BoardOptionsCtrl {
             server.send("/app/boards/renameBoard", board);
             server.updateBoard(board);
         }
-        mainCtrl.showJoinedBoards(mainCtrl.getClient());
+        showNextScene();
     }
 
     public void cancel() {
-        mainCtrl.showJoinedBoards(mainCtrl.getClient());
+        showNextScene();
     }
 
     public void delete() {
         server.deleteBoard(board.id);
         server.send("/app/boards/deleteBoard",board.id);
-        mainCtrl.showJoinedBoards(mainCtrl.getClient());
+        showNextScene();
+    }
+
+    public void showNextScene() {
+        if(mainCtrl.getAdmin())
+            mainCtrl.showBoardOverview();
+        else mainCtrl.showJoinedBoards(mainCtrl.getClient());
     }
 
     public void keyPressed(KeyEvent e) {
