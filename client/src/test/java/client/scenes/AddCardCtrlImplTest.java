@@ -18,7 +18,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class AddCardCtrlTest{
+public class AddCardCtrlImplTest {
     @Mock
     ServerUtils serverUtils;
     @Mock
@@ -26,16 +26,16 @@ public class AddCardCtrlTest{
     @Mock
     AddCardService addCardService;
 
-    static AddCardCtrl addCardCtrl;
+    static AddCardCtrlImpl addCardCtrl;
 
     @BeforeEach
     public void setUp() {
-        addCardCtrl = new AddCardCtrl(serverUtils, mainCtrl, addCardService);
+        addCardCtrl = new AddCardCtrlImpl(serverUtils, mainCtrl, addCardService);
     }
 
     @Test
     public void testConstructor() {
-        assertNotNull(new AddCardCtrl(serverUtils, mainCtrl, addCardService));
+        assertNotNull(new AddCardCtrlImpl(serverUtils, mainCtrl, addCardService));
     }
 
     @Test
