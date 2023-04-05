@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.helperClass.SubtaskWrapper;
+import client.services.AddSubTaskService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
@@ -29,7 +30,8 @@ public class EditCardCtrl {
 
     private Card card;
     private Scene addSubTaskScene;
-    private AddSubTaskCtrl addSubTaskCtrl;
+    private final AddSubTaskCtrl addSubTaskCtrl;
+    private final AddSubTaskService addSubTaskService;
     @FXML
     private TextField cardName;
 
@@ -50,11 +52,13 @@ public class EditCardCtrl {
 
     @FXML
     private TableColumn<SubtaskWrapper, Button> tableColumnButton;
-
     @Inject
-    public EditCardCtrl (MainCtrl mainCtrl, ServerUtils server) {
+    public EditCardCtrl (MainCtrl mainCtrl, ServerUtils server, AddSubTaskCtrl addSubTaskCtrl,
+                         AddSubTaskService addSubTaskService) {
         this.mainCtrl = mainCtrl;
         this.server = server;
+        this.addSubTaskCtrl = addSubTaskCtrl;
+        this.addSubTaskService = addSubTaskService;
     }
 
     public void init(Card card) {
@@ -102,8 +106,7 @@ public class EditCardCtrl {
     public void setAddSubtask(){
         FXMLLoader addSubTaskLoader = new FXMLLoader(getClass().
                 getResource("/client/scenes/AddSubtask.fxml"));
-        addSubTaskLoader.setControllerFactory(c ->
-               addSubTaskCtrl = new AddSubTaskCtrl(server,mainCtrl));
+        addSubTaskLoader.setController(addSubTaskService);
         try {
             addSubTaskScene = new Scene(addSubTaskLoader.load());
         } catch (IOException e) {
