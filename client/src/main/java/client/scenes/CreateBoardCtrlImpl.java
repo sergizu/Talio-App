@@ -1,36 +1,36 @@
 package client.scenes;
 
+import client.services.CreateBoardService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import commons.AppClient;
 import commons.Board;
 import commons.TDList;
 import jakarta.ws.rs.WebApplicationException;
-import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 
 import java.util.ArrayList;
 
-public class CreateBoardCtrl {
+@Singleton
+public class CreateBoardCtrlImpl implements CreateBoardCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    private final CreateBoardService createBoardService;
     private Object parent;
 
-    @FXML
-    TextField boardTitle;
-
     @Inject
-    public CreateBoardCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public CreateBoardCtrlImpl(ServerUtils server, MainCtrl mainCtrl, CreateBoardService createBoardService) {
         this.server = server;
         this.mainCtrl = mainCtrl;
+        this.createBoardService = createBoardService;
     }
 
     public Board getBoardWithTitle() {
-        Board board = new Board(boardTitle.getText());
+        Board board = new Board(createBoardService.getBoardName());
         addDefaultLists(board);
         return board;
     }
@@ -43,7 +43,7 @@ public class CreateBoardCtrl {
 
     public void createBoard() {
         Board board = getBoardWithTitle();
-        boardTitle.setText("");
+        createBoardService.setBoardName("");
         try {
             board = server.addBoard(board);
             if (parent == JoinedBoardsCtrl.class)
@@ -70,7 +70,7 @@ public class CreateBoardCtrl {
     public void escape() {
         if (parent == JoinedBoardsCtrl.class)
             mainCtrl.showJoinedBoards();
-        else if (parent == BoardOverviewCtrl.class) {
+        else {
             mainCtrl.showBoardOverview();
         }
     }
@@ -85,5 +85,9 @@ public class CreateBoardCtrl {
         } else if (e.getCode() == KeyCode.ESCAPE) {
             escape();
         }
+    }
+
+    public Object getParent() {
+        return parent;
     }
 }
