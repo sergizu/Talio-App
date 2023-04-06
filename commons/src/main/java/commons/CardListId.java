@@ -4,9 +4,7 @@ public class CardListId {
     public long boardId;//might be handy later
     public Card card;
     public long listId;
-    public CardListId() {
-
-    }
+    public CardListId() {}
     public CardListId(Card card,long listId){
         this.card = card;
         this.listId = listId;
