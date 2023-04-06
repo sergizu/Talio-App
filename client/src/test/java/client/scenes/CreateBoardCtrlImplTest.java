@@ -69,6 +69,9 @@ class CreateBoardCtrlImplTest {
         board.addList(new TDList("TO DO"));
         board.addList(new TDList("DOING"));
         board.addList(new TDList("DONE"));
+        AppClient client = new AppClient();
+        given(mainCtrl.getClient()).willReturn(client);
+        createBoardCtrl.setParent(JoinedBoardsCtrl.class);
         given(createBoardService.getBoardName()).willReturn("Test");
         given(serverUtils.addBoard(board)).willReturn(board);
         createBoardCtrl.createBoard();
@@ -76,6 +79,7 @@ class CreateBoardCtrlImplTest {
         verify(createBoardService).setBoardName("");
         verify(serverUtils).addBoard(board);
         verify(mainCtrl).showOverview(0);
+        verify(mainCtrl).getClient();
     }
 
     @Test
@@ -126,5 +130,13 @@ class CreateBoardCtrlImplTest {
         createBoardCtrl.setParent(JoinedBoardsCtrl.class);
         createBoardCtrl.keyPressed(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.ESCAPE, false, false, false, false));
         verify(mainCtrl).showJoinedBoards();
+    }
+
+    @Test
+    void keyPressedAnyKey() {
+        createBoardCtrl.setParent(JoinedBoardsCtrl.class);
+        createBoardCtrl.keyPressed(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.SPACE, false, false, false, false));
+        verify(mainCtrl, never()).showJoinedBoards();
+        verify(mainCtrl, never()).showBoardOverview();
     }
 }

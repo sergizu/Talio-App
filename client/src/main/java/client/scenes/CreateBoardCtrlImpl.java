@@ -7,11 +7,8 @@ import com.google.inject.Singleton;
 import commons.AppClient;
 import commons.Board;
 import commons.TDList;
-import jakarta.ws.rs.WebApplicationException;
-import javafx.scene.control.Alert;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Modality;
 
 import java.util.ArrayList;
 
@@ -45,17 +42,9 @@ public class CreateBoardCtrlImpl implements CreateBoardCtrl {
     public void createBoard() {
         Board board = getBoardWithTitle();
         createBoardService.setBoardName("");
-        try {
-            board = server.addBoard(board);
-            if (parent == JoinedBoardsCtrl.class)
-                addBoardToClient(board);
-        } catch (WebApplicationException e) {
-            var alert = new Alert(Alert.AlertType.ERROR);
-            alert.initModality(Modality.APPLICATION_MODAL);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-            return;
-        }
+        board = server.addBoard(board);
+        if (parent == JoinedBoardsCtrl.class)
+            addBoardToClient(board);
         mainCtrl.showOverview(board.getId());
     }
 
