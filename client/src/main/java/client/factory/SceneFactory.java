@@ -1,18 +1,22 @@
 package client.factory;
 
 import client.MyFXML;
-import client.MyModule;
 import client.scenes.*;
 import client.services.AddCardService;
 import client.services.AddListService;
 import client.services.AddSubTaskService;
 import com.google.inject.Injector;
 import javafx.scene.Parent;
-import static com.google.inject.Guice.createInjector;
 
 public class SceneFactory {
-    private final Injector injector = createInjector(new MyModule());
-    private final MyFXML fxml = new MyFXML(injector);
+    private final Injector injector;
+    private final MyFXML fxml;
+
+    public SceneFactory(Injector injector, MyFXML fxml) {
+        this.injector = injector;
+        this.fxml = fxml;
+    }
+
 
     public Injector getInjector(){
         return injector;
