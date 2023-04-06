@@ -21,6 +21,12 @@ public class SubtaskTest {
     }
 
     @Test
+    public void testEmptyConstructor() {
+        Subtask subtask = new Subtask();
+        assertNotNull(subtask);
+    }
+
+    @Test
     void getName() {
         assertEquals(subtask.getName(), "Hello");
     }
@@ -63,8 +69,15 @@ public class SubtaskTest {
     }
 
     @Test
+    void testHashCodeNotEqual() {
+        assertNotEquals(subtask, subtask2);
+    }
+
+    @Test
     void testToString() {
         String toString = "Subtask{name='Hello', checked=false}";
         assertEquals(subtask.toString(), toString);
     }
+
+
 }
