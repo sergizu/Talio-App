@@ -65,12 +65,12 @@ public class SubtaskTest {
 
     @Test
     void testHashCode() {
-        assertEquals(subtask, subtask1);
+        assertEquals(subtask.hashCode(), subtask1.hashCode());
     }
 
     @Test
     void testHashCodeNotEqual() {
-        assertNotEquals(subtask, subtask2);
+        assertNotEquals(subtask.hashCode(), subtask2.hashCode());
     }
 
     @Test
