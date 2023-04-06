@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.context.request.async.DeferredResult;
 import server.database.CardRepository;
 
 import java.util.ArrayList;
@@ -278,5 +280,17 @@ class CardServiceTest {
         card.setNestedList(nestedList);
         when(cardRepository.save(any())).thenReturn(card);
         assertTrue(cardService.updateNestedList(card.getId(), nestedList));
+    }
+
+    @Test
+    void testSubscribeForUpdates(){
+        DeferredResult<ResponseEntity<Long>> df = cardService.subscribeForUpdates();
+        assertNull(df.getResult());
+    }
+
+    @Test
+    void testUpdateListsNotExistsList() {
+        when(listService.existsById(1)).thenReturn(false);
+        assertFalse(cardService.updateList(1, 1));
     }
 }
