@@ -42,6 +42,16 @@ class TDListTest {
     }
 
     @Test
+    void testDifferentClasses() {
+        assertNotEquals(list, card1);
+    }
+
+    @Test
+    void testEqualsNull() {
+        assertNotEquals(list, null);
+    }
+
+    @Test
     void testEqualsSameName() {
         assertEquals(list, list2);
     }
@@ -68,15 +78,28 @@ class TDListTest {
     }
 
     @Test
+    void testNotEmpty() {
+        list.addCard(card1);
+        assertFalse(list.isEmpty());
+    }
+
+    @Test
     void testAddCard() {
         list.addCard(card1);
         assertEquals(card1, list.cards.get(0));
     }
     @Test
-    void testRemoveCard() {
+    void testRemoveCardExists() {
         list.addCard(card1);
         list.removeCard(card1.getId());
         assertTrue(list.isEmpty());
+    }
+
+    @Test
+    void testRemoveCardNotExists() {
+        list.addCard(card1);
+        list.removeCard(2);
+        assertFalse(list.isEmpty());
     }
 
     @Test
