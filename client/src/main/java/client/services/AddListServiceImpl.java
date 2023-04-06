@@ -2,10 +2,12 @@ package client.services;
 
 import client.scenes.AddListCtrl;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+@Singleton
 public class AddListServiceImpl implements AddListService {
     @FXML
     private TextField listTitle;
