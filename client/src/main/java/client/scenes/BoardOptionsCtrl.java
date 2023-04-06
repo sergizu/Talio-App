@@ -44,8 +44,8 @@ public class BoardOptionsCtrl {
     public void ok() {
         if(!board.title.equals(boardName.getText())) {
             board.title = boardName.getText();
-            server.send("/app/boards/renameBoard", board);
             server.updateBoard(board);
+            server.send("/app/boards/renameBoard", board);
         }
         showNextScene();
     }

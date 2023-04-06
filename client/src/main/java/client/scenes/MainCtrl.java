@@ -166,7 +166,7 @@ public class MainCtrl {
     public void showJoinedBoards(AppClient client) {
         primaryStage.setTitle("Your boards");
         primaryStage.setScene(joinedBoardsScene);
-        joinedBoardsCtrl.init(client);
+        joinedBoardsCtrl.init();
         setSizeScene();
     }
 
@@ -195,5 +195,9 @@ public class MainCtrl {
     }
     public boolean getAdmin() {
         return isAdmin;
+    }
+
+    public String getPrimaryStageTitle() {
+        return primaryStage.getTitle();
     }
 }

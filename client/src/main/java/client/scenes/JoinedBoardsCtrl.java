@@ -71,7 +71,7 @@ public class JoinedBoardsCtrl implements Initializable {
     public void registerForBoardRename() {
         server.registerForMessages("/topic/renameBoard", Board.class, renamedBoard -> {
             Platform.runLater(() -> {
-                if (!mainCtrl.getAdmin())
+                if (mainCtrl.getPrimaryStageTitle().equals("Your boards"))
                     updateBoard(renamedBoard);
             });
         });
@@ -80,14 +80,15 @@ public class JoinedBoardsCtrl implements Initializable {
     public void registerForBoardDeletion() {
         server.registerForMessages("/topic/boardDeletion", Long.class, deletedBoardId -> {
             Platform.runLater(() -> {
-                if (!mainCtrl.getAdmin())
-                    removeBoardById(deletedBoardId);
+                removeBoardById(deletedBoardId);
+                if (mainCtrl.getPrimaryStageTitle().equals("Your boards"))
+                    showJoinedBoards(client.boards.get(ServerUtils.getServer()));
             });
         });
     }
 
-    public void init(AppClient client) {
-        this.client = client;
+    public void init() {
+        this.client = mainCtrl.getClient();
         joinByKey.setPromptText("Join by key");
         String serverString = ServerUtils.getServer();
         addServerKeyIntoMap(serverString);
@@ -124,7 +125,7 @@ public class JoinedBoardsCtrl implements Initializable {
     }
 
     public void showJoinedBoards(ArrayList<Board> boards) {
-        if (boards.isEmpty()) {
+        if (boards == null || boards.isEmpty()) {
             clearBoardList();
             Label noBoards = new Label("You have not joined any boards yet!");
             noBoards.setFont(Font.font(25.0));
@@ -280,6 +281,8 @@ public class JoinedBoardsCtrl implements Initializable {
 
     public boolean containsBoardId(Board newBoard) {
         ArrayList<Board> clientBoards = client.boards.get(ServerUtils.getServer());
+        if(clientBoards == null) 
+            clientBoards = new ArrayList<>();
         for (Board board : clientBoards)
             if (board.id == newBoard.id)
                 return true;
@@ -300,14 +303,16 @@ public class JoinedBoardsCtrl implements Initializable {
     }
 
     public void removeBoardById(long boardId) {
+        if (client == null)
+            client = mainCtrl.getClient();
         ArrayList<Board> allBoards = client.boards.get(ServerUtils.getServer());
-        for (int i = 0; i < allBoards.size(); i++)
-            if (allBoards.get(i).id == boardId) {
-                allBoards.remove(i);
-                break;
-            }
+        if (allBoards != null)
+            for (int i = 0; i < allBoards.size(); i++)
+                if (allBoards.get(i).id == boardId) {
+                    allBoards.remove(i);
+                    break;
+                }
         client.boards.put(ServerUtils.getServer(), allBoards);
-        showJoinedBoards(allBoards);
     }
 
 }

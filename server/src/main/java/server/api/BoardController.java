@@ -149,9 +149,15 @@ public class BoardController {
         return board;
     }
 
-    @MessageMapping("boards/deleteBoard")
+    @MessageMapping("/boards/deleteBoard")
     @SendTo("/topic/boardDeletion")
     public Long sendDeletedBoardId(long boardId) {
+        return boardId;
+    }
+
+    @MessageMapping("/boards/createBoard")
+    @SendTo("/topic/boardCreation")
+    public Long sendCreatedBoardId(long boardId) {
         return boardId;
     }
     public long getDefaultId(){return defaultBoardID;}

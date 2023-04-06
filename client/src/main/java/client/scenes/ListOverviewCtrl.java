@@ -127,7 +127,7 @@ public class ListOverviewCtrl implements Initializable {
         });
         server.registerForMessages("/topic/boardDeletion", Long.class, deletedBoardId -> {
             Platform.runLater(() -> {
-                if (board.getId() == deletedBoardId)
+                if (mainCtrl.getPrimaryStageTitle().equals("Lists: Overview"))
                     mainCtrl.showJoinedBoards(mainCtrl.getClient());
             });
         });

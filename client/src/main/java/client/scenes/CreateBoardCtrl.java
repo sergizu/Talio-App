@@ -49,6 +49,7 @@ public class CreateBoardCtrl {
         boardTitle.setText("");
         try {
             board = server.addBoard(board);
+            server.send("/app/boards/createBoard",board.id);
             if (parent == JoinedBoardsCtrl.class)
                 addBoardToClient(board);
         } catch (WebApplicationException e) {
@@ -58,7 +59,9 @@ public class CreateBoardCtrl {
             alert.showAndWait();
             return;
         }
-        mainCtrl.showOverview(board.getId());
+        if(mainCtrl.getAdmin())
+            mainCtrl.showOverview(board.getId());
+        else mainCtrl.showJoinedBoards(mainCtrl.getClient());
     }
 
     public void addBoardToClient(Board board) {

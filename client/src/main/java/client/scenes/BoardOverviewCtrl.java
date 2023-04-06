@@ -65,9 +65,41 @@ public class BoardOverviewCtrl implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        registerForBoardRename();
+        registerForBoardDeletion();
+        registerForBoardCreation();
         disconnectButton.setStyle("-fx-background-color: red;");
         createBoardButton.setStyle("-fx-background-color: #2596be");
     }
+
+    public void registerForBoardRename() {
+        server.registerForMessages("/topic/renameBoard", Board.class, renamedBoard -> {
+            Platform.runLater(() -> {
+                if(mainCtrl.getPrimaryStageTitle().equals("Boards: Overview"))
+                    showAllBoards();
+            });
+        });
+    }
+
+    public void registerForBoardDeletion() {
+        server.registerForMessages("/topic/boardDeletion", Long.class, deletedBoardId -> {
+            Platform.runLater(() -> {
+                if(mainCtrl.getPrimaryStageTitle().equals("Boards: Overview"))
+                    showAllBoards();
+            });
+        });
+    }
+
+    public void registerForBoardCreation() {
+        server.registerForMessages("/topic/boardCreation", Long.class, newBoardId -> {
+            Platform.runLater(() -> {
+                if(mainCtrl.getPrimaryStageTitle().equals("Boards: Overview"))
+                    showAllBoards();
+            });
+        });
+    }
+
+
 
     public void createBoard() {
         mainCtrl.showCreateBoard(createBoardScene, BoardOverviewCtrl.class, createBoardCtrl);
