@@ -66,6 +66,7 @@ public class SceneFactory {
     }
 
     public Parent createBoardOptionsScene() {
-        return fxml.load(BoardOptionsCtrl.class, "client", "scenes", "BoardOptions.fxml").getValue();
+        return fxml.load(BoardOptionsCtrl.class, "client",
+                "scenes", "BoardOptions.fxml").getValue();
     }
 }

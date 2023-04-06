@@ -80,7 +80,8 @@ public class ListOverviewCtrl {
         });
         server.registerForMessages("/topic/boardDeletion", Long.class, deletedBoardId -> {
             Platform.runLater(() -> {
-                if (mainCtrl.getPrimaryStageTitle().equals("Lists: Overview")) {
+                if (deletedBoardId == board.id &&
+                        mainCtrl.getPrimaryStageTitle().equals("Lists: Overview")) {
                     if(mainCtrl.getAdmin())
                         mainCtrl.showBoardOverview();
                     else mainCtrl.showJoinedBoards();
@@ -323,9 +324,8 @@ public class ListOverviewCtrl {
     }
 
     public void backPressed() {
-        if (parent == JoinedBoardsCtrl.class)
+        if (!mainCtrl.getAdmin())
             mainCtrl.showJoinedBoards();
-        else if (parent == BoardOverviewCtrl.class)
-            mainCtrl.showBoardOverview();
+        else mainCtrl.showBoardOverview();
     }
 }
