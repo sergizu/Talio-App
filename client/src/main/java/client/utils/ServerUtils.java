@@ -62,32 +62,6 @@ public class ServerUtils {
                 });
     }
 
-    public List<TDList> getLists() {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("/api/tdLists") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<TDList>>() {
-                });
-    }
-
-    public TDList getList(long listId) {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("/api/tdLists/" + listId) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<>() {
-                });
-    }
-
-    public TDList addList(TDList list) {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("/api/tdLists") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .post(Entity.entity(list, APPLICATION_JSON), TDList.class);
-    }
-
     public void removeList(TDList list) {
         ClientBuilder.newClient(new ClientConfig()) //
                 .target(server).path("api/tdLists/" + list.id) //
@@ -118,24 +92,6 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(board, APPLICATION_JSON), Board.class);
-    }
-
-
-    public Board tempBoardGetter() {
-        Response result = ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("/api/boards/tempGetter")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .get();
-        if (result.getStatus() == HttpStatus.OK.value()) {
-            try {
-                Board board = result.readEntity(Board.class);
-                return board;
-            } catch (Exception e) {
-                System.out.println("problems: couldnt parse the incoming board");
-            }
-        }
-        return null;
     }
 
     public Board getBoardById(long boardId) {
@@ -209,22 +165,6 @@ public class ServerUtils {
                 consumer.accept(result.readEntity(Long.class));
             }
         });
-    }
-
-    public Card updateCard(Card card) {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/cards/update") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON)
-                .put(Entity.entity(card, APPLICATION_JSON), Card.class);//
-    }
-
-    public void updateList(TDList list) {
-        ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/tdLists/update") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON)
-                .put(Entity.entity(list, APPLICATION_JSON));//
     }
 
     public void updateListName(long listId, String newName) {

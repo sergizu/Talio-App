@@ -1,7 +1,5 @@
 package client.scenes;
 
-import client.services.AddCardService;
-import client.services.AddListService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Board;

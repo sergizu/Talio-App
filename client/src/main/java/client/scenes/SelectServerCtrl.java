@@ -13,8 +13,7 @@ import javafx.scene.layout.HBox;
 public class SelectServerCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-
-    private ListOverviewCtrl listOverviewCtrl;
+    private final ListOverviewCtrl listOverviewCtrl;
 
     @FXML
     private TextField serverName;
@@ -29,9 +28,11 @@ public class SelectServerCtrl {
     private HBox hbox;
 
     @Inject
-    public SelectServerCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public SelectServerCtrl(ServerUtils server, MainCtrl mainCtrl,
+                            ListOverviewCtrl listOverviewCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
+        this.listOverviewCtrl = listOverviewCtrl;
     }
 
     public boolean checkPass() {
@@ -48,8 +49,7 @@ public class SelectServerCtrl {
         myLabel.setText("");
         server.changeServer(s);
         if(server.serverRunning()){
-            server.initSession();
-            listOverviewCtrl.init();
+            startSession();
             if (checkPass()) {
                 mainCtrl.showBoardOverview();
                 adminPass.setText("");
@@ -71,7 +71,8 @@ public class SelectServerCtrl {
         }
     }
 
-    public void setListOverviewCtrl(ListOverviewCtrl listOverviewCtrl) {
-        this.listOverviewCtrl = listOverviewCtrl;
+    public void startSession(){
+        server.initSession();
+        listOverviewCtrl.init();
     }
 }

@@ -1,7 +1,6 @@
 package client.scenes;
 
 import client.helperClass.SubtaskWrapper;
-import client.services.AddSubTaskService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;

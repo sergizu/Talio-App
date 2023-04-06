@@ -8,8 +8,6 @@ import client.services.AddListService;
 import client.services.AddSubTaskService;
 import com.google.inject.Injector;
 import javafx.scene.Parent;
-import javafx.util.Pair;
-
 import static com.google.inject.Guice.createInjector;
 
 public class SceneFactory {
@@ -20,43 +18,46 @@ public class SceneFactory {
         return injector;
     }
 
-    public Pair<ListOverviewCtrl, Parent> createListOverviewScene(){
-        return fxml.load(ListOverviewCtrl.class, "client", "scenes", "ListOverview.fxml");
+    public Parent createListOverviewScene(){
+        return fxml.load(ListOverviewCtrl.class,
+                "client", "scenes", "ListOverview.fxml").getValue();
     }
 
-    public Pair<EditCardCtrl, Parent> createEditCardScene(){
-        return fxml.load(EditCardCtrl.class, "client", "scenes", "EditCard.fxml");
+    public Parent createEditCardScene(){
+        return fxml.load(EditCardCtrl.class, "client", "scenes", "EditCard.fxml").getValue();
     }
 
-    public Pair<SelectServerCtrl, Parent> createSelectServerScene(){
-        return fxml.load(SelectServerCtrl.class,"client","scenes", "SelectServer.fxml");
+    public Parent createSelectServerScene(){
+        return fxml.load(SelectServerCtrl.class,"client","scenes", "SelectServer.fxml").getValue();
     }
 
-    public Pair<BoardOverviewCtrl, Parent> createBoardOverviewScene(){
-        return fxml.load(BoardOverviewCtrl.class,"client", "scenes", "BoardOverview.fxml");
+    public Parent createBoardOverviewScene(){
+        return fxml.load(BoardOverviewCtrl.class,
+                "client", "scenes", "BoardOverview.fxml").getValue();
     }
 
-    public Pair<JoinedBoardsCtrl, Parent> createJoinedBoardsScene(){
-        return fxml.load(JoinedBoardsCtrl.class, "client", "scenes", "JoinedBoards.fxml");
+    public Parent createJoinedBoardsScene(){
+        return fxml.load(JoinedBoardsCtrl.class,
+                "client", "scenes", "JoinedBoards.fxml").getValue();
     }
 
-    public Pair<CreateBoardCtrl, Parent> createNewBoardScene(){
-        return fxml.load(CreateBoardCtrl.class, "client", "scenes", "CreateBoard.fxml");
+    public Parent createNewBoardScene(){
+        return fxml.load(CreateBoardCtrl.class, "client", "scenes", "CreateBoard.fxml").getValue();
     }
 
-    public Pair<AddSubTaskService, Parent> createAddSubtaskScene(){
-        return fxml.load(AddSubTaskService.class, "client", "scenes", "AddSubtask.fxml");
+    public Parent createAddSubtaskScene(){
+        return fxml.load(AddSubTaskService.class, "client", "scenes", "AddSubtask.fxml").getValue();
     }
 
-    public Pair<AddCardService, Parent> createAddCardScene(){
-        return fxml.load(AddCardService.class, "client", "scenes", "AddCard.fxml");
+    public Parent createAddCardScene(){
+        return fxml.load(AddCardService.class, "client", "scenes", "AddCard.fxml").getValue();
     }
 
-    public Pair<AddListService, Parent> createAddListScene(){
-        return fxml.load(AddListService.class, "client", "scenes", "AddList.fxml");
+    public Parent createAddListScene(){
+        return fxml.load(AddListService.class, "client", "scenes", "AddList.fxml").getValue();
     }
 
-    public Pair<EditListCtrl, Parent> createEditListScene(){
-        return fxml.load(EditListCtrl.class, "client", "scenes", "RenameList.fxml");
+    public Parent createEditListScene(){
+        return fxml.load(EditListCtrl.class, "client", "scenes", "RenameList.fxml").getValue();
     }
 }
