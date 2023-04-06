@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="399.0" prefWidth="509.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EditCardCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="509.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EditCardCtrl">
    <children>
       <VBox alignment="CENTER" layoutX="14.0" layoutY="2.0" prefHeight="389.0" prefWidth="503.0" spacing="10.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="2.0">
          <children>
@@ -34,7 +34,7 @@
                </font>
             </Label>
             <TextField fx:id="cardName" maxWidth="-Infinity" onKeyPressed="#keyPressed" prefWidth="200.0" />
-            <TextArea fx:id="description" prefHeight="200.0" prefWidth="200.0" />
+            <TextArea fx:id="description" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="152.0" prefWidth="307.0" />
             <Label fx:id="emptyName" />
             <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="26.0" prefWidth="396.0">
                <children>
@@ -48,14 +48,14 @@
                   <Insets />
                </VBox.margin>
             </HBox>
-            <TableView fx:id="tableView" maxWidth="-Infinity" prefHeight="123.0" prefWidth="396.0">
+            <TableView fx:id="tableView" maxWidth="-Infinity" prefHeight="176.0" prefWidth="427.0">
               <columns>
-                <TableColumn fx:id="tableColumnSubtask" onEditCommit="#changeSubtask" prefWidth="327.0" text="Subtasks" />
-                  <TableColumn fx:id="tableColumnCheckbox" prefWidth="34.0" />
-                  <TableColumn fx:id="tableColumnButton" prefWidth="34.0" />
+                <TableColumn fx:id="tableColumnSubtask" onEditCommit="#changeSubtask" prefWidth="336.0" text="Subtasks" />
+                  <TableColumn fx:id="tableColumnCheckbox" prefWidth="43.0" />
+                  <TableColumn fx:id="tableColumnButton" prefWidth="47.0" />
               </columns>
             </TableView>
-            <HBox alignment="CENTER" spacing="310.0">
+            <HBox alignment="CENTER" prefWidth="503.0" spacing="310.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#delete" text="Delete Card" />
                   <Button mnemonicParsing="false" onAction="#ok" text="Save" />

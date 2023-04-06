@@ -7,7 +7,7 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardOverviewCtrl">
    <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <top>
-         <HBox fx:id="topHBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="600.0" BorderPane.alignment="CENTER">
             <children>
                <Button fx:id="createBoardButton" alignment="TOP_LEFT" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#showCreateBoard" text="Create new board" textAlignment="CENTER" HBox.hgrow="ALWAYS">
                   <HBox.margin>

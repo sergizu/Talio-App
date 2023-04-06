@@ -8,13 +8,14 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="236.0" prefWidth="362.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AddCardCtrl">
+<AnchorPane prefHeight="236.0" prefWidth="362.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.services.AddCardService">
    <VBox alignment="CENTER" layoutX="-27.0" layoutY="-38.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="404.0" prefWidth="485.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
       
                               <Label alignment="CENTER" prefHeight="26.0" prefWidth="104.0" text="Card Name:" />
-            <TextField fx:id="cardName" maxWidth="200.0" prefHeight="26.0" prefWidth="200.0" />
-         <TextArea fx:id="description" prefHeight="200.0" prefWidth="200.0" />
+            <TextField fx:id="cardName" maxWidth="200.0" prefHeight="26.0" prefWidth="201.0" />
+         <Label alignment="CENTER" prefHeight="26.0" prefWidth="104.0" text="Description:" />
+         <TextArea fx:id="description" maxWidth="-Infinity" prefHeight="152.0" prefWidth="307.0" />
          <Label fx:id="myLabel" alignment="CENTER" prefHeight="18.0" prefWidth="183.0" />
          <HBox alignment="CENTER" spacing="100.0">
             <children>

@@ -15,33 +15,58 @@
  */
 package client.scenes;
 
+import client.factory.SceneFactory;
+import com.google.inject.Inject;
 import commons.AppClient;
 import commons.Board;
 import commons.Card;
 import commons.TDList;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
 public class MainCtrl {
 
     private Stage primaryStage;
-    private Scene overview;
 
+    private Scene overview;
+    @Inject
     private ListOverviewCtrl listOverviewCtrl;
-    private EditCardCtrl editCardCtrl;
+
     private Scene edit;
+    @Inject
+    private EditCardCtrl editCardCtrl;
+
+    private Scene editListScene;
+    @Inject
+    private EditListCtrl editListCtrl;
 
     private Scene selectServer;
-    private SelectServerCtrl selectServerCtrl;
 
     private Scene boardOverviewScene;
+    @Inject
     private BoardOverviewCtrl boardOverviewCtrl;
 
-    private JoinedBoardsCtrl joinedBoardsCtrl;
     private Scene joinedBoardsScene;
+    @Inject
+    private JoinedBoardsCtrl joinedBoardsCtrl;
 
+    private Scene createBoardScene;
+    @Inject
+    private CreateBoardCtrl createBoardCtrl;
+
+    private Scene createAddCardScene;
+    @Inject
+    private AddCardCtrl createAddCardCtrl;
+
+    private Scene createAddListScene;
+    @Inject
+    private AddListCtrl createAddListCtrl;
+
+    private Scene createAddSubtaskScene;
+    @Inject
+    private AddSubTaskCtrl createAddSubtaskCtrl;
+
+    @Inject
     private BoardOptionsCtrl boardOptionsCtrl;
     private Scene boardOptionsScene;
 
@@ -49,39 +74,36 @@ public class MainCtrl {
 
     private AppClient client;
 
-    @SuppressWarnings("checkstyle:ParameterNumber")
-    public void initialize(Stage primaryStage, Pair<ListOverviewCtrl, Parent> overview,
-                           Pair<EditCardCtrl, Parent> edit,
-                           Pair<SelectServerCtrl, Parent> selectServer,
-                           Pair<BoardOverviewCtrl, Parent> boardOverview,
-                           Pair<JoinedBoardsCtrl,Parent> joinedBoards,
-                           Pair<BoardOptionsCtrl, Parent> boardOptions) {
+    public void initialize(Stage primaryStage,
+                           SceneFactory sceneFactory) {
 
         this.primaryStage = primaryStage;
-        this.listOverviewCtrl = overview.getKey();
-        this.overview = new Scene(overview.getValue(), 1080, 720);
 
-        this.editCardCtrl = edit.getKey();
-        this.edit = new Scene(edit.getValue(), 1080, 720);
+        this.overview = new Scene(sceneFactory.createListOverviewScene(), 1080, 720);
 
-        this.selectServerCtrl = selectServer.getKey();
-        this.selectServer = new Scene(selectServer.getValue(), 1080, 720);
+        this.edit = new Scene(sceneFactory.createEditCardScene(), 1080, 720);
 
-        this.boardOverviewCtrl = boardOverview.getKey();
-        this.boardOverviewScene = new Scene(boardOverview.getValue(), 1080, 720);
+        this.editListScene = new Scene(sceneFactory.createEditListScene(), 1080, 720);
 
-        this.joinedBoardsCtrl = joinedBoards.getKey();
-        this.joinedBoardsScene = new Scene(joinedBoards.getValue(), 1080, 720);
+        this.selectServer = new Scene(sceneFactory.createSelectServerScene(), 1080, 720);
 
-        this.boardOptionsCtrl = boardOptions.getKey();
-        this.boardOptionsScene = new Scene(boardOptions.getValue(), 1080, 720);
+        this.boardOverviewScene = new Scene(sceneFactory.createBoardOverviewScene(), 1080, 720);
+
+        this.joinedBoardsScene = new Scene(sceneFactory.createJoinedBoardsScene(), 1080, 720);
+
+        this.createBoardScene = new Scene(sceneFactory.createNewBoardScene(), 1080, 720);
+
+        this.createAddCardScene = new Scene(sceneFactory.createAddCardScene(), 1080, 720);
+
+        this.createAddListScene = new Scene(sceneFactory.createAddListScene(), 1080, 720);
+
+        this.createAddSubtaskScene = new Scene(sceneFactory.createAddSubtaskScene(), 1080, 720);
+
+        this.boardOptionsScene = new Scene(sceneFactory.createBoardOptionsScene(), 1080, 720);
         this.client = new AppClient();
 
         showSelectServer();
-        this.primaryStage.setWidth(1080);
-        this.primaryStage.setHeight(720);
-        this.primaryStage.setMinWidth(425.0);
-        this.primaryStage.setMinHeight(409);
+        setPrimaryStage();
         primaryStage.show();
     }
 
@@ -94,9 +116,6 @@ public class MainCtrl {
     public void showOverview(long boardId) {
         primaryStage.setTitle("Lists: Overview");
         listOverviewCtrl.setBoard(boardId);
-        listOverviewCtrl.setAddCard();
-        listOverviewCtrl.setEditList();
-        listOverviewCtrl.setAddList();
         primaryStage.setScene(overview);
         setSizeScene();
     }
@@ -105,13 +124,9 @@ public class MainCtrl {
         primaryStage.setTitle("Lists: Overview");
         listOverviewCtrl.setBoard(boardId);
         listOverviewCtrl.setParent(parent);
-        listOverviewCtrl.setAddCard();
-        listOverviewCtrl.setEditList();
-        listOverviewCtrl.setAddList();
         primaryStage.setScene(overview);
         setSizeScene();
     }
-
 
     public void showBoardOverview() {
         primaryStage.setTitle("Boards: Overview");
@@ -120,19 +135,19 @@ public class MainCtrl {
         setSizeScene();
     }
 
-    public void showAddCard(long listId,long boardId, AddCardCtrl addCardCtrl, Scene sceneAddCard) {
+    public void showAddCard(long listId,long boardId) {
         primaryStage.setTitle("Board: Adding Card");
-        addCardCtrl.setListBoardId(listId,boardId);
-        primaryStage.setScene(sceneAddCard);
-        sceneAddCard.setOnKeyPressed(e -> addCardCtrl.keyPressed(e));
+        createAddCardCtrl.setListBoardId(listId,boardId);
+        primaryStage.setScene(createAddCardScene);
+        createAddCardScene.setOnKeyPressed(e -> createAddCardCtrl.keyPressed(e));
         setSizeScene();
     }
 
-    public void showAddList(long boardId, AddListCtrl addListCtrl, Scene addListScene) {
+    public void showAddList(long boardId) {
         primaryStage.setTitle("Board: Adding List");
-        primaryStage.setScene(addListScene);
-        addListCtrl.setBoard(boardId);
-        addListScene.setOnKeyPressed(e -> addListCtrl.keyPressed(e));
+        primaryStage.setScene(createAddListScene);
+        createAddListCtrl.setBoard(boardId);
+        createAddListScene.setOnKeyPressed(e -> createAddListCtrl.keyPressed(e));
         setSizeScene();
     }
 
@@ -143,35 +158,28 @@ public class MainCtrl {
         setSizeScene();
     }
 
-
-    public void showEditList(TDList list, EditListCtrl editListCtrl, Scene editListScene) {
+    public void showEditList(TDList list) {
         primaryStage.setTitle("List: Rename list");
         primaryStage.setScene(editListScene);
         editListCtrl.init(list);
         setSizeScene();
     }
 
-    public void showAddSubtask(Card card, Scene addSubTaskScene, AddSubTaskCtrl addSubTaskCtrl) {
+    public void showAddSubtask(Card card) {
         primaryStage.setTitle("Subtask: Create subtask");
-        primaryStage.setScene(addSubTaskScene);
-        addSubTaskCtrl.init(card);
+        primaryStage.setScene(createAddSubtaskScene);
+        createAddSubtaskCtrl.init(card);
         setSizeScene();
     }
 
-    public void setSizeScene() {
-        primaryStage.setWidth(primaryStage.getWidth() + 1);
-        primaryStage.setHeight(primaryStage.getHeight() + 1);
-    }
-
-    public void showJoinedBoards(AppClient client) {
+    public void showJoinedBoards() {
         primaryStage.setTitle("Your boards");
         primaryStage.setScene(joinedBoardsScene);
         joinedBoardsCtrl.init();
         setSizeScene();
     }
 
-    public void showCreateBoard(Scene createBoardScene, Object parent,
-                                CreateBoardCtrl createBoardCtrl){
+    public void showCreateBoard(Object parent){
         primaryStage.setTitle("Create a new board");
         primaryStage.setScene(createBoardScene);
         createBoardCtrl.setParent(parent);
@@ -199,5 +207,21 @@ public class MainCtrl {
 
     public String getPrimaryStageTitle() {
         return primaryStage.getTitle();
+    }
+
+    public void setSizeScene() {
+        primaryStage.setWidth(primaryStage.getWidth() + 1);
+        primaryStage.setHeight(primaryStage.getHeight() + 1);
+    }
+
+    public void setPrimaryStage(){
+        this.primaryStage.setWidth(1080);
+        this.primaryStage.setHeight(720);
+        this.primaryStage.setMinWidth(425.0);
+        this.primaryStage.setMinHeight(409);
+
+        this.primaryStage.setOnCloseRequest(event -> {
+            this.listOverviewCtrl.stop();
+        });
     }
 }

@@ -8,11 +8,9 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -23,7 +21,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -32,8 +29,6 @@ public class JoinedBoardsCtrl implements Initializable {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private AppClient client;
-    private Scene createBoardScene;
-    private CreateBoardCtrl createBoardCtrl;
 
     @FXML
     private TextField boardTitle;
@@ -41,8 +36,6 @@ public class JoinedBoardsCtrl implements Initializable {
     private TextField joinByKey;
     @FXML
     private Label boardOverviewTitle;
-    @FXML
-    private HBox topHBox;
     @FXML
     private VBox boardsList;
     @FXML
@@ -55,15 +48,12 @@ public class JoinedBoardsCtrl implements Initializable {
     public JoinedBoardsCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
-
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //boardOverviewTitle.setMaxWidth(3000.0);
         HBox.setHgrow(boardOverviewTitle, Priority.ALWAYS);
-        registerForBoardRename();
-        registerForBoardDeletion();
         disconnectButton.setStyle("-fx-background-color: red;");
         createBoardButton.setStyle("-fx-background-color: #2596be");
     }
@@ -87,22 +77,17 @@ public class JoinedBoardsCtrl implements Initializable {
         });
     }
 
+    public void registerForMessages() {
+        registerForBoardRename();
+        registerForBoardDeletion();
+    }
     public void init() {
         this.client = mainCtrl.getClient();
+
         joinByKey.setPromptText("Join by key");
         String serverString = ServerUtils.getServer();
         addServerKeyIntoMap(serverString);
         getBoardsForServer(serverString);
-
-        FXMLLoader createBoardLoader = new FXMLLoader((getClass().
-                getResource("/client/scenes/CreateBoard.fxml")));
-        createBoardLoader.setControllerFactory(c ->
-                createBoardCtrl = new CreateBoardCtrl(server, mainCtrl));
-        try {
-            createBoardScene = new Scene(createBoardLoader.load());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public void addServerKeyIntoMap(String serverString) {
@@ -121,7 +106,7 @@ public class JoinedBoardsCtrl implements Initializable {
     }
 
     public void showCreateBoard() {
-        mainCtrl.showCreateBoard(createBoardScene, JoinedBoardsCtrl.class, createBoardCtrl);
+        mainCtrl.showCreateBoard(JoinedBoardsCtrl.class);
     }
 
     public void showJoinedBoards(ArrayList<Board> boards) {
@@ -221,6 +206,7 @@ public class JoinedBoardsCtrl implements Initializable {
 
     public void disconnectPressed() {
         mainCtrl.showSelectServer();
+        server.stopSession();
     }
 
     public void joinByKey() {

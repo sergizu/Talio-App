@@ -63,7 +63,7 @@ public class BoardOptionsCtrl {
     public void showNextScene() {
         if(mainCtrl.getAdmin())
             mainCtrl.showBoardOverview();
-        else mainCtrl.showJoinedBoards(mainCtrl.getClient());
+        else mainCtrl.showJoinedBoards();
     }
 
     public void keyPressed(KeyEvent e) {

@@ -65,32 +65,6 @@ public class ServerUtils {
                 });
     }
 
-    public List<TDList> getLists() {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("/api/tdLists") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<TDList>>() {
-                });
-    }
-
-    public TDList getList(long listId) {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("/api/tdLists/" + listId) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<>() {
-                });
-    }
-
-    public TDList addList(TDList list) {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("/api/tdLists") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .post(Entity.entity(list, APPLICATION_JSON), TDList.class);
-    }
-
     public void removeList(TDList list) {
         ClientBuilder.newClient(new ClientConfig()) //
                 .target(server).path("api/tdLists/" + list.id) //
@@ -132,6 +106,15 @@ public class ServerUtils {
                 });
     }
 
+    public Card getCardById(long cardId) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(server).path("/api/cards/" + cardId) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<>() {
+                });
+    }
+
     public void addCardToList(long listId, Card card) {
         ClientBuilder.newClient(new ClientConfig())
                 .target(server).path("/api/tdLists/" + listId + "/addCard")
@@ -163,35 +146,20 @@ public class ServerUtils {
             }
         });
     }
-//    public void registerForCardUpdates(Consumer<Long> consumer) {
-//        EXECUTOR_SERVICE.submit(() -> {
-//            while (!Thread.interrupted()) {
-//                Response result = ClientBuilder.newClient(new ClientConfig())
-//                        .target(server).path("/api/cards/updates")
-//                        .request(APPLICATION_JSON)
-//                        .accept(APPLICATION_JSON)
-//                        .get();
-//                if(result.getStatus() == HttpStatus.NO_CONTENT.value())
-//                    continue;
-//                consumer.accept(result.readEntity(Long.class));
-//            }
-//        });
-//    }
 
-    public Card updateCard(Card card) {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/cards/update") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON)
-                .put(Entity.entity(card, APPLICATION_JSON), Card.class);//
-    }
-
-    public void updateList(TDList list) {
-        ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/tdLists/update") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON)
-                .put(Entity.entity(list, APPLICATION_JSON));//
+    public void registerForCardUpdates(Consumer<Long> consumer) {
+        EXECUTOR_SERVICE.submit(() -> {
+            while (!Thread.interrupted()) {
+                Response result = ClientBuilder.newClient(new ClientConfig())
+                        .target(server).path("/api/cards/updates")
+                        .request(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON)
+                        .get();
+                if (result.getStatus() == HttpStatus.NO_CONTENT.value())
+                    continue;
+                consumer.accept(result.readEntity(Long.class));
+            }
+        });
     }
 
     public void updateListName(long listId, String newName) {
@@ -253,7 +221,26 @@ public class ServerUtils {
                 .delete();
     }
 
-    private StompSession session = connect("ws://localhost:8080/websocket");
+    public boolean serverRunning() {
+        try {
+            ClientBuilder.newClient(new ClientConfig())
+                    .target(server)
+                    .request().get();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private static StompSession session;
+
+    public void initSession(){
+        session = connect("ws://localhost:8080/websocket");
+    }
+
+    public void stopSession(){
+        session.disconnect();
+    }
 
     private StompSession connect(String url) {
         var client = new StandardWebSocketClient();

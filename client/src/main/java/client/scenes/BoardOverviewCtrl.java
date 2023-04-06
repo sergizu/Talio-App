@@ -7,11 +7,9 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -22,7 +20,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +39,6 @@ public class BoardOverviewCtrl implements Initializable {
     private Button createBoardButton;
     @FXML
     private Button disconnectButton;
-    private Scene createBoardScene;
     private CreateBoardCtrl createBoardCtrl;
 
     @Inject
@@ -55,21 +51,14 @@ public class BoardOverviewCtrl implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         boardOverviewTitle.setMaxWidth(3000.0);
         HBox.setHgrow(boardOverviewTitle, Priority.ALWAYS);
-        FXMLLoader createBoardLoader = new FXMLLoader((getClass().
-                getResource("/client/scenes/CreateBoard.fxml")));
-        createBoardLoader.setControllerFactory(c ->
-                createBoardCtrl = new CreateBoardCtrl(server, mainCtrl));
-        try {
-            createBoardScene = new Scene(createBoardLoader.load());
+        disconnectButton.setStyle("-fx-background-color: red;");
+        createBoardButton.setStyle("-fx-background-color: #2596be");
+    }
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public void registerForMessages() {
         registerForBoardRename();
         registerForBoardDeletion();
         registerForBoardCreation();
-        disconnectButton.setStyle("-fx-background-color: red;");
-        createBoardButton.setStyle("-fx-background-color: #2596be");
     }
 
     public void registerForBoardRename() {
@@ -102,7 +91,7 @@ public class BoardOverviewCtrl implements Initializable {
 
 
     public void createBoard() {
-        mainCtrl.showCreateBoard(createBoardScene, BoardOverviewCtrl.class, createBoardCtrl);
+        mainCtrl.showCreateBoard(BoardOverviewCtrl.class);
     }
 
     public void keyPressed(KeyEvent e) {
@@ -221,9 +210,10 @@ public class BoardOverviewCtrl implements Initializable {
             joinByKey();
     }
     public void showCreateBoard() {
-        mainCtrl.showCreateBoard(createBoardScene, BoardOverviewCtrl.class, createBoardCtrl);
+        mainCtrl.showCreateBoard(BoardOverviewCtrl.class);
     }
     public void disconnectPressed() {
         mainCtrl.showSelectServer();
+        server.stopSession();
     }
 }
