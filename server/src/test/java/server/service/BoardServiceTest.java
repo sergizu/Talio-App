@@ -110,6 +110,18 @@ class BoardServiceTest {
         when(boardRepository.existsById(any(Long.class))).thenReturn(false);
         assertNull(boardService.update(new Board("b1")));
     }
+
+    @Test
+    void testUpdateIfNull() {
+        assertNull(boardService.update(null));
+    }
+
+    @Test
+    void testUpdateIfNullTitle() {
+        Board board = new Board();
+        board.setTitle(null);
+        assertNull(boardService.update(board));
+    }
     @Test
     void deleteIfExists(){
         when(boardRepository.existsById(any(Long.class))).thenReturn(true);
