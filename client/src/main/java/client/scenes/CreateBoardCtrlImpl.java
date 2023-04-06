@@ -23,7 +23,8 @@ public class CreateBoardCtrlImpl implements CreateBoardCtrl {
     private Object parent;
 
     @Inject
-    public CreateBoardCtrlImpl(ServerUtils server, MainCtrl mainCtrl, CreateBoardService createBoardService) {
+    public CreateBoardCtrlImpl(ServerUtils server, MainCtrl mainCtrl,
+                               CreateBoardService createBoardService) {
         this.server = server;
         this.mainCtrl = mainCtrl;
         this.createBoardService = createBoardService;

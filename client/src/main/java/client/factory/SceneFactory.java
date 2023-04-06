@@ -47,7 +47,8 @@ public class SceneFactory {
     }
 
     public Parent createNewBoardScene(){
-        return fxml.load(CreateBoardService.class, "client", "scenes", "CreateBoard.fxml").getValue();
+        return fxml.load(CreateBoardService.class,
+                "client", "scenes", "CreateBoard.fxml").getValue();
     }
 
     public Parent createAddSubtaskScene(){
