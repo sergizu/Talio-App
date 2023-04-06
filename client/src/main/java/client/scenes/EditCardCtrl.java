@@ -9,14 +9,11 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +25,7 @@ public class EditCardCtrl {
     private final MainCtrl mainCtrl;
 
     private Card card;
-    private Scene addSubTaskScene;
-    private AddSubTaskCtrl addSubTaskCtrl;
+
     @FXML
     private TextField cardName;
 
@@ -50,7 +46,6 @@ public class EditCardCtrl {
 
     @FXML
     private TableColumn<SubtaskWrapper, Button> tableColumnButton;
-
     @Inject
     public EditCardCtrl (MainCtrl mainCtrl, ServerUtils server) {
         this.mainCtrl = mainCtrl;
@@ -60,7 +55,6 @@ public class EditCardCtrl {
     public void init(Card card) {
         this.card = card;
         cardName.setText(card.title);
-        setAddSubtask();
         description.setText(card.description);
         tableColumnSubtask.setCellValueFactory(q ->
                 new SimpleStringProperty(q.getValue().getSubtask().getName()));
@@ -99,17 +93,6 @@ public class EditCardCtrl {
         dragAndDrop(tableView);
     }
 
-    public void setAddSubtask(){
-        FXMLLoader addSubTaskLoader = new FXMLLoader(getClass().
-                getResource("/client/scenes/AddSubtask.fxml"));
-        addSubTaskLoader.setControllerFactory(c ->
-               addSubTaskCtrl = new AddSubTaskCtrl(server,mainCtrl));
-        try {
-            addSubTaskScene = new Scene(addSubTaskLoader.load());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public void ok() {
         if(cardName.getText().equals(card.title )&&
@@ -152,7 +135,7 @@ public class EditCardCtrl {
     }
 
     public void createSubtask() {
-        mainCtrl.showAddSubtask(card,addSubTaskScene,addSubTaskCtrl);
+        mainCtrl.showAddSubtask(card);
     }
 
     public void changeSubtask(TableColumn.CellEditEvent<SubtaskWrapper, String> edit) {
