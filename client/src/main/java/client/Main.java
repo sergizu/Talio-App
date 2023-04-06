@@ -17,15 +17,20 @@ package client;
 
 import client.factory.SceneFactory;
 import client.scenes.*;
+import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.stage.Stage;
+
+import static com.google.inject.Guice.createInjector;
 
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        SceneFactory sceneFactory = new SceneFactory();
+        Injector injector = createInjector(new MyModule());
+        MyFXML myFXML = new MyFXML(injector);
+        SceneFactory sceneFactory = new SceneFactory(injector, myFXML);
         var mainCtrl = sceneFactory.getInjector().getInstance(MainCtrl.class);
         mainCtrl.initialize(primaryStage, sceneFactory);
     }
