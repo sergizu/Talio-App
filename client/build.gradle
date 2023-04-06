@@ -31,5 +31,7 @@ dependencies {
 
 	testImplementation 'org.mockito:mockito-core'
 	testImplementation 'org.mockito:mockito-junit-jupiter:5.2.0'
+
+	testImplementation "org.testfx:testfx-junit5:4.0.16-alpha"
 }
 
