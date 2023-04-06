@@ -2,7 +2,6 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.AppClient;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -14,6 +13,7 @@ import javafx.scene.layout.HBox;
 public class SelectServerCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    private final ListOverviewCtrl listOverviewCtrl;
 
     @FXML
     private TextField serverName;
@@ -28,9 +28,11 @@ public class SelectServerCtrl {
     private HBox hbox;
 
     @Inject
-    public SelectServerCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public SelectServerCtrl(ServerUtils server, MainCtrl mainCtrl,
+                            ListOverviewCtrl listOverviewCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
+        this.listOverviewCtrl = listOverviewCtrl;
     }
 
     public boolean checkPass() {
@@ -39,7 +41,6 @@ public class SelectServerCtrl {
     }
 
     public void ok() {
-        AppClient client = mainCtrl.getClient();
         String s = serverName.getText();
         if (serverName.getText().isEmpty()) {
             myLabel.setText("Can not be empty!");
@@ -47,14 +48,15 @@ public class SelectServerCtrl {
         }
         myLabel.setText("");
         server.changeServer(s);
-        try {
-            server.getLists();
+        if(server.serverRunning()){
+            startSession();
             if (checkPass()) {
                 mainCtrl.showBoardOverview();
                 adminPass.setText("");
                 hbox.setVisible(false);
-            } else mainCtrl.showJoinedBoards(client);
-        } catch (Exception e) {
+            } else mainCtrl.showJoinedBoards();
+        }
+        else{
             myLabel.setText("Couldn't find the server!");
         }
     }
@@ -67,5 +69,10 @@ public class SelectServerCtrl {
         if (e.getCode() == KeyCode.ENTER) {
             ok();
         }
+    }
+
+    public void startSession(){
+        server.initSession();
+        listOverviewCtrl.init();
     }
 }

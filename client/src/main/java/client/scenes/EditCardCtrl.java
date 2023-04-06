@@ -1,7 +1,6 @@
 package client.scenes;
 
 import client.helperClass.SubtaskWrapper;
-import client.services.AddSubTaskService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
@@ -10,14 +9,11 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,9 +25,7 @@ public class EditCardCtrl {
     private final MainCtrl mainCtrl;
 
     private Card card;
-    private Scene addSubTaskScene;
-    private final AddSubTaskCtrl addSubTaskCtrl;
-    private final AddSubTaskService addSubTaskService;
+
     @FXML
     private TextField cardName;
 
@@ -53,18 +47,14 @@ public class EditCardCtrl {
     @FXML
     private TableColumn<SubtaskWrapper, Button> tableColumnButton;
     @Inject
-    public EditCardCtrl (MainCtrl mainCtrl, ServerUtils server, AddSubTaskCtrl addSubTaskCtrl,
-                         AddSubTaskService addSubTaskService) {
+    public EditCardCtrl (MainCtrl mainCtrl, ServerUtils server) {
         this.mainCtrl = mainCtrl;
         this.server = server;
-        this.addSubTaskCtrl = addSubTaskCtrl;
-        this.addSubTaskService = addSubTaskService;
     }
 
     public void init(Card card) {
         this.card = card;
         cardName.setText(card.title);
-        setAddSubtask();
         description.setText(card.description);
         tableColumnSubtask.setCellValueFactory(q ->
                 new SimpleStringProperty(q.getValue().getSubtask().getName()));
@@ -103,16 +93,6 @@ public class EditCardCtrl {
         dragAndDrop(tableView);
     }
 
-    public void setAddSubtask(){
-        FXMLLoader addSubTaskLoader = new FXMLLoader(getClass().
-                getResource("/client/scenes/AddSubtask.fxml"));
-        addSubTaskLoader.setController(addSubTaskService);
-        try {
-            addSubTaskScene = new Scene(addSubTaskLoader.load());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public void ok() {
         if(cardName.getText().equals(card.title )&&
@@ -155,7 +135,7 @@ public class EditCardCtrl {
     }
 
     public void createSubtask() {
-        mainCtrl.showAddSubtask(card,addSubTaskScene,addSubTaskCtrl);
+        mainCtrl.showAddSubtask(card);
     }
 
     public void changeSubtask(TableColumn.CellEditEvent<SubtaskWrapper, String> edit) {

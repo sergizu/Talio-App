@@ -16,7 +16,6 @@
 package client;
 
 import client.scenes.*;
-import client.utils.ServerUtils;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
@@ -30,6 +29,10 @@ public class MyModule implements Module {
         binder.bind(EditListCtrl.class).in(Scopes.SINGLETON);
         binder.bind(EditCardCtrl.class).in(Scopes.SINGLETON);
         binder.bind(SelectServerCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
+        //binder.bind(AddSubTaskCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(BoardOverviewCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(CreateBoardCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(JoinedBoardsCtrl.class).in(Scopes.SINGLETON);
+        //binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
     }
 }

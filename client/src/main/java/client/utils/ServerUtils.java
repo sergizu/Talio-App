@@ -62,32 +62,6 @@ public class ServerUtils {
                 });
     }
 
-    public List<TDList> getLists() {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("/api/tdLists") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<TDList>>() {
-                });
-    }
-
-    public TDList getList(long listId) {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("/api/tdLists/" + listId) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<>() {
-                });
-    }
-
-    public TDList addList(TDList list) {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("/api/tdLists") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .post(Entity.entity(list, APPLICATION_JSON), TDList.class);
-    }
-
     public void removeList(TDList list) {
         ClientBuilder.newClient(new ClientConfig()) //
                 .target(server).path("api/tdLists/" + list.id) //
@@ -120,24 +94,6 @@ public class ServerUtils {
                 .post(Entity.entity(board, APPLICATION_JSON), Board.class);
     }
 
-
-    public Board tempBoardGetter() {
-        Response result = ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("/api/boards/tempGetter")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .get();
-        if (result.getStatus() == HttpStatus.OK.value()) {
-            try {
-                Board board = result.readEntity(Board.class);
-                return board;
-            } catch (Exception e) {
-                System.out.println("problems: couldnt parse the incoming board");
-            }
-        }
-        return null;
-    }
-
     public Board getBoardById(long boardId) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(server).path("/api/boards/" + boardId) //
@@ -152,7 +108,8 @@ public class ServerUtils {
                 .target(server).path("/api/cards/" + cardId) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<>() {});
+                .get(new GenericType<>() {
+                });
     }
 
     public void addCardToList(long listId, Card card) {
@@ -194,6 +151,7 @@ public class ServerUtils {
             }
         });
     }
+
     public void registerForCardUpdates(Consumer<Long> consumer) {
         EXECUTOR_SERVICE.submit(() -> {
             while (!Thread.interrupted()) {
@@ -202,27 +160,11 @@ public class ServerUtils {
                         .request(APPLICATION_JSON)
                         .accept(APPLICATION_JSON)
                         .get();
-                if(result.getStatus() == HttpStatus.NO_CONTENT.value())
+                if (result.getStatus() == HttpStatus.NO_CONTENT.value())
                     continue;
                 consumer.accept(result.readEntity(Long.class));
             }
         });
-    }
-
-    public Card updateCard(Card card) {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/cards/update") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON)
-                .put(Entity.entity(card, APPLICATION_JSON), Card.class);//
-    }
-
-    public void updateList(TDList list) {
-        ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/tdLists/update") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON)
-                .put(Entity.entity(list, APPLICATION_JSON));//
     }
 
     public void updateListName(long listId, String newName) {
@@ -276,7 +218,26 @@ public class ServerUtils {
                 });
     }
 
-    private StompSession session = connect("ws://localhost:8080/websocket");
+    public boolean serverRunning() {
+        try {
+            ClientBuilder.newClient(new ClientConfig())
+                    .target(server)
+                    .request().get();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private static StompSession session;
+
+    public void initSession(){
+        session = connect("ws://localhost:8080/websocket");
+    }
+
+    public void stopSession(){
+        session.disconnect();
+    }
 
     private StompSession connect(String url) {
         var client = new StandardWebSocketClient();
