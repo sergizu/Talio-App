@@ -51,7 +51,7 @@ public class MainCtrl {
 
     private Scene createBoardScene;
     @Inject
-    private CreateBoardCtrl createBoardCtrl;
+    private CreateBoardCtrlImpl createBoardCtrl;
 
     private Scene createAddCardScene;
     @Inject
@@ -186,6 +186,10 @@ public class MainCtrl {
     public void setSizeScene() {
         primaryStage.setWidth(primaryStage.getWidth() + 1);
         primaryStage.setHeight(primaryStage.getHeight() + 1);
+    }
+
+    public String getPrimaryStageTitle(){
+        return this.primaryStage.getTitle();
     }
 
     public void setPrimaryStage(){
