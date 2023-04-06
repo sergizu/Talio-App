@@ -66,6 +66,13 @@ public class BoardTest {
     }
 
     @Test
+    public void testNotEqualsOtherClass() {
+        Board board1 = new Board("test board");
+        assertNotEquals(board1, new Object());
+    }
+
+
+    @Test
     public void testToString() {
         Board board1 = new Board("test board");
         String expected = "Board{id=" + board1.getId() + ", title=test board, tdLists=[]}";
@@ -81,13 +88,23 @@ public class BoardTest {
     }
 
     @Test
-    public void testRemoveList() {
+    public void testRemoveListExists() {
         Board board1 = new Board("test board");
         TDList list1 = new TDList("test list");
         board1.addList(list1);
         board1.removeList(list1.getId());
         assertEquals(0, board1.tdLists.size());
     }
+
+    @Test
+    public void testRemoveListDoesntExists() {
+        Board board1 = new Board("test board");
+        TDList list1 = new TDList("test list");
+        board1.addList(list1);
+        board1.removeList(2);
+        assertEquals(1, board1.tdLists.size());
+    }
+
 
     @Test
     public void testEqualHashCode() {

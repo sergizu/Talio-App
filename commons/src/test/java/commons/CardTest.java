@@ -156,4 +156,31 @@ public class CardTest {
         card.setDescription("Description");
         assertEquals("test card\n0/1\n~", card.cellFactory());
     }
+
+    @Test
+    public void testCellFactoryTitleAndSubtaskAndSelected() {
+        card.addSubTask(subtask);
+        subtask.setChecked(true);
+        assertEquals("test card\n1/1", card.cellFactory());
+    }
+
+    @Test
+    public void testCellFactoryTitleAndSubtaskAndDescriptionAndSelected() {
+        card.addSubTask(subtask);
+        card.setDescription("Description");
+        subtask.setChecked(true);
+        assertEquals("test card\n1/1\n~", card.cellFactory());
+    }
+
+    @Test
+    public void testCellFactoryDescriptionNull() {
+        card.setDescription(null);
+        assertEquals("test card", card.cellFactory());
+    }
+
+    @Test
+    public void testGetDescription() {
+        card.setDescription("Description");
+        assertEquals("Description", card.getDescription());
+    }
 }
