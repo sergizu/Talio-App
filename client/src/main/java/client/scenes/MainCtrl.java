@@ -51,7 +51,7 @@ public class MainCtrl {
 
     private Scene createBoardScene;
     @Inject
-    private CreateBoardCtrlImpl createBoardCtrl;
+    private CreateBoardCtrl createBoardCtrl;
 
     private Scene createAddCardScene;
     @Inject
