@@ -19,7 +19,7 @@ import javafx.scene.input.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static client.helperClass.SubtaskWrapper.serialization;
+//import static client.helperClass.SubtaskWrapper.serialization;
 
 public class EditCardCtrl {
 
@@ -161,22 +161,22 @@ public class EditCardCtrl {
                     db.setDragView(row.snapshot(null, null));
                     //shows a snapshot of the row when moving it
                     ClipboardContent cc = new ClipboardContent();
-                    cc.put(serialization, i);
+                    cc.put(mainCtrl.getSerialization(), i);
                     db.setContent(cc);
                     e.consume();
                 }
             });
             row.setOnDragOver(e -> {
                 Dragboard db = e.getDragboard();
-                if (db.hasContent(serialization)) {
+                if (db.hasContent(mainCtrl.getSerialization())) {
                     e.acceptTransferModes(TransferMode.MOVE);
                     e.consume();
                 }
             });
             row.setOnDragDropped(e -> {
                 Dragboard db = e.getDragboard();
-                if (db.hasContent(serialization)) {
-                    int draggedIndex = (int) db.getContent(serialization);
+                if (db.hasContent(mainCtrl.getSerialization())) {
+                    int draggedIndex = (int) db.getContent(mainCtrl.getSerialization());
                     SubtaskWrapper subtaskWrapper = tableView.getItems().remove(draggedIndex);
                     int dropIndex;
                     if (row.isEmpty())

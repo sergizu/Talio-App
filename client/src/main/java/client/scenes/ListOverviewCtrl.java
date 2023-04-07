@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.helperClass.SubtaskWrapper;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Board;
@@ -18,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.*;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.FlowPane;
@@ -31,8 +33,6 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
-
-import static client.helperClass.SubtaskWrapper.serialization;
 
 public class ListOverviewCtrl {
     private final ServerUtils server;
@@ -193,7 +193,7 @@ public class ListOverviewCtrl {
                     db.setDragView(row.snapshot(null, null));
                     //shows a snapshot of the row when moving it
                     ClipboardContent cc = new ClipboardContent();
-                    cc.put(serialization, i);
+                    cc.put(mainCtrl.getSerialization(), i);
                     db.setContent(cc);
                     //makes it so that you can find the row index in the dragboard
                     e.consume(); //Marks the end of the event
@@ -201,7 +201,7 @@ public class ListOverviewCtrl {
             });
             row.setOnDragOver(e -> {
                 Dragboard db = e.getDragboard();
-                if (db.hasContent(serialization)) {
+                if (db.hasContent(mainCtrl.getSerialization())) {
                     //Checks whether the data format has any information, which it should have as
                     //it has been associated with the row Index in the setOnRowDetected method
                     e.acceptTransferModes(TransferMode.MOVE); //accepts the drag event
@@ -210,8 +210,8 @@ public class ListOverviewCtrl {
             });
             row.setOnDragDropped(e -> {
                 Dragboard db = e.getDragboard();
-                if (db.hasContent(serialization) && selection == tableView) {
-                    int draggedIndex = (int) db.getContent(serialization);
+                if (db.hasContent(mainCtrl.getSerialization()) && selection == tableView) {
+                    int draggedIndex = (int) db.getContent(mainCtrl.getSerialization());
                     Card card = tableView.getItems().remove(draggedIndex);
                     int dropIndex;
                     if (row.isEmpty())
@@ -249,14 +249,14 @@ public class ListOverviewCtrl {
         tableView.setOnMousePressed(e -> selection = tableView);
         tableView.setOnDragOver(e -> {
             Dragboard db = e.getDragboard();
-            if (db.hasContent(serialization)) {
+            if (db.hasContent(mainCtrl.getSerialization())) {
                 e.acceptTransferModes(TransferMode.MOVE);
                 e.consume();
             }
         });
         tableView.setOnDragDropped(e -> {
             Dragboard db = e.getDragboard();
-            int draggedIndex = (int) db.getContent(serialization);
+            int draggedIndex = (int) db.getContent(mainCtrl.getSerialization());
             Card card = selection.getItems().remove(draggedIndex);
             server.updateCardList(card.getId(), tdList);
             setBoard(board.id);
