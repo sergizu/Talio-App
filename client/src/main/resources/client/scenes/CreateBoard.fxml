@@ -8,13 +8,14 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CreateBoardCtrl">
    <children>
-      <TextField fx:id="boardTitle" layoutX="226.0" layoutY="188.0" onKeyPressed="#keyPressed" />
-      <Label layoutX="262.0" layoutY="152.0" text="Board title:" textAlignment="JUSTIFY">
+      <TextField fx:id="boardTitle" layoutX="201.0" layoutY="185.0" onKeyPressed="#keyPressed" prefHeight="31.0" prefWidth="184.0" />
+      <Label alignment="CENTER" layoutX="223.0" layoutY="105.0" prefHeight="63.0" prefWidth="140.0" text="Board title:" textAlignment="JUSTIFY">
          <font>
-            <Font size="16.0" />
+            <Font size="26.0" />
          </font>
       </Label>
-      <Button layoutX="325.0" layoutY="228.0" mnemonicParsing="false" onMousePressed="#createBoard" text="Create" />
-      <Button layoutX="226.0" layoutY="228.0" mnemonicParsing="false" onKeyPressed="#keyPressed" onMouseClicked="#escape" text="Cancel" />
+      <Button layoutX="334.0" layoutY="254.0" mnemonicParsing="false" onMousePressed="#createBoard" text="Create" />
+      <Button layoutX="204.0" layoutY="254.0" mnemonicParsing="false" onKeyPressed="#keyPressed" onMouseClicked="#escape" text="Cancel" />
+      <Label fx:id="myLabel" alignment="CENTER" layoutX="202.0" layoutY="213.0" prefHeight="25.0" prefWidth="184.0" />
    </children>
 </AnchorPane>

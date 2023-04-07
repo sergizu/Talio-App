@@ -8,6 +8,7 @@ import commons.TDList;
 import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -22,6 +23,9 @@ public class CreateBoardCtrl {
 
     @FXML
     TextField boardTitle;
+
+    @FXML
+    Label myLabel;
 
     @Inject
     public CreateBoardCtrl(ServerUtils server, MainCtrl mainCtrl) {
@@ -42,6 +46,10 @@ public class CreateBoardCtrl {
     }
 
     public void createBoard() {
+        if(boardTitle.getText().isEmpty()) {
+            myLabel.setText("Board name cannot be empty!");
+            return;
+        }
         Board board = getBoardWithTitle();
         boardTitle.setText("");
         try {
