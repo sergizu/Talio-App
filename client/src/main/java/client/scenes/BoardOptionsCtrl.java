@@ -7,10 +7,10 @@ import javafx.scene.input.KeyEvent;
 @ImplementedBy(BoardOptionsCtrlImpl.class)
 public interface BoardOptionsCtrl {
 
-    public void init(Board board);
-    public void ok();
-    public void cancel();
-    public void delete();
-    public void showNextScene();
-    public void keyPressed(KeyEvent event);
+    void init(Board board);
+    void ok();
+    void cancel();
+    void delete();
+    void showNextScene();
+    void keyPressed(KeyEvent event);
 }

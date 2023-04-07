@@ -16,7 +16,8 @@ public class BoardOptionsCtrlImpl implements BoardOptionsCtrl {
 
 
     @Inject
-    public BoardOptionsCtrlImpl(ServerUtils server, MainCtrl mainCtrl, BoardOptionsService boardOptionsService) {
+    public BoardOptionsCtrlImpl(ServerUtils server, MainCtrl mainCtrl,
+                                BoardOptionsService boardOptionsService) {
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.boardOptionsService = boardOptionsService;
@@ -59,6 +60,14 @@ public class BoardOptionsCtrlImpl implements BoardOptionsCtrl {
             ok();
         else if(e.getCode() == KeyCode.ESCAPE)
             cancel();
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+    
+    public void setBoard(Board board){
+        this.board = board;
     }
 
 
