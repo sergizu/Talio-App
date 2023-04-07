@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="createBoardBox" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../../../../CSS/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CreateBoardCtrl">
+<AnchorPane fx:id="createBoardBox" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../../CSS/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CreateBoardCtrl">
    <children>
       <VBox alignment="TOP_CENTER" layoutX="147.0" layoutY="140.0" prefHeight="218.0" prefWidth="58.0" spacing="40.0" AnchorPane.leftAnchor="400" AnchorPane.rightAnchor="400.0">
          <children>
