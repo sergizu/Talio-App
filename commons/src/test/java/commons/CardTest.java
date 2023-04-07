@@ -141,7 +141,7 @@ public class CardTest {
     @Test
     public void testCellFactoryTitleAndDescription() {
         card.setDescription("description");
-        assertEquals("test card\n~", card.cellFactory());
+        assertEquals("test card\n...", card.cellFactory());
     }
 
     @Test
@@ -154,7 +154,7 @@ public class CardTest {
     public void testCellFactoryTitleAndSubtaskAndDescription() {
         card.addSubTask(subtask);
         card.setDescription("Description");
-        assertEquals("test card\n0/1\n~", card.cellFactory());
+        assertEquals("test card\n0/1\n...", card.cellFactory());
     }
 
     @Test
@@ -169,7 +169,7 @@ public class CardTest {
         card.addSubTask(subtask);
         card.setDescription("Description");
         subtask.setChecked(true);
-        assertEquals("test card\n1/1\n~", card.cellFactory());
+        assertEquals("test card\n1/1\n...", card.cellFactory());
     }
 
     @Test
