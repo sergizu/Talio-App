@@ -44,7 +44,7 @@ public class AddSubTaskCtrlImpl implements AddSubTaskCtrl{
 
     public void cancel() {
         addSubTaskService.setMyLabelText("");
-        mainCtrl.showOverview(card.list.board.id);
+        mainCtrl.showEdit(card);
     }
 
     public Card getCard() {
