@@ -67,7 +67,7 @@ public class MainCtrl {
     private AddSubTaskCtrl createAddSubtaskCtrl;
 
     @Inject
-    private BoardOptionsCtrl boardOptionsCtrl;
+    private BoardOptionsCtrlImpl boardOptionsCtrl;
     private Scene boardOptionsScene;
 
     boolean isAdmin;

@@ -33,7 +33,7 @@ public class MyModule implements Module {
         binder.bind(BoardOverviewCtrl.class).in(Scopes.SINGLETON);
         binder.bind(CreateBoardCtrl.class).in(Scopes.SINGLETON);
         binder.bind(JoinedBoardsCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(BoardOptionsCtrl.class).in(Scopes.SINGLETON);
+        //binder.bind(BoardOptionsCtrl.class).in(Scopes.SINGLETON);
         //binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
     }
 }
