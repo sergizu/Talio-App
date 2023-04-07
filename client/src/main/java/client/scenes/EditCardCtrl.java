@@ -5,6 +5,8 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
 import commons.Subtask;
+import commons.TDList;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -56,6 +58,11 @@ public class EditCardCtrl {
         this.card = card;
         cardName.setText(card.title);
         description.setText(card.description);
+        initSubtasks();
+        dragAndDrop(tableView);
+    }
+
+    private void initSubtasks() {
         tableColumnSubtask.setCellValueFactory(q ->
                 new SimpleStringProperty(q.getValue().getSubtask().getName()));
         tableColumnCheckbox.setCellValueFactory(
@@ -90,7 +97,6 @@ public class EditCardCtrl {
         tableView.setItems(data);
         tableView.setEditable(true);
         tableColumnSubtask.setCellFactory(TextFieldTableCell.forTableColumn());
-        dragAndDrop(tableView);
     }
 
 
@@ -192,26 +198,23 @@ public class EditCardCtrl {
         });
     }
 
-//    @Override
-//    public void initialize(URL location, ResourceBundle resources) {
-//        server.registerForCardUpdates(updatedCardID -> {
-//                Platform.runLater(() -> {
-//                    if(card.getId() == updatedCardID) {
-//                        TDList tdList = card.getList();
-//                    Card boardReference = card;
-//                    try {
-//                        card = server.getCardById(card.id);
-//                        System.out.println(card.getList());
-//                        card.setList(tdList);
-//                    } catch (Exception e) {
-//                        System.out.println("Hello World!");
-//                        mainCtrl.showOverview(boardReference.getList().getBoard().getId());
-//                    }
-//                        if (mainCtrl.getPrimaryStage().getTitle().equals("Card: Edit Card")) {
-//                            mainCtrl.showEdit(card);
-//                        }
-//                    }
-//                });
-//        });
-//    }
+
+    public void registerForUpdates() {
+        server.registerForCardUpdates(updatedCardID -> Platform.runLater(() -> {
+            if(card.getId() == updatedCardID) {
+                TDList tdList = card.getList();
+            Card boardReference = card;
+            try {
+                card = server.getCardById(card.id);
+                System.out.println(card.getList());
+                card.setList(tdList);
+            } catch (Exception e) {
+                mainCtrl.showOverview(boardReference.getList().getBoard().getId());
+            }
+                if (mainCtrl.getPrimaryStage().getTitle().equals("Card: Edit Card")) {
+                    mainCtrl.showEdit(card);
+                }
+            }
+        }));
+    }
 }
