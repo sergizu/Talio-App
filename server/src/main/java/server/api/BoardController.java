@@ -14,7 +14,7 @@ import server.service.ListService;
 import java.util.List;
 import java.util.Random;
 
-@Controller
+@RestController
 @RequestMapping("/api/boards")
 public class BoardController {
     private final BoardService boardService;
