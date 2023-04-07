@@ -75,6 +75,7 @@ public class EditCardCtrl {
             CheckBox checkBox = new CheckBox();
             if (subtask.checked) {
                 checkBox.setSelected(true);
+                checkBox.setStyle("-fx-accent-color: green;");
             }
             checkBox.setOnMouseClicked(event -> {
                 if (checkBox.isSelected()) {
