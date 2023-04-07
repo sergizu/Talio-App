@@ -1,6 +1,5 @@
 package client.scenes;
 
-import client.helperClass.SubtaskWrapper;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Board;
@@ -19,7 +18,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.*;
 import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.FlowPane;

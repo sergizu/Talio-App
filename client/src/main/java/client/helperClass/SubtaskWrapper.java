@@ -3,7 +3,6 @@ package client.helperClass;
 import commons.Subtask;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.input.DataFormat;
 
 public class SubtaskWrapper {
 
