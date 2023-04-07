@@ -198,4 +198,8 @@ public class MainCtrl {
             this.listOverviewCtrl.stop();
         });
     }
+
+    public Stage getPrimaryStage() {
+        return this.primaryStage;
+    }
 }
