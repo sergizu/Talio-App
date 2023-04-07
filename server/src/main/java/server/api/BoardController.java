@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
-import server.database.BoardRepository;
-import server.database.CardRepository;
-import server.database.ListRepository;
 import server.service.BoardService;
+import server.service.ListService;
 
 import java.util.List;
 import java.util.Random;
@@ -19,20 +17,15 @@ import java.util.Random;
 @RequestMapping("/api/boards")
 public class BoardController {
     private final BoardService boardService;
-    private final ListRepository listRepository;
-    private final CardRepository cardRepository;
+    private final ListService listService;
 
-    private final BoardRepository boardRepository;
     private Long defaultBoardID; //temporary default board to return to all requests
 
     @Autowired
     public BoardController(BoardService boardService,
-                           ListRepository listRepository, CardRepository cardRepository,
-                           BoardRepository boardRepository) {
+                           ListService listService) {
         this.boardService = boardService;
-        this.listRepository = listRepository;
-        this.cardRepository = cardRepository;
-        this.boardRepository = boardRepository;
+        this.listService = listService;
         this.defaultBoardID = -1L; //setting it to undefined
     }
 
@@ -85,12 +78,10 @@ public class BoardController {
         if (!boardService.existsById(id))
              ResponseEntity.badRequest().build();
         Board board = boardService.getById(id);
-        //System.out.println(board.tdLists);
         TDList list = board.tdLists.get(0);
         list.addCard(card);
-        list = listRepository.save(list);
+        list = listService.update(list);
         board.tdLists.set(0, list);
-        board = boardService.update(board);
         return ResponseEntity.ok().build();
     }
 
