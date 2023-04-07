@@ -48,11 +48,11 @@
                   <Insets />
                </VBox.margin>
             </HBox>
-            <TableView fx:id="tableView" maxWidth="-Infinity" prefHeight="176.0" prefWidth="427.0">
+            <TableView fx:id="tableView" maxWidth="-Infinity" prefHeight="176.0" prefWidth="427.0" stylesheets="@../../../CSS/buttonCSS.css">
               <columns>
-                <TableColumn fx:id="tableColumnSubtask" onEditCommit="#changeSubtask" prefWidth="336.0" text="Subtasks" />
-                  <TableColumn fx:id="tableColumnCheckbox" prefWidth="48.0" />
-                  <TableColumn fx:id="tableColumnButton" prefWidth="42.0" />
+                <TableColumn fx:id="tableColumnSubtask" onEditCommit="#changeSubtask" prefWidth="356.0" text="Subtasks" />
+                  <TableColumn fx:id="tableColumnCheckbox" prefWidth="35.0" />
+                  <TableColumn fx:id="tableColumnButton" prefWidth="35.0" />
               </columns>
             </TableView>
             <HBox alignment="CENTER" prefWidth="503.0" spacing="310.0">

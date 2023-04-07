@@ -1,0 +1,19 @@
+.button {
+    -fx-background-image: url('rood.png');
+    -fx-background-position: center;
+    -fx-background-size: 25px;
+}
+
+#tableColumnCheckbox {
+    -fx-alignment: CENTER;
+    -fx-border-color: transparent;
+}
+
+#tableColumnButton {
+    -fx-alignment: CENTER;
+    -fx-border-color: transparent;
+}
+
+#tableColumnSubtask {
+    -fx-border-color: transparent;
+}

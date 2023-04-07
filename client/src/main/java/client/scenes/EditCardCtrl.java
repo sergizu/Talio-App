@@ -75,7 +75,6 @@ public class EditCardCtrl {
             CheckBox checkBox = new CheckBox();
             if (subtask.checked) {
                 checkBox.setSelected(true);
-                checkBox.setStyle("-fx-accent-color: green;");
             }
             checkBox.setOnMouseClicked(event -> {
                 if (checkBox.isSelected()) {
@@ -87,7 +86,7 @@ public class EditCardCtrl {
                     server.updateNestedList(card.id, card.getNestedList());
                 }
             });
-            Button button = new Button("X");
+            Button button = new Button("   ");
             button.setOnAction(event -> {
                 card.getNestedList().remove(subtask);
                 server.updateNestedList(card.id, card.getNestedList());
