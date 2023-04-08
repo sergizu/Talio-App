@@ -1,6 +1,6 @@
 package client.dependentOnCompontents;
 
-import client.services.BoardOptionsService;
+import client.services.interfaces.BoardOptionsService;
 
 import java.util.ArrayList;
 

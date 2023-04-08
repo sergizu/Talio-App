@@ -1,6 +1,8 @@
-package client.scenes;
+package client.scenes.implementations;
 
-import client.services.AddCardService;
+import client.scenes.MainCtrl;
+import client.scenes.interfaces.AddCardCtrl;
+import client.services.interfaces.AddCardService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -11,7 +13,7 @@ import javafx.scene.input.KeyEvent;
 
 
 @Singleton
-public class AddCardCtrlImpl implements AddCardCtrl{
+public class AddCardCtrlImpl implements AddCardCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private final AddCardService addCardService;

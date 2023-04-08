@@ -1,6 +1,7 @@
-package client.services;
+package client.services.implementations;
 
-import client.scenes.AddSubTaskCtrl;
+import client.scenes.interfaces.AddSubTaskCtrl;
+import client.services.interfaces.AddSubTaskService;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import javafx.fxml.FXML;
@@ -8,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 @Singleton
-public class AddSubTaskServiceImpl implements AddSubTaskService{
+public class AddSubTaskServiceImpl implements AddSubTaskService {
     @FXML
     private TextField subtaskName;
 

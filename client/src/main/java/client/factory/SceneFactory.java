@@ -2,10 +2,11 @@ package client.factory;
 
 import client.MyFXML;
 import client.scenes.*;
-import client.services.AddCardService;
-import client.services.AddListService;
-import client.services.AddSubTaskService;
-import client.services.CreateBoardService;
+import client.scenes.implementations.BoardOptionsCtrlImpl;
+import client.services.interfaces.AddCardService;
+import client.services.interfaces.AddListService;
+import client.services.interfaces.AddSubTaskService;
+import client.services.interfaces.CreateBoardService;
 import com.google.inject.Injector;
 import javafx.scene.Parent;
 

@@ -1,6 +1,7 @@
-package client.services;
+package client.services.implementations;
 
-import client.scenes.CreateBoardCtrl;
+import client.scenes.interfaces.CreateBoardCtrl;
+import client.services.interfaces.CreateBoardService;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import javafx.fxml.FXML;

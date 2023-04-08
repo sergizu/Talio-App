@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.dependentOnCompontents.TestBoardOptionsService;
+import client.scenes.implementations.BoardOptionsCtrlImpl;
 import client.utils.ServerUtils;
 import commons.Board;
 import javafx.scene.input.KeyCode;

@@ -1,5 +1,6 @@
-package client.services;
+package client.services.interfaces;
 
+import client.services.implementations.CreateBoardServiceImp;
 import com.google.inject.ImplementedBy;
 
 @ImplementedBy(CreateBoardServiceImp.class)

@@ -1,5 +1,6 @@
-package client.scenes;
+package client.scenes.interfaces;
 
+import client.scenes.implementations.AddCardCtrlImpl;
 import com.google.inject.ImplementedBy;
 import javafx.scene.input.KeyEvent;
 

@@ -16,6 +16,11 @@
 package client.scenes;
 
 import client.factory.SceneFactory;
+import client.scenes.interfaces.AddCardCtrl;
+import client.scenes.interfaces.AddListCtrl;
+import client.scenes.interfaces.AddSubTaskCtrl;
+import client.scenes.interfaces.CreateBoardCtrl;
+import client.scenes.implementations.BoardOptionsCtrlImpl;
 import com.google.inject.Inject;
 import commons.AppClient;
 import commons.Board;

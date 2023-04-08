@@ -1,5 +1,6 @@
-package client.services;
+package client.services.interfaces;
 
+import client.services.implementations.BoardOptionsServiceImpl;
 import com.google.inject.ImplementedBy;
 
 @ImplementedBy(BoardOptionsServiceImpl.class)

@@ -1,6 +1,7 @@
 package client.scenes;
 
-import client.services.AddCardService;
+import client.scenes.implementations.AddCardCtrlImpl;
+import client.services.interfaces.AddCardService;
 import client.utils.ServerUtils;
 import commons.Card;
 import javafx.scene.input.KeyCode;
@@ -11,7 +12,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;

@@ -1,7 +1,7 @@
 package client.scenes;
 
-import client.services.AddCardService;
-import client.services.CreateBoardService;
+import client.scenes.implementations.CreateBoardCtrlImpl;
+import client.services.interfaces.CreateBoardService;
 import client.utils.ServerUtils;
 import commons.AppClient;
 import commons.Board;
@@ -16,7 +16,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
