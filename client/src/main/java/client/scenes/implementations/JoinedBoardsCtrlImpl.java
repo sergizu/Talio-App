@@ -195,4 +195,12 @@ public class JoinedBoardsCtrlImpl implements JoinedBoardsCtrl {
                 }
         client.boards.put(ServerUtils.getServer(), allBoards);
     }
+
+    public void setClient(AppClient client) {
+        this.client = client;
+    }
+
+    public AppClient getClient() {
+        return client;
+    }
 }

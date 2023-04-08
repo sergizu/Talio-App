@@ -1,6 +1,7 @@
-package client.services.implementations;
+package client.services;
 
 import client.scenes.interfaces.BoardOptionsCtrl;
+import client.services.implementations.BoardOptionsServiceImpl;
 import client.services.interfaces.BoardOptionsService;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
