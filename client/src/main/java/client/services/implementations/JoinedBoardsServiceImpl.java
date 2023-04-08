@@ -5,6 +5,9 @@ import client.services.interfaces.JoinedBoardsService;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import commons.Board;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,6 +18,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -156,5 +160,20 @@ public class JoinedBoardsServiceImpl implements JoinedBoardsService {
     
     public void joinByKey() {
         joinedBoardsCtrl.joinByKey();
+    }
+    public void adjustPromptText(String information) {
+        Platform.runLater(() ->
+        {
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.ZERO, event -> {
+                        clearJoinByKey();
+                        setJoinByKeyPrompt(information);
+                    }),
+                    new KeyFrame(Duration.seconds(5), event -> {
+                        setJoinByKeyPrompt("Join by key");
+                    })
+            );
+            timeline.play();
+        });
     }
 }

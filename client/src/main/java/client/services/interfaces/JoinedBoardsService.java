@@ -20,4 +20,6 @@ public interface JoinedBoardsService extends Initializable {
     void disconnectPressed();
     void showCreateBoard();
     void joinByKey();
+    void adjustPromptText(String information);
+
 }

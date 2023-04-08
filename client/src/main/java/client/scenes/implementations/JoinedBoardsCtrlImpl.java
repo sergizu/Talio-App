@@ -8,12 +8,9 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import commons.AppClient;
 import commons.Board;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.util.Duration;
 
 import java.util.ArrayList;
 
@@ -109,18 +106,11 @@ public class JoinedBoardsCtrlImpl implements JoinedBoardsCtrl {
         try {
             key = Long.parseLong(service.getJoinByKeyText());
         } catch (NumberFormatException e) {
-            adjustPromptText("Please enter a valid key!");
+            service.adjustPromptText("Please enter a valid key!");
             return;
         }
-        ArrayList<Board> allBoards = (ArrayList<Board>) server.getBoards();
-        for (Board board : allBoards)
-            if (board.key == key) {
-                joinBoard(board);
-                service.clearJoinByKey();
-                return;
-            }
         if (!lookForBoardKey(key))
-            adjustPromptText("No board with that key!");
+            service.adjustPromptText("No board with that key!");
     }
 
     public boolean lookForBoardKey(long key) {
@@ -132,22 +122,6 @@ public class JoinedBoardsCtrlImpl implements JoinedBoardsCtrl {
                 return true;
             }
         return false;
-    }
-
-    public void adjustPromptText(String information) {
-        Platform.runLater(() ->
-        {
-            Timeline timeline = new Timeline(
-                    new KeyFrame(Duration.ZERO, event -> {
-                        service.clearJoinByKey();
-                        service.setJoinByKeyPrompt(information);
-                    }),
-                    new KeyFrame(Duration.seconds(5), event -> {
-                        service.setJoinByKeyPrompt("Join by key");
-                    })
-            );
-            timeline.play();
-        });
     }
 
     public void joinBoard(Board board) {

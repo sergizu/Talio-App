@@ -14,6 +14,7 @@ public class TestJoinedBoardsService implements JoinedBoardsService {
 
     public String toReturn;
     public ArrayList<Board> boards;
+    public String promptText;
     public TestJoinedBoardsService() {
         calls = new ArrayList<>();
     }
@@ -67,5 +68,10 @@ public class TestJoinedBoardsService implements JoinedBoardsService {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         calls.add("initialize");
+    }
+
+    public void adjustPromptText(String information) {
+        promptText = information;
+        calls.add("adjustPrompt");
     }
 }
