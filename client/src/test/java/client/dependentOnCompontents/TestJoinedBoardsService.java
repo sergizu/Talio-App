@@ -13,13 +13,14 @@ public class TestJoinedBoardsService implements JoinedBoardsService {
     public ArrayList<String> calls;
 
     public String toReturn;
-
+    public ArrayList<Board> boards;
     public TestJoinedBoardsService() {
         calls = new ArrayList<>();
     }
     @Override
     public void showJoinedBoards(ArrayList<Board> boards) {
         calls.add("showJoinedBoards");
+        this.boards = boards;
     }
 
     @Override
