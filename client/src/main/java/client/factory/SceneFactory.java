@@ -5,6 +5,7 @@ import client.scenes.*;
 import client.services.AddCardService;
 import client.services.AddListService;
 import client.services.AddSubTaskService;
+import client.services.CreateBoardService;
 import com.google.inject.Injector;
 import javafx.scene.Parent;
 
@@ -46,7 +47,8 @@ public class SceneFactory {
     }
 
     public Parent createNewBoardScene(){
-        return fxml.load(CreateBoardCtrl.class, "client", "scenes", "CreateBoard.fxml").getValue();
+        return fxml.load(CreateBoardService.class,
+                "client", "scenes", "CreateBoard.fxml").getValue();
     }
 
     public Parent createAddSubtaskScene(){

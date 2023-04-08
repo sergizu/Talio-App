@@ -1,6 +1,7 @@
 package server.api;
 
 import commons.Card;
+import commons.CardListId;
 import commons.TDList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import server.service.ListService;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -119,5 +120,11 @@ class ListControllerTest {
                 when(listService.updateName(any(Long.class), any(String.class))).thenReturn(false);
                 assertEquals(ResponseEntity.badRequest().build(),
                         listController.updateListName(1L, "a"));
+        }
+
+        @Test
+        void testSendCardListId() {
+                CardListId cardListId = new CardListId();
+                assertEquals(cardListId, listController.sentCardListId(cardListId));
         }
 }

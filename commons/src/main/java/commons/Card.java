@@ -83,6 +83,10 @@ public class Card {
         return id;
     }
 
+    /**
+     * Getter for description
+     * @return description of this card
+     */
     public String getDescription() {
         return description;
     }
