@@ -1,6 +1,7 @@
 package server.api;
 
 import commons.Card;
+import commons.CardListId;
 import commons.TDList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -119,5 +120,11 @@ class ListControllerTest {
                 when(listService.updateName(any(Long.class), any(String.class))).thenReturn(false);
                 assertEquals(ResponseEntity.badRequest().build(),
                         listController.updateListName(1L, "a"));
+        }
+
+        @Test
+        void testAddMessage() {
+                CardListId cardListId = new CardListId();
+                assertEquals(cardListId, listController.addMessage(cardListId));
         }
 }

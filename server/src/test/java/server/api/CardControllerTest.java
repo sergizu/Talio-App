@@ -2,20 +2,16 @@ package server.api;
 
 import commons.Card;
 import commons.TDList;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.context.request.async.DeferredResult;
 import server.service.CardService;
+
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -135,5 +131,23 @@ class CardControllerTest {
     void updateListIfNotExists(){
         when(cardService.updateList(any(Long.class), any(long.class))).thenReturn(false);
         assertEquals(ResponseEntity.badRequest().build(), cardController.updateList(1L, 2L));
+    }
+
+    @Test
+    void testSubscribeForUpdates() {
+        given(cardService.subscribeForUpdates()).willReturn(new DeferredResult<>(null, new TDList()));
+        assertNotNull(cardController.subscribeForUpdates());
+    }
+
+    @Test
+    void testUpdateNestedList() {
+        given(cardService.updateNestedList(any(Long.class), any())).willReturn(true);
+        assertEquals(ResponseEntity.ok().build(), cardController.updateNestedList(1L, new ArrayList<>()));
+    }
+
+    @Test
+    void testUpdateNestedListIfNotExists() {
+        given(cardService.updateNestedList(any(Long.class), any())).willReturn(false);
+        assertEquals(ResponseEntity.badRequest().build(), cardController.updateNestedList(1L, new ArrayList<>()));
     }
 }

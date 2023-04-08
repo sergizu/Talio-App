@@ -7,9 +7,6 @@ import commons.TDList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import server.database.BoardRepository;
-import server.database.CardRepository;
-import server.database.ListRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -22,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 
 
 import server.service.BoardService;
+import server.service.ListService;
 
 
 import static org.mockito.ArgumentMatchers.any;
@@ -32,20 +30,14 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class BoardControllerTest {
     @Mock BoardService boardService;
-    @Mock ListRepository listRepository;
-    @Mock CardRepository cardRepository;
-    @Mock
-    BoardRepository boardRepository;
-
-
+    @Mock ListService listService;
     BoardController boardController;
 
 
     @BeforeEach
 
     void setUp() {
-        boardController = new BoardController(boardService, listRepository,
-                cardRepository, boardRepository);
+        boardController = new BoardController(boardService, listService);
     }
 
     @Test

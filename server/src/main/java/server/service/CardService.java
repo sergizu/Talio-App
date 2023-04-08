@@ -105,39 +105,28 @@ public class CardService {
     }
 
     public boolean updateNestedList(long id, ArrayList<Subtask> nestedList) {
-        try {
-            Card toUpdate = cardRepository.getById(id);
-            toUpdate.setNestedList(nestedList);
-            toUpdate = cardRepository.save(toUpdate);
-            boardService.sendUpdates(toUpdate.getList().getBoard().getId());
-            sendUpdates(toUpdate.getId());
-        } catch(Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+        if (!cardRepository.existsById(id)) return false;
+        if (nestedList == null) return false;
+        Card toUpdate = cardRepository.getById(id);
+        toUpdate.setNestedList(nestedList);
+        toUpdate = cardRepository.save(toUpdate);
+        boardService.sendUpdates(toUpdate.getList().getBoard().getId());
+        sendUpdates(toUpdate.getId());
         return true;
     }
 
     public DeferredResult<ResponseEntity<Long>> subscribeForUpdates() {
         ResponseEntity<Long> noContent = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         org.springframework.web.context.request.async.DeferredResult<ResponseEntity<Long>>
-            result = new DeferredResult<>(10000L, noContent);
+            result = new DeferredResult<>(1000L, noContent);
 
         Object key = new Object(); //trick to uniquely identify every key
-        listeners.put(key, id -> {
-            result.setResult(ResponseEntity.ok(id));
-        });
-        result.onCompletion(() -> {
-            listeners.remove(key);
-        });
+        listeners.put(key, id -> result.setResult(ResponseEntity.ok(id)));
+        result.onCompletion(() -> listeners.remove(key));
         return result;
     }
 
     public void sendUpdates(long id) {
-        try {
-            listeners.forEach((key, listener) -> listener.accept(id));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        listeners.forEach((key, listener) -> listener.accept(id));
     }
 }
