@@ -1,100 +1,22 @@
 .table-row-cell{
-    -fx-background-color: rgb(255, 255, 255);
+    -fx-background-color: #1c1b1b11;
     -fx-border-color: rgb(0, 0, 0);
     -fx-text-background-color: rgb(0, 0, 0);
     -fx-cell-size: 60px;
     -fx-font-size:20px;
 }
 
-.table-column {
-    -fx-alignment: CENTER;
-}
-.table-view .column-header,
-.table-view .column-header-background .filler {
-    -fx-background-color:
-                    #6622CC,
-                    linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
-                    linear-gradient(#6622CC, #191d22),
-                    radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
-}
-.table-view .column-header .label{
-   -fx-text-fill: white;
-   -fx-font-weight: bold;
-   -fx-alignment: CENTER_LEFT;
-}
-.table-row-cell:selected {
-   -fx-background-color: whitesmoke;
-   -fx-text-background-color:  #6622CC;
-}
-.table-view{
-    -fx-border-color: #6622CC;
-}
-.table-row-cell{
--fx-border-color: #6622CC;
--fx-table-cell-border-color:transparent;
-}
 .table-row-cell:empty{
     -fx-background-color: transparent;
     -fx-border-color: transparent;
-    -fx-table-cell-border-color: transparent;
-}
-.button{
-    -fx-background-color:
-                #6622CC,
-                linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
-                linear-gradient(#6622CC, #191d22),
-                radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-alignment: CENTER;
-}
-.button:hover{
-        -fx-background-color: #333399;
-        -fx-text-fill: white;
-        -fx-font-weight: bold;
-}
-.text-field {
-    -fx-background-color: #ffccff;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
 }
 
-.label{
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-}
-#boardsList{
-    -fx-background-color: #ffccff;
-}
-#startBox{
-    -fx-background-color:
-                    #6622CC,
-                    linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
-                    linear-gradient(#6622CC, #191d22),
-                    radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
+.table-column {
+    -fx-alignment: CENTER;
 }
 #copyButton{
     -fx-background-color: #2596be;
 }
-#menu{
-    -fx-background-color:
-                    #6622CC,
-                    linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
-                    linear-gradient(#6622CC, #191d22);
-}
-.anchorpane{
-    -fx-color: #6622CC;
-}
-#boardTitle{
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-}
-#createBoardBox{
-    -fx-background-color:
-                        #6622CC,
-                        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
-                        linear-gradient(#6622CC, #191d22);
-}
+#boardKey{
 
-
-
+}
