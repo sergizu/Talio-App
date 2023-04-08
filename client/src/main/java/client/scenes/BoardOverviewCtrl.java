@@ -92,7 +92,7 @@ public class BoardOverviewCtrl implements Initializable {
 
 
     public void createBoard() {
-        mainCtrl.showCreateBoard(BoardOverviewCtrl.class);
+        mainCtrl.showCreateBoard();
     }
 
     public void keyPressed(KeyEvent e) {
@@ -211,7 +211,7 @@ public class BoardOverviewCtrl implements Initializable {
             joinByKey();
     }
     public void showCreateBoard() {
-        mainCtrl.showCreateBoard(BoardOverviewCtrl.class);
+        mainCtrl.showCreateBoard();
     }
     public void disconnectPressed() {
         mainCtrl.showSelectServer();

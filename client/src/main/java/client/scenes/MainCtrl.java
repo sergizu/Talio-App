@@ -16,11 +16,8 @@
 package client.scenes;
 
 import client.factory.SceneFactory;
-import client.scenes.interfaces.AddCardCtrl;
-import client.scenes.interfaces.AddListCtrl;
-import client.scenes.interfaces.AddSubTaskCtrl;
-import client.scenes.interfaces.CreateBoardCtrl;
 import client.scenes.implementations.BoardOptionsCtrlImpl;
+import client.scenes.interfaces.*;
 import com.google.inject.Inject;
 import commons.AppClient;
 import commons.Board;
@@ -125,14 +122,6 @@ public class MainCtrl {
         setSizeScene();
     }
 
-    public void showOverview(long boardId, Object parent) {
-        primaryStage.setTitle("Lists: Overview");
-        listOverviewCtrl.setBoard(boardId);
-        listOverviewCtrl.setParent(parent);
-        primaryStage.setScene(overview);
-        setSizeScene();
-    }
-
     public void showBoardOverview() {
         primaryStage.setTitle("Boards: Overview");
         primaryStage.setScene(boardOverviewScene);
@@ -184,11 +173,9 @@ public class MainCtrl {
         setSizeScene();
     }
 
-    public void showCreateBoard(Object parent){
+    public void showCreateBoard(){
         primaryStage.setTitle("Create a new board");
         primaryStage.setScene(createBoardScene);
-        createBoardCtrl.setParent(parent);
-        listOverviewCtrl.setParent(parent);
         setSizeScene();
     }
 

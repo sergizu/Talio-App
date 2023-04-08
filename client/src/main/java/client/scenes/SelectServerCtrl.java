@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.scenes.interfaces.JoinedBoardsCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
@@ -14,7 +15,7 @@ public class SelectServerCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private final ListOverviewCtrl listOverviewCtrl;
-    private final JoinedBoardsCtrl joinedBoardsCtrl;
+    private JoinedBoardsCtrl joinedBoardsCtrl;
 
     private final BoardOverviewCtrl boardOverviewCtrl;
     @FXML

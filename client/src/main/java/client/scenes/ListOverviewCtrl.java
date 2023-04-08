@@ -319,9 +319,6 @@ public class ListOverviewCtrl {
         refresh(boardId);
     }
 
-    public void setParent(Object parent) {
-        this.parent = parent;
-    }
 
     public void backPressed() {
         if (!mainCtrl.getAdmin())

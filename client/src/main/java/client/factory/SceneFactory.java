@@ -3,10 +3,7 @@ package client.factory;
 import client.MyFXML;
 import client.scenes.*;
 import client.scenes.implementations.BoardOptionsCtrlImpl;
-import client.services.interfaces.AddCardService;
-import client.services.interfaces.AddListService;
-import client.services.interfaces.AddSubTaskService;
-import client.services.interfaces.CreateBoardService;
+import client.services.interfaces.*;
 import com.google.inject.Injector;
 import javafx.scene.Parent;
 
@@ -43,7 +40,7 @@ public class SceneFactory {
     }
 
     public Parent createJoinedBoardsScene(){
-        return fxml.load(JoinedBoardsCtrl.class,
+        return fxml.load(JoinedBoardsService.class,
                 "client", "scenes", "JoinedBoards.fxml").getValue();
     }
 

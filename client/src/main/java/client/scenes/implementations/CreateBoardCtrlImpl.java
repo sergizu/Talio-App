@@ -1,6 +1,5 @@
 package client.scenes.implementations;
 
-import client.scenes.JoinedBoardsCtrl;
 import client.scenes.MainCtrl;
 import client.scenes.interfaces.CreateBoardCtrl;
 import client.services.interfaces.CreateBoardService;
@@ -47,7 +46,7 @@ public class CreateBoardCtrlImpl implements CreateBoardCtrl {
         createBoardService.setBoardName("");
         board = server.addBoard(board);
         server.send("/app/boards/createBoard",board.id);
-        if (parent == JoinedBoardsCtrl.class)
+        if (!mainCtrl.getAdmin())
             addBoardToClient(board);
         mainCtrl.showOverview(board.getId());
     }
@@ -62,7 +61,7 @@ public class CreateBoardCtrlImpl implements CreateBoardCtrl {
     }
 
     public void escape() {
-        if (parent == JoinedBoardsCtrl.class)
+        if (!mainCtrl.getAdmin())
             mainCtrl.showJoinedBoards();
         else {
             mainCtrl.showBoardOverview();
