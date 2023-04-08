@@ -192,6 +192,10 @@ public class MainCtrl {
         primaryStage.setHeight(primaryStage.getHeight() + 1);
     }
 
+    public String getPrimaryStageTitle(){
+        return this.primaryStage.getTitle();
+    }
+
     public void setPrimaryStage(){
         this.primaryStage.setWidth(1080);
         this.primaryStage.setHeight(720);

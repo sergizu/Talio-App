@@ -7,4 +7,6 @@ public interface AddListService {
     void setEmptyNameText(String text);
     String getListTitle();
     void clearFields();
+    void ok();
+    void cancel();
 }
