@@ -10,46 +10,38 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.JoinedBoardsCtrl">
-    <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <top>
-            <HBox fx:id="topHBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-                <children>
-                    <Button fx:id="disconnectButton" alignment="TOP_RIGHT" contentDisplay="CENTER" maxWidth="-Infinity" mnemonicParsing="false" onAction="#disconnectPressed" text="Disconnect" HBox.hgrow="ALWAYS">
-                        <HBox.margin>
-                            <Insets left="10.0" right="15.0" top="10.0" />
-                        </HBox.margin>
-                    </Button>
-                    <Label fx:id="boardOverviewTitle" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="Your boards" textAlignment="CENTER" textOverrun="CLIP" HBox.hgrow="ALWAYS">
-                        <font>
-                            <Font size="28.0" />
-                        </font>
-                        <HBox.margin>
-                            <Insets top="5.0" />
-                        </HBox.margin>
-                    </Label>
-                    <Button fx:id="createBoardButton" alignment="TOP_LEFT" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#showCreateBoard" text="Create new board" textAlignment="CENTER" HBox.hgrow="ALWAYS">
-                        <HBox.margin>
-                            <Insets right="10.0" top="10.0" />
-                        </HBox.margin>
-                    </Button>
-                </children>
-            </HBox>
-        </top>
-        <center>
-            <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <content>
-               <VBox fx:id="boardsList" alignment="CENTER" prefHeight="315.0" prefWidth="598.0" />
-            </content>
-            </ScrollPane>
-        </center>
-      <bottom>
-         <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Browse..." BorderPane.alignment="CENTER">
-            <BorderPane.margin>
-               <Insets bottom="5.0" top="5.0" />
-            </BorderPane.margin>
-         </Button>
-      </bottom>
-    </BorderPane>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../../../CSS/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.JoinedBoardsCtrl">
+    <HBox fx:id="menu"  prefHeight="46.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <children>
+            <Button fx:id="disconnectButton" alignment="TOP_RIGHT" contentDisplay="CENTER" maxWidth="-Infinity" mnemonicParsing="false" onAction="#disconnectPressed" text="Disconnect" HBox.hgrow="ALWAYS">
+                <HBox.margin>
+                    <Insets left="10.0" right="15.0" top="10.0" />
+                </HBox.margin>
+            </Button>
+            <Label fx:id="boardOverviewTitle" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="Your boards" textAlignment="CENTER" textOverrun="CLIP" HBox.hgrow="ALWAYS">
+                <font>
+                    <Font size="28.0" />
+                </font>
+                <HBox.margin>
+                    <Insets top="5.0" />
+                </HBox.margin>
+            </Label>
+            <Button fx:id="createBoardButton" alignment="TOP_LEFT" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#showCreateBoard" text="Create new board" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+                <HBox.margin>
+                    <Insets right="10.0" top="10.0" />
+                </HBox.margin>
+            </Button>
+        </children>
+    </HBox>
+    <ScrollPane fx:id="boardsScroll" fitToHeight="true" fitToWidth="true" layoutX="2.0" layoutY="48.0" prefHeight="306.0" prefWidth="600.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+        <content>
+            <VBox fx:id="boardsList" alignment="CENTER" prefHeight="302.0" prefWidth="597.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+        </content>
+    </ScrollPane>
+    <HBox alignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="10.0">
+        <children>
+            <Button fx:id="browseButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Browse..." />
+        </children>
+    </HBox>
 
 </AnchorPane>
