@@ -17,7 +17,8 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <TextField fx:id="boardTitle" />
+            <TextField fx:id="boardTitle" onKeyPressed="#keyPressed" />
+            <Label fx:id="myLabel" prefHeight="17.0" prefWidth="261.0" />
             <HBox prefHeight="111.0" prefWidth="326.0" spacing="200.0">
                <children>
                   <Button mnemonicParsing="false" onMouseClicked="#escape" text="Cancel" />
