@@ -30,7 +30,8 @@ public class EditCardCtrlImpl implements EditCardCtrl {
     private Card card;
 
     @Inject
-    public EditCardCtrlImpl(ServerUtils server, MainCtrl mainCtrl, SubtaskWrapper subtaskWrapper, EditCardService service) {
+    public EditCardCtrlImpl(ServerUtils server, MainCtrl mainCtrl,
+                            SubtaskWrapper subtaskWrapper, EditCardService service) {
         this.server = server;
         this.mainCtrl = mainCtrl;
         this.subtaskWrapper = subtaskWrapper;
@@ -75,15 +76,15 @@ public class EditCardCtrlImpl implements EditCardCtrl {
     }
 
     public void ok() {
-        if (service.getCardName().equals(card.title) &&
-                (service.getDescription() == null || service.getDescription().equals(card.description))) {
+        if (service.getCardName().equals(card.title) && (service.getDescription() == null
+                || service.getDescription().equals(card.description))) {
             mainCtrl.showOverview(card.getList().getBoard().getId());
             return;
         } else if (service.getCardName().equals("")) {
             service.setEmptyName("Card name can not be empty!");
             return;
         }
-        service.setEmptyName("");
+        service.setEmptyName(" ");
         server.updateCardName(card.getId(), service.getCardName());
         if (service.getDescription().isEmpty() || service.getDescription() == null) {
             server.updateCardDescription(card.getId(), " ");
@@ -192,4 +193,7 @@ public class EditCardCtrlImpl implements EditCardCtrl {
         }));
     }
 
+    public void setCard(Card card) {
+        this.card = card;
+    }
 }

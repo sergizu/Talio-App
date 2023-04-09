@@ -33,4 +33,6 @@ public interface EditCardCtrl {
 
     void registerForUpdates();
 
+    void setCard(Card card);
+
 }

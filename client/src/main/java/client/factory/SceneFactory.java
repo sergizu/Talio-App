@@ -3,7 +3,6 @@ package client.factory;
 import client.MyFXML;
 import client.scenes.*;
 import client.scenes.implementations.BoardOptionsCtrlImpl;
-import client.scenes.interfaces.EditCardCtrl;
 import client.services.interfaces.*;
 import com.google.inject.Injector;
 import javafx.scene.Parent;

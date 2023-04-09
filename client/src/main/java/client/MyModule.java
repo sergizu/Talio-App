@@ -17,7 +17,6 @@ package client;
 
 import client.helperClass.SubtaskWrapper;
 import client.scenes.*;
-import client.scenes.interfaces.EditCardCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Binder;
 import com.google.inject.Module;
