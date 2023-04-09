@@ -26,12 +26,15 @@
       <padding>
          <Insets top="10.0" />
       </padding></ScrollPane>
-   <HBox fx:id="menu" alignment="TOP_CENTER" fillHeight="false" prefHeight="70.0" prefWidth="1080.0" spacing="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+   <HBox fx:id="topHBox" alignment="TOP_CENTER" fillHeight="false" prefHeight="70.0" prefWidth="1080.0" spacing="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
          <Label fx:id="boardTitle" alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="29.0" prefWidth="190.0" style="-fx-padding: 0;" text="BOARD NAME" textAlignment="CENTER" textOverrun="LEADING_WORD_ELLIPSIS">
             <font>
-               <Font name="Segoe Script" size="22.0" />
+               <Font size="26.0" />
             </font>
+            <HBox.margin>
+               <Insets top="10.0" />
+            </HBox.margin>
          </Label>
       </children>
       <opaqueInsets>

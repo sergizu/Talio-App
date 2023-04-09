@@ -19,12 +19,12 @@ import javafx.scene.input.*;
 import java.util.ArrayList;
 import java.util.List;
 
-//import static client.helperClass.SubtaskWrapper.serialization;
 
 public class EditCardCtrl {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    private final SubtaskWrapper subtaskWrapper;
 
     private Card card;
 
@@ -50,9 +50,10 @@ public class EditCardCtrl {
     private TableColumn<SubtaskWrapper, Button> tableColumnButton;
 
     @Inject
-    public EditCardCtrl(MainCtrl mainCtrl, ServerUtils server) {
+    public EditCardCtrl(MainCtrl mainCtrl, ServerUtils server, SubtaskWrapper subtaskWrapper) {
         this.mainCtrl = mainCtrl;
         this.server = server;
+        this.subtaskWrapper = subtaskWrapper;
     }
 
     public void init(Card card) {
@@ -65,11 +66,11 @@ public class EditCardCtrl {
 
     private void initSubtasks() {
         tableColumnSubtask.setCellValueFactory(q ->
-                new SimpleStringProperty(q.getValue().getSubtask().getName()));
+            new SimpleStringProperty(q.getValue().getSubtask().getName()));
         tableColumnCheckbox.setCellValueFactory(
-                new PropertyValueFactory<SubtaskWrapper, CheckBox>("checkBox"));
+            new PropertyValueFactory<SubtaskWrapper, CheckBox>("checkBox"));
         tableColumnButton.setCellValueFactory(
-                new PropertyValueFactory<SubtaskWrapper, Button>("button"));
+            new PropertyValueFactory<SubtaskWrapper, Button>("button"));
         List<SubtaskWrapper> subtaskWrappers = new ArrayList<>();
         for (Subtask subtask : card.getNestedList()) {
             CheckBox checkBox = new CheckBox();
@@ -103,7 +104,7 @@ public class EditCardCtrl {
 
     public void ok() {
         if (cardName.getText().equals(card.title) &&
-                (description.getText() == null || description.getText().equals(card.description))) {
+            (description.getText() == null || description.getText().equals(card.description))) {
             mainCtrl.showOverview(card.getList().getBoard().getId());
             return;
         } else if (cardName.getText().equals("")) {
@@ -161,22 +162,25 @@ public class EditCardCtrl {
                     db.setDragView(row.snapshot(null, null));
                     //shows a snapshot of the row when moving it
                     ClipboardContent cc = new ClipboardContent();
-                    cc.put(mainCtrl.getSerialization(), i);
+                    cc.put(subtaskWrapper.getSerialization(), i);
+
                     db.setContent(cc);
                     e.consume();
                 }
             });
             row.setOnDragOver(e -> {
                 Dragboard db = e.getDragboard();
-                if (db.hasContent(mainCtrl.getSerialization())) {
+                if (db.hasContent(subtaskWrapper.getSerialization())) {
+
                     e.acceptTransferModes(TransferMode.MOVE);
                     e.consume();
                 }
             });
             row.setOnDragDropped(e -> {
                 Dragboard db = e.getDragboard();
-                if (db.hasContent(mainCtrl.getSerialization())) {
-                    int draggedIndex = (int) db.getContent(mainCtrl.getSerialization());
+                if (db.hasContent(subtaskWrapper.getSerialization())) {
+                    int draggedIndex = (int) db.getContent(subtaskWrapper.getSerialization());
+
                     SubtaskWrapper subtaskWrapper = tableView.getItems().remove(draggedIndex);
                     int dropIndex;
                     if (row.isEmpty())
@@ -202,20 +206,23 @@ public class EditCardCtrl {
 
     public void registerForUpdates() {
         server.registerForCardUpdates(updatedCardID -> Platform.runLater(() -> {
-            if (card.getId() == updatedCardID) {
+            if (card!=null && card.getId() == updatedCardID) {
                 TDList tdList = card.getList();
                 Card boardReference = card;
                 try {
                     card = server.getCardById(card.id);
-                    System.out.println(card.getList());
                     card.setList(tdList);
                 } catch (Exception e) {
                     mainCtrl.showOverview(boardReference.getList().getBoard().getId());
                 }
-                if (mainCtrl.getPrimaryStage().getTitle().equals("Card: Edit Card")) {
+
+                if (mainCtrl.getPrimaryStageTitle().equals("Card: Edit Card")) {
+
                     mainCtrl.showEdit(card);
                 }
             }
         }));
     }
+
 }
+

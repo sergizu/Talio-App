@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package client.scenes;
+package client.scenes.implementations;
 
-import client.services.AddListService;
+import client.scenes.MainCtrl;
+import client.scenes.interfaces.AddListCtrl;
+import client.services.interfaces.AddListService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -23,7 +25,7 @@ import commons.TDList;
 import javafx.scene.input.KeyEvent;
 
 @Singleton
-public class AddListCtrlImpl implements AddListCtrl{
+public class AddListCtrlImpl implements AddListCtrl {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
@@ -39,7 +41,7 @@ public class AddListCtrlImpl implements AddListCtrl{
         this.addListService = addListService;
     }
 
-    protected TDList getList() {
+    public TDList getList() {
         String title = addListService.getListTitle();
         if(title.equals("")) {
             addListService.setEmptyNameText("List name can not be empty!");
@@ -62,7 +64,7 @@ public class AddListCtrlImpl implements AddListCtrl{
         mainCtrl.showOverview(boardId);
     }
 
-    protected void clearFields() {
+    public void clearFields() {
         addListService.clearFields();
     }
 

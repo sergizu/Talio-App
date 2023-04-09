@@ -1,5 +1,6 @@
-package client.services;
+package client.services.interfaces;
 
+import client.services.implementations.AddSubTaskServiceImpl;
 import com.google.inject.ImplementedBy;
 import javafx.scene.input.KeyEvent;
 

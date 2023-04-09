@@ -20,7 +20,7 @@ public class Board {
     public long key;
 
     @OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST,
-        CascadeType.MERGE, CascadeType.REFRESH})
+        CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
     @JsonManagedReference
     public List<TDList> tdLists = new ArrayList<>();
 

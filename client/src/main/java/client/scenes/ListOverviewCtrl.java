@@ -1,9 +1,11 @@
 package client.scenes;
 
+import client.helperClass.SubtaskWrapper;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Board;
 import commons.Card;
+import commons.CardListId;
 import commons.TDList;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -35,6 +37,7 @@ import java.util.stream.Collectors;
 public class ListOverviewCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    private final SubtaskWrapper subtaskWrapper;
 
     private Board board;
     private Object parent;
@@ -48,27 +51,43 @@ public class ListOverviewCtrl {
 
 
     @Inject
-    public ListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public ListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl, SubtaskWrapper subtaskWrapper) {
         this.server = server;
         this.mainCtrl = mainCtrl;
+        this.subtaskWrapper = subtaskWrapper;
     }
 
     public void init(){
         setScrollPane();
+        board = new Board("");
+        ///added this becuase I was getting a NullPtrException in register for updates
         registerForUpdates();
     }
 
-
     public void registerForUpdates() {
-        server.registerForBoardUpdates(updatedBoardID -> Platform.runLater(() -> {
-            if (board.getId() == updatedBoardID) {
-                setBoard(updatedBoardID);
-            }
-        }));
-        server.registerForMessages("/topic/addCard", c -> Platform.runLater(() -> {
-            addCardToList(c.card, c.listId);
-            setBoard(board.id);
-        }));
+        server.registerForBoardUpdates(updatedBoardID -> {
+            Platform.runLater(() -> {
+                if (board.getId() == updatedBoardID) {
+                    setBoard(updatedBoardID);
+                }
+            });
+        });
+        server.registerForMessages("/topic/addCard", CardListId.class, c -> {
+            Platform.runLater(() -> {
+                addCardToList(c.card, c.listId);
+                setBoard(c.boardId);
+            });
+        });
+        server.registerForMessages("/topic/boardDeletion", Long.class, deletedBoardId -> {
+            Platform.runLater(() -> {
+                if (deletedBoardId == board.id &&
+                        mainCtrl.getPrimaryStageTitle().equals("Lists: Overview")) {
+                    if(mainCtrl.getAdmin())
+                        mainCtrl.showBoardOverview();
+                    else mainCtrl.showJoinedBoards();
+                }
+            });
+        });
     }
 
     public void addCardToList(Card card, long listId) {
@@ -109,7 +128,6 @@ public class ListOverviewCtrl {
         }
         return flowPane;
     }
-
 
     public Button createAddCardButton(long id) {
         Button button = new Button("Add Card");
@@ -173,7 +191,8 @@ public class ListOverviewCtrl {
     }
 
     public void stop() {
-        server.stop();
+        if(!server.isExecutorServiceShutdown())
+            server.stop();
     }
 
     public void addList() {
@@ -184,7 +203,7 @@ public class ListOverviewCtrl {
     public void cardExpansion(TableView<Card> tableView) {
         tableView.setOnMouseClicked(event -> {
             if (tableView.getSelectionModel().getSelectedItem() != null
-                    && event.getClickCount() == 2) {
+                && event.getClickCount() == 2) {
                 Card card = tableView.getSelectionModel().getSelectedItem();
                 mainCtrl.showEdit(card);
             }
@@ -201,7 +220,7 @@ public class ListOverviewCtrl {
                     db.setDragView(row.snapshot(null, null));
                     //shows a snapshot of the row when moving it
                     ClipboardContent cc = new ClipboardContent();
-                    cc.put(mainCtrl.getSerialization(), i);
+                    cc.put(subtaskWrapper.getSerialization(), i);
                     db.setContent(cc);
                     //makes it so that you can find the row index in the dragboard
                     e.consume(); //Marks the end of the event
@@ -209,7 +228,7 @@ public class ListOverviewCtrl {
             });
             row.setOnDragOver(e -> {
                 Dragboard db = e.getDragboard();
-                if (db.hasContent(mainCtrl.getSerialization())) {
+                if (db.hasContent(subtaskWrapper.getSerialization())) {
                     //Checks whether the data format has any information, which it should have as
                     //it has been associated with the row Index in the setOnRowDetected method
                     e.acceptTransferModes(TransferMode.MOVE); //accepts the drag event
@@ -218,8 +237,8 @@ public class ListOverviewCtrl {
             });
             row.setOnDragDropped(e -> {
                 Dragboard db = e.getDragboard();
-                if (db.hasContent(mainCtrl.getSerialization()) && selection == tableView) {
-                    int draggedIndex = (int) db.getContent(mainCtrl.getSerialization());
+                if (db.hasContent(subtaskWrapper.getSerialization()) && selection == tableView) {
+                    int draggedIndex = (int) db.getContent(subtaskWrapper.getSerialization());
                     Card card = tableView.getItems().remove(draggedIndex);
                     int dropIndex;
                     if (row.isEmpty())
@@ -257,14 +276,18 @@ public class ListOverviewCtrl {
         tableView.setOnMousePressed(e -> selection = tableView);
         tableView.setOnDragOver(e -> {
             Dragboard db = e.getDragboard();
-            if (db.hasContent(mainCtrl.getSerialization())) {
+
+            if (db.hasContent(subtaskWrapper.getSerialization())) {
+
                 e.acceptTransferModes(TransferMode.MOVE);
                 e.consume();
             }
         });
         tableView.setOnDragDropped(e -> {
             Dragboard db = e.getDragboard();
-            int draggedIndex = (int) db.getContent(mainCtrl.getSerialization());
+
+            int draggedIndex = (int) db.getContent(subtaskWrapper.getSerialization());
+
             Card card = selection.getItems().remove(draggedIndex);
             server.updateCardList(card.getId(), tdList);
             setBoard(board.id);
@@ -287,15 +310,14 @@ public class ListOverviewCtrl {
         Platform.runLater(() ->
         {
             Timeline timeline = new Timeline(
-                    new KeyFrame(Duration.ZERO, event -> afterCopyButton(copyButton)),
-                    new KeyFrame(Duration.seconds(2), event -> restoreCopyButton(copyButton))
+                new KeyFrame(Duration.ZERO, event -> afterCopyButton(copyButton)),
+                new KeyFrame(Duration.seconds(2), event -> restoreCopyButton(copyButton))
             );
             timeline.play();
         });
     }
 
     public void afterCopyButton(Button copyButton) {
-        copyButton.setFont(new javafx.scene.text.Font(9));
         copyButton.setText("Copied!");
         copyButton.setStyle("-fx-background-color: #34eb67;");
     }
@@ -311,16 +333,10 @@ public class ListOverviewCtrl {
         refresh(boardId);
     }
 
-    public void setParent(Object parent) {
-        this.parent = parent;
-    }
 
     public void backPressed() {
-        if (parent == JoinedBoardsCtrl.class)
+        if (!mainCtrl.getAdmin())
             mainCtrl.showJoinedBoards();
-        else if (parent == BoardOverviewCtrl.class) {
-            mainCtrl.showBoardOverview();
-        }
+        else mainCtrl.showBoardOverview();
     }
 }
-

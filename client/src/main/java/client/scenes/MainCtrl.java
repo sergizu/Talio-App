@@ -16,8 +16,12 @@
 package client.scenes;
 
 import client.factory.SceneFactory;
+import client.helperClass.SubtaskWrapper;
+import client.scenes.implementations.BoardOptionsCtrlImpl;
+import client.scenes.interfaces.*;
 import com.google.inject.Inject;
 import commons.AppClient;
+import commons.Board;
 import commons.Card;
 import commons.TDList;
 import javafx.scene.Scene;
@@ -25,9 +29,6 @@ import javafx.scene.input.DataFormat;
 import javafx.stage.Stage;
 
 public class MainCtrl {
-
-    private final DataFormat serialization =
-            new DataFormat("application/x-java-serialized-object");
 
     private Stage primaryStage;
 
@@ -69,6 +70,14 @@ public class MainCtrl {
     @Inject
     private AddSubTaskCtrl createAddSubtaskCtrl;
 
+    @Inject
+    private BoardOptionsCtrlImpl boardOptionsCtrl;
+    private Scene boardOptionsScene;
+
+    boolean isAdmin;
+    @Inject
+    private SubtaskWrapper subtaskWrapper;
+
     private AppClient client;
 
     public void initialize(Stage primaryStage,
@@ -96,7 +105,10 @@ public class MainCtrl {
 
         this.createAddSubtaskScene = new Scene(sceneFactory.createAddSubtaskScene(), 1080, 720);
 
+        this.boardOptionsScene = new Scene(sceneFactory.createBoardOptionsScene(), 1080, 720);
         this.client = new AppClient();
+
+        subtaskWrapper.setSerialization(new DataFormat("application/x-java-serialized-object"));
 
         showSelectServer();
         setPrimaryStage();
@@ -116,14 +128,6 @@ public class MainCtrl {
         setSizeScene();
     }
 
-    public void showOverview(long boardId, Object parent) {
-        primaryStage.setTitle("Lists: Overview");
-        listOverviewCtrl.setBoard(boardId);
-        listOverviewCtrl.setParent(parent);
-        primaryStage.setScene(overview);
-        setSizeScene();
-    }
-
     public void showBoardOverview() {
         primaryStage.setTitle("Boards: Overview");
         primaryStage.setScene(boardOverviewScene);
@@ -131,9 +135,9 @@ public class MainCtrl {
         setSizeScene();
     }
 
-    public void showAddCard(long listId,long boardId) {
+    public void showAddCard(long listId, long boardId) {
         primaryStage.setTitle("Board: Adding Card");
-        createAddCardCtrl.setListBoardId(listId,boardId);
+        createAddCardCtrl.setListBoardId(listId, boardId);
         primaryStage.setScene(createAddCardScene);
         createAddCardScene.setOnKeyPressed(e -> createAddCardCtrl.keyPressed(e));
         setSizeScene();
@@ -171,15 +175,20 @@ public class MainCtrl {
     public void showJoinedBoards() {
         primaryStage.setTitle("Your boards");
         primaryStage.setScene(joinedBoardsScene);
-        joinedBoardsCtrl.init(client);
+        joinedBoardsCtrl.init();
         setSizeScene();
     }
 
-    public void showCreateBoard(Object parent){
+    public void showCreateBoard() {
         primaryStage.setTitle("Create a new board");
         primaryStage.setScene(createBoardScene);
-        createBoardCtrl.setParent(parent);
-        listOverviewCtrl.setParent(parent);
+        setSizeScene();
+    }
+
+    public void showBoardOptions(Board board) {
+        primaryStage.setTitle("Board options");
+        primaryStage.setScene(boardOptionsScene);
+        boardOptionsCtrl.init(board);
         setSizeScene();
     }
 
@@ -187,16 +196,22 @@ public class MainCtrl {
         return client;
     }
 
-    public void setSizeScene() {
-        primaryStage.setWidth(primaryStage.getWidth() + 1);
-        primaryStage.setHeight(primaryStage.getHeight() + 1);
+    public void setAdmin(boolean value) {
+        isAdmin = value;
+    }
+    public boolean getAdmin() {
+        return isAdmin;
     }
 
-    public String getPrimaryStageTitle(){
+    public void setSizeScene() {
+        primaryStage.setHeight(primaryStage.getHeight() + 0.5);
+    }
+
+    public String getPrimaryStageTitle() {
         return this.primaryStage.getTitle();
     }
 
-    public void setPrimaryStage(){
+    public void setPrimaryStage() {
         this.primaryStage.setWidth(1080);
         this.primaryStage.setHeight(720);
         this.primaryStage.setMinWidth(425.0);
@@ -205,13 +220,5 @@ public class MainCtrl {
         this.primaryStage.setOnCloseRequest(event -> {
             this.listOverviewCtrl.stop();
         });
-    }
-
-    public Stage getPrimaryStage() {
-        return this.primaryStage;
-    }
-
-    public DataFormat getSerialization() {
-        return this.serialization;
     }
 }

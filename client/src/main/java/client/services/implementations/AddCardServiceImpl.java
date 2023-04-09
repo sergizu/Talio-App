@@ -1,6 +1,7 @@
-package client.services;
+package client.services.implementations;
 
-import client.scenes.AddCardCtrl;
+import client.scenes.interfaces.AddCardCtrl;
+import client.services.interfaces.AddCardService;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import javafx.fxml.FXML;

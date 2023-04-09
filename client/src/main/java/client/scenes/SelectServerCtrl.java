@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.scenes.interfaces.JoinedBoardsCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
@@ -10,13 +11,19 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 
+import java.util.concurrent.Executors;
+
 
 public class SelectServerCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private final ListOverviewCtrl listOverviewCtrl;
+    private JoinedBoardsCtrl joinedBoardsCtrl;
+
+    private final BoardOverviewCtrl boardOverviewCtrl;
 
     private final EditCardCtrl editCardCtrl;
+
 
     @FXML
     private TextField serverName;
@@ -35,11 +42,17 @@ public class SelectServerCtrl {
 
     @Inject
     public SelectServerCtrl(ServerUtils server, MainCtrl mainCtrl,
-                            ListOverviewCtrl listOverviewCtrl, EditCardCtrl editCardCtrl) {
+                            ListOverviewCtrl listOverviewCtrl,
+                            JoinedBoardsCtrl joinedBoardsCtrl,
+                            BoardOverviewCtrl boardOverviewCtrl,
+                            EditCardCtrl editCardCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.listOverviewCtrl = listOverviewCtrl;
+        this.boardOverviewCtrl = boardOverviewCtrl;
         this.editCardCtrl = editCardCtrl;
+        this.joinedBoardsCtrl = joinedBoardsCtrl;
+
     }
 
     public boolean checkPass() {
@@ -61,10 +74,12 @@ public class SelectServerCtrl {
                 mainCtrl.showJoinedBoards();
             } else {
                 if(checkPass()) {
+                    mainCtrl.setAdmin(true);
                     mainCtrl.showBoardOverview();
                     adminPass.setText("");
                     hbox.setVisible(false);
                 } else {
+                    mainCtrl.setAdmin(false);
                     myLabel.setText("Password is incorrect!");
                 }
             }
@@ -90,7 +105,10 @@ public class SelectServerCtrl {
     }
 
     public void startSession(){
+        server.setExecutorService(Executors.newCachedThreadPool());
         server.initSession();
+        boardOverviewCtrl.registerForMessages();
+        joinedBoardsCtrl.registerForMessages();
         listOverviewCtrl.init();
         editCardCtrl.registerForUpdates();
     }

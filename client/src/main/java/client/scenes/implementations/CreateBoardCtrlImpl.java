@@ -1,6 +1,8 @@
-package client.scenes;
+package client.scenes.implementations;
 
-import client.services.CreateBoardService;
+import client.scenes.MainCtrl;
+import client.scenes.interfaces.CreateBoardCtrl;
+import client.services.interfaces.CreateBoardService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -50,22 +52,23 @@ public class CreateBoardCtrlImpl implements CreateBoardCtrl {
         }
         createBoardService.setBoardName("");
         board = server.addBoard(board);
-        if (parent == JoinedBoardsCtrl.class)
+        server.send("/app/boards/createBoard",board.id);
+        if (!mainCtrl.getAdmin())
             addBoardToClient(board);
         mainCtrl.showOverview(board.getId());
     }
 
     public void addBoardToClient(Board board) {
         AppClient client = mainCtrl.getClient();
-        ArrayList<Board> boards = client.boards.get(ServerUtils.getServer());
+        ArrayList<Board> boards = client.boards.get(server.getServer());
         if (boards == null)
             boards = new ArrayList<>();
         boards.add(board);
-        client.boards.put(ServerUtils.getServer(), boards);
+        client.boards.put(server.getServer(), boards);
     }
 
     public void escape() {
-        if (parent == JoinedBoardsCtrl.class)
+        if (!mainCtrl.getAdmin())
             mainCtrl.showJoinedBoards();
         else {
             mainCtrl.showBoardOverview();

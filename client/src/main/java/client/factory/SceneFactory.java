@@ -2,10 +2,8 @@ package client.factory;
 
 import client.MyFXML;
 import client.scenes.*;
-import client.services.AddCardService;
-import client.services.AddListService;
-import client.services.AddSubTaskService;
-import client.services.CreateBoardService;
+import client.scenes.implementations.BoardOptionsCtrlImpl;
+import client.services.interfaces.*;
 import com.google.inject.Injector;
 import javafx.scene.Parent;
 
@@ -42,7 +40,7 @@ public class SceneFactory {
     }
 
     public Parent createJoinedBoardsScene(){
-        return fxml.load(JoinedBoardsCtrl.class,
+        return fxml.load(JoinedBoardsService.class,
                 "client", "scenes", "JoinedBoards.fxml").getValue();
     }
 
@@ -65,5 +63,10 @@ public class SceneFactory {
 
     public Parent createEditListScene(){
         return fxml.load(EditListCtrl.class, "client", "scenes", "RenameList.fxml").getValue();
+    }
+
+    public Parent createBoardOptionsScene() {
+        return fxml.load(BoardOptionsCtrlImpl.class, "client",
+                "scenes", "BoardOptions.fxml").getValue();
     }
 }

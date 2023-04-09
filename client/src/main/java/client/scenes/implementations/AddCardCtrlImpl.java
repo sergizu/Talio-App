@@ -1,6 +1,8 @@
-package client.scenes;
+package client.scenes.implementations;
 
-import client.services.AddCardService;
+import client.scenes.MainCtrl;
+import client.scenes.interfaces.AddCardCtrl;
+import client.services.interfaces.AddCardService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -11,7 +13,7 @@ import javafx.scene.input.KeyEvent;
 
 
 @Singleton
-public class AddCardCtrlImpl implements AddCardCtrl{
+public class AddCardCtrlImpl implements AddCardCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private final AddCardService addCardService;
@@ -38,11 +40,10 @@ public class AddCardCtrlImpl implements AddCardCtrl{
         }
         Card toSend = new Card(addCardService.getCardName(), addCardService.getDescription());
         server.addCardToList(listId,toSend);
-        server.send("/app/tdLists/addCard", new CardListId(toSend,listId));
+        server.send("/app/tdLists/addCard", new CardListId(toSend,listId,boardId));
+        System.out.println(boardId);
         mainCtrl.showOverview(boardId);
         clearFields();
-        // I don't want to refresh
-        // because each client is registered for this change already
     }
 
     private void clearFields() {

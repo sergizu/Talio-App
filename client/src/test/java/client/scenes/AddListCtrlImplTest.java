@@ -1,6 +1,7 @@
 package client.scenes;
 
-import client.services.AddListService;
+import client.scenes.implementations.AddListCtrlImpl;
+import client.services.interfaces.AddListService;
 import client.utils.ServerUtils;
 import commons.TDList;
 import javafx.scene.input.KeyCode;

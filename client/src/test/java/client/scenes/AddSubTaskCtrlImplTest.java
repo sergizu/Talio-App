@@ -1,6 +1,7 @@
 package client.scenes;
 
-import client.services.AddSubTaskService;
+import client.scenes.implementations.AddSubTaskCtrlImpl;
+import client.services.interfaces.AddSubTaskService;
 import client.utils.ServerUtils;
 import commons.Board;
 import commons.Card;

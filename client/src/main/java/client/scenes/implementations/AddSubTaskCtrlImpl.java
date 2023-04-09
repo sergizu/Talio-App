@@ -1,6 +1,8 @@
-package client.scenes;
+package client.scenes.implementations;
 
-import client.services.AddSubTaskService;
+import client.scenes.MainCtrl;
+import client.scenes.interfaces.AddSubTaskCtrl;
+import client.services.interfaces.AddSubTaskService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -10,7 +12,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 @Singleton
-public class AddSubTaskCtrlImpl implements AddSubTaskCtrl{
+public class AddSubTaskCtrlImpl implements AddSubTaskCtrl {
 
     private final ServerUtils server;
 
