@@ -19,6 +19,7 @@ import javafx.scene.input.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class EditCardCtrl {
 
     private final ServerUtils server;
@@ -162,6 +163,7 @@ public class EditCardCtrl {
                     //shows a snapshot of the row when moving it
                     ClipboardContent cc = new ClipboardContent();
                     cc.put(subtaskWrapper.getSerialization(), i);
+
                     db.setContent(cc);
                     e.consume();
                 }
@@ -169,6 +171,7 @@ public class EditCardCtrl {
             row.setOnDragOver(e -> {
                 Dragboard db = e.getDragboard();
                 if (db.hasContent(subtaskWrapper.getSerialization())) {
+
                     e.acceptTransferModes(TransferMode.MOVE);
                     e.consume();
                 }
@@ -177,6 +180,7 @@ public class EditCardCtrl {
                 Dragboard db = e.getDragboard();
                 if (db.hasContent(subtaskWrapper.getSerialization())) {
                     int draggedIndex = (int) db.getContent(subtaskWrapper.getSerialization());
+
                     SubtaskWrapper subtaskWrapper = tableView.getItems().remove(draggedIndex);
                     int dropIndex;
                     if (row.isEmpty())
@@ -207,14 +211,20 @@ public class EditCardCtrl {
                 Card boardReference = card;
                 try {
                     card = server.getCardById(card.id);
+
+
                     card.setList(tdList);
                 } catch (Exception e) {
                     mainCtrl.showOverview(boardReference.getList().getBoard().getId());
                 }
+
                 if (mainCtrl.getPrimaryStageTitle().equals("Card: Edit Card")) {
+
                     mainCtrl.showEdit(card);
                 }
             }
         }));
     }
+
 }
+

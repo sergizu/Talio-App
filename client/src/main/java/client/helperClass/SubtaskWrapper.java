@@ -9,6 +9,7 @@ import javafx.scene.input.DataFormat;
 public class SubtaskWrapper {
 
     private DataFormat serialization;
+
     private Subtask subtask;
 
     private CheckBox checkBox;

@@ -134,9 +134,9 @@ public class MainCtrl {
         setSizeScene();
     }
 
-    public void showAddCard(long listId,long boardId) {
+    public void showAddCard(long listId, long boardId) {
         primaryStage.setTitle("Board: Adding Card");
-        createAddCardCtrl.setListBoardId(listId,boardId);
+        createAddCardCtrl.setListBoardId(listId, boardId);
         primaryStage.setScene(createAddCardScene);
         createAddCardScene.setOnKeyPressed(e -> createAddCardCtrl.keyPressed(e));
         setSizeScene();
@@ -178,7 +178,7 @@ public class MainCtrl {
         setSizeScene();
     }
 
-    public void showCreateBoard(Object parent){
+    public void showCreateBoard(Object parent) {
         primaryStage.setTitle("Create a new board");
         primaryStage.setScene(createBoardScene);
         createBoardCtrl.setParent(parent);
@@ -191,14 +191,14 @@ public class MainCtrl {
     }
 
     public void setSizeScene() {
-        primaryStage.setHeight(primaryStage.getHeight()+0.5);
+        primaryStage.setHeight(primaryStage.getHeight() + 0.5);
     }
 
-    public String getPrimaryStageTitle(){
+    public String getPrimaryStageTitle() {
         return this.primaryStage.getTitle();
     }
 
-    public void setPrimaryStage(){
+    public void setPrimaryStage() {
         this.primaryStage.setWidth(1080);
         this.primaryStage.setHeight(720);
         this.primaryStage.setMinWidth(425.0);

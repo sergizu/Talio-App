@@ -53,6 +53,7 @@ public class ServerUtils {
         return executorService.isShutdown();
     }
 
+
     public void changeServer(String s) {
         server = "http://" + s + "/";
     }

@@ -18,6 +18,7 @@ public class SelectServerCtrl {
     private final ListOverviewCtrl listOverviewCtrl;
     private final EditCardCtrl editCardCtrl;
 
+
     @FXML
     private TextField serverName;
 

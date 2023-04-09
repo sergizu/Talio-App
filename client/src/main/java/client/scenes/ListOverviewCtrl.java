@@ -184,7 +184,7 @@ public class ListOverviewCtrl {
         });
     }
 
-    public void dragAndDrop(TableView<Card> tableView) {
+    public void dragAndDrop(TableView<Card> tableView){
         tableView.setRowFactory(tv -> {
             TableRow<Card> row = new TableRow<>();
             row.setOnDragDetected(e -> { //Method gets called whenever a mouse drags a row
@@ -250,14 +250,18 @@ public class ListOverviewCtrl {
         tableView.setOnMousePressed(e -> selection = tableView);
         tableView.setOnDragOver(e -> {
             Dragboard db = e.getDragboard();
+
             if (db.hasContent(subtaskWrapper.getSerialization())) {
+
                 e.acceptTransferModes(TransferMode.MOVE);
                 e.consume();
             }
         });
         tableView.setOnDragDropped(e -> {
             Dragboard db = e.getDragboard();
+
             int draggedIndex = (int) db.getContent(subtaskWrapper.getSerialization());
+
             Card card = selection.getItems().remove(draggedIndex);
             server.updateCardList(card.getId(), tdList);
             setBoard(board.id);
