@@ -118,7 +118,7 @@ public class EditCardCtrlImpl implements EditCardCtrl {
     }
 
     public void changeSubtask(TableColumn.CellEditEvent<SubtaskWrapper, String> edit) {
-        service.changeSubtask(edit);
+        service.editSubtask(edit);
         server.updateNestedList(card.id, card.getNestedList());
     }
 

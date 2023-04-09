@@ -80,10 +80,14 @@ public class EditCardServiceImpl implements EditCardService {
         tableColumnSubtask.setCellFactory(TextFieldTableCell.forTableColumn());
     }
 
-    public void changeSubtask(TableColumn.CellEditEvent<SubtaskWrapper, String> edit) {
+    public void editSubtask(TableColumn.CellEditEvent<SubtaskWrapper, String> edit) {
         SubtaskWrapper subtaskWrapper = tableView.getSelectionModel().getSelectedItem();
         Subtask subtask = subtaskWrapper.getSubtask();
         subtask.setName(edit.getNewValue());
+    }
+
+    public void changeSubtask(TableColumn.CellEditEvent<SubtaskWrapper, String> edit) {
+        editCardCtrl.changeSubtask(edit);
     }
 
     public void dragAndDrop() {

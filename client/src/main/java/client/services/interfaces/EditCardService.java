@@ -20,6 +20,7 @@ public interface EditCardService {
 
     void setEmptyName(String s);
 
+    void editSubtask(TableColumn.CellEditEvent<SubtaskWrapper, String> edit);
     void changeSubtask(TableColumn.CellEditEvent<SubtaskWrapper, String> edit);
 
     void dragAndDrop();
