@@ -47,10 +47,7 @@ public class BoardController {
     public ResponseEntity addListToBoard(@PathVariable("id") long id, @RequestBody TDList tdList) {
         if (!boardService.existsById(id) || tdList == null)
             ResponseEntity.badRequest().build();
-        Board board = boardService.getById(id);
-        tdList.board = board;
-        board.addList(tdList);
-        boardService.update(board);
+        boardService.addListToBoard(tdList, id);
         return ResponseEntity.ok().build();
     }
 
