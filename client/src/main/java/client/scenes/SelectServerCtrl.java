@@ -3,6 +3,7 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -29,6 +30,9 @@ public class SelectServerCtrl {
     @FXML
     private HBox hbox;
 
+    @FXML
+    private Button choiceButton;
+
     @Inject
     public SelectServerCtrl(ServerUtils server, MainCtrl mainCtrl,
                             ListOverviewCtrl listOverviewCtrl, EditCardCtrl editCardCtrl) {
@@ -52,12 +56,18 @@ public class SelectServerCtrl {
         myLabel.setText("");
         server.changeServer(s);
         if(server.serverRunning()){
-            startSession();
-            if (checkPass()) {
-                mainCtrl.showBoardOverview();
-                adminPass.setText("");
-                hbox.setVisible(false);
-            } else mainCtrl.showJoinedBoards();
+            if(!hbox.isVisible()) {
+                startSession();
+                mainCtrl.showJoinedBoards();
+            } else {
+                if(checkPass()) {
+                    mainCtrl.showBoardOverview();
+                    adminPass.setText("");
+                    hbox.setVisible(false);
+                } else {
+                    myLabel.setText("Password is incorrect!");
+                }
+            }
         }
         else{
             myLabel.setText("Couldn't find the server!");
@@ -65,7 +75,12 @@ public class SelectServerCtrl {
     }
 
     public void adminLogIn() {
-        hbox.setVisible(true);
+        hbox.setVisible(!hbox.isVisible());
+        if(!hbox.isVisible()) {
+            choiceButton.setText("Admin log in");
+        } else {
+            choiceButton.setText("User log in");
+        }
     }
 
     public void keyPressed(KeyEvent e) {
@@ -73,6 +88,7 @@ public class SelectServerCtrl {
             ok();
         }
     }
+
     public void startSession(){
         server.initSession();
         listOverviewCtrl.init();
