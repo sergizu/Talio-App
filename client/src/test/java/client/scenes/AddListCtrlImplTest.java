@@ -30,7 +30,7 @@ class AddListCtrlImplTest {
 
     @Mock
     AddListService addListService;
-    static AddListCtrlImpl addListCtrl;
+    AddListCtrlImpl addListCtrl;
 
     @BeforeEach
     void setUp() {

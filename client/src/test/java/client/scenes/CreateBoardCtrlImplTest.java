@@ -27,7 +27,7 @@ class CreateBoardCtrlImplTest {
     @Mock
     CreateBoardService createBoardService;
 
-    static CreateBoardCtrlImpl createBoardCtrl;
+    CreateBoardCtrlImpl createBoardCtrl;
 
     @BeforeEach
     void setUp() {
