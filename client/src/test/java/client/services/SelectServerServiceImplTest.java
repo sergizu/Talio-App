@@ -1,7 +1,7 @@
 package client.services;
 
 
-import client.scenes.SelectServerCtrl;
+import client.scenes.interfaces.SelectServerCtrl;
 import client.services.implementations.SelectServerServiceImpl;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -34,7 +34,8 @@ public class SelectServerServiceImplTest {
     }
     @Test
     void keyPressedTest(){
-        KeyEvent e = new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.ENTER, false, false, false, false);
+        KeyEvent e = new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.ENTER,
+                false, false, false, false);
         selectServerServiceImpl.keyPressed(e);
         verify(selectServerCtrl).keyPressed(e);
     }
