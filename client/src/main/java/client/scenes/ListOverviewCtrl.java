@@ -75,7 +75,7 @@ public class ListOverviewCtrl {
         server.registerForMessages("/topic/addCard", CardListId.class, c -> {
             Platform.runLater(() -> {
                 addCardToList(c.card, c.listId);
-                setBoard(board.id);
+                setBoard(c.boardId);
             });
         });
         server.registerForMessages("/topic/boardDeletion", Long.class, deletedBoardId -> {

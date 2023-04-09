@@ -206,13 +206,11 @@ public class EditCardCtrl {
 
     public void registerForUpdates() {
         server.registerForCardUpdates(updatedCardID -> Platform.runLater(() -> {
-            if (card.getId() == updatedCardID) {
+            if (card!=null && card.getId() == updatedCardID) {
                 TDList tdList = card.getList();
                 Card boardReference = card;
                 try {
                     card = server.getCardById(card.id);
-
-
                     card.setList(tdList);
                 } catch (Exception e) {
                     mainCtrl.showOverview(boardReference.getList().getBoard().getId());

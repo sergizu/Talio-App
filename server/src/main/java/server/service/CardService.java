@@ -68,8 +68,8 @@ public class CardService {
             return false;
         Card toDelete = cardRepository.getById(id);
         cardRepository.deleteById(id);
-        boardService.sendUpdates(toDelete.getList().getBoard().getId());
         sendUpdates(toDelete.getId());
+        boardService.sendUpdates(toDelete.getList().getBoard().getId());
         return true;
     }
 

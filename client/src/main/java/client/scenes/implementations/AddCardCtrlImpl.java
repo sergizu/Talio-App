@@ -40,7 +40,8 @@ public class AddCardCtrlImpl implements AddCardCtrl {
         }
         Card toSend = new Card(addCardService.getCardName(), addCardService.getDescription());
         server.addCardToList(listId,toSend);
-        server.send("/app/tdLists/addCard", new CardListId(toSend,listId));
+        server.send("/app/tdLists/addCard", new CardListId(toSend,listId,boardId));
+        System.out.println(boardId);
         mainCtrl.showOverview(boardId);
         clearFields();
     }

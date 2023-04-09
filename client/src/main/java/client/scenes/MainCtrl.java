@@ -18,10 +18,7 @@ package client.scenes;
 import client.factory.SceneFactory;
 import client.helperClass.SubtaskWrapper;
 import client.scenes.implementations.BoardOptionsCtrlImpl;
-import client.scenes.interfaces.AddCardCtrl;
-import client.scenes.interfaces.AddListCtrl;
-import client.scenes.interfaces.AddSubTaskCtrl;
-import client.scenes.interfaces.CreateBoardCtrl;
+import client.scenes.interfaces.*;
 import com.google.inject.Inject;
 import commons.AppClient;
 import commons.Board;
@@ -78,6 +75,7 @@ public class MainCtrl {
     private Scene boardOptionsScene;
 
     boolean isAdmin;
+    @Inject
     private SubtaskWrapper subtaskWrapper;
 
     private AppClient client;
@@ -177,7 +175,7 @@ public class MainCtrl {
     public void showJoinedBoards() {
         primaryStage.setTitle("Your boards");
         primaryStage.setScene(joinedBoardsScene);
-        joinedBoardsCtrl.init(client);
+        joinedBoardsCtrl.init();
         setSizeScene();
     }
 

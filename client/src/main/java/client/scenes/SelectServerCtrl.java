@@ -47,6 +47,7 @@ public class SelectServerCtrl {
         this.listOverviewCtrl = listOverviewCtrl;
         this.boardOverviewCtrl = boardOverviewCtrl;
         this.editCardCtrl = editCardCtrl;
+        this.joinedBoardsCtrl = joinedBoardsCtrl;
 
     }
 
