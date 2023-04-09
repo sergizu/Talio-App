@@ -56,8 +56,8 @@ public class SelectServerCtrl {
         myLabel.setText("");
         server.changeServer(s);
         if(server.serverRunning()){
+            startSession();
             if(!hbox.isVisible()) {
-                startSession();
                 mainCtrl.showJoinedBoards();
             } else {
                 if(checkPass()) {
