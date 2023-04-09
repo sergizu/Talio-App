@@ -31,7 +31,8 @@ public class SelectServerCtrlImpl implements SelectServerCtrl {
                                 ListOverviewCtrl listOverviewCtrl,
                                 JoinedBoardsCtrl joinedBoardsCtrl,
                                 BoardOverviewCtrl boardOverviewCtrl,
-                                EditCardCtrl editCardCtrl, SelectServerService selectServerService) {
+                                EditCardCtrl editCardCtrl,
+                                SelectServerService selectServerService) {
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.listOverviewCtrl = listOverviewCtrl;
