@@ -6,6 +6,7 @@ import com.google.inject.Singleton;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 
 @Singleton
 public class AddSubTaskServiceImpl implements AddSubTaskService{
@@ -42,5 +43,9 @@ public class AddSubTaskServiceImpl implements AddSubTaskService{
     //method that gets called when the cancel button is pressed
     public void cancel() {
         addSubTaskCtrl.cancel();
+    }
+
+    public void keyPressed(KeyEvent e) {
+        addSubTaskCtrl.keyPressed(e);
     }
 }

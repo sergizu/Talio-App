@@ -6,6 +6,8 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import commons.Card;
 import commons.Subtask;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 @Singleton
 public class AddSubTaskCtrlImpl implements AddSubTaskCtrl{
@@ -49,5 +51,11 @@ public class AddSubTaskCtrlImpl implements AddSubTaskCtrl{
 
     public Card getCard() {
         return card;
+    }
+    public void keyPressed(KeyEvent e) {
+        if(e.getCode() == KeyCode.ENTER)
+            create();
+        else if(e.getCode() == KeyCode.ESCAPE)
+            cancel();
     }
 }

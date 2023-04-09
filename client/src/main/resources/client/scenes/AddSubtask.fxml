@@ -7,13 +7,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="startBox" stylesheets="@../../../CSS/style.css" prefHeight="236.0" prefWidth="362.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.services.AddSubTaskService">
+<AnchorPane fx:id="startBox" prefHeight="236.0" prefWidth="362.0" stylesheets="@../../../CSS/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.services.AddSubTaskService">
     <VBox alignment="CENTER" layoutX="24.0" layoutY="42.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <children>
 
 
             <Label alignment="CENTER" prefHeight="26.0" prefWidth="104.0" text="Subtask name:" />
-            <TextField fx:id="subtaskName" maxWidth="-Infinity" prefHeight="26.0" prefWidth="200.0" />
+            <TextField fx:id="subtaskName" maxWidth="-Infinity" onKeyPressed="#keyPressed" prefHeight="26.0" prefWidth="200.0" />
             <Label fx:id="myLabel" />
             <HBox alignment="CENTER" spacing="80.0">
                 <children>
