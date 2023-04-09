@@ -3,6 +3,7 @@ package client.factory;
 import client.MyFXML;
 import client.scenes.*;
 import client.scenes.implementations.BoardOptionsCtrlImpl;
+import client.scenes.interfaces.EditCardCtrl;
 import client.services.interfaces.*;
 import com.google.inject.Injector;
 import javafx.scene.Parent;
@@ -27,7 +28,7 @@ public class SceneFactory {
     }
 
     public Parent createEditCardScene(){
-        return fxml.load(EditCardCtrl.class, "client", "scenes", "EditCard.fxml").getValue();
+        return fxml.load(EditCardService.class, "client", "scenes", "EditCard.fxml").getValue();
     }
 
     public Parent createSelectServerScene(){
