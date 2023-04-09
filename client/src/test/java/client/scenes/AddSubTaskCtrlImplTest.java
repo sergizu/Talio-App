@@ -72,6 +72,6 @@ class AddSubTaskCtrlImplTest {
         addSubTaskCtrl.init(card);
         addSubTaskCtrl.cancel();
         verify(addSubTaskService).setMyLabelText("");
-        verify(mainCtrl).showOverview(card.list.board.id);
+        verify(mainCtrl).showEdit(card);
     }
 }

@@ -166,7 +166,7 @@ public class Card {
         String descriptionIndicator = "";
         String amountSelected = "";
         if(description != null && !description.isEmpty() && !description.equals(" ")) {
-            descriptionIndicator = "\n~";
+            descriptionIndicator = "\n...";
         }
         if(!nestedList.isEmpty()) {
             amountSelected = "\n" + amountSelected() + "/" + nestedList.size();

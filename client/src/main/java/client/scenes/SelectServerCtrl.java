@@ -18,6 +18,9 @@ public class SelectServerCtrl {
     private JoinedBoardsCtrl joinedBoardsCtrl;
 
     private final BoardOverviewCtrl boardOverviewCtrl;
+
+    private final EditCardCtrl editCardCtrl;
+
     @FXML
     private TextField serverName;
 
@@ -34,12 +37,14 @@ public class SelectServerCtrl {
     public SelectServerCtrl(ServerUtils server, MainCtrl mainCtrl,
                             ListOverviewCtrl listOverviewCtrl,
                             JoinedBoardsCtrl joinedBoardsCtrl,
-                            BoardOverviewCtrl boardOverviewCtrl) {
+                            BoardOverviewCtrl boardOverviewCtrl,
+                            EditCardCtrl editCardCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.listOverviewCtrl = listOverviewCtrl;
-        this.joinedBoardsCtrl = joinedBoardsCtrl;
         this.boardOverviewCtrl = boardOverviewCtrl;
+        this.editCardCtrl = editCardCtrl;
+
     }
 
     public boolean checkPass() {
@@ -81,11 +86,11 @@ public class SelectServerCtrl {
             ok();
         }
     }
-
     public void startSession(){
         server.initSession();
         boardOverviewCtrl.registerForMessages();
         joinedBoardsCtrl.registerForMessages();
         listOverviewCtrl.init();
+        editCardCtrl.registerForUpdates();
     }
 }

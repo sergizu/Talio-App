@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 import server.service.BoardService;
@@ -15,7 +16,8 @@ import server.service.ListService;
 import java.util.List;
 import java.util.Random;
 
-@RestController
+@Controller
+@ResponseBody
 @RequestMapping("/api/boards")
 public class BoardController {
     private final BoardService boardService;
