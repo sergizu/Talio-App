@@ -1,5 +1,6 @@
-package client.scenes;
+package client.scenes.interfaces;
 
+import client.scenes.implementations.AddSubTaskCtrlImpl;
 import com.google.inject.ImplementedBy;
 import commons.Card;
 

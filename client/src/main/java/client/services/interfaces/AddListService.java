@@ -1,5 +1,6 @@
-package client.services;
+package client.services.interfaces;
 
+import client.services.implementations.AddListServiceImpl;
 import com.google.inject.ImplementedBy;
 
 @ImplementedBy(AddListServiceImpl.class)

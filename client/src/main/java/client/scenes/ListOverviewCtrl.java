@@ -5,6 +5,7 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Board;
 import commons.Card;
+import commons.CardListId;
 import commons.TDList;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -58,19 +59,35 @@ public class ListOverviewCtrl {
 
     public void init(){
         setScrollPane();
+        board = new Board("");
+        ///added this becuase I was getting a NullPtrException in register for updates
         registerForUpdates();
     }
 
     public void registerForUpdates() {
-        server.registerForBoardUpdates(updatedBoardID -> Platform.runLater(() -> {
-            if (board.getId() == updatedBoardID) {
-                setBoard(updatedBoardID);
-            }
-        }));
-        server.registerForMessages("/topic/addCard", c -> Platform.runLater(() -> {
-            addCardToList(c.card, c.listId);
-            setBoard(board.id);
-        }));
+        server.registerForBoardUpdates(updatedBoardID -> {
+            Platform.runLater(() -> {
+                if (board.getId() == updatedBoardID) {
+                    setBoard(updatedBoardID);
+                }
+            });
+        });
+        server.registerForMessages("/topic/addCard", CardListId.class, c -> {
+            Platform.runLater(() -> {
+                addCardToList(c.card, c.listId);
+                setBoard(c.boardId);
+            });
+        });
+        server.registerForMessages("/topic/boardDeletion", Long.class, deletedBoardId -> {
+            Platform.runLater(() -> {
+                if (deletedBoardId == board.id &&
+                        mainCtrl.getPrimaryStageTitle().equals("Lists: Overview")) {
+                    if(mainCtrl.getAdmin())
+                        mainCtrl.showBoardOverview();
+                    else mainCtrl.showJoinedBoards();
+                }
+            });
+        });
     }
 
     public void addCardToList(Card card, long listId) {
@@ -110,7 +127,6 @@ public class ListOverviewCtrl {
         }
         return flowPane;
     }
-
 
     public Button createAddCardButton(long id) {
         Button button = new Button("Add Card");
@@ -292,7 +308,6 @@ public class ListOverviewCtrl {
     }
 
     public void afterCopyButton(Button copyButton) {
-        copyButton.setFont(new javafx.scene.text.Font(9));
         copyButton.setText("Copied!");
         copyButton.setStyle("-fx-background-color: #34eb67;");
     }
@@ -308,15 +323,10 @@ public class ListOverviewCtrl {
         refresh(boardId);
     }
 
-    public void setParent(Object parent) {
-        this.parent = parent;
-    }
 
     public void backPressed() {
-        if (parent == JoinedBoardsCtrl.class)
+        if (!mainCtrl.getAdmin())
             mainCtrl.showJoinedBoards();
-        else if (parent == BoardOverviewCtrl.class) {
-            mainCtrl.showBoardOverview();
-        }
+        else mainCtrl.showBoardOverview();
     }
 }

@@ -17,8 +17,11 @@ package client.scenes;
 
 import client.factory.SceneFactory;
 import client.helperClass.SubtaskWrapper;
+import client.scenes.implementations.BoardOptionsCtrlImpl;
+import client.scenes.interfaces.*;
 import com.google.inject.Inject;
 import commons.AppClient;
+import commons.Board;
 import commons.Card;
 import commons.TDList;
 import javafx.scene.Scene;
@@ -68,6 +71,11 @@ public class MainCtrl {
     private AddSubTaskCtrl createAddSubtaskCtrl;
 
     @Inject
+    private BoardOptionsCtrlImpl boardOptionsCtrl;
+    private Scene boardOptionsScene;
+
+    boolean isAdmin;
+    @Inject
     private SubtaskWrapper subtaskWrapper;
 
     private AppClient client;
@@ -97,6 +105,7 @@ public class MainCtrl {
 
         this.createAddSubtaskScene = new Scene(sceneFactory.createAddSubtaskScene(), 1080, 720);
 
+        this.boardOptionsScene = new Scene(sceneFactory.createBoardOptionsScene(), 1080, 720);
         this.client = new AppClient();
 
         subtaskWrapper.setSerialization(new DataFormat("application/x-java-serialized-object"));
@@ -115,14 +124,6 @@ public class MainCtrl {
     public void showOverview(long boardId) {
         primaryStage.setTitle("Lists: Overview");
         listOverviewCtrl.setBoard(boardId);
-        primaryStage.setScene(overview);
-        setSizeScene();
-    }
-
-    public void showOverview(long boardId, Object parent) {
-        primaryStage.setTitle("Lists: Overview");
-        listOverviewCtrl.setBoard(boardId);
-        listOverviewCtrl.setParent(parent);
         primaryStage.setScene(overview);
         setSizeScene();
     }
@@ -174,20 +175,32 @@ public class MainCtrl {
     public void showJoinedBoards() {
         primaryStage.setTitle("Your boards");
         primaryStage.setScene(joinedBoardsScene);
-        joinedBoardsCtrl.init(client);
+        joinedBoardsCtrl.init();
         setSizeScene();
     }
 
-    public void showCreateBoard(Object parent) {
+    public void showCreateBoard() {
         primaryStage.setTitle("Create a new board");
         primaryStage.setScene(createBoardScene);
-        createBoardCtrl.setParent(parent);
-        listOverviewCtrl.setParent(parent);
+        setSizeScene();
+    }
+
+    public void showBoardOptions(Board board) {
+        primaryStage.setTitle("Board options");
+        primaryStage.setScene(boardOptionsScene);
+        boardOptionsCtrl.init(board);
         setSizeScene();
     }
 
     public AppClient getClient() {
         return client;
+    }
+
+    public void setAdmin(boolean value) {
+        isAdmin = value;
+    }
+    public boolean getAdmin() {
+        return isAdmin;
     }
 
     public void setSizeScene() {

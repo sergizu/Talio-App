@@ -15,7 +15,10 @@
  */
 package client.utils;
 
-import commons.*;
+import commons.Board;
+import commons.Card;
+import commons.Subtask;
+import commons.TDList;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
@@ -35,7 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-
 import java.util.function.Consumer;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -115,11 +117,11 @@ public class ServerUtils {
     }
 
     public void addCardToList(long listId, Card card) {
-        Response result = ClientBuilder.newClient(new ClientConfig())
-            .target(server).path("/api/tdLists/" + listId + "/addCard")
-            .request(APPLICATION_JSON)
-            .accept(APPLICATION_JSON)
-            .put(Entity.entity(card, APPLICATION_JSON));
+        ClientBuilder.newClient(new ClientConfig())
+                .target(server).path("/api/tdLists/" + listId + "/addCard")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(card, APPLICATION_JSON));
     }
 
     public void addListToBoard(long boardId, TDList tdList) {
@@ -211,6 +213,14 @@ public class ServerUtils {
             });
     }
 
+    public void deleteBoard(long boardId) {
+        ClientBuilder.newClient(new ClientConfig())
+                .target(server).path("api/boards/" + boardId)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .delete();
+    }
+
     public boolean serverRunning() {
         try {
             ClientBuilder.newClient(new ClientConfig())
@@ -243,16 +253,16 @@ public class ServerUtils {
         throw new IllegalStateException();
     }
 
-    public void registerForMessages(String dest, Consumer<CardListId> consumer) {
+    public <T> void registerForMessages(String dest, Class<T> type,  Consumer<T> consumer) {
         session.subscribe(dest, new StompFrameHandler() {
             @Override
             public Type getPayloadType(StompHeaders headers) {
-                return CardListId.class;
+                return type;
             }
 
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
-                consumer.accept((CardListId) payload);
+                consumer.accept((T) payload);
             }
         });
     }

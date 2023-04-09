@@ -5,6 +5,8 @@ import commons.Card;
 import commons.TDList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
@@ -89,11 +91,11 @@ public class BoardController {
 
     @PutMapping("/{id}/addList")
     public ResponseEntity addListToBoard(@PathVariable("id") long id, @RequestBody TDList tdList) {
-        if (!boardService.existsById(id))
+        if (!boardService.existsById(id) || tdList == null)
             ResponseEntity.badRequest().build();
         Board board = boardService.getById(id);
         tdList.board = board;
-        board.tdLists.add(tdList);
+        board.addList(tdList);
         boardService.update(board);
         return ResponseEntity.ok().build();
     }
@@ -121,7 +123,7 @@ public class BoardController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/remove/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity removeByID(@PathVariable("id") long id) {
         boolean result = boardService.delete(id);
         if(!result) {
@@ -133,6 +135,23 @@ public class BoardController {
     @GetMapping("/updates")
     public DeferredResult<ResponseEntity<Long>> subscribeForUpdates() {
         return boardService.subscribeForUpdates();
+    }
+    @MessageMapping("/boards/renameBoard")
+    @SendTo("/topic/renameBoard")
+    public Board sendBoardRename(Board board) {
+        return board;
+    }
+
+    @MessageMapping("/boards/deleteBoard")
+    @SendTo("/topic/boardDeletion")
+    public Long sendDeletedBoardId(long boardId) {
+        return boardId;
+    }
+
+    @MessageMapping("/boards/createBoard")
+    @SendTo("/topic/boardCreation")
+    public Long sendCreatedBoardId(long boardId) {
+        return boardId;
     }
     public long getDefaultId(){return defaultBoardID;}
 }

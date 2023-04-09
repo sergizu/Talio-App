@@ -1,8 +1,9 @@
-package client.services;
+package client.services.interfaces;
 
+import client.services.implementations.CreateBoardServiceImpl;
 import com.google.inject.ImplementedBy;
 
-@ImplementedBy(CreateBoardServiceImp.class)
+@ImplementedBy(CreateBoardServiceImpl.class)
 public interface CreateBoardService {
     void setBoardName(String s);
     String getBoardName();

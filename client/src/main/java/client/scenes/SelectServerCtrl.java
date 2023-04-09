@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.scenes.interfaces.JoinedBoardsCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
@@ -16,6 +17,10 @@ public class SelectServerCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private final ListOverviewCtrl listOverviewCtrl;
+    private JoinedBoardsCtrl joinedBoardsCtrl;
+
+    private final BoardOverviewCtrl boardOverviewCtrl;
+
     private final EditCardCtrl editCardCtrl;
 
 
@@ -33,11 +38,17 @@ public class SelectServerCtrl {
 
     @Inject
     public SelectServerCtrl(ServerUtils server, MainCtrl mainCtrl,
-                            ListOverviewCtrl listOverviewCtrl, EditCardCtrl editCardCtrl) {
+                            ListOverviewCtrl listOverviewCtrl,
+                            JoinedBoardsCtrl joinedBoardsCtrl,
+                            BoardOverviewCtrl boardOverviewCtrl,
+                            EditCardCtrl editCardCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.listOverviewCtrl = listOverviewCtrl;
+        this.boardOverviewCtrl = boardOverviewCtrl;
         this.editCardCtrl = editCardCtrl;
+        this.joinedBoardsCtrl = joinedBoardsCtrl;
+
     }
 
     public boolean checkPass() {
@@ -56,10 +67,14 @@ public class SelectServerCtrl {
         if(server.serverRunning()){
             startSession();
             if (checkPass()) {
+                mainCtrl.setAdmin(true);
                 mainCtrl.showBoardOverview();
                 adminPass.setText("");
                 hbox.setVisible(false);
-            } else mainCtrl.showJoinedBoards();
+            } else {
+                mainCtrl.showJoinedBoards();
+                mainCtrl.setAdmin(false);
+            }
         }
         else{
             myLabel.setText("Couldn't find the server!");
@@ -78,6 +93,8 @@ public class SelectServerCtrl {
     public void startSession(){
         server.setExecutorService(Executors.newCachedThreadPool());
         server.initSession();
+        boardOverviewCtrl.registerForMessages();
+        joinedBoardsCtrl.registerForMessages();
         listOverviewCtrl.init();
         editCardCtrl.registerForUpdates();
     }

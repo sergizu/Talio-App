@@ -11,7 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import server.service.ListService;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -123,8 +123,8 @@ class ListControllerTest {
         }
 
         @Test
-        void testAddMessage() {
+        void testSendCardListId() {
                 CardListId cardListId = new CardListId();
-                assertEquals(cardListId, listController.addMessage(cardListId));
+                assertEquals(cardListId, listController.sentCardListId(cardListId));
         }
 }

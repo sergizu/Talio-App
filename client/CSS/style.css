@@ -76,13 +76,14 @@
 #copyButton{
     -fx-background-color: #2596be;
 }
-#menu{
+#topHBox{
     -fx-background-color:
                     #6622CC,
                     linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
                     linear-gradient(#6622CC, #191d22);
 }
-.anchorpane{
+
+.anchorPane{
     -fx-color: #6622CC;
 }
 #boardTitle{

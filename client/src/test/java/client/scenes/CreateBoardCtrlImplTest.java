@@ -1,14 +1,13 @@
 package client.scenes;
 
-import client.services.AddCardService;
-import client.services.CreateBoardService;
+import client.scenes.implementations.CreateBoardCtrlImpl;
+import client.services.interfaces.CreateBoardService;
 import client.utils.ServerUtils;
 import commons.AppClient;
 import commons.Board;
 import commons.TDList;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -39,7 +37,7 @@ class CreateBoardCtrlImplTest {
 
     @Test
     public void testConstructor() {
-        assertNotNull(new CreateBoardCtrlImpl(serverUtils, mainCtrl, createBoardService));
+        assertNotNull(createBoardCtrl);
     }
 
     @Test
@@ -71,7 +69,7 @@ class CreateBoardCtrlImplTest {
         board.addList(new TDList("DONE"));
         AppClient client = new AppClient();
         given(mainCtrl.getClient()).willReturn(client);
-        createBoardCtrl.setParent(JoinedBoardsCtrl.class);
+        given(mainCtrl.getAdmin()).willReturn(false);
         given(createBoardService.getBoardName()).willReturn("Test");
         given(serverUtils.addBoard(board)).willReturn(board);
         createBoardCtrl.createBoard();
@@ -94,23 +92,16 @@ class CreateBoardCtrlImplTest {
 
     @Test
     void escapeJoinedBoardsCtrlParent() {
-        createBoardCtrl.setParent(JoinedBoardsCtrl.class);
+        given(mainCtrl.getAdmin()).willReturn(false);
         createBoardCtrl.escape();
         verify(mainCtrl).showJoinedBoards();
     }
 
     @Test
     void escapeBoardOverviewCtrl() {
-        createBoardCtrl.setParent(BoardOverviewCtrl.class);
+        given(mainCtrl.getAdmin()).willReturn(true);
         createBoardCtrl.escape();
         verify(mainCtrl).showBoardOverview();
-    }
-
-    @Test
-    void setParent() {
-        AnchorPane anchorPane = new AnchorPane();
-        createBoardCtrl.setParent(anchorPane);
-        assertEquals(anchorPane, createBoardCtrl.getParent());
     }
 
     @Test
@@ -121,20 +112,21 @@ class CreateBoardCtrlImplTest {
         board.addList(new TDList("DONE"));
         given(createBoardService.getBoardName()).willReturn("Test");
         given(serverUtils.addBoard(board)).willReturn(board);
+        AppClient client = new AppClient();
+        given(mainCtrl.getClient()).willReturn(client);
         createBoardCtrl.keyPressed(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.ENTER, false, false, false, false));
         verify(mainCtrl).showOverview(0);
     }
 
     @Test
     void keyPressedEscape() {
-        createBoardCtrl.setParent(JoinedBoardsCtrl.class);
+        given(mainCtrl.getAdmin()).willReturn(false);
         createBoardCtrl.keyPressed(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.ESCAPE, false, false, false, false));
         verify(mainCtrl).showJoinedBoards();
     }
 
     @Test
     void keyPressedAnyKey() {
-        createBoardCtrl.setParent(JoinedBoardsCtrl.class);
         createBoardCtrl.keyPressed(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.SPACE, false, false, false, false));
         verify(mainCtrl, never()).showJoinedBoards();
         verify(mainCtrl, never()).showBoardOverview();
