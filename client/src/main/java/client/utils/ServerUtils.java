@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+
 import java.util.function.Consumer;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -43,14 +43,14 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 public class ServerUtils {
 
     private String server = "http://localhost:8080/";
-    private ExecutorService EXECUTOR_SERVICE;
+    private ExecutorService executorService;
 
-    public void setEXECUTOR_SERVICE(ExecutorService EXECUTOR_SERVICE) {
-        this.EXECUTOR_SERVICE = EXECUTOR_SERVICE;
+    public void setExecutorService(ExecutorService executorService) {
+        this.executorService = executorService;
     }
 
     public boolean isExecutorServiceShutdown() {
-        return EXECUTOR_SERVICE.isShutdown();
+        return executorService.isShutdown();
     }
 
     public void changeServer(String s) {
@@ -131,7 +131,7 @@ public class ServerUtils {
 
 
     public void registerForBoardUpdates(Consumer<Long> consumer) {
-        EXECUTOR_SERVICE.submit(() -> {
+        executorService.submit(() -> {
             while (!Thread.interrupted()) {
                 Response result = ClientBuilder.newClient(new ClientConfig())
                     .target(server).path("/api/boards/updates")
@@ -146,7 +146,7 @@ public class ServerUtils {
     }
 
     public void registerForCardUpdates(Consumer<Long> consumer) {
-        EXECUTOR_SERVICE.submit(() -> {
+        executorService.submit(() -> {
             while (!Thread.interrupted()) {
                 Response result = ClientBuilder.newClient(new ClientConfig())
                     .target(server).path("/api/cards/updates")
@@ -269,7 +269,7 @@ public class ServerUtils {
     }
 
     public void stop() {
-        EXECUTOR_SERVICE.shutdownNow();
+        executorService.shutdownNow();
         session.disconnect();
     }
 }

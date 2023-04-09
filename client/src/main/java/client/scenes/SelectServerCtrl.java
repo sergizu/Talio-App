@@ -75,7 +75,7 @@ public class SelectServerCtrl {
         }
     }
     public void startSession(){
-        server.setEXECUTOR_SERVICE(Executors.newCachedThreadPool());
+        server.setExecutorService(Executors.newCachedThreadPool());
         server.initSession();
         listOverviewCtrl.init();
         editCardCtrl.registerForUpdates();
