@@ -16,11 +16,13 @@
 package client.scenes;
 
 import client.factory.SceneFactory;
+import client.helperClass.SubtaskWrapper;
 import com.google.inject.Inject;
 import commons.AppClient;
 import commons.Card;
 import commons.TDList;
 import javafx.scene.Scene;
+import javafx.scene.input.DataFormat;
 import javafx.stage.Stage;
 
 public class MainCtrl {
@@ -65,6 +67,9 @@ public class MainCtrl {
     @Inject
     private AddSubTaskCtrl createAddSubtaskCtrl;
 
+    @Inject
+    private SubtaskWrapper subtaskWrapper;
+
     private AppClient client;
 
     public void initialize(Stage primaryStage,
@@ -93,6 +98,8 @@ public class MainCtrl {
         this.createAddSubtaskScene = new Scene(sceneFactory.createAddSubtaskScene(), 1080, 720);
 
         this.client = new AppClient();
+
+        subtaskWrapper.setSerialization(new DataFormat("application/x-java-serialized-object"));
 
         showSelectServer();
         setPrimaryStage();
@@ -184,8 +191,7 @@ public class MainCtrl {
     }
 
     public void setSizeScene() {
-        primaryStage.setWidth(primaryStage.getWidth() + 1);
-        primaryStage.setHeight(primaryStage.getHeight() + 1);
+        primaryStage.setHeight(primaryStage.getHeight()+0.5);
     }
 
     public String getPrimaryStageTitle(){

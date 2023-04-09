@@ -49,7 +49,7 @@ public class JoinedBoardsCtrl implements Initializable {
 
     public void init(AppClient client) {
         this.client = client;
-        String serverString = ServerUtils.getServer();
+        String serverString = server.getServer();
         addServerKeyIntoMap(serverString);
         getBoardsForServer(serverString);
     }
@@ -118,7 +118,7 @@ public class JoinedBoardsCtrl implements Initializable {
         HBox tableLine = new HBox();
         tableLine.setAlignment(Pos.CENTER);
         tableLine.setBorder(new Border(new BorderStroke(Color.BLACK,
-                BorderStrokeStyle.SOLID, null, null)));//will change color, was added for testing
+            BorderStrokeStyle.SOLID, null, null)));//will change color, was added for testing
         tableLine.setPrefHeight(50);
         return tableLine;
     }
@@ -133,9 +133,9 @@ public class JoinedBoardsCtrl implements Initializable {
     }
 
     public void leaveBoard(Board board) {
-        ArrayList<Board> boards = client.boards.get(ServerUtils.getServer());
+        ArrayList<Board> boards = client.boards.get(server.getServer());
         boards.remove(board);
-        client.boards.put(ServerUtils.getServer(), boards);
+        client.boards.put(server.getServer(), boards);
         showJoinedBoards(boards);
     }
 
@@ -145,6 +145,6 @@ public class JoinedBoardsCtrl implements Initializable {
 
     public void disconnectPressed() {
         mainCtrl.showSelectServer();
-        server.stopSession();
+        server.stop();
     }
 }
