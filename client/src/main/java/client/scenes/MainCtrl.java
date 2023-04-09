@@ -21,9 +21,13 @@ import commons.AppClient;
 import commons.Card;
 import commons.TDList;
 import javafx.scene.Scene;
+import javafx.scene.input.DataFormat;
 import javafx.stage.Stage;
 
 public class MainCtrl {
+
+    private final DataFormat serialization =
+            new DataFormat("application/x-java-serialized-object");
 
     private Stage primaryStage;
 
@@ -201,5 +205,13 @@ public class MainCtrl {
         this.primaryStage.setOnCloseRequest(event -> {
             this.listOverviewCtrl.stop();
         });
+    }
+
+    public Stage getPrimaryStage() {
+        return this.primaryStage;
+    }
+
+    public DataFormat getSerialization() {
+        return this.serialization;
     }
 }

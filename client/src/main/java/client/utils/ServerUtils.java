@@ -43,7 +43,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 public class ServerUtils {
 
     private static String server = "http://localhost:8080/";
-    private static final ExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadExecutor();
+    private static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
 
     public void changeServer(String s) {
         server = "http://" + s + "/";

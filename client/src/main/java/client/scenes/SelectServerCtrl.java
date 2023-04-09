@@ -15,6 +15,8 @@ public class SelectServerCtrl {
     private final MainCtrl mainCtrl;
     private final ListOverviewCtrl listOverviewCtrl;
 
+    private final EditCardCtrl editCardCtrl;
+
     @FXML
     private TextField serverName;
 
@@ -29,10 +31,11 @@ public class SelectServerCtrl {
 
     @Inject
     public SelectServerCtrl(ServerUtils server, MainCtrl mainCtrl,
-                            ListOverviewCtrl listOverviewCtrl) {
+                            ListOverviewCtrl listOverviewCtrl, EditCardCtrl editCardCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.listOverviewCtrl = listOverviewCtrl;
+        this.editCardCtrl = editCardCtrl;
     }
 
     public boolean checkPass() {
@@ -70,9 +73,9 @@ public class SelectServerCtrl {
             ok();
         }
     }
-
     public void startSession(){
         server.initSession();
         listOverviewCtrl.init();
+        editCardCtrl.registerForUpdates();
     }
 }

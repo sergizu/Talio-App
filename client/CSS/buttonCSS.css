@@ -1,0 +1,33 @@
+.button {
+    -fx-background-image: url('cross.png');
+    -fx-background-position: center;
+    -fx-background-size: 25px;
+}
+
+#tableColumnCheckbox {
+    -fx-alignment: CENTER;
+    -fx-border-color: transparent;
+}
+
+#tableColumnButton {
+    -fx-alignment: CENTER;
+    -fx-border-color: transparent;
+}
+
+#tableColumnSubtask {
+    -fx-border-color: transparent;
+}
+
+.check-box .box {
+-fx-background-color: white;
+-fx-border-color:grey;
+-fx-border-radius:3px;
+}
+
+.check-box:selected .mark {
+-fx-background-color: white;
+}
+
+.check-box:selected .box {
+-fx-background-color: #28a3f4;
+}
