@@ -1,4 +1,4 @@
-package client.scenes;
+package client.scenes.interfaces;
 
 import client.scenes.implementations.SelectServerCtrlImpl;
 import com.google.inject.ImplementedBy;
