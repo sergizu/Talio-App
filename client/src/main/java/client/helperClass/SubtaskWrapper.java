@@ -1,5 +1,6 @@
 package client.helperClass;
 
+import com.google.inject.Inject;
 import commons.Subtask;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -7,15 +8,14 @@ import javafx.scene.input.DataFormat;
 
 public class SubtaskWrapper {
 
-    public static final DataFormat serialization =
-            new DataFormat("application/x-java-serialized-object");
-
+    private DataFormat serialization;
     private Subtask subtask;
 
     private CheckBox checkBox;
 
     private Button button;
 
+    @Inject
     public SubtaskWrapper(Subtask subtask, CheckBox checkBox, Button button) {
         this.subtask = subtask;
         this.checkBox = checkBox;
@@ -45,4 +45,13 @@ public class SubtaskWrapper {
     public void setButton(Button button) {
         this.button = button;
     }
+
+    public DataFormat getSerialization() {
+        return serialization;
+    }
+
+    public void setSerialization(DataFormat serialization) {
+        this.serialization = serialization;
+    }
 }
+
