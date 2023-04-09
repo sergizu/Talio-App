@@ -80,7 +80,7 @@ public class BoardOverviewCtrl implements Initializable {
         HBox tableLine = new HBox();
         tableLine.setAlignment(Pos.CENTER);
         tableLine.setBorder(new Border(new BorderStroke(Color.BLACK,
-                BorderStrokeStyle.SOLID, null, null)));//will change color, was added for testing
+            BorderStrokeStyle.SOLID, null, null)));//will change color, was added for testing
         tableLine.setPrefHeight(50);
         return tableLine;
     }
@@ -103,6 +103,6 @@ public class BoardOverviewCtrl implements Initializable {
 
     public void disconnect() {
         mainCtrl.showSelectServer();
-        server.stopSession();
+        server.stop();
     }
 }

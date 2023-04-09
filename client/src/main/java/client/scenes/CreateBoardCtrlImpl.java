@@ -50,11 +50,11 @@ public class CreateBoardCtrlImpl implements CreateBoardCtrl {
 
     public void addBoardToClient(Board board) {
         AppClient client = mainCtrl.getClient();
-        ArrayList<Board> boards = client.boards.get(ServerUtils.getServer());
+        ArrayList<Board> boards = client.boards.get(server.getServer());
         if (boards == null)
             boards = new ArrayList<>();
         boards.add(board);
-        client.boards.put(ServerUtils.getServer(), boards);
+        client.boards.put(server.getServer(), boards);
     }
 
     public void escape() {

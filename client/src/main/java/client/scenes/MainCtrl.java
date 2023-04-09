@@ -16,6 +16,7 @@
 package client.scenes;
 
 import client.factory.SceneFactory;
+import client.helperClass.SubtaskWrapper;
 import com.google.inject.Inject;
 import commons.AppClient;
 import commons.Card;
@@ -25,9 +26,6 @@ import javafx.scene.input.DataFormat;
 import javafx.stage.Stage;
 
 public class MainCtrl {
-
-    private final DataFormat serialization =
-            new DataFormat("application/x-java-serialized-object");
 
     private Stage primaryStage;
 
@@ -69,6 +67,9 @@ public class MainCtrl {
     @Inject
     private AddSubTaskCtrl createAddSubtaskCtrl;
 
+    @Inject
+    private SubtaskWrapper subtaskWrapper;
+
     private AppClient client;
 
     public void initialize(Stage primaryStage,
@@ -97,6 +98,8 @@ public class MainCtrl {
         this.createAddSubtaskScene = new Scene(sceneFactory.createAddSubtaskScene(), 1080, 720);
 
         this.client = new AppClient();
+
+        subtaskWrapper.setSerialization(new DataFormat("application/x-java-serialized-object"));
 
         showSelectServer();
         setPrimaryStage();
@@ -131,9 +134,9 @@ public class MainCtrl {
         setSizeScene();
     }
 
-    public void showAddCard(long listId,long boardId) {
+    public void showAddCard(long listId, long boardId) {
         primaryStage.setTitle("Board: Adding Card");
-        createAddCardCtrl.setListBoardId(listId,boardId);
+        createAddCardCtrl.setListBoardId(listId, boardId);
         primaryStage.setScene(createAddCardScene);
         createAddCardScene.setOnKeyPressed(e -> createAddCardCtrl.keyPressed(e));
         setSizeScene();
@@ -175,7 +178,7 @@ public class MainCtrl {
         setSizeScene();
     }
 
-    public void showCreateBoard(Object parent){
+    public void showCreateBoard(Object parent) {
         primaryStage.setTitle("Create a new board");
         primaryStage.setScene(createBoardScene);
         createBoardCtrl.setParent(parent);
@@ -188,15 +191,14 @@ public class MainCtrl {
     }
 
     public void setSizeScene() {
-        primaryStage.setWidth(primaryStage.getWidth() + 1);
-        primaryStage.setHeight(primaryStage.getHeight() + 1);
+        primaryStage.setHeight(primaryStage.getHeight() + 0.5);
     }
 
-    public String getPrimaryStageTitle(){
+    public String getPrimaryStageTitle() {
         return this.primaryStage.getTitle();
     }
 
-    public void setPrimaryStage(){
+    public void setPrimaryStage() {
         this.primaryStage.setWidth(1080);
         this.primaryStage.setHeight(720);
         this.primaryStage.setMinWidth(425.0);
@@ -205,13 +207,5 @@ public class MainCtrl {
         this.primaryStage.setOnCloseRequest(event -> {
             this.listOverviewCtrl.stop();
         });
-    }
-
-    public Stage getPrimaryStage() {
-        return this.primaryStage;
-    }
-
-    public DataFormat getSerialization() {
-        return this.serialization;
     }
 }
