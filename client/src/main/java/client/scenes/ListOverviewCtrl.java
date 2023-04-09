@@ -118,12 +118,13 @@ public class ListOverviewCtrl {
         for (var tdList : lists) {
             Button buttonAddCard = createAddCardButton(tdList.id);
             Button buttonEditList = createEditListButton(tdList);
+            Button buttonRemoveList = createRemoveListButton(tdList);
             TableView<Card> tv = createTable(tdList);
             cardExpansion(tv);
             dragAndDrop(tv);
             dragOtherLists(tv, tdList);
             flowPane.getChildren().addAll(createVBox(tv,
-                createHBox(buttonAddCard, buttonEditList)));
+                    createHBox(buttonAddCard, buttonEditList, buttonRemoveList)));
         }
         return flowPane;
     }
@@ -144,6 +145,15 @@ public class ListOverviewCtrl {
         return button;
     }
 
+    public Button createRemoveListButton(TDList list) {
+        Button button = new Button("   ");
+        button.setOnAction(e -> {
+            server.removeList(list);
+        });
+        button.getStyleClass().add("removeButtons");
+        return button;
+    }
+
     public TableView<Card> createTable(TDList tdList) {
         TableView<Card> tv = new TableView<>();
         tv.setPrefSize(157, 270);
@@ -159,10 +169,10 @@ public class ListOverviewCtrl {
         return tv;
     }
 
-    public HBox createHBox(Button button1, Button button2) {
+    public HBox createHBox(Button button1, Button button2, Button button3) {
         HBox hBox = new HBox();
-        hBox.getChildren().addAll(button2, button1);
-        hBox.setSpacing(55);
+        hBox.getChildren().addAll(button2, button1, button3);
+        hBox.setSpacing(14);
         return hBox;
     }
 
@@ -200,7 +210,7 @@ public class ListOverviewCtrl {
         });
     }
 
-    public void dragAndDrop(TableView<Card> tableView){
+    public void dragAndDrop(TableView<Card> tableView) {
         tableView.setRowFactory(tv -> {
             TableRow<Card> row = new TableRow<>();
             row.setOnDragDetected(e -> { //Method gets called whenever a mouse drags a row

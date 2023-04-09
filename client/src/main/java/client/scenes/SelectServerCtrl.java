@@ -1,9 +1,11 @@
 package client.scenes;
 
+import client.scenes.interfaces.EditCardCtrl;
 import client.scenes.interfaces.JoinedBoardsCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -36,6 +38,9 @@ public class SelectServerCtrl {
     @FXML
     private HBox hbox;
 
+    @FXML
+    private Button choiceButton;
+
     @Inject
     public SelectServerCtrl(ServerUtils server, MainCtrl mainCtrl,
                             ListOverviewCtrl listOverviewCtrl,
@@ -66,14 +71,18 @@ public class SelectServerCtrl {
         server.changeServer(s);
         if(server.serverRunning()){
             startSession();
-            if (checkPass()) {
-                mainCtrl.setAdmin(true);
-                mainCtrl.showBoardOverview();
-                adminPass.setText("");
-                hbox.setVisible(false);
-            } else {
+            if(!hbox.isVisible()) {
                 mainCtrl.showJoinedBoards();
-                mainCtrl.setAdmin(false);
+            } else {
+                if(checkPass()) {
+                    mainCtrl.setAdmin(true);
+                    mainCtrl.showBoardOverview();
+                    adminPass.setText("");
+                    hbox.setVisible(false);
+                } else {
+                    mainCtrl.setAdmin(false);
+                    myLabel.setText("Password is incorrect!");
+                }
             }
         }
         else{
@@ -82,7 +91,12 @@ public class SelectServerCtrl {
     }
 
     public void adminLogIn() {
-        hbox.setVisible(true);
+        hbox.setVisible(!hbox.isVisible());
+        if(!hbox.isVisible()) {
+            choiceButton.setText("Admin log in");
+        } else {
+            choiceButton.setText("User log in");
+        }
     }
 
     public void keyPressed(KeyEvent e) {
@@ -90,6 +104,7 @@ public class SelectServerCtrl {
             ok();
         }
     }
+
     public void startSession(){
         server.setExecutorService(Executors.newCachedThreadPool());
         server.initSession();

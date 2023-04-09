@@ -27,7 +27,7 @@ public class SceneFactory {
     }
 
     public Parent createEditCardScene(){
-        return fxml.load(EditCardCtrl.class, "client", "scenes", "EditCard.fxml").getValue();
+        return fxml.load(EditCardService.class, "client", "scenes", "EditCard.fxml").getValue();
     }
 
     public Parent createSelectServerScene(){
