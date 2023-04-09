@@ -303,7 +303,6 @@ public class ListOverviewCtrl {
     }
 
     public void afterCopyButton(Button copyButton) {
-        copyButton.setFont(new javafx.scene.text.Font(9));
         copyButton.setText("Copied!");
         copyButton.setStyle("-fx-background-color: #34eb67;");
     }

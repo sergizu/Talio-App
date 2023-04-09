@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.services.interfaces.JoinedBoardsService">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" stylesheets="@../../../CSS/style.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.services.interfaces.JoinedBoardsService">
     <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <top>
             <HBox fx:id="topHBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="600.0" BorderPane.alignment="CENTER">
@@ -22,34 +22,34 @@
                             <Insets top="5.0" />
                         </HBox.margin>
                     </Label>
-               <TextField fx:id="joinByKey" onKeyPressed="#joinPressed" prefHeight="26.0" prefWidth="128.0" promptText="Join by key" HBox.hgrow="NEVER">
-                  <HBox.margin>
-                     <Insets top="10.0" />
-                  </HBox.margin>
-                  <font>
-                     <Font size="10.0" />
-                  </font></TextField>
-               <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#joinByKey" text="Join">
-                  <HBox.margin>
-                     <Insets left="5.0" right="10.0" top="10.0" />
-                  </HBox.margin>
-               </Button>
+                    <TextField fx:id="joinByKey" onKeyPressed="#joinPressed" prefHeight="26.0" prefWidth="128.0" promptText="Join by key" HBox.hgrow="NEVER">
+                        <HBox.margin>
+                            <Insets top="10.0" />
+                        </HBox.margin>
+                        <font>
+                            <Font size="10.0" />
+                        </font></TextField>
+                    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#joinByKey" text="Join">
+                        <HBox.margin>
+                            <Insets left="5.0" right="10.0" top="10.0" />
+                        </HBox.margin>
+                    </Button>
                 </children>
             </HBox>
         </top>
         <center>
-            <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <ScrollPane fx:id="boardsScroll" fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <content>
                <VBox fx:id="boardsList" alignment="CENTER" prefHeight="315.0" prefWidth="598.0" />
             </content>
             </ScrollPane>
         </center>
       <bottom>
-              <Button fx:id="disconnectButton" alignment="TOP_RIGHT" contentDisplay="CENTER" maxWidth="-Infinity" mnemonicParsing="false" onAction="#disconnectPressed" text="Disconnect" BorderPane.alignment="CENTER">
-            <BorderPane.margin>
-               <Insets bottom="5.0" top="5.0" />
-            </BorderPane.margin>
-              </Button>
+          <Button fx:id="disconnectButton" alignment="TOP_RIGHT" contentDisplay="CENTER" maxWidth="-Infinity" mnemonicParsing="false" onAction="#disconnectPressed" text="Disconnect" BorderPane.alignment="CENTER">
+              <BorderPane.margin>
+                  <Insets bottom="5.0" top="5.0" />
+              </BorderPane.margin>
+          </Button>
       </bottom>
     </BorderPane>
 
