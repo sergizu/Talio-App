@@ -1,7 +1,6 @@
 package server.api;
 
 import commons.Board;
-import commons.Card;
 import commons.TDList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +13,6 @@ import server.service.BoardService;
 import server.service.ListService;
 
 import java.util.List;
-import java.util.Random;
 
 @Controller
 @ResponseBody

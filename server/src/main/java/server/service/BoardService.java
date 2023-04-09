@@ -1,9 +1,5 @@
 package server.service;
-
-
-
 import commons.Board;
-import commons.Card;
 import commons.TDList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -95,6 +91,7 @@ public class BoardService {
         Random randomGenerator = new Random();
         board.key = Math.abs(randomGenerator.nextLong());
     }
+
 
     public void addListToBoard(TDList toAdd, long boardId) {
         Board board = getById(boardId);
