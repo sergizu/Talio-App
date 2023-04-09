@@ -28,6 +28,9 @@ public class CreateBoardCtrlImpl implements CreateBoardCtrl {
     }
 
     public Board getBoardWithTitle() {
+        if(createBoardService.getBoardName().isEmpty()) {
+            return null;
+        }
         Board board = new Board(createBoardService.getBoardName());
         addDefaultLists(board);
         return board;
@@ -41,6 +44,10 @@ public class CreateBoardCtrlImpl implements CreateBoardCtrl {
 
     public void createBoard() {
         Board board = getBoardWithTitle();
+        if(board == null) {
+            createBoardService.setErrorLabel("Board name cannot be empty!");
+            return;
+        }
         createBoardService.setBoardName("");
         board = server.addBoard(board);
         if (parent == JoinedBoardsCtrl.class)
