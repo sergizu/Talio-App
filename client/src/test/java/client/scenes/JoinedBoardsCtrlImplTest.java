@@ -92,6 +92,15 @@ class JoinedBoardsCtrlImplTest {
     void addServerKeyIntoMap() {
         joinedBoardsCtrl.addServerKeyIntoMap("server");
         assertTrue(client.boards.containsKey("server"));
+        assertNotNull(client.boards.get("server"));
+    }
+
+    @Test
+    void addServerKeyIntoMap2() {
+        client.boards.put("server",null);
+        joinedBoardsCtrl.setClient(client);
+        joinedBoardsCtrl.addServerKeyIntoMap("server");
+        assertNull(client.boards.get("server"));
     }
 
     @Test
@@ -295,13 +304,64 @@ class JoinedBoardsCtrlImplTest {
 
     @Test
     void removeBoardById() {
+        ArrayList<Board> boards = new ArrayList<>();
+        board.id = 1L;
+        boards.add(board);
+        client.boards.put("server",boards);
+        joinedBoardsCtrl.setClient(client);
 
+        joinedBoardsCtrl.removeBoardById(1L);
 
+        assertEquals(client.boards.get("server").size(), 0);
+    }
+
+    @Test
+    void removeBoardById2() {
+        ArrayList<Board> boards = new ArrayList<>();
+        board.id = 2L;
+        boards.add(board);
+        client.boards.put("server",boards);
+        joinedBoardsCtrl.setClient(client);
+
+        joinedBoardsCtrl.removeBoardById(1L);
+
+        assertEquals(client.boards.get("server").size(), 1);
+    }
+
+    @Test
+    void removeBoardById3() {
+        joinedBoardsCtrl.setClient(null);
+        given(mainCtrl.getClient()).willReturn(client);
+        ArrayList<Board> boards = new ArrayList<>();
+        board.id = 2L;
+        boards.add(board);
+        client.boards.put("server",boards);
+
+        joinedBoardsCtrl.removeBoardById(1L);
+
+        assertEquals(client.boards.get("server").size(), 1);
+    }
+
+    @Test
+    void removeBoardById4() {
+        joinedBoardsCtrl.setClient(null);
+        given(mainCtrl.getClient()).willReturn(client);
+
+        joinedBoardsCtrl.removeBoardById(1L);
+
+        assertNull(client.boards.get("server"));
     }
 
     @Test
     void setClient() {
         joinedBoardsCtrl.setClient(client);
         assertEquals(joinedBoardsCtrl.getClient(),client);
+    }
+
+    @Test
+    void getClient() {
+        joinedBoardsCtrl.setClient(client);
+        AppClient client2 = joinedBoardsCtrl.getClient();
+        assertEquals(client, client2);
     }
 }
