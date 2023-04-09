@@ -13,7 +13,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,8 +39,9 @@ public class SelectServerCtrlImplTest {
     SelectServerService selectServerService;
     @BeforeEach
     void setUp(){
-        selectServerCtrlImpl = new SelectServerCtrlImpl(server, mainCtrl, listOverviewCtrl, joinedBoardsCtrl,
-                boardOverviewCtrl, editCardCtrl, selectServerService);
+        selectServerCtrlImpl = new SelectServerCtrlImpl(server, mainCtrl,
+                listOverviewCtrl, joinedBoardsCtrl, boardOverviewCtrl,
+                editCardCtrl, selectServerService);
     }
     @Test
     void constructorTest(){
@@ -105,7 +105,8 @@ public class SelectServerCtrlImplTest {
     @Test
     void keyPressedTest(){
         when(selectServerService.getServerNameText()).thenReturn("");
-        KeyEvent e = new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.ENTER, false, false, false, false);
+        KeyEvent e = new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.ENTER,
+                false, false, false, false);
         selectServerCtrlImpl.keyPressed(e);
         verify(selectServerService).setMyLabel("Can not be empty!");
     }
