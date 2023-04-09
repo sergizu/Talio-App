@@ -1,6 +1,6 @@
 package client.services.implementations;
 
-import client.scenes.SelectServerCtrl;
+import client.scenes.interfaces.SelectServerCtrl;
 import client.services.interfaces.SelectServerService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
