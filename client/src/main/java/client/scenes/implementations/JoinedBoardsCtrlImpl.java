@@ -45,7 +45,7 @@ public class JoinedBoardsCtrlImpl implements JoinedBoardsCtrl {
             Platform.runLater(() -> {
                 removeBoardById(deletedBoardId);
                 if (mainCtrl.getPrimaryStageTitle().equals("Your boards"))
-                    service.showJoinedBoards(client.boards.get(ServerUtils.getServer()));
+                    service.showJoinedBoards(client.boards.get(server.getServer()));
             });
         });
     }
@@ -57,7 +57,7 @@ public class JoinedBoardsCtrlImpl implements JoinedBoardsCtrl {
     public void init() {
         this.client = mainCtrl.getClient();
         service.setJoinByKeyPrompt("Join by key");
-        String serverString = ServerUtils.getServer();
+        String serverString = server.getServer();
         addServerKeyIntoMap(serverString);
         getBoardsForServer(serverString);
     }
@@ -82,9 +82,9 @@ public class JoinedBoardsCtrlImpl implements JoinedBoardsCtrl {
     }
 
     public void leaveBoard(Board board) {
-        ArrayList<Board> boards = client.boards.get(ServerUtils.getServer());
+        ArrayList<Board> boards = client.boards.get(server.getServer());
         boards.remove(board);
-        client.boards.put(ServerUtils.getServer(), boards);
+        client.boards.put(server.getServer(), boards);
         service.showJoinedBoards(boards);
     }
 
@@ -98,7 +98,7 @@ public class JoinedBoardsCtrlImpl implements JoinedBoardsCtrl {
 
     public void disconnectPressed() {
         mainCtrl.showSelectServer();
-        server.stopSession();
+        server.stop();
     }
 
     public void joinByKey() {
@@ -135,39 +135,39 @@ public class JoinedBoardsCtrlImpl implements JoinedBoardsCtrl {
     }
 
     public boolean containsBoardId(Board newBoard) {
-        ArrayList<Board> clientBoards = client.boards.get(ServerUtils.getServer());
+        ArrayList<Board> clientBoards = client.boards.get(server.getServer());
         if(clientBoards == null)
             clientBoards = new ArrayList<>();
         for (Board board : clientBoards)
             if (board.id == newBoard.id)
                 return true;
         clientBoards.add(newBoard);
-        client.boards.put(ServerUtils.getServer(), clientBoards);
+        client.boards.put(server.getServer(), clientBoards);
         return false;
     }
 
     public void updateBoard(Board board) {
-        ArrayList<Board> allBoards = client.boards.get(ServerUtils.getServer());
+        ArrayList<Board> allBoards = client.boards.get(server.getServer());
         for (int i = 0; i < allBoards.size(); i++)
             if (allBoards.get(i).id == board.id) {
                 allBoards.get(i).title = board.title;
                 break;
             }
-        client.boards.put(ServerUtils.getServer(), allBoards);
+        client.boards.put(server.getServer(), allBoards);
         service.showJoinedBoards(allBoards);
     }
 
     public void removeBoardById(long boardId) {
         if (client == null)
             client = mainCtrl.getClient();
-        ArrayList<Board> allBoards = client.boards.get(ServerUtils.getServer());
+        ArrayList<Board> allBoards = client.boards.get(server.getServer());
         if (allBoards != null)
             for (int i = 0; i < allBoards.size(); i++)
                 if (allBoards.get(i).id == boardId) {
                     allBoards.remove(i);
                     break;
                 }
-        client.boards.put(ServerUtils.getServer(), allBoards);
+        client.boards.put(server.getServer(), allBoards);
     }
 
     public void setClient(AppClient client) {

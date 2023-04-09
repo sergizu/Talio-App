@@ -7,12 +7,10 @@ import commons.AppClient;
 import commons.Board;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
@@ -21,7 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class JoinedBoardsCtrlImplTest {
@@ -35,11 +34,6 @@ class JoinedBoardsCtrlImplTest {
     Board board;
     AppClient client;
 
-    @BeforeAll
-    static void usefulSetup() {
-        MockedStatic<ServerUtils> mocked = mockStatic(ServerUtils.class);
-        mocked.when(()->ServerUtils.getServer()).thenReturn("server");
-    }
     @BeforeEach
     void setUp() {
         doc = new TestJoinedBoardsService();
@@ -147,7 +141,7 @@ class JoinedBoardsCtrlImplTest {
         boards.add(board);
         client.boards.put("server",boards);
         joinedBoardsCtrl.setClient(client);
-
+        when(server.getServer()).thenReturn("server");
         joinedBoardsCtrl.leaveBoard(board);
         assertTrue(doc.calls.contains("showJoinedBoards"));
         assertEquals(boards,client.boards.get("server"));
@@ -169,7 +163,7 @@ class JoinedBoardsCtrlImplTest {
     void disconnectPressed() {
         joinedBoardsCtrl.disconnectPressed();
         verify(mainCtrl).showSelectServer();
-        verify(server).stopSession();
+        verify(server).stop();
     }
 
     @Test
@@ -252,7 +246,7 @@ class JoinedBoardsCtrlImplTest {
     void containsBoardIdNoBoards() {
         ArrayList<Board> boards = new ArrayList<>();
         boards.add(board);
-
+        when(server.getServer()).thenReturn("server");
         assertFalse(joinedBoardsCtrl.containsBoardId(board));
         assertEquals(joinedBoardsCtrl.getClient().boards.get("server"),boards);
     }
@@ -263,7 +257,7 @@ class JoinedBoardsCtrlImplTest {
         boards.add(board);
         client.boards.put("server",boards);
         joinedBoardsCtrl.setClient(client);
-
+        when(server.getServer()).thenReturn("server");
         assertTrue(joinedBoardsCtrl.containsBoardId(board));
         assertEquals(joinedBoardsCtrl.getClient().boards.get("server"),boards);
     }
@@ -276,7 +270,7 @@ class JoinedBoardsCtrlImplTest {
         joinedBoardsCtrl.setClient(client);
         Board board2 = new Board("board2");
         boards.set(0,board2);
-
+        when(server.getServer()).thenReturn("server");
         joinedBoardsCtrl.updateBoard(board);
 
         assertEquals(client.boards.get("server"),boards);
@@ -293,7 +287,7 @@ class JoinedBoardsCtrlImplTest {
         Board board2 = new Board("board1");
         board2.id = 1;
         boards.set(0,board2);
-
+        when(server.getServer()).thenReturn("server");
         joinedBoardsCtrl.updateBoard(board);
 
         assertEquals(client.boards.get("server"),boards);
@@ -309,7 +303,7 @@ class JoinedBoardsCtrlImplTest {
         boards.add(board);
         client.boards.put("server",boards);
         joinedBoardsCtrl.setClient(client);
-
+        when(server.getServer()).thenReturn("server");
         joinedBoardsCtrl.removeBoardById(1L);
 
         assertEquals(client.boards.get("server").size(), 0);

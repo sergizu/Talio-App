@@ -87,7 +87,7 @@ class CreateBoardCtrlImplTest {
         given(mainCtrl.getClient()).willReturn(client);
         createBoardCtrl.addBoardToClient(board);
         assertFalse(client.boards.isEmpty());
-        assertEquals(board, client.boards.get(ServerUtils.getServer()).get(0));
+        assertEquals(board, client.boards.get(serverUtils.getServer()).get(0));
     }
 
     @Test

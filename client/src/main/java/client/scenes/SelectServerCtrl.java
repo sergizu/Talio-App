@@ -10,6 +10,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 
+import java.util.concurrent.Executors;
+
 
 public class SelectServerCtrl {
     private final ServerUtils server;
@@ -20,6 +22,7 @@ public class SelectServerCtrl {
     private final BoardOverviewCtrl boardOverviewCtrl;
 
     private final EditCardCtrl editCardCtrl;
+
 
     @FXML
     private TextField serverName;
@@ -87,6 +90,7 @@ public class SelectServerCtrl {
         }
     }
     public void startSession(){
+        server.setExecutorService(Executors.newCachedThreadPool());
         server.initSession();
         boardOverviewCtrl.registerForMessages();
         joinedBoardsCtrl.registerForMessages();

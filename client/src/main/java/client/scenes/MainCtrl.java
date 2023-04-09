@@ -16,8 +16,12 @@
 package client.scenes;
 
 import client.factory.SceneFactory;
+import client.helperClass.SubtaskWrapper;
 import client.scenes.implementations.BoardOptionsCtrlImpl;
-import client.scenes.interfaces.*;
+import client.scenes.interfaces.AddCardCtrl;
+import client.scenes.interfaces.AddListCtrl;
+import client.scenes.interfaces.AddSubTaskCtrl;
+import client.scenes.interfaces.CreateBoardCtrl;
 import com.google.inject.Inject;
 import commons.AppClient;
 import commons.Board;
@@ -28,9 +32,6 @@ import javafx.scene.input.DataFormat;
 import javafx.stage.Stage;
 
 public class MainCtrl {
-
-    private final DataFormat serialization =
-            new DataFormat("application/x-java-serialized-object");
 
     private Stage primaryStage;
 
@@ -77,6 +78,7 @@ public class MainCtrl {
     private Scene boardOptionsScene;
 
     boolean isAdmin;
+    private SubtaskWrapper subtaskWrapper;
 
     private AppClient client;
 
@@ -108,6 +110,8 @@ public class MainCtrl {
         this.boardOptionsScene = new Scene(sceneFactory.createBoardOptionsScene(), 1080, 720);
         this.client = new AppClient();
 
+        subtaskWrapper.setSerialization(new DataFormat("application/x-java-serialized-object"));
+
         showSelectServer();
         setPrimaryStage();
         primaryStage.show();
@@ -133,9 +137,9 @@ public class MainCtrl {
         setSizeScene();
     }
 
-    public void showAddCard(long listId,long boardId) {
+    public void showAddCard(long listId, long boardId) {
         primaryStage.setTitle("Board: Adding Card");
-        createAddCardCtrl.setListBoardId(listId,boardId);
+        createAddCardCtrl.setListBoardId(listId, boardId);
         primaryStage.setScene(createAddCardScene);
         createAddCardScene.setOnKeyPressed(e -> createAddCardCtrl.keyPressed(e));
         setSizeScene();
@@ -173,11 +177,11 @@ public class MainCtrl {
     public void showJoinedBoards() {
         primaryStage.setTitle("Your boards");
         primaryStage.setScene(joinedBoardsScene);
-        joinedBoardsCtrl.init();
+        joinedBoardsCtrl.init(client);
         setSizeScene();
     }
 
-    public void showCreateBoard(){
+    public void showCreateBoard() {
         primaryStage.setTitle("Create a new board");
         primaryStage.setScene(createBoardScene);
         setSizeScene();
@@ -201,16 +205,15 @@ public class MainCtrl {
         return isAdmin;
     }
 
-    public String getPrimaryStageTitle() {
-        return primaryStage.getTitle();
-    }
-
     public void setSizeScene() {
-        primaryStage.setWidth(primaryStage.getWidth() + 1);
-        primaryStage.setHeight(primaryStage.getHeight() + 1);
+        primaryStage.setHeight(primaryStage.getHeight() + 0.5);
     }
 
-    public void setPrimaryStage(){
+    public String getPrimaryStageTitle() {
+        return this.primaryStage.getTitle();
+    }
+
+    public void setPrimaryStage() {
         this.primaryStage.setWidth(1080);
         this.primaryStage.setHeight(720);
         this.primaryStage.setMinWidth(425.0);
@@ -219,13 +222,5 @@ public class MainCtrl {
         this.primaryStage.setOnCloseRequest(event -> {
             this.listOverviewCtrl.stop();
         });
-    }
-
-    public Stage getPrimaryStage() {
-        return this.primaryStage;
-    }
-
-    public DataFormat getSerialization() {
-        return this.serialization;
     }
 }

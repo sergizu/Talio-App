@@ -38,81 +38,82 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class ServerUtils {
 
-    private static String server = "http://localhost:8080/";
-    private static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
+    private String server = "http://localhost:8080/";
+    private ExecutorService executorService;
+
+    public void setExecutorService(ExecutorService executorService) {
+        this.executorService = executorService;
+    }
+
+    public boolean isExecutorServiceShutdown() {
+        return executorService.isShutdown();
+    }
+
 
     public void changeServer(String s) {
         server = "http://" + s + "/";
     }
 
-    public static String getServer() {
+    public String getServer() {
         return server;
     }
 
     public List<Card> getCard() {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/cards") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Card>>() {
-                });
+            .target(server).path("api/cards") //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .get(new GenericType<List<Card>>() {
+            });
     }
 
     public void removeList(TDList list) {
         ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/tdLists/" + list.id) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .delete();
+            .target(server).path("api/tdLists/" + list.id) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .delete();
     }
 
     public void removeCard(Card card) {
         ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/cards/" + card.id) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .delete();
+            .target(server).path("api/cards/" + card.id) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .delete();
     }
 
-    public Card addCard(Card card) {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/cards") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .post(Entity.entity(card, APPLICATION_JSON), Card.class);
-    }
 
     public Board addBoard(Board board) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/boards") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .post(Entity.entity(board, APPLICATION_JSON), Board.class);
+            .target(server).path("api/boards") //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .post(Entity.entity(board, APPLICATION_JSON), Board.class);
     }
 
     public Board getBoardById(long boardId) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("/api/boards/" + boardId) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<>() {
-                });
+            .target(server).path("/api/boards/" + boardId) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .get(new GenericType<>() {
+            });
     }
 
     public Card getCardById(long cardId) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("/api/cards/" + cardId) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<>() {
-                });
+            .target(server).path("/api/cards/" + cardId) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .get(new GenericType<>() {
+            });
     }
 
     public void addCardToList(long listId, Card card) {
@@ -125,21 +126,21 @@ public class ServerUtils {
 
     public void addListToBoard(long boardId, TDList tdList) {
         Response result = ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("/api/boards/" + boardId + "/addList")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .put(Entity.entity(tdList, APPLICATION_JSON));
+            .target(server).path("/api/boards/" + boardId + "/addList")
+            .request(APPLICATION_JSON)
+            .accept(APPLICATION_JSON)
+            .put(Entity.entity(tdList, APPLICATION_JSON));
     }
 
 
     public void registerForBoardUpdates(Consumer<Long> consumer) {
-        EXECUTOR_SERVICE.submit(() -> {
+        executorService.submit(() -> {
             while (!Thread.interrupted()) {
                 Response result = ClientBuilder.newClient(new ClientConfig())
-                        .target(server).path("/api/boards/updates")
-                        .request(APPLICATION_JSON)
-                        .accept(APPLICATION_JSON)
-                        .get();
+                    .target(server).path("/api/boards/updates")
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .get();
                 if (result.getStatus() == HttpStatus.NO_CONTENT.value())
                     continue;
                 consumer.accept(result.readEntity(Long.class));
@@ -148,13 +149,13 @@ public class ServerUtils {
     }
 
     public void registerForCardUpdates(Consumer<Long> consumer) {
-        EXECUTOR_SERVICE.submit(() -> {
+        executorService.submit(() -> {
             while (!Thread.interrupted()) {
                 Response result = ClientBuilder.newClient(new ClientConfig())
-                        .target(server).path("/api/cards/updates")
-                        .request(APPLICATION_JSON)
-                        .accept(APPLICATION_JSON)
-                        .get();
+                    .target(server).path("/api/cards/updates")
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .get();
                 if (result.getStatus() == HttpStatus.NO_CONTENT.value())
                     continue;
                 consumer.accept(result.readEntity(Long.class));
@@ -164,53 +165,52 @@ public class ServerUtils {
 
     public void updateListName(long listId, String newName) {
         ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/tdLists/updateName/" + listId) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON)
-                .put(Entity.entity(newName, APPLICATION_JSON));//
-
+            .target(server).path("api/tdLists/updateName/" + listId) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON)
+            .put(Entity.entity(newName, APPLICATION_JSON));//
     }
 
     public void updateBoard(Board board) {
         ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/boards/update") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON)
-                .put(Entity.entity(board, APPLICATION_JSON), Board.class);//
+            .target(server).path("api/boards/update") //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON)
+            .put(Entity.entity(board, APPLICATION_JSON), Board.class);//
     }
 
     public void updateCardName(long id, String name) {
         ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/cards/updateName/" + id)
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .put(Entity.entity(name, APPLICATION_JSON));
+            .target(server).path("api/cards/updateName/" + id)
+            .request(APPLICATION_JSON)
+            .accept(APPLICATION_JSON)
+            .put(Entity.entity(name, APPLICATION_JSON));
     }
 
     public void updateCardDescription(long id, String name) {
         ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/cards/updateDescription/" + id)
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .put(Entity.entity(name, APPLICATION_JSON));
+            .target(server).path("api/cards/updateDescription/" + id)
+            .request(APPLICATION_JSON)
+            .accept(APPLICATION_JSON)
+            .put(Entity.entity(name, APPLICATION_JSON));
     }
 
 
     public void updateCardList(long id, TDList list) {
         ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/cards/updateList/" + id)
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .put(Entity.entity(list.getId(), APPLICATION_JSON));
+            .target(server).path("api/cards/updateList/" + id)
+            .request(APPLICATION_JSON)
+            .accept(APPLICATION_JSON)
+            .put(Entity.entity(list.getId(), APPLICATION_JSON));
     }
 
     public List<Board> getBoards() {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/boards/")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .get(new GenericType<List<Board>>() {
-                });
+            .target(server).path("api/boards/")
+            .request(APPLICATION_JSON)
+            .accept(APPLICATION_JSON)
+            .get(new GenericType<List<Board>>() {
+            });
     }
 
     public void deleteBoard(long boardId) {
@@ -224,22 +224,18 @@ public class ServerUtils {
     public boolean serverRunning() {
         try {
             ClientBuilder.newClient(new ClientConfig())
-                    .target(server)
-                    .request().get();
+                .target(server)
+                .request().get();
             return true;
         } catch (Exception e) {
             return false;
         }
     }
 
-    private static StompSession session;
+    private StompSession session;
 
     public void initSession(){
         session = connect("ws://localhost:8080/websocket");
-    }
-
-    public void stopSession(){
-        session.disconnect();
     }
 
     private StompSession connect(String url) {
@@ -277,13 +273,14 @@ public class ServerUtils {
 
     public void updateNestedList(long id, ArrayList<Subtask> nestedList) {
         ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/cards/updateNestedList/" + id)
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .put(Entity.entity(nestedList, APPLICATION_JSON));
+            .target(server).path("api/cards/updateNestedList/" + id)
+            .request(APPLICATION_JSON)
+            .accept(APPLICATION_JSON)
+            .put(Entity.entity(nestedList, APPLICATION_JSON));
     }
 
     public void stop() {
-        EXECUTOR_SERVICE.shutdownNow();
+        executorService.shutdownNow();
+        session.disconnect();
     }
 }
