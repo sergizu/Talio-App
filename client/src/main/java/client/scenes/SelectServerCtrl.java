@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.scenes.interfaces.EditCardCtrl;
 import client.scenes.interfaces.JoinedBoardsCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
