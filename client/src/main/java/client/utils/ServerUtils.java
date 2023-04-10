@@ -39,7 +39,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
-import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class ServerUtils {
 
@@ -83,23 +82,28 @@ public class ServerUtils {
 
 
     public Board addBoard(Board board) {
-        return restClient.executeRequest(RequestType.POST, board, new GenericType<Board>(){}, "api/boards");
+        return restClient.executeRequest(RequestType.POST, board,
+                new GenericType<Board>(){}, "api/boards");
     }
 
     public Board getBoardById(long boardId) {
-        return restClient.executeRequest(RequestType.GET, null, new GenericType<Board>(){}, "/api/boards/" + boardId);
+        return restClient.executeRequest(RequestType.GET, null,
+                new GenericType<Board>(){}, "/api/boards/" + boardId);
     }
 
     public Card getCardById(long cardId) {
-        return restClient.executeRequest(RequestType.GET, null, new GenericType<Card>(){}, "/api/cards/" + cardId);
+        return restClient.executeRequest(RequestType.GET, null,
+                new GenericType<Card>(){}, "/api/cards/" + cardId);
     }
 
     public void addCardToList(long listId, Card card) {
-        restClient.executeRequest(RequestType.PUT, card, null, "/api/tdLists/" + listId + "/addCard");
+        restClient.executeRequest(RequestType.PUT, card, null,
+                "/api/tdLists/" + listId + "/addCard");
     }
 
     public void addListToBoard(long boardId, TDList tdList) {
-        restClient.executeRequest(RequestType.PUT, tdList, null, "/api/boards/" + boardId + "/addList");
+        restClient.executeRequest(RequestType.PUT, tdList, null,
+                "/api/boards/" + boardId + "/addList");
     }
 
 
@@ -126,32 +130,39 @@ public class ServerUtils {
     }
 
     public void updateListName(long listId, String newName) {
-        restClient.executeRequest(RequestType.PUT, newName, null, "api/tdLists/updateName/" + listId);
+        restClient.executeRequest(RequestType.PUT, newName, null,
+                "api/tdLists/updateName/" + listId);
     }
 
     public Board updateBoard(Board board) {
-        return restClient.executeRequest(RequestType.PUT, board, new GenericType<Board>(){}, "api/boards/update");
+        return restClient.executeRequest(RequestType.PUT, board,
+                new GenericType<Board>(){}, "api/boards/update");
     }
 
     public void updateCardName(long id, String name) {
-        restClient.executeRequest(RequestType.PUT, name, null, "api/cards/updateName/" + id);
+        restClient.executeRequest(RequestType.PUT, name, null,
+                "api/cards/updateName/" + id);
     }
 
     public void updateCardDescription(long id, String name) {
-        restClient.executeRequest(RequestType.PUT, name, null, "api/cards/updateDescription/" + id);
+        restClient.executeRequest(RequestType.PUT, name, null,
+                "api/cards/updateDescription/" + id);
     }
 
 
     public void updateCardList(long id, TDList list) {
-        restClient.executeRequest(RequestType.PUT, list.getId(), null, "api/cards/updateList/" + id);
+        restClient.executeRequest(RequestType.PUT, list.getId(), null,
+                "api/cards/updateList/" + id);
     }
 
     public List<Board> getBoards() {
-        return restClient.executeRequest(RequestType.GET, null, new GenericType<List<Board>>(){}, "api/boards");
+        return restClient.executeRequest(RequestType.GET, null,
+                new GenericType<List<Board>>(){}, "api/boards");
     }
 
     public void deleteBoard(long boardId) {
-        restClient.executeRequest(RequestType.DELETE, null, null, "api/boards/" + boardId);
+        restClient.executeRequest(RequestType.DELETE, null, null,
+                "api/boards/" + boardId);
     }
 
     public boolean serverRunning() {
@@ -159,7 +170,8 @@ public class ServerUtils {
     }
 
     public void updateNestedList(long id, ArrayList<Subtask> nestedList) {
-        restClient.executeRequest(RequestType.PUT, nestedList, null, "api/cards/updateNestedList/" + id);
+        restClient.executeRequest(RequestType.PUT, nestedList, null,
+                "api/cards/updateNestedList/" + id);
     }
 
 
