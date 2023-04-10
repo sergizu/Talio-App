@@ -89,7 +89,6 @@ public class ServerUtils {
             .delete();
     }
 
-
     public Board addBoard(Board board) {
         return ClientBuilder.newClient(new ClientConfig()) //
             .target(server).path("api/boards") //

@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.scenes.interfaces.JoinedBoardsCtrl;
+import client.scenes.interfaces.ListOverviewCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
