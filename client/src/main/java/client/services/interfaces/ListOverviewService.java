@@ -22,7 +22,7 @@ public interface ListOverviewService {
     Button createAddCardButton(long id);
     Button createEditListButton(TDList list);
     TableView<Card> createTable(TDList tdList);
-    HBox createHBox(Button button1, Button button2);
+    HBox createHBox(Button button1, Button button2, Button button3);
     VBox createVBox(TableView<Card> cards, HBox hBox);
     void cardExpansion(TableView<Card> tableView);
     void dragAndDrop(TableView<Card> tableView);

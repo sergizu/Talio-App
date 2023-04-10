@@ -96,3 +96,9 @@
                         linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
                         linear-gradient(#6622CC, #191d22);
 }
+
+.removeButtons{
+    -fx-background-image: url('trash.png');
+    -fx-background-position: center;
+    -fx-background-size: 25px;
+}

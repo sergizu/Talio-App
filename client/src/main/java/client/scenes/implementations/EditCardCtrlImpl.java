@@ -1,76 +1,53 @@
-package client.scenes;
+package client.scenes.implementations;
 
 import client.helperClass.SubtaskWrapper;
+import client.scenes.MainCtrl;
+import client.scenes.interfaces.EditCardCtrl;
+import client.services.interfaces.EditCardService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import commons.Card;
 import commons.Subtask;
 import commons.TDList;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class EditCardCtrl {
+@Singleton
+public class EditCardCtrlImpl implements EditCardCtrl {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private final SubtaskWrapper subtaskWrapper;
 
+    private final EditCardService service;
+
     private Card card;
 
-    @FXML
-    private TextField cardName;
-
-    @FXML
-    private TextArea description;
-
-    @FXML
-    private Label emptyName;
-
-    @FXML
-    private TableView<SubtaskWrapper> tableView;
-
-    @FXML
-    private TableColumn<SubtaskWrapper, String> tableColumnSubtask;
-
-    @FXML
-    private TableColumn<SubtaskWrapper, CheckBox> tableColumnCheckbox;
-
-    @FXML
-    private TableColumn<SubtaskWrapper, Button> tableColumnButton;
-
     @Inject
-    public EditCardCtrl(MainCtrl mainCtrl, ServerUtils server, SubtaskWrapper subtaskWrapper) {
-        this.mainCtrl = mainCtrl;
+    public EditCardCtrlImpl(ServerUtils server, MainCtrl mainCtrl,
+                            SubtaskWrapper subtaskWrapper, EditCardService service) {
         this.server = server;
+        this.mainCtrl = mainCtrl;
         this.subtaskWrapper = subtaskWrapper;
+        this.service = service;
     }
 
     public void init(Card card) {
         this.card = card;
-        cardName.setText(card.title);
-        description.setText(card.description);
-        initSubtasks();
-        dragAndDrop(tableView);
+        service.setCardName(card.getTitle());
+        service.setDescription(card.getDescription());
+        service.dragAndDrop();
+        List<SubtaskWrapper> subtaskWrappers = initSubtask();
+        service.initTableView(subtaskWrappers);
     }
 
-    private void initSubtasks() {
-        tableColumnSubtask.setCellValueFactory(q ->
-            new SimpleStringProperty(q.getValue().getSubtask().getName()));
-        tableColumnCheckbox.setCellValueFactory(
-            new PropertyValueFactory<SubtaskWrapper, CheckBox>("checkBox"));
-        tableColumnButton.setCellValueFactory(
-            new PropertyValueFactory<SubtaskWrapper, Button>("button"));
+    public List<SubtaskWrapper> initSubtask() {
         List<SubtaskWrapper> subtaskWrappers = new ArrayList<>();
         for (Subtask subtask : card.getNestedList()) {
             CheckBox checkBox = new CheckBox();
@@ -95,28 +72,24 @@ public class EditCardCtrl {
             });
             subtaskWrappers.add(new SubtaskWrapper(subtask, checkBox, button));
         }
-        ObservableList<SubtaskWrapper> data = FXCollections.observableList(subtaskWrappers);
-        tableView.setItems(data);
-        tableView.setEditable(true);
-        tableColumnSubtask.setCellFactory(TextFieldTableCell.forTableColumn());
+        return subtaskWrappers;
     }
 
-
     public void ok() {
-        if (cardName.getText().equals(card.title) &&
-            (description.getText() == null || description.getText().equals(card.description))) {
+        if (service.getCardName().equals(card.title) && (service.getDescription() == null
+                || service.getDescription().equals(card.description))) {
             mainCtrl.showOverview(card.getList().getBoard().getId());
             return;
-        } else if (cardName.getText().equals("")) {
-            emptyName.setText("Card name can not be empty!");
+        } else if (service.getCardName().equals("")) {
+            service.setEmptyName("Card name can not be empty!");
             return;
         }
-        emptyName.setText("");
-        server.updateCardName(card.getId(), cardName.getText());
-        if (description.getText().isEmpty() || description.getText() == null) {
+        service.setEmptyName(" ");
+        server.updateCardName(card.getId(), service.getCardName());
+        if (service.getDescription().isEmpty() || service.getDescription() == null) {
             server.updateCardDescription(card.getId(), " ");
         } else {
-            server.updateCardDescription(card.getId(), description.getText());
+            server.updateCardDescription(card.getId(), service.getDescription());
         }
         mainCtrl.showOverview(card.getList().getBoard().getId());
     }
@@ -124,7 +97,7 @@ public class EditCardCtrl {
     public void delete() {
         long boardId = card.getList().getBoard().getId();
         server.removeCard(card);
-        emptyName.setText("");
+        service.setEmptyName("");
         mainCtrl.showOverview(boardId);
     }
 
@@ -146,9 +119,7 @@ public class EditCardCtrl {
     }
 
     public void changeSubtask(TableColumn.CellEditEvent<SubtaskWrapper, String> edit) {
-        SubtaskWrapper subtaskWrapper = tableView.getSelectionModel().getSelectedItem();
-        Subtask subtask = subtaskWrapper.getSubtask();
-        subtask.setName(edit.getNewValue());
+        service.editSubtask(edit);
         server.updateNestedList(card.id, card.getNestedList());
     }
 
@@ -160,7 +131,6 @@ public class EditCardCtrl {
                     int i = row.getIndex();
                     Dragboard db = row.startDragAndDrop(TransferMode.MOVE);
                     db.setDragView(row.snapshot(null, null));
-                    //shows a snapshot of the row when moving it
                     ClipboardContent cc = new ClipboardContent();
                     cc.put(subtaskWrapper.getSerialization(), i);
 
@@ -194,7 +164,7 @@ public class EditCardCtrl {
                         subtasks.add(item.getSubtask());
                     }
                     server.updateNestedList(card.id, subtasks);
-                    e.setDropCompleted(true); //marks the end of the drag event
+                    e.setDropCompleted(true);
                     tableView.getSelectionModel().select(dropIndex);
                     e.consume();
                 }
@@ -202,7 +172,6 @@ public class EditCardCtrl {
             return row;
         });
     }
-
 
     public void registerForUpdates() {
         server.registerForCardUpdates(updatedCardID -> Platform.runLater(() -> {
@@ -224,5 +193,7 @@ public class EditCardCtrl {
         }));
     }
 
+    public void setCard(Card card) {
+        this.card = card;
+    }
 }
-

@@ -28,7 +28,7 @@ public class AddCardCtrlImplTest {
     @Mock
     AddCardService addCardService;
 
-    static AddCardCtrlImpl addCardCtrl;
+    AddCardCtrlImpl addCardCtrl;
 
     @BeforeEach
     public void setUp() {
