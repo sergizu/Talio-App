@@ -20,7 +20,7 @@ public class SelectServerCtrlImpl implements SelectServerCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private final ListOverviewCtrl listOverviewCtrl;
-    private JoinedBoardsCtrl joinedBoardsCtrl;
+    private final JoinedBoardsCtrl joinedBoardsCtrl;
 
     private final BoardOverviewCtrl boardOverviewCtrl;
 
