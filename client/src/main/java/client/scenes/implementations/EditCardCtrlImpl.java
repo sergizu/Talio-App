@@ -1,8 +1,8 @@
 package client.scenes.implementations;
 
 import client.helperClass.SubtaskWrapper;
-import client.scenes.MainCtrl;
 import client.scenes.interfaces.EditCardCtrl;
+import client.scenes.interfaces.MainCtrl;
 import client.services.interfaces.EditCardService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;

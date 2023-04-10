@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.scenes.implementations.AddCardCtrlImpl;
+import client.scenes.interfaces.MainCtrl;
 import client.services.interfaces.AddCardService;
 import client.utils.ServerUtils;
 import commons.Card;

@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.dependentOnCompontents.TestJoinedBoardsService;
 import client.scenes.implementations.JoinedBoardsCtrlImpl;
+import client.scenes.interfaces.MainCtrl;
 import client.utils.ServerUtils;
 import commons.AppClient;
 import commons.Board;

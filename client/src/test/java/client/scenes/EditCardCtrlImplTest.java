@@ -1,29 +1,17 @@
 package client.scenes;
 
 import client.helperClass.SubtaskWrapper;
-import client.scenes.implementations.AddCardCtrlImpl;
 import client.scenes.implementations.EditCardCtrlImpl;
-import client.scenes.interfaces.EditCardCtrl;
-import client.services.interfaces.AddCardService;
+import client.scenes.interfaces.MainCtrl;
 import client.services.interfaces.EditCardService;
 import client.utils.ServerUtils;
-import commons.Board;
 import commons.Card;
-import commons.Subtask;
-import commons.TDList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
