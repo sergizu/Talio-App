@@ -78,6 +78,21 @@ class BoardServiceTest {
     }
 
     @Test
+    void addBoardNull() {
+        Board toAdd = null;
+        boardService.addBoard(toAdd);
+        verify(boardRepository, never()).save(toAdd);
+    }
+
+    @Test
+    void addBoardNullTitle() {
+        Board toAdd = new Board("Board");
+        toAdd.setTitle(null);
+        boardService.addBoard(toAdd);
+        verify(boardRepository, never()).save(toAdd);
+    }
+
+    @Test
     void existsById() {
         long id = 1;
         boardService.existsById(id);
@@ -98,6 +113,14 @@ class BoardServiceTest {
         when(boardRepository.existsById(any(Long.class))).thenReturn(false);
         assertEquals(null, boardService.update(new Board("b1")));
     }
+
+    @Test
+    void testUpdateIfNullTitle() {
+        Board board = new Board();
+        board.setTitle(null);
+        assertNull(boardService.update(board));
+    }
+
     @Test
     void deleteIfExists(){
         when(boardRepository.existsById(any(Long.class))).thenReturn(true);
@@ -113,4 +136,14 @@ class BoardServiceTest {
         DeferredResult<ResponseEntity<Long>> df = boardService.subscribeForUpdates();
         assertEquals(null, df.getResult());
     }
+    @Test
+    void testSendUpdates() {
+        boardService.sendUpdates(1L);
+    }
+
+    @Test
+    void testUpdateIfNull() {
+        assertNull(boardService.update(null));
+    }
+
 }

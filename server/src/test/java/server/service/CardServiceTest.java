@@ -9,12 +9,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.context.request.async.DeferredResult;
 import server.database.CardRepository;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -224,5 +226,67 @@ class CardServiceTest {
         when(cardRepository.existsById(1L)).thenReturn((true));
         assertTrue(cardService.updateNestedList(1L, subtasks));
         verify(boardService).sendUpdates(anyLong());
+    }
+
+    @Test
+    public void testUpdateNullDescription() {
+        assertFalse(cardService.updateDescription(cardDescription.getId(), null));
+    }
+
+    @Test
+    public void testUpdateNullName() {
+        assertFalse(cardService.updateName(card.getId(), null));
+    }
+
+    @Test
+    public void testUpdateNullCard() {
+        assertNull(cardService.update(null));
+    }
+
+    @Test
+    public void testUpdateNullTitle() {
+        assertNull(cardService.update(new Card(null)));
+    }
+
+    @Test
+    void testAddCardNull() {
+        Card toAdd = null;
+        cardService.addCard(toAdd);
+        verify(cardRepository, never()).save(toAdd);
+    }
+
+    @Test
+    void testAddCardNullTitle() {
+        Card toAdd = new Card(null);
+        cardService.addCard(toAdd);
+        verify(cardRepository, never()).save(toAdd);
+    }
+
+    @Test
+    public void testUpdateNestedListIfNotExists() {
+        when(cardRepository.existsById(card.getId())).thenReturn(false);
+        assertFalse(cardService.updateNestedList(card.getId(), null));
+    }
+
+    @Test
+    public void testUpdateNestedListIfNestedListNull() {
+        when(cardRepository.existsById(card.getId())).thenReturn(true);
+        assertFalse(cardService.updateNestedList(card.getId(), null));
+    }
+
+    @Test
+    public void testUpdateNestedList() {
+        ArrayList<Subtask> nestedList = new ArrayList<>();
+        when(cardRepository.existsById(card.getId())).thenReturn(true);
+        when(cardRepository.getById(card.getId())).thenReturn(card);
+        card.setNestedList(nestedList);
+        when(cardRepository.save(any())).thenReturn(card);
+        assertTrue(cardService.updateNestedList(card.getId(), nestedList));
+    }
+
+    @Test
+    void testSubscribeForUpdates(){
+        DeferredResult<ResponseEntity<Long>> df = cardService.subscribeForUpdates();
+        assertNull(df.getResult());
     }
 }

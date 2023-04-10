@@ -13,6 +13,7 @@ import server.service.BoardService;
 import server.service.ListService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -90,6 +91,8 @@ class BoardControllerTest {
         assertEquals(ResponseEntity.ok().build(), boardController.addListToBoard(board.getId(), list));
     }
 
+
+
     @Test
     void removeByID() {
         Board board = new Board("Board 1");
@@ -105,6 +108,9 @@ class BoardControllerTest {
         assertEquals(boardController.removeByID(board.id), ResponseEntity.badRequest().build());
         verify(boardService).delete(board.id);
     }
+
+
+
     @Test
     void subscribeForUpdates(){
         boardController.subscribeForUpdates();
