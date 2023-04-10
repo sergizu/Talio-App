@@ -62,6 +62,18 @@ public class EditCardCtrlImplTest {
     }
 
     @Test
+    public void setCardTest() {
+        Card card1 = new Card("smngfsrmlkgdskjdsfgdlkgsgl;mg;lmgdsgdfgdfkglkfdmglkmr", "fdsfsdf");
+        editCardCtrl.setCard(card1);
+        assertEquals(card1, editCardCtrl.getCard());
+    }
+
+    @Test
+    public void getCardTest() {
+        assertEquals(card, editCardCtrl.getCard());
+    }
+
+    @Test
     public void testConstructor() {
         assertNotNull(editCardCtrl);
     }
@@ -167,4 +179,16 @@ public class EditCardCtrlImplTest {
         verify(mainCtrl).showAddSubtask(card);
     }
 
+    @Test
+    public void showEditTest() {
+        editCardCtrl.showEdit();
+        verify(mainCtrl).showEdit(card);
+    }
+
+    @Test
+    public void updateNestedListTest() {
+        ArrayList<Subtask> newList = new ArrayList<>();
+        editCardCtrl.updateNestedList(newList);
+        verify(server).updateNestedList(card.getId(), newList);
+    }
 }

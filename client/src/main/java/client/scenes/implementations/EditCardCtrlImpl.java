@@ -11,12 +11,9 @@ import commons.Card;
 import commons.Subtask;
 import commons.TDList;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
-import javafx.scene.control.*;
 import javafx.scene.input.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Singleton
 public class EditCardCtrlImpl implements EditCardCtrl {
@@ -111,6 +108,11 @@ public class EditCardCtrlImpl implements EditCardCtrl {
     public void setCard(Card card) {
         this.card = card;
     }
+
+    public Card getCard() {
+        return this.card;
+    }
+
 
     public void updateNestedList(ArrayList<Subtask> nestedList) {
         server.updateNestedList(card.getId(), nestedList);
