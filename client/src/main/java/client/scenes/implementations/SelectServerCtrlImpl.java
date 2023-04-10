@@ -1,19 +1,22 @@
-package client.scenes;
+package client.scenes.implementations;
 
+
+import client.scenes.*;
+import client.scenes.interfaces.EditCardCtrl;
 import client.scenes.interfaces.JoinedBoardsCtrl;
+import client.scenes.interfaces.ListOverviewCtrl;
+import client.scenes.interfaces.SelectServerCtrl;
+import client.services.interfaces.SelectServerService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import com.google.inject.Singleton;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.HBox;
 
 import java.util.concurrent.Executors;
 
-
-public class SelectServerCtrl {
+@Singleton
+public class SelectServerCtrlImpl implements SelectServerCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private final ListOverviewCtrl listOverviewCtrl;
@@ -22,26 +25,15 @@ public class SelectServerCtrl {
     private final BoardOverviewCtrl boardOverviewCtrl;
 
     private final EditCardCtrl editCardCtrl;
-
-
-    @FXML
-    private TextField serverName;
-
-    @FXML
-    private Label myLabel;
-
-    @FXML
-    private TextField adminPass;
-
-    @FXML
-    private HBox hbox;
+    private final SelectServerService selectServerService;
 
     @Inject
-    public SelectServerCtrl(ServerUtils server, MainCtrl mainCtrl,
-                            ListOverviewCtrl listOverviewCtrl,
-                            JoinedBoardsCtrl joinedBoardsCtrl,
-                            BoardOverviewCtrl boardOverviewCtrl,
-                            EditCardCtrl editCardCtrl) {
+    public SelectServerCtrlImpl(ServerUtils server, MainCtrl mainCtrl,
+                                ListOverviewCtrl listOverviewCtrl,
+                                JoinedBoardsCtrl joinedBoardsCtrl,
+                                BoardOverviewCtrl boardOverviewCtrl,
+                                EditCardCtrl editCardCtrl,
+                                SelectServerService selectServerService) {
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.listOverviewCtrl = listOverviewCtrl;
@@ -49,40 +41,41 @@ public class SelectServerCtrl {
         this.editCardCtrl = editCardCtrl;
         this.joinedBoardsCtrl = joinedBoardsCtrl;
 
+        this.selectServerService = selectServerService;
     }
 
     public boolean checkPass() {
-        String password = adminPass.getText();
+        String password = selectServerService.getAdminPassText();
         return password.equals("1010");
     }
 
     public void ok() {
-        String s = serverName.getText();
-        if (serverName.getText().isEmpty()) {
-            myLabel.setText("Can not be empty!");
+        String s = selectServerService.getServerNameText();
+        if (s.isEmpty()) {
+            selectServerService.setMyLabel("Can not be empty!");
             return;
         }
-        myLabel.setText("");
+        selectServerService.setMyLabel("");
         server.changeServer(s);
         if(server.serverRunning()){
             startSession();
             if (checkPass()) {
                 mainCtrl.setAdmin(true);
                 mainCtrl.showBoardOverview();
-                adminPass.setText("");
-                hbox.setVisible(false);
+                selectServerService.setAdminPassText("");
+                selectServerService.setBoxVisible(false);
             } else {
                 mainCtrl.showJoinedBoards();
                 mainCtrl.setAdmin(false);
             }
         }
         else{
-            myLabel.setText("Couldn't find the server!");
+            selectServerService.setMyLabel("Couldn't find the server!");
         }
     }
 
     public void adminLogIn() {
-        hbox.setVisible(true);
+        selectServerService.setBoxVisible(true);
     }
 
     public void keyPressed(KeyEvent e) {

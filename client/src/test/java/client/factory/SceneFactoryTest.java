@@ -110,4 +110,11 @@ class SceneFactoryTest {
         sceneFactory.createEditListScene();
         verify(sceneCreator).createScene(parent);
     }
+
+    @Test
+    public void testCreateBoardOptionsScene() {
+        given(fxml.load(any(), any(), any(), any())).willReturn(new Pair<>(null, null));
+        SceneFactory sceneFactory = new SceneFactory(injector, fxml);
+        assertNull(sceneFactory.createBoardOptionsScene());
+    }
 }
