@@ -20,7 +20,8 @@ public class RestClient {
     }
 
 
-    public <T, R> T executeRequest(RequestType requestType, R entity, GenericType<T> responseType, String path){
+    public <T, R> T executeRequest(RequestType requestType, R entity,
+                       GenericType<T> responseType, String path){
         WebTarget target = client.target(serverPath).path(path);
         Invocation.Builder builder = target.request(APPLICATION_JSON).accept(APPLICATION_JSON);
 
