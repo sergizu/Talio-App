@@ -71,7 +71,7 @@ public class EditCardCtrlImplTest {
         editCardCtrl.init(card);
         verify(service).setCardName(card.getTitle());
         verify(service).setDescription(card.getDescription());
-        verify(service).dragAndDrop();
+        verify(service).initTableView(service.initSubtask(card.getNestedList()));
     }
 
     @Test

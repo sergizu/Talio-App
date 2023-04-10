@@ -5,6 +5,7 @@ import client.services.implementations.EditCardServiceImpl;
 import com.google.inject.ImplementedBy;
 import commons.Subtask;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,6 @@ public interface EditCardService {
     void editSubtask(TableColumn.CellEditEvent<SubtaskWrapper, String> edit);
     void changeSubtask(TableColumn.CellEditEvent<SubtaskWrapper, String> edit);
 
-    void dragAndDrop();
+    void dragAndDrop(TableView<SubtaskWrapper> tableView);
     List<SubtaskWrapper> initSubtask(ArrayList<Subtask> nestedList);
 }

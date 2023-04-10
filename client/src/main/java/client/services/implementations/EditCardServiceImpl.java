@@ -13,7 +13,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.TransferMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +25,8 @@ import java.util.List;
 public class EditCardServiceImpl implements EditCardService {
 
     private final EditCardCtrl editCardCtrl;
+
+    private final SubtaskWrapper subtaskWrapper;
 
     @FXML
     private TextField cardName;
@@ -45,8 +50,9 @@ public class EditCardServiceImpl implements EditCardService {
     private TableColumn<SubtaskWrapper, Button> tableColumnButton;
 
     @Inject
-    public EditCardServiceImpl(EditCardCtrl editCardCtrl) {
+    public EditCardServiceImpl(EditCardCtrl editCardCtrl, SubtaskWrapper subtaskWrapper) {
         this.editCardCtrl = editCardCtrl;
+        this.subtaskWrapper = subtaskWrapper;
     }
 
     public void setCardName(String title) {
@@ -70,6 +76,7 @@ public class EditCardServiceImpl implements EditCardService {
     }
 
     public void initTableView(List<SubtaskWrapper> subtaskWrappers) {
+        dragAndDrop(tableView);
         tableColumnSubtask.setCellValueFactory(q ->
                 new SimpleStringProperty(q.getValue().getSubtask().getName()));
         tableColumnCheckbox.setCellValueFactory(
@@ -120,10 +127,55 @@ public class EditCardServiceImpl implements EditCardService {
         editCardCtrl.changeSubtask(edit);
     }
 
-    public void dragAndDrop() {
-        editCardCtrl.dragAndDrop(tableView);
-    }
+    public void dragAndDrop(TableView<SubtaskWrapper> tableView) {
+        tableView.setRowFactory(tv -> {
+            TableRow<SubtaskWrapper> row = new TableRow<>();
+            row.setOnDragDetected(e -> {
+                if (!row.isEmpty()) {
+                    int i = row.getIndex();
+                    Dragboard db = row.startDragAndDrop(TransferMode.MOVE);
+                    db.setDragView(row.snapshot(null, null));
+                    ClipboardContent cc = new ClipboardContent();
+                    cc.put(subtaskWrapper.getSerialization(), i);
 
+                    db.setContent(cc);
+                    e.consume();
+                }
+            });
+            row.setOnDragOver(e -> {
+                Dragboard db = e.getDragboard();
+                if (db.hasContent(subtaskWrapper.getSerialization())) {
+
+                    e.acceptTransferModes(TransferMode.MOVE);
+                    e.consume();
+                }
+            });
+            row.setOnDragDropped(e -> {
+                Dragboard db = e.getDragboard();
+                if (db.hasContent(subtaskWrapper.getSerialization())) {
+                    int draggedIndex = (int) db.getContent(subtaskWrapper.getSerialization());
+
+                    SubtaskWrapper subtaskWrapper = tableView.getItems().remove(draggedIndex);
+                    int dropIndex;
+                    if (row.isEmpty())
+                        dropIndex = tableView.getItems().size();
+                    else
+                        dropIndex = row.getIndex();
+                    tableView.getItems().add(dropIndex, subtaskWrapper);
+                    ObservableList<SubtaskWrapper> items = tableView.getItems();
+                    ArrayList<Subtask> subtasks = new ArrayList<>();
+                    for (SubtaskWrapper item : items) {
+                        subtasks.add(item.getSubtask());
+                    }
+                    editCardCtrl.updateNestedList(subtasks);
+                    e.setDropCompleted(true);
+                    tableView.getSelectionModel().select(dropIndex);
+                    e.consume();
+                }
+            });
+            return row;
+        });
+    }
     public void ok() {
         editCardCtrl.ok();
     }

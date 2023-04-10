@@ -42,7 +42,6 @@ public class EditCardCtrlImpl implements EditCardCtrl {
         this.card = card;
         service.setCardName(card.getTitle());
         service.setDescription(card.getDescription());
-        service.dragAndDrop();
         service.initTableView(service.initSubtask(card.getNestedList()));
     }
 
@@ -92,56 +91,6 @@ public class EditCardCtrlImpl implements EditCardCtrl {
     public void changeSubtask(TableColumn.CellEditEvent<SubtaskWrapper, String> edit) {
         service.editSubtask(edit);
         server.updateNestedList(card.id, card.getNestedList());
-    }
-
-    public void dragAndDrop(TableView<SubtaskWrapper> tableView) {
-        tableView.setRowFactory(tv -> {
-            TableRow<SubtaskWrapper> row = new TableRow<>();
-            row.setOnDragDetected(e -> {
-                if (!row.isEmpty()) {
-                    int i = row.getIndex();
-                    Dragboard db = row.startDragAndDrop(TransferMode.MOVE);
-                    db.setDragView(row.snapshot(null, null));
-                    ClipboardContent cc = new ClipboardContent();
-                    cc.put(subtaskWrapper.getSerialization(), i);
-
-                    db.setContent(cc);
-                    e.consume();
-                }
-            });
-            row.setOnDragOver(e -> {
-                Dragboard db = e.getDragboard();
-                if (db.hasContent(subtaskWrapper.getSerialization())) {
-
-                    e.acceptTransferModes(TransferMode.MOVE);
-                    e.consume();
-                }
-            });
-            row.setOnDragDropped(e -> {
-                Dragboard db = e.getDragboard();
-                if (db.hasContent(subtaskWrapper.getSerialization())) {
-                    int draggedIndex = (int) db.getContent(subtaskWrapper.getSerialization());
-
-                    SubtaskWrapper subtaskWrapper = tableView.getItems().remove(draggedIndex);
-                    int dropIndex;
-                    if (row.isEmpty())
-                        dropIndex = tableView.getItems().size();
-                    else
-                        dropIndex = row.getIndex();
-                    tableView.getItems().add(dropIndex, subtaskWrapper);
-                    ObservableList<SubtaskWrapper> items = tableView.getItems();
-                    ArrayList<Subtask> subtasks = new ArrayList<>();
-                    for (SubtaskWrapper item : items) {
-                        subtasks.add(item.getSubtask());
-                    }
-                    server.updateNestedList(card.id, subtasks);
-                    e.setDropCompleted(true);
-                    tableView.getSelectionModel().select(dropIndex);
-                    e.consume();
-                }
-            });
-            return row;
-        });
     }
 
     public void registerForUpdates() {

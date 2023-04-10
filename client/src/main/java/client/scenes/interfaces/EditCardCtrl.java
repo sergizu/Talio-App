@@ -28,8 +28,6 @@ public interface EditCardCtrl {
 
     void changeSubtask(TableColumn.CellEditEvent<SubtaskWrapper, String> edit);
 
-    void dragAndDrop(TableView<SubtaskWrapper> tableView);
-
     void registerForUpdates();
 
     void setCard(Card card);
