@@ -25,7 +25,8 @@ public class BoardOverviewCtrlImpl implements BoardOverviewCtrl {
     private final BoardOverviewService boardOverviewService;
 
     @Inject
-    public BoardOverviewCtrlImpl(ServerUtils server, MainCtrl mainCtrl, BoardOverviewService boardOverviewService) {
+    public BoardOverviewCtrlImpl(ServerUtils server, MainCtrl mainCtrl,
+                                 BoardOverviewService boardOverviewService) {
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.boardOverviewService = boardOverviewService;
@@ -133,7 +134,7 @@ public class BoardOverviewCtrlImpl implements BoardOverviewCtrl {
     }
 
     public void showBoardOptions(Board board) {
-
+        mainCtrl.showBoardOptions(board);
     }
 
     public List<Board> getBoards() {
