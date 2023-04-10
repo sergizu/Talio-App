@@ -7,13 +7,13 @@ import javafx.scene.input.KeyEvent;
 
 @ImplementedBy(SelectServerServiceImpl.class)
 public interface SelectServerService {
-    public String getAdminPassText();
-    public String getServerNameText();
-    public void setMyLabel(String s);
-    public void setAdminPassText(String s);
-    public void setBoxVisible(Boolean b);
-    public void adminLogIn();
-    public void ok();
-
+     String getAdminPassText();
+     String getServerNameText();
+     void setMyLabel(String s);
+     void setAdminPassText(String s);
+     void setBoxVisible(Boolean b);
+     void adminLogIn();void ok();
     void keyPressed(KeyEvent e);
+    boolean getVisible();
+    void setChoiceButton(String s);
 }

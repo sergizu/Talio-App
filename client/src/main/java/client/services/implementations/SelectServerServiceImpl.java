@@ -3,6 +3,7 @@ package client.services.implementations;
 import client.scenes.interfaces.SelectServerCtrl;
 import client.services.interfaces.SelectServerService;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -21,6 +22,9 @@ public class SelectServerServiceImpl implements SelectServerService {
     private TextField adminPass;
     @FXML
     private HBox hbox;
+
+    @FXML
+    private Button choiceButton;
     private final SelectServerCtrl selectServerCtrl;
     @Inject
     public SelectServerServiceImpl(SelectServerCtrl selectServerCtrl) {
@@ -44,4 +48,6 @@ public class SelectServerServiceImpl implements SelectServerService {
     public void keyPressed(KeyEvent e){selectServerCtrl.keyPressed(e);}
     public void ok(){selectServerCtrl.ok();}
     public void adminLogIn(){selectServerCtrl.adminLogIn();}
+    public boolean getVisible(){return hbox.isVisible();}
+    public void setChoiceButton(String s) {choiceButton.setText(s);}
 }
