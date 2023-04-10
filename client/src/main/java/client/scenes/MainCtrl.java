@@ -17,9 +17,9 @@ package client.scenes;
 
 import client.factory.SceneFactory;
 import client.helperClass.SubtaskWrapper;
-import client.scenes.implementations.BoardOptionsCtrlImpl;
 import client.scenes.interfaces.*;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import commons.AppClient;
 import commons.Board;
 import commons.Card;
@@ -28,87 +28,101 @@ import javafx.scene.Scene;
 import javafx.scene.input.DataFormat;
 import javafx.stage.Stage;
 
+@Singleton
 public class MainCtrl {
 
     private Stage primaryStage;
 
     private Scene overview;
-    @Inject
-    private ListOverviewCtrl listOverviewCtrl;
+    private final ListOverviewCtrl listOverviewCtrl;
 
-    private Scene edit;
-    @Inject
-    private EditCardCtrl editCardCtrl;
+    private Scene editCardScene;
+    private final EditCardCtrl editCardCtrl;
 
     private Scene editListScene;
-    @Inject
-    private EditListCtrl editListCtrl;
+    private final EditListCtrl editListCtrl;
 
     private Scene selectServer;
 
     private Scene boardOverviewScene;
-    @Inject
-    private BoardOverviewCtrl boardOverviewCtrl;
+    private final BoardOverviewCtrl boardOverviewCtrl;
 
     private Scene joinedBoardsScene;
-    @Inject
-    private JoinedBoardsCtrl joinedBoardsCtrl;
+    private final JoinedBoardsCtrl joinedBoardsCtrl;
 
     private Scene createBoardScene;
-    @Inject
-    private CreateBoardCtrl createBoardCtrl;
+    private final CreateBoardCtrl createBoardCtrl;
 
     private Scene createAddCardScene;
-    @Inject
-    private AddCardCtrl createAddCardCtrl;
+    private final AddCardCtrl createAddCardCtrl;
 
     private Scene createAddListScene;
-    @Inject
-    private AddListCtrl createAddListCtrl;
+    private final AddListCtrl createAddListCtrl;
 
     private Scene createAddSubtaskScene;
-    @Inject
-    private AddSubTaskCtrl createAddSubtaskCtrl;
+    private final AddSubTaskCtrl createAddSubtaskCtrl;
 
-    @Inject
-    private BoardOptionsCtrlImpl boardOptionsCtrl;
+    private final BoardOptionsCtrl boardOptionsCtrl;
     private Scene boardOptionsScene;
 
-    boolean isAdmin;
-    @Inject
-    private SubtaskWrapper subtaskWrapper;
+    private boolean isAdmin;
+    private final int WIDTH = 1080;
+    private final int HEIGHT = 720;
+
+    private final SubtaskWrapper subtaskWrapper;
 
     private AppClient client;
+    private final DataFormat dataFormat;
+
+    @Inject
+    public MainCtrl(ListOverviewCtrl listOverviewCtrl, EditCardCtrl editCardCtrl, EditListCtrl editListCtrl,
+                    BoardOverviewCtrl boardOverviewCtrl, JoinedBoardsCtrl joinedBoardsCtrl,
+                    CreateBoardCtrl createBoardCtrl, AddCardCtrl createAddCardCtrl,
+                    AddListCtrl createAddListCtrl, AddSubTaskCtrl createAddSubtaskCtrl,
+                    BoardOptionsCtrl boardOptionsCtrl, SubtaskWrapper subtaskWrapper, DataFormat dataFormat) {
+        this.listOverviewCtrl = listOverviewCtrl;
+        this.editCardCtrl = editCardCtrl;
+        this.editListCtrl = editListCtrl;
+        this.boardOverviewCtrl = boardOverviewCtrl;
+        this.joinedBoardsCtrl = joinedBoardsCtrl;
+        this.createBoardCtrl = createBoardCtrl;
+        this.createAddCardCtrl = createAddCardCtrl;
+        this.createAddListCtrl = createAddListCtrl;
+        this.createAddSubtaskCtrl = createAddSubtaskCtrl;
+        this.boardOptionsCtrl = boardOptionsCtrl;
+        this.subtaskWrapper = subtaskWrapper;
+        this.dataFormat = dataFormat;
+    }
 
     public void initialize(Stage primaryStage,
                            SceneFactory sceneFactory) {
 
         this.primaryStage = primaryStage;
 
-        this.overview = new Scene(sceneFactory.createListOverviewScene(), 1080, 720);
+        this.overview = sceneFactory.createListOverviewScene();
 
-        this.edit = new Scene(sceneFactory.createEditCardScene(), 1080, 720);
+        this.editCardScene = sceneFactory.createEditCardScene();
 
-        this.editListScene = new Scene(sceneFactory.createEditListScene(), 1080, 720);
+        this.editListScene = sceneFactory.createEditListScene();
 
-        this.selectServer = new Scene(sceneFactory.createSelectServerScene(), 1080, 720);
+        this.selectServer = sceneFactory.createSelectServerScene();
 
-        this.boardOverviewScene = new Scene(sceneFactory.createBoardOverviewScene(), 1080, 720);
+        this.boardOverviewScene = sceneFactory.createBoardOverviewScene();
 
-        this.joinedBoardsScene = new Scene(sceneFactory.createJoinedBoardsScene(), 1080, 720);
+        this.joinedBoardsScene = sceneFactory.createJoinedBoardsScene();
 
-        this.createBoardScene = new Scene(sceneFactory.createNewBoardScene(), 1080, 720);
+        this.createBoardScene = sceneFactory.createBoardOverviewScene();
 
-        this.createAddCardScene = new Scene(sceneFactory.createAddCardScene(), 1080, 720);
+        this.createAddCardScene = sceneFactory.createAddCardScene();
 
-        this.createAddListScene = new Scene(sceneFactory.createAddListScene(), 1080, 720);
+        this.createAddListScene = sceneFactory.createAddListScene();
 
-        this.createAddSubtaskScene = new Scene(sceneFactory.createAddSubtaskScene(), 1080, 720);
+        this.createAddSubtaskScene = sceneFactory.createAddSubtaskScene();
 
-        this.boardOptionsScene = new Scene(sceneFactory.createBoardOptionsScene(), 1080, 720);
+        this.boardOptionsScene = sceneFactory.createBoardOptionsScene();
         this.client = new AppClient();
 
-        subtaskWrapper.setSerialization(new DataFormat("application/x-java-serialized-object"));
+        subtaskWrapper.setSerialization(dataFormat);
 
         showSelectServer();
         setPrimaryStage();
@@ -118,78 +132,78 @@ public class MainCtrl {
     public void showSelectServer() {
         primaryStage.setTitle("Server: selecting server");
         primaryStage.setScene(selectServer);
-        setSizeScene();
+        triggerSceneResize();
     }
 
     public void showOverview(long boardId) {
         primaryStage.setTitle("Lists: Overview");
         listOverviewCtrl.setBoard(boardId);
         primaryStage.setScene(overview);
-        setSizeScene();
+        triggerSceneResize();
     }
 
     public void showBoardOverview() {
         primaryStage.setTitle("Boards: Overview");
         primaryStage.setScene(boardOverviewScene);
         boardOverviewCtrl.showAllBoards();
-        setSizeScene();
+        triggerSceneResize();
     }
 
     public void showAddCard(long listId, long boardId) {
         primaryStage.setTitle("Board: Adding Card");
         createAddCardCtrl.setListBoardId(listId, boardId);
         primaryStage.setScene(createAddCardScene);
-        createAddCardScene.setOnKeyPressed(e -> createAddCardCtrl.keyPressed(e));
-        setSizeScene();
+        createAddCardScene.setOnKeyPressed(createAddCardCtrl::keyPressed);
+        triggerSceneResize();
     }
 
     public void showAddList(long boardId) {
         primaryStage.setTitle("Board: Adding List");
         primaryStage.setScene(createAddListScene);
         createAddListCtrl.setBoard(boardId);
-        createAddListScene.setOnKeyPressed(e -> createAddListCtrl.keyPressed(e));
-        setSizeScene();
+        createAddListScene.setOnKeyPressed(createAddListCtrl::keyPressed);
+        triggerSceneResize();
     }
 
     public void showEdit(Card card) {
         primaryStage.setTitle("Card: Edit Card");
         editCardCtrl.init(card);
-        primaryStage.setScene(edit);
-        setSizeScene();
+        primaryStage.setScene(editCardScene);
+        triggerSceneResize();
     }
 
     public void showEditList(TDList list) {
         primaryStage.setTitle("List: Rename list");
         primaryStage.setScene(editListScene);
         editListCtrl.init(list);
-        setSizeScene();
+        triggerSceneResize();
     }
 
     public void showAddSubtask(Card card) {
         primaryStage.setTitle("Subtask: Create subtask");
         primaryStage.setScene(createAddSubtaskScene);
         createAddSubtaskCtrl.init(card);
-        setSizeScene();
+        triggerSceneResize();
     }
 
     public void showJoinedBoards() {
         primaryStage.setTitle("Your boards");
         primaryStage.setScene(joinedBoardsScene);
         joinedBoardsCtrl.init();
-        setSizeScene();
+        triggerSceneResize();
     }
 
     public void showCreateBoard() {
         primaryStage.setTitle("Create a new board");
         primaryStage.setScene(createBoardScene);
-        setSizeScene();
+        triggerSceneResize();
     }
 
     public void showBoardOptions(Board board) {
         primaryStage.setTitle("Board options");
         primaryStage.setScene(boardOptionsScene);
         boardOptionsCtrl.init(board);
-        setSizeScene();
+        triggerSceneResize();
     }
 
     public AppClient getClient() {
@@ -203,22 +217,20 @@ public class MainCtrl {
         return isAdmin;
     }
 
-    public void setSizeScene() {
+    public void triggerSceneResize() {
         primaryStage.setHeight(primaryStage.getHeight() + 0.5);
     }
 
     public String getPrimaryStageTitle() {
-        return this.primaryStage.getTitle();
+        return primaryStage.getTitle();
     }
 
     public void setPrimaryStage() {
-        this.primaryStage.setWidth(1080);
-        this.primaryStage.setHeight(720);
+        this.primaryStage.setWidth(WIDTH);
+        this.primaryStage.setHeight(HEIGHT);
         this.primaryStage.setMinWidth(425.0);
         this.primaryStage.setMinHeight(409);
 
-        this.primaryStage.setOnCloseRequest(event -> {
-            this.listOverviewCtrl.stop();
-        });
+        this.primaryStage.setOnCloseRequest(event -> this.listOverviewCtrl.stop());
     }
 }
