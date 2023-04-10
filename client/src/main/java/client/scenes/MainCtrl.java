@@ -66,20 +66,24 @@ public class MainCtrl {
     private Scene boardOptionsScene;
 
     private boolean isAdmin;
-    private final int WIDTH = 1080;
-    private final int HEIGHT = 720;
+    private final int width = 1080;
+    private final int heigth = 720;
 
     private final SubtaskWrapper subtaskWrapper;
 
     private AppClient client;
     private final DataFormat dataFormat;
 
+
+    @SuppressWarnings("ParameterNumber")
     @Inject
-    public MainCtrl(ListOverviewCtrl listOverviewCtrl, EditCardCtrl editCardCtrl, EditListCtrl editListCtrl,
+    public MainCtrl(ListOverviewCtrl listOverviewCtrl, EditCardCtrl editCardCtrl,
+                    EditListCtrl editListCtrl,
                     BoardOverviewCtrl boardOverviewCtrl, JoinedBoardsCtrl joinedBoardsCtrl,
                     CreateBoardCtrl createBoardCtrl, AddCardCtrl createAddCardCtrl,
                     AddListCtrl createAddListCtrl, AddSubTaskCtrl createAddSubtaskCtrl,
-                    BoardOptionsCtrl boardOptionsCtrl, SubtaskWrapper subtaskWrapper, DataFormat dataFormat) {
+                    BoardOptionsCtrl boardOptionsCtrl, SubtaskWrapper subtaskWrapper,
+                    DataFormat dataFormat) {
         this.listOverviewCtrl = listOverviewCtrl;
         this.editCardCtrl = editCardCtrl;
         this.editListCtrl = editListCtrl;
@@ -226,8 +230,8 @@ public class MainCtrl {
     }
 
     public void setPrimaryStage() {
-        this.primaryStage.setWidth(WIDTH);
-        this.primaryStage.setHeight(HEIGHT);
+        this.primaryStage.setWidth(width);
+        this.primaryStage.setHeight(heigth);
         this.primaryStage.setMinWidth(425.0);
         this.primaryStage.setMinHeight(409);
 
