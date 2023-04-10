@@ -17,4 +17,6 @@ public interface BoardOverviewCtrl {
     void joinPressed(KeyEvent event);
     List<Board> getBoards();
     void disconnectPressed();
+    void registerForMessages();
+    void showAllBoards();
 }

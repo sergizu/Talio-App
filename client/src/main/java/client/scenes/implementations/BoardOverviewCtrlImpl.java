@@ -2,7 +2,6 @@ package client.scenes.implementations;
 
 import client.scenes.MainCtrl;
 import client.scenes.interfaces.BoardOverviewCtrl;
-import client.scenes.interfaces.CreateBoardCtrl;
 import client.services.interfaces.BoardOverviewService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
@@ -24,8 +23,6 @@ public class BoardOverviewCtrlImpl implements BoardOverviewCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private final BoardOverviewService boardOverviewService;
-
-    private CreateBoardCtrl createBoardCtrl;
 
     @Inject
     public BoardOverviewCtrlImpl(ServerUtils server, MainCtrl mainCtrl, BoardOverviewService boardOverviewService) {
@@ -141,5 +138,9 @@ public class BoardOverviewCtrlImpl implements BoardOverviewCtrl {
 
     public List<Board> getBoards() {
         return server.getBoards();
+    }
+
+    public void showAllBoards() {
+        boardOverviewService.showAllBoards();
     }
 }

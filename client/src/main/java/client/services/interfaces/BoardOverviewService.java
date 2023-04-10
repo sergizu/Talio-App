@@ -1,11 +1,11 @@
 package client.services.interfaces;
 
-import client.services.implementations.BoardOptionsServiceImpl;
+import client.services.implementations.BoardOverviewServiceImpl;
 import com.google.inject.ImplementedBy;
 import javafx.fxml.Initializable;
 import javafx.scene.input.KeyEvent;
 
-@ImplementedBy(BoardOptionsServiceImpl.class)
+@ImplementedBy(BoardOverviewServiceImpl.class)
 public interface BoardOverviewService extends Initializable {
 
     void createBoard();

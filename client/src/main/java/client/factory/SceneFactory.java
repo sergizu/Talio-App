@@ -1,7 +1,8 @@
 package client.factory;
 
 import client.MyFXML;
-import client.scenes.*;
+import client.scenes.EditListCtrl;
+import client.scenes.interfaces.BoardOverviewCtrl;
 import client.services.interfaces.*;
 import com.google.inject.Injector;
 import javafx.scene.Parent;
