@@ -17,7 +17,6 @@ package client.scenes;
 
 import client.factory.SceneFactory;
 import client.helperClass.SubtaskWrapper;
-import client.scenes.implementations.BoardOptionsCtrlImpl;
 import client.scenes.interfaces.*;
 import com.google.inject.Inject;
 import commons.AppClient;
@@ -71,7 +70,7 @@ public class MainCtrl {
     private AddSubTaskCtrl createAddSubtaskCtrl;
 
     @Inject
-    private BoardOptionsCtrlImpl boardOptionsCtrl;
+    private BoardOptionsCtrl boardOptionsCtrl;
     private Scene boardOptionsScene;
 
     boolean isAdmin;

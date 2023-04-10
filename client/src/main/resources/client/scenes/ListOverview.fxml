@@ -18,11 +18,15 @@
   -->
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
-<AnchorPane stylesheets="@../../../CSS/style.css" maxHeight="1080.0" maxWidth="1920.0" minHeight="-Infinity" minWidth="-Infinity" pickOnBounds="false" prefHeight="720.0" prefWidth="1080" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ListOverviewCtrl">
-   <ScrollPane fx:id="scrollPane" layoutY="124.0" prefHeight="596.0" prefWidth="1080.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="124.0">
+
+<AnchorPane maxHeight="1080.0" maxWidth="1920.0" minHeight="-Infinity" minWidth="-Infinity" pickOnBounds="false" prefHeight="720.0" prefWidth="1080" stylesheets="@../../../CSS/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.services.interfaces.ListOverviewService">
+   <ScrollPane fx:id="scrollPane" layoutY="79.0" prefHeight="641.0" prefWidth="1080.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="79.0">
       <padding>
          <Insets top="10.0" />
       </padding></ScrollPane>
@@ -41,7 +45,7 @@
          <Insets />
       </opaqueInsets>
    </HBox>
-   <HBox fx:id="menu1" alignment="TOP_CENTER" fillHeight="false" layoutY="44.0" prefHeight="70.0" prefWidth="1080.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+   <HBox fx:id="menu1" alignment="TOP_CENTER" fillHeight="false" layoutY="44.0" prefHeight="38.0" prefWidth="1080.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
       <opaqueInsets>
          <Insets />
       </opaqueInsets>

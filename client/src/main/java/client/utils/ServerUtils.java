@@ -78,7 +78,6 @@ public class ServerUtils {
         restClient.executeRequest(RequestType.DELETE, null, null, "api/cards/" + card.id);
     }
 
-
     public Board addBoard(Board board) {
         return restClient.executeRequest(RequestType.POST, board,
                 new GenericType<Board>(){}, "api/boards");

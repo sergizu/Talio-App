@@ -3,6 +3,7 @@ package client.scenes;
 import client.scenes.implementations.SelectServerCtrlImpl;
 import client.scenes.interfaces.EditCardCtrl;
 import client.scenes.interfaces.JoinedBoardsCtrl;
+import client.scenes.interfaces.ListOverviewCtrl;
 import client.services.interfaces.SelectServerService;
 import client.utils.ServerUtils;
 import javafx.scene.input.KeyCode;

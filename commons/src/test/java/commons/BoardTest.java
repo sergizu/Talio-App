@@ -41,7 +41,6 @@ public class BoardTest {
     public void testSetTitle() {
         Board board1 = new Board("test board");
         board1.setTitle("test board 2");
-        System.out.println(board1.key);
         assertEquals("test board 2", board1.getTitle());
     }
 

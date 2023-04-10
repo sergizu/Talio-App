@@ -12,6 +12,5 @@ public interface CreateBoardCtrl {
     void createBoard();
     void addBoardToClient(Board board);
     void escape();
-    void setParent(Object parent);
     void keyPressed(KeyEvent e);
 }
