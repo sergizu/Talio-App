@@ -1,22 +1,16 @@
 package client.scenes.interfaces;
 
-import client.helperClass.SubtaskWrapper;
 import client.scenes.implementations.EditCardCtrlImpl;
 import com.google.inject.ImplementedBy;
 import commons.Card;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import commons.Subtask;
 import javafx.scene.input.KeyEvent;
-
-import java.util.List;
+import java.util.ArrayList;
 
 @ImplementedBy(EditCardCtrlImpl.class)
 public interface EditCardCtrl {
 
     void init(Card card);
-
-    List<SubtaskWrapper> initSubtask();
-
     void ok();
 
     void delete();
@@ -27,12 +21,13 @@ public interface EditCardCtrl {
 
     void createSubtask();
 
-    void changeSubtask(TableColumn.CellEditEvent<SubtaskWrapper, String> edit);
-
-    void dragAndDrop(TableView<SubtaskWrapper> tableView);
-
     void registerForUpdates();
 
     void setCard(Card card);
 
+    Card getCard();
+
+    void updateNestedList(ArrayList<Subtask> nestedList);
+
+    void showEdit();
 }
