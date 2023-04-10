@@ -22,4 +22,5 @@ public interface ListOverviewCtrl {
     void setBoard();
     void backPressed();
     void updateCardList(long id, TDList tdList);
+    void removeList(TDList tdList);
 }

@@ -165,4 +165,10 @@ public class ListOverviewCtrlImplTest {
         listOverviewCtrl.updateCardList(1, tdList);
         verify(serverUtils).updateCardList(1, tdList);
     }
+
+    @Test
+    public void testRemoveList(){
+        listOverviewCtrl.removeList(new TDList("Test"));
+        verify(serverUtils).removeList(any());
+    }
 }

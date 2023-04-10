@@ -127,4 +127,8 @@ public class ListOverviewCtrlImp implements ListOverviewCtrl {
     public void updateCardList(long id, TDList tdList){
         server.updateCardList(id, tdList);
     }
+
+    public void removeList(TDList tdList){
+        server.removeList(tdList);
+    }
 }
