@@ -23,8 +23,6 @@ public interface EditCardService {
     void initTableView(List<SubtaskWrapper> subtaskWrappers);
 
     void setEmptyName(String s);
-
-    void editSubtask(TableColumn.CellEditEvent<SubtaskWrapper, String> edit);
     void changeSubtask(TableColumn.CellEditEvent<SubtaskWrapper, String> edit);
 
     void dragAndDrop(TableView<SubtaskWrapper> tableView);

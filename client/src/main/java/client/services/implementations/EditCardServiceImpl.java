@@ -117,14 +117,16 @@ public class EditCardServiceImpl implements EditCardService {
         return subtaskWrappers;
     }
 
-    public void editSubtask(TableColumn.CellEditEvent<SubtaskWrapper, String> edit) {
+    public void changeSubtask(TableColumn.CellEditEvent<SubtaskWrapper, String> edit) {
         SubtaskWrapper subtaskWrapper = tableView.getSelectionModel().getSelectedItem();
         Subtask subtask = subtaskWrapper.getSubtask();
         subtask.setName(edit.getNewValue());
-    }
-
-    public void changeSubtask(TableColumn.CellEditEvent<SubtaskWrapper, String> edit) {
-        editCardCtrl.changeSubtask(edit);
+        ObservableList<SubtaskWrapper> items = tableView.getItems();
+        ArrayList<Subtask> subtasks = new ArrayList<>();
+        for(SubtaskWrapper item : items) {
+            subtasks.add(item.getSubtask());
+        }
+        editCardCtrl.updateNestedList(subtasks);
     }
 
     public void dragAndDrop(TableView<SubtaskWrapper> tableView) {

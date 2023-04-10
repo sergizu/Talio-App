@@ -26,8 +26,6 @@ public interface EditCardCtrl {
 
     void createSubtask();
 
-    void changeSubtask(TableColumn.CellEditEvent<SubtaskWrapper, String> edit);
-
     void registerForUpdates();
 
     void setCard(Card card);
