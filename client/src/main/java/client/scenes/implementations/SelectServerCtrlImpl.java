@@ -59,23 +59,29 @@ public class SelectServerCtrlImpl implements SelectServerCtrl {
         server.changeServer(s);
         if(server.serverRunning()){
             startSession();
-            if (checkPass()) {
+            if(!selectServerService.getVisible()) {
+                mainCtrl.showJoinedBoards();
+            } else if (checkPass()) {
                 mainCtrl.setAdmin(true);
                 mainCtrl.showBoardOverview();
                 selectServerService.setAdminPassText("");
                 selectServerService.setBoxVisible(false);
             } else {
-                mainCtrl.showJoinedBoards();
                 mainCtrl.setAdmin(false);
+                selectServerService.setMyLabel("Password is incorrect!");
             }
-        }
-        else{
+        } else {
             selectServerService.setMyLabel("Couldn't find the server!");
         }
     }
 
     public void adminLogIn() {
-        selectServerService.setBoxVisible(true);
+        selectServerService.setBoxVisible(!selectServerService.getVisible());
+        if(!selectServerService.getVisible()) {
+            selectServerService.setChoiceButton("Admin log in");
+        } else {
+            selectServerService.setChoiceButton("User log in");
+        }
     }
 
     public void keyPressed(KeyEvent e) {

@@ -3,7 +3,12 @@ package client.services.interfaces;
 import client.helperClass.SubtaskWrapper;
 import client.services.implementations.EditCardServiceImpl;
 import com.google.inject.ImplementedBy;
+import commons.Subtask;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.input.KeyEvent;
+
+import java.util.ArrayList;
 import java.util.List;
 @ImplementedBy(EditCardServiceImpl.class)
 public interface EditCardService {
@@ -20,9 +25,20 @@ public interface EditCardService {
 
     void setEmptyName(String s);
 
-    void editSubtask(TableColumn.CellEditEvent<SubtaskWrapper, String> edit);
     void changeSubtask(TableColumn.CellEditEvent<SubtaskWrapper, String> edit);
 
-    void dragAndDrop();
+    void createSubtask();
+
+    void dragAndDrop(TableView<SubtaskWrapper> tableView);
+
+    List<SubtaskWrapper> initSubtask(ArrayList<Subtask> nestedList);
+
+    void ok();
+
+    void delete();
+
+    void cancel();
+
+    void keyPressed(KeyEvent e);
 
 }
