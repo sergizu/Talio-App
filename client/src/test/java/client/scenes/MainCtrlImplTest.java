@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.factory.SceneFactory;
 import client.helperClass.SubtaskWrapper;
+import client.scenes.implementations.MainCtrlImpl;
 import client.scenes.interfaces.*;
 import commons.Board;
 import commons.Card;
@@ -21,7 +22,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class MainCtrlTest {
+class MainCtrlImplTest {
     @Mock
     private ListOverviewCtrl listOverviewCtrl;
     @Mock
@@ -56,16 +57,15 @@ class MainCtrlTest {
     private final int HEIGHT = 720;
 
 
-    private MainCtrl mainCtrl;
+    private MainCtrlImpl mainCtrl;
     @BeforeEach
     void setUp() {
         given(sceneFactory.createAddListScene()).willReturn(scene);
         given(sceneFactory.createAddCardScene()).willReturn(scene);
-        mainCtrl = new MainCtrl(listOverviewCtrl, editCardCtrl, editListCtrl,
+        mainCtrl = new MainCtrlImpl(listOverviewCtrl, editCardCtrl, editListCtrl,
                 boardOverviewCtrl, joinedBoardsCtrl,
                 createBoardCtrl, createAddCardCtrl, createAddListCtrl,
-                createAddSubtaskCtrl, boardOptionsCtrl, subtaskWrapper
-        , dataFormat);
+                createAddSubtaskCtrl, boardOptionsCtrl, subtaskWrapper, dataFormat);
         mainCtrl.initialize(primaryStage, sceneFactory);
     }
 
