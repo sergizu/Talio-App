@@ -13,14 +13,18 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ServerUtilsTest {
     @Mock
     private RestClient restClient;
+    @Mock
+    private ExecutorService executorService;
     private ServerUtils serverUtils;
 
     @BeforeEach
@@ -29,8 +33,17 @@ class ServerUtilsTest {
     }
 
     @Test
-    void isExecutorServiceShutdown() {
+    void isExecutorServiceShutdownFalse() {
+        serverUtils.setExecutorService(executorService);
+        given(serverUtils.isExecutorServiceShutdown()).willReturn(false);
         assertFalse(serverUtils.isExecutorServiceShutdown());
+    }
+
+    @Test
+    void isExecutorServiceShutdownTrue() {
+        serverUtils.setExecutorService(executorService);
+        given(serverUtils.isExecutorServiceShutdown()).willReturn(true);
+        assertTrue(serverUtils.isExecutorServiceShutdown());
     }
 
     @Test
