@@ -6,6 +6,7 @@ import com.google.inject.ImplementedBy;
 import commons.Subtask;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.KeyEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +24,21 @@ public interface EditCardService {
     void initTableView(List<SubtaskWrapper> subtaskWrappers);
 
     void setEmptyName(String s);
+
     void changeSubtask(TableColumn.CellEditEvent<SubtaskWrapper, String> edit);
 
+    void createSubtask();
+
     void dragAndDrop(TableView<SubtaskWrapper> tableView);
+
     List<SubtaskWrapper> initSubtask(ArrayList<Subtask> nestedList);
+
+    void ok();
+
+    void delete();
+
+    void cancel();
+
+    void keyPressed(KeyEvent e);
+
 }
