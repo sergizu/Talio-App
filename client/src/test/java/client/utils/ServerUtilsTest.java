@@ -5,15 +5,24 @@ import commons.Card;
 import commons.Subtask;
 import commons.TDList;
 import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
+import org.springframework.messaging.simp.stomp.StompFrameHandler;
+import org.springframework.messaging.simp.stomp.StompSession;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
@@ -25,6 +34,10 @@ class ServerUtilsTest {
     private RestClient restClient;
     @Mock
     private ExecutorService executorService;
+    @Captor
+    private ArgumentCaptor<Runnable> runnableCaptor;
+    @Mock
+    private StompSession stompSession;
     private ServerUtils serverUtils;
 
     @BeforeEach
@@ -177,5 +190,138 @@ class ServerUtilsTest {
     void testIsServerRunning() {
         serverUtils.serverRunning();
         verify(restClient).isServerRunning();
+    }
+
+    @Test
+    void registerBoardNoUpdates() {
+        Consumer<Long> consumer = mock(Consumer.class);
+        serverUtils.setExecutorService(executorService);
+        Future future = mock(Future.class);
+        Response response = mock(Response.class);
+        given(response.getStatus()).willReturn(Response.Status.NO_CONTENT.getStatusCode());
+        given(executorService.submit(any(Runnable.class))).willReturn(future);
+        given(restClient.longPolling("/api/boards/updates")).willAnswer(new Answer<Response>() {
+            int counter = 0;
+            @Override
+            public Response answer(InvocationOnMock invocation) {
+                if (counter >= 5) {
+                    Thread.currentThread().interrupt();
+                }
+                counter++;
+                return response;
+            }
+        });
+
+        serverUtils.registerForBoardUpdates(consumer);
+        verify(executorService).submit(runnableCaptor.capture());
+        runnableCaptor.getValue().run();
+        verify(consumer, never()).accept(anyLong());
+    }
+
+    @Test
+    void registerBoardUpdates() {
+        Consumer<Long> consumer = mock(Consumer.class);
+        serverUtils.setExecutorService(executorService);
+        Future future = mock(Future.class);
+        Response response = mock(Response.class);
+        given(response.getStatus()).willReturn(Response.Status.OK.getStatusCode());
+        given(response.readEntity(Long.class)).willReturn(1L);
+        given(executorService.submit(any(Runnable.class))).willReturn(future);
+        given(restClient.longPolling("/api/boards/updates")).willAnswer(new Answer<Response>() {
+            @Override
+            public Response answer(InvocationOnMock invocation) {
+                Thread.currentThread().interrupt();
+                return response;
+            }
+        });
+
+        serverUtils.registerForBoardUpdates(consumer);
+        verify(executorService).submit(runnableCaptor.capture());
+        runnableCaptor.getValue().run();
+        verify(consumer).accept(anyLong());
+    }
+
+    @Test
+    void registerCardNoUpdates() {
+        Consumer<Long> consumer = mock(Consumer.class);
+        serverUtils.setExecutorService(executorService);
+        Future future = mock(Future.class);
+        Response response = mock(Response.class);
+        given(response.getStatus()).willReturn(Response.Status.NO_CONTENT.getStatusCode());
+        given(executorService.submit(any(Runnable.class))).willReturn(future);
+        given(restClient.longPolling("api/cards/updates")).willAnswer(new Answer<Response>() {
+            int counter = 0;
+            @Override
+            public Response answer(InvocationOnMock invocation) {
+                if (counter >= 5) {
+                    Thread.currentThread().interrupt();
+                }
+                counter++;
+                return response;
+            }
+        });
+
+        serverUtils.registerForCardUpdates(consumer);
+        verify(executorService).submit(runnableCaptor.capture());
+        runnableCaptor.getValue().run();
+        verify(consumer, never()).accept(anyLong());
+    }
+
+    @Test
+    void registerCardUpdates() {
+        Consumer<Long> consumer = mock(Consumer.class);
+        serverUtils.setExecutorService(executorService);
+        Future future = mock(Future.class);
+        Response response = mock(Response.class);
+        given(response.getStatus()).willReturn(Response.Status.OK.getStatusCode());
+        given(response.readEntity(Long.class)).willReturn(1L);
+        given(executorService.submit(any(Runnable.class))).willReturn(future);
+        given(restClient.longPolling("api/cards/updates")).willAnswer(new Answer<Response>() {
+            @Override
+            public Response answer(InvocationOnMock invocation) {
+                Thread.currentThread().interrupt();
+                return response;
+            }
+        });
+
+        serverUtils.registerForCardUpdates(consumer);
+        verify(executorService).submit(runnableCaptor.capture());
+        runnableCaptor.getValue().run();
+        verify(consumer).accept(anyLong());
+    }
+
+    @Test
+    void setStompSession() {
+        serverUtils.setSession(stompSession);
+        assertEquals(stompSession, serverUtils.getSession());
+    }
+
+    @Test
+    void initSession() {
+        assertThrows(RuntimeException.class, () -> serverUtils.initSession());
+    }
+
+    @Test
+    void send() {
+        serverUtils.setSession(stompSession);
+        serverUtils.send("test1", "test2");
+        verify(stompSession).send("test1", "test2");
+    }
+
+    @Test
+    void stop() {
+        serverUtils.setExecutorService(executorService);
+        serverUtils.setSession(stompSession);
+        serverUtils.stop();
+        verify(executorService).shutdownNow();
+        verify(stompSession).disconnect();
+    }
+
+    @Test
+    void registerForMessages() {
+        serverUtils.setSession(stompSession);
+        Consumer<Board> consumer = mock(Consumer.class);
+        serverUtils.registerForMessages("destination", Board.class, consumer);
+        verify(stompSession).subscribe(anyString(), any(StompFrameHandler.class));
     }
 }
