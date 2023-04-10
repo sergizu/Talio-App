@@ -22,7 +22,7 @@ class SubtaskWrapperTest {
     @Inject
     private Button button;
 
-    static SubtaskWrapper subtaskWrapper;
+    SubtaskWrapper subtaskWrapper;
 
     @BeforeEach
     void setUp() {

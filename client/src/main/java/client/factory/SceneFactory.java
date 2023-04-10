@@ -1,8 +1,8 @@
 package client.factory;
 
 import client.MyFXML;
-import client.scenes.*;
-import client.scenes.implementations.BoardOptionsCtrlImpl;
+import client.scenes.EditListCtrl;
+import client.scenes.interfaces.BoardOverviewCtrl;
 import client.services.interfaces.*;
 import com.google.inject.Injector;
 import javafx.scene.Parent;
@@ -22,16 +22,17 @@ public class SceneFactory {
     }
 
     public Parent createListOverviewScene(){
-        return fxml.load(ListOverviewCtrl.class,
+        return fxml.load(ListOverviewService.class,
                 "client", "scenes", "ListOverview.fxml").getValue();
     }
 
     public Parent createEditCardScene(){
-        return fxml.load(EditCardCtrl.class, "client", "scenes", "EditCard.fxml").getValue();
+        return fxml.load(EditCardService.class, "client", "scenes", "EditCard.fxml").getValue();
     }
 
     public Parent createSelectServerScene(){
-        return fxml.load(SelectServerCtrl.class,"client","scenes", "SelectServer.fxml").getValue();
+        return fxml.load(SelectServerService.class,
+                "client","scenes", "SelectServer.fxml").getValue();
     }
 
     public Parent createBoardOverviewScene(){
@@ -66,7 +67,7 @@ public class SceneFactory {
     }
 
     public Parent createBoardOptionsScene() {
-        return fxml.load(BoardOptionsCtrlImpl.class, "client",
+        return fxml.load(BoardOptionsService.class, "client",
                 "scenes", "BoardOptions.fxml").getValue();
     }
 }

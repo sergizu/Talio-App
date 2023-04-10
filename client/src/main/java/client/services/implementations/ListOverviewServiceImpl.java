@@ -1,11 +1,11 @@
-package client.scenes;
+package client.services.implementations;
 
 import client.helperClass.SubtaskWrapper;
-import client.utils.ServerUtils;
+import client.scenes.interfaces.ListOverviewCtrl;
+import client.services.interfaces.ListOverviewService;
 import com.google.inject.Inject;
-import commons.Board;
+import com.google.inject.Singleton;
 import commons.Card;
-import commons.CardListId;
 import commons.TDList;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -15,10 +15,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.*;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -32,77 +32,53 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.util.List;
 
-public class ListOverviewCtrl {
-    private final ServerUtils server;
-    private final MainCtrl mainCtrl;
-    private final SubtaskWrapper subtaskWrapper;
-
-    private Board board;
-    private Object parent;
+@Singleton
+public class ListOverviewServiceImpl implements ListOverviewService {
     @FXML
     private ScrollPane scrollPane;
     @FXML
     private Label boardTitle;
     @FXML
     private Button copyButton;
+
     private TableView<Card> selection;
 
+    private final ListOverviewCtrl listOverviewCtrl;
+    private final SubtaskWrapper subtaskWrapper;
 
     @Inject
-    public ListOverviewCtrl(ServerUtils server, MainCtrl mainCtrl, SubtaskWrapper subtaskWrapper) {
-        this.server = server;
-        this.mainCtrl = mainCtrl;
+    public ListOverviewServiceImpl(ListOverviewCtrl listOverviewCtrl,
+                                   SubtaskWrapper subtaskWrapper) {
+        this.listOverviewCtrl = listOverviewCtrl;
         this.subtaskWrapper = subtaskWrapper;
     }
 
-    public void init(){
-        setScrollPane();
-        board = new Board("");
-        ///added this becuase I was getting a NullPtrException in register for updates
-        registerForUpdates();
-    }
-
-    public void registerForUpdates() {
-        server.registerForBoardUpdates(updatedBoardID -> {
-            Platform.runLater(() -> {
-                if (board.getId() == updatedBoardID) {
-                    setBoard(updatedBoardID);
-                }
-            });
-        });
-        server.registerForMessages("/topic/addCard", CardListId.class, c -> {
-            Platform.runLater(() -> {
-                addCardToList(c.card, c.listId);
-                setBoard(c.boardId);
-            });
-        });
-        server.registerForMessages("/topic/boardDeletion", Long.class, deletedBoardId -> {
-            Platform.runLater(() -> {
-                if (deletedBoardId == board.id &&
-                        mainCtrl.getPrimaryStageTitle().equals("Lists: Overview")) {
-                    if(mainCtrl.getAdmin())
-                        mainCtrl.showBoardOverview();
-                    else mainCtrl.showJoinedBoards();
-                }
-            });
-        });
-    }
-
-    public void addCardToList(Card card, long listId) {
-        for (int i = 0; i < board.tdLists.size(); i++)
-            if (board.tdLists.get(i).id == listId)
-                board.tdLists.get(i).addCard(card);
-    }
-
-    private void setScrollPane() {
+    public void setScrollPane() {
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
     }
 
-    public void showLists() {
-        scrollPane.setContent(createFlowPane());
+    public void showLists(List<TDList> lists) {
+        scrollPane.setContent(createFlowPane(lists));
+    }
+
+    public FlowPane createFlowPane(List<TDList> lists) {
+        FlowPane flowPane = new FlowPane();
+        setFlowPane(flowPane);
+        for (var tdList : lists) {
+            Button buttonAddCard = createAddCardButton(tdList.id);
+            Button buttonEditList = createEditListButton(tdList);
+            Button buttonRemoveList = createRemoveListButton(tdList);
+            TableView<Card> tv = createTable(tdList);
+            cardExpansion(tv);
+            dragAndDrop(tv);
+            dragOtherLists(tv, tdList);
+            flowPane.getChildren().addAll(createVBox(tv,
+                    createHBox(buttonAddCard, buttonEditList, buttonRemoveList)));
+        }
+        return flowPane;
     }
 
     public void setFlowPane(FlowPane flowPane) {
@@ -111,27 +87,10 @@ public class ListOverviewCtrl {
         flowPane.setVgap(5);
     }
 
-    public FlowPane createFlowPane() {
-        FlowPane flowPane = new FlowPane();
-        setFlowPane(flowPane);
-        var lists = board.tdLists;
-        for (var tdList : lists) {
-            Button buttonAddCard = createAddCardButton(tdList.id);
-            Button buttonEditList = createEditListButton(tdList);
-            TableView<Card> tv = createTable(tdList);
-            cardExpansion(tv);
-            dragAndDrop(tv);
-            dragOtherLists(tv, tdList);
-            flowPane.getChildren().addAll(createVBox(tv,
-                createHBox(buttonAddCard, buttonEditList)));
-        }
-        return flowPane;
-    }
-
     public Button createAddCardButton(long id) {
         Button button = new Button("Add Card");
         button.setOnAction(e -> {
-            mainCtrl.showAddCard(id, board.id);
+            listOverviewCtrl.showAddCard(id);
         });
         return button;
     }
@@ -139,8 +98,17 @@ public class ListOverviewCtrl {
     public Button createEditListButton(TDList list) {
         Button button = new Button("Edit");
         button.setOnAction(e -> {
-            mainCtrl.showEditList(list);
+            listOverviewCtrl.showEditList(list);
         });
+        return button;
+    }
+
+    public Button createRemoveListButton(TDList list) {
+        Button button = new Button("   ");
+        button.setOnAction(e -> {
+            listOverviewCtrl.removeList(list);
+        });
+        button.getStyleClass().add("removeButtons");
         return button;
     }
 
@@ -159,10 +127,10 @@ public class ListOverviewCtrl {
         return tv;
     }
 
-    public HBox createHBox(Button button1, Button button2) {
+    public HBox createHBox(Button button1, Button button2, Button button3) {
         HBox hBox = new HBox();
-        hBox.getChildren().addAll(button2, button1);
-        hBox.setSpacing(55);
+        hBox.getChildren().addAll(button2, button1, button3);
+        hBox.setSpacing(14);
         return hBox;
     }
 
@@ -174,33 +142,22 @@ public class ListOverviewCtrl {
         return vBox;
     }
 
-    public void refresh(long boardID) {
-        board = server.getBoardById(boardID);
-        boardTitle.setText(board.title);
-        showLists();
-    }
-
-    public void stop() {
-        if(!server.isExecutorServiceShutdown())
-            server.stop();
-    }
-
-    public void addList() {
-        mainCtrl.showAddList(board.id);
+    public void setBoardTitle(String title){
+        boardTitle.setText(title);
     }
 
     //Method that will pop up a window to change the card name whenever you double-click on a card
     public void cardExpansion(TableView<Card> tableView) {
         tableView.setOnMouseClicked(event -> {
             if (tableView.getSelectionModel().getSelectedItem() != null
-                && event.getClickCount() == 2) {
+                    && event.getClickCount() == 2) {
                 Card card = tableView.getSelectionModel().getSelectedItem();
-                mainCtrl.showEdit(card);
+                listOverviewCtrl.showEdit(card);
             }
         });
     }
 
-    public void dragAndDrop(TableView<Card> tableView){
+    public void dragAndDrop(TableView<Card> tableView) {
         tableView.setRowFactory(tv -> {
             TableRow<Card> row = new TableRow<>();
             row.setOnDragDetected(e -> { //Method gets called whenever a mouse drags a row
@@ -238,7 +195,7 @@ public class ListOverviewCtrl {
                     tableView.getItems().add(dropIndex, card);
                     ArrayList<Card> items = new ArrayList<>(tableView.getItems());
                     TDList tdList = card.list;
-                    updateList(tdList, items);
+                    listOverviewCtrl.updateList(tdList, items);
                     e.setDropCompleted(true); //marks the end of the drag event
                     tableView.getSelectionModel().select(dropIndex);
                     //Selects the dropped card, otherwise the first card in the tableview
@@ -250,45 +207,30 @@ public class ListOverviewCtrl {
         });
     }
 
-
-    public void updateList(TDList tdList, ArrayList<Card> items) {
-        tdList.cards.clear();
-        tdList.cards.addAll(items);
-        var ids = tdList.cards.stream().map(Card::getId).sorted().collect(Collectors.toList());
-        for (int i = 0; i < ids.size(); i++) {
-            tdList.cards.get(i).setId(ids.get(i)); // changing the ids of the cards to store
-            // them in a different order in the database
-        }
-        server.updateBoard(board);
-    }
-
     public void dragOtherLists(TableView<Card> tableView, TDList tdList) {
         tableView.setOnMousePressed(e -> selection = tableView);
         tableView.setOnDragOver(e -> {
             Dragboard db = e.getDragboard();
-
             if (db.hasContent(subtaskWrapper.getSerialization())) {
-
                 e.acceptTransferModes(TransferMode.MOVE);
                 e.consume();
             }
         });
         tableView.setOnDragDropped(e -> {
             Dragboard db = e.getDragboard();
-
             int draggedIndex = (int) db.getContent(subtaskWrapper.getSerialization());
-
             Card card = selection.getItems().remove(draggedIndex);
-            server.updateCardList(card.getId(), tdList);
-            setBoard(board.id);
+            listOverviewCtrl.updateCardList(card.getId(), tdList);
+            listOverviewCtrl.setBoard();
             e.consume();
         });
     }
 
     public void copyKey() {
-        copyToClipboard(board.key);
+        copyToClipboard(listOverviewCtrl.getBoardKey());
         animateCopyButton(copyButton);
     }
+
 
     public void copyToClipboard(long boardKey) {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -300,8 +242,8 @@ public class ListOverviewCtrl {
         Platform.runLater(() ->
         {
             Timeline timeline = new Timeline(
-                new KeyFrame(Duration.ZERO, event -> afterCopyButton(copyButton)),
-                new KeyFrame(Duration.seconds(2), event -> restoreCopyButton(copyButton))
+                    new KeyFrame(Duration.ZERO, event -> afterCopyButton(copyButton)),
+                    new KeyFrame(Duration.seconds(2), event -> restoreCopyButton(copyButton))
             );
             timeline.play();
         });
@@ -318,15 +260,11 @@ public class ListOverviewCtrl {
         copyButton.setText("Copy Invite Key");
     }
 
-    public void setBoard(long boardId) {
-        board = server.getBoardById(boardId);
-        refresh(boardId);
+    public void backPressed(){
+        listOverviewCtrl.backPressed();
     }
 
-
-    public void backPressed() {
-        if (!mainCtrl.getAdmin())
-            mainCtrl.showJoinedBoards();
-        else mainCtrl.showBoardOverview();
+    public void addList(){
+        listOverviewCtrl.addList();
     }
 }

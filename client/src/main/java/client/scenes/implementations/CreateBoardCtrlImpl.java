@@ -19,7 +19,6 @@ public class CreateBoardCtrlImpl implements CreateBoardCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private final CreateBoardService createBoardService;
-    private Object parent;
 
     @Inject
     public CreateBoardCtrlImpl(ServerUtils server, MainCtrl mainCtrl,
@@ -30,6 +29,9 @@ public class CreateBoardCtrlImpl implements CreateBoardCtrl {
     }
 
     public Board getBoardWithTitle() {
+        if(createBoardService.getBoardName().isBlank()) {
+            return null;
+        }
         Board board = new Board(createBoardService.getBoardName());
         addDefaultLists(board);
         return board;
@@ -43,6 +45,10 @@ public class CreateBoardCtrlImpl implements CreateBoardCtrl {
 
     public void createBoard() {
         Board board = getBoardWithTitle();
+        if(board == null) {
+            createBoardService.setErrorLabel("Board name cannot be empty!");
+            return;
+        }
         createBoardService.setBoardName("");
         board = server.addBoard(board);
         server.send("/app/boards/createBoard",board.id);
@@ -68,19 +74,11 @@ public class CreateBoardCtrlImpl implements CreateBoardCtrl {
         }
     }
 
-    public void setParent(Object parent) {
-        this.parent = parent;
-    }
-
     public void keyPressed(KeyEvent e) {
         if (e.getCode() == KeyCode.ENTER) {
             createBoard();
         } else if (e.getCode() == KeyCode.ESCAPE) {
             escape();
         }
-    }
-
-    public Object getParent() {
-        return parent;
     }
 }

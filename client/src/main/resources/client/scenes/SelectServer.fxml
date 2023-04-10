@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id = "startBox" stylesheets="@../../../CSS/style.css" maxHeight="1080.0" maxWidth="1920.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="203.0" prefWidth="290.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.SelectServerCtrl">
+<AnchorPane fx:id="startBox" maxHeight="1080.0" maxWidth="1920.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="203.0" prefWidth="290.0" stylesheets="@../../../CSS/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.services.interfaces.SelectServerService">
    <VBox alignment="CENTER" layoutX="95.0" layoutY="1.0" prefHeight="200.0" prefWidth="194.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
          <Label alignment="CENTER" prefHeight="26.0" prefWidth="104.0" text="Type the server:" />
@@ -20,7 +20,7 @@
             </children>
          </HBox>
          <Button mnemonicParsing="false" onAction="#ok" prefHeight="26.0" prefWidth="134.0" text="Join" />
-         <Button mnemonicParsing="false" onAction="#adminLogIn" text="Admin log in" />
+         <Button fx:id="choiceButton" mnemonicParsing="false" onAction="#adminLogIn" text="Admin log in" />
       </children>
    </VBox>
 
