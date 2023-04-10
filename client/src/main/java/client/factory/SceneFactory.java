@@ -2,6 +2,7 @@ package client.factory;
 
 import client.MyFXML;
 import client.scenes.*;
+import client.scenes.interfaces.SelectServerCtrl;
 import client.services.interfaces.*;
 import com.google.inject.Injector;
 import javafx.scene.Parent;
@@ -30,7 +31,7 @@ public class SceneFactory {
     }
 
     public Parent createSelectServerScene(){
-        return fxml.load(SelectServerCtrl.class,"client","scenes", "SelectServer.fxml").getValue();
+        return fxml.load(SelectServerService.class,"client","scenes", "SelectServer.fxml").getValue();
     }
 
     public Parent createBoardOverviewScene(){

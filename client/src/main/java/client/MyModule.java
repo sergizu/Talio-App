@@ -29,7 +29,6 @@ public class MyModule implements Module {
     public void configure(Binder binder) {
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
         binder.bind(EditListCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(SelectServerCtrl.class).in(Scopes.SINGLETON);
         binder.bind(BoardOverviewCtrl.class).in(Scopes.SINGLETON);
         binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
         binder.bind(SubtaskWrapper.class).in(Scopes.SINGLETON);
