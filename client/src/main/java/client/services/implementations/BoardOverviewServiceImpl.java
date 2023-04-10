@@ -5,6 +5,9 @@ import client.services.interfaces.BoardOverviewService;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import commons.Board;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,6 +18,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.List;
@@ -81,7 +85,7 @@ public class BoardOverviewServiceImpl implements BoardOverviewService {
         HBox tableLine = new HBox();
         tableLine.setAlignment(Pos.CENTER);
         tableLine.setBorder(new Border(new BorderStroke(Color.BLACK,
-                BorderStrokeStyle.SOLID, null, null)));//will change color, was added for testing
+            BorderStrokeStyle.SOLID, null, null)));//will change color, was added for testing
         tableLine.setPrefHeight(50);
         return tableLine;
     }
@@ -102,6 +106,23 @@ public class BoardOverviewServiceImpl implements BoardOverviewService {
         boardTitle.setPadding(new Insets(10, 50, 10, 100));
         return boardTitle;
     }
+
+    public void adjustPromptText(String information) {
+        Platform.runLater(() ->
+        {
+            Timeline timeline = new Timeline(
+                new KeyFrame(Duration.ZERO, event -> {
+                    clearJoinByKey();
+                    setJoinByKeyPrompt(information);
+                }),
+                new KeyFrame(Duration.seconds(5), event -> {
+                    setJoinByKeyPrompt("Join by key");
+                })
+            );
+            timeline.play();
+        });
+    }
+
     public void disconnectPressed() {
         boardOverviewCtrl.disconnectPressed();
     }
