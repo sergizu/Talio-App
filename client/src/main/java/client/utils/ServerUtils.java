@@ -179,6 +179,16 @@ public class ServerUtils {
         session = connect("ws://localhost:8080/websocket");
     }
 
+    //for testing
+    public void setSession(StompSession session) {
+        this.session = session;
+    }
+
+    //for testing
+    public StompSession getSession() {
+        return session;
+    }
+
     private StompSession connect(String url) {
         var client = new StandardWebSocketClient();
         var stomp = new WebSocketStompClient(client);
