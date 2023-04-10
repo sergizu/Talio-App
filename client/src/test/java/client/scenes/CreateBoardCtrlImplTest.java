@@ -51,14 +51,14 @@ class CreateBoardCtrlImplTest {
 
     @Test
     void getBoardWithTitle2() {
-        given(createBoardService.getBoardName()).willReturn(null);
+        given(createBoardService.getBoardName()).willReturn("");
         Board board = createBoardCtrl.getBoardWithTitle();
         assertNull(board);
     }
 
     @Test
     void testCreateBoardNo(){
-        given(createBoardService.getBoardName()).willReturn(null);
+        given(createBoardService.getBoardName()).willReturn("");
         createBoardCtrl.createBoard();
         verify(createBoardService).getBoardName();
         verify(createBoardService).setErrorLabel(anyString());
