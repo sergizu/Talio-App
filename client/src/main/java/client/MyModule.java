@@ -18,7 +18,6 @@ package client;
 import client.factory.SceneCreator;
 import client.helperClass.SubtaskWrapper;
 import client.scenes.*;
-import client.utils.ServerUtils;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
@@ -29,12 +28,8 @@ public class MyModule implements Module {
 
     @Override
     public void configure(Binder binder) {
-        binder.bind(ListOverviewCtrl.class).in(Scopes.SINGLETON);
         binder.bind(EditListCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(EditCardCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(SelectServerCtrl.class).in(Scopes.SINGLETON);
         binder.bind(BoardOverviewCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
         binder.bind(SubtaskWrapper.class).in(Scopes.SINGLETON);
         binder.bind(SceneCreator.class).in(Scopes.SINGLETON);
         DataFormat dataFormat = new DataFormat("application/x-custom-java-serialized-object");
