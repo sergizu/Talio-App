@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.scenes.interfaces.CreateBoardCtrl;
+import client.scenes.interfaces.MainCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Board;
