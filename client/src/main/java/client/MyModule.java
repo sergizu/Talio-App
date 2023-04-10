@@ -15,6 +15,7 @@
  */
 package client;
 
+import client.factory.SceneCreator;
 import client.helperClass.SubtaskWrapper;
 import client.scenes.*;
 import client.utils.ServerUtils;
@@ -35,6 +36,7 @@ public class MyModule implements Module {
         binder.bind(BoardOverviewCtrl.class).in(Scopes.SINGLETON);
         binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
         binder.bind(SubtaskWrapper.class).in(Scopes.SINGLETON);
+        binder.bind(SceneCreator.class).in(Scopes.SINGLETON);
         DataFormat dataFormat = new DataFormat("application/x-custom-java-serialized-object");
         binder.bind(DataFormat.class).toInstance(dataFormat);
     }
