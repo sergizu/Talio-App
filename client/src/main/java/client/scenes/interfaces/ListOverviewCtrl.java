@@ -4,8 +4,7 @@ import client.scenes.implementations.ListOverviewCtrlImp;
 import com.google.inject.ImplementedBy;
 import commons.Card;
 import commons.TDList;
-
-import java.util.ArrayList;
+import java.util.List;
 
 @ImplementedBy(ListOverviewCtrlImp.class)
 public interface ListOverviewCtrl {
@@ -18,10 +17,9 @@ public interface ListOverviewCtrl {
     long getBoardKey();
     void stop();
     void addList();
-    void updateList(TDList tdList, ArrayList<Card> items);
+    void updateList(TDList tdList, List<Card> items);
     void setBoard(long boardId);
-    void refresh(long boardId);
+    void setBoard();
     void backPressed();
     void updateCardList(long id, TDList tdList);
-    long getBoardId();
 }

@@ -12,7 +12,7 @@ import commons.CardListId;
 import commons.TDList;
 import javafx.application.Platform;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -24,7 +24,8 @@ public class ListOverviewCtrlImp implements ListOverviewCtrl {
     private Board board;
 
     @Inject
-    public ListOverviewCtrlImp(ServerUtils server, MainCtrl mainCtrl, ListOverviewService listOverviewService) {
+    public ListOverviewCtrlImp(ServerUtils server, MainCtrl mainCtrl,
+                               ListOverviewService listOverviewService) {
         this.server = server;
         this.mainCtrl = mainCtrl;
         this.listOverviewService = listOverviewService;
@@ -33,22 +34,22 @@ public class ListOverviewCtrlImp implements ListOverviewCtrl {
     public void init(){
         listOverviewService.setScrollPane();
         board = new Board("");
-        ///added this because I was getting a NullPtrException in register for updates
         registerForUpdates();
     }
 
-    public void refresh(long boardId){
+    public void setBoard(long boardId){
         board = server.getBoardById(boardId);
         listOverviewService.setBoardTitle(board.title);
         listOverviewService.showLists(board.tdLists);
     }
 
-    public void setBoard(long boardId) {
-        board = server.getBoardById(boardId);
-        refresh(boardId);
+    public void setBoard(){
+        board = server.getBoardById(board.id);
+        listOverviewService.setBoardTitle(board.title);
+        listOverviewService.showLists(board.tdLists);
     }
 
-    public void updateList(TDList tdList, ArrayList<Card> items) {
+    public void updateList(TDList tdList, List<Card> items) {
         tdList.cards.clear();
         tdList.cards.addAll(items);
         var ids = tdList.cards.stream().map(Card::getId).sorted().collect(Collectors.toList());
@@ -62,9 +63,6 @@ public class ListOverviewCtrlImp implements ListOverviewCtrl {
     public long getBoardKey(){
         return board.key;
     }
-    public long getBoardId(){
-        return board.id;
-    }
 
     public void registerForUpdates() {
         server.registerForBoardUpdates(updatedBoardID -> {
@@ -77,7 +75,8 @@ public class ListOverviewCtrlImp implements ListOverviewCtrl {
         server.registerForMessages("/topic/addCard", CardListId.class, c -> {
             Platform.runLater(() -> {
                 addCardToList(c.card, c.listId);
-                setBoard(c.boardId);
+                if(board.id == c.boardId)
+                    setBoard(c.boardId);
             });
         });
         server.registerForMessages("/topic/boardDeletion", Long.class, deletedBoardId -> {

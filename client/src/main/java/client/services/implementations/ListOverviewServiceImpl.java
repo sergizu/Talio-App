@@ -49,7 +49,8 @@ public class ListOverviewServiceImpl implements ListOverviewService {
     private final SubtaskWrapper subtaskWrapper;
 
     @Inject
-    public ListOverviewServiceImpl(ListOverviewCtrl listOverviewCtrl, SubtaskWrapper subtaskWrapper) {
+    public ListOverviewServiceImpl(ListOverviewCtrl listOverviewCtrl,
+                                   SubtaskWrapper subtaskWrapper) {
         this.listOverviewCtrl = listOverviewCtrl;
         this.subtaskWrapper = subtaskWrapper;
     }
@@ -210,7 +211,7 @@ public class ListOverviewServiceImpl implements ListOverviewService {
             int draggedIndex = (int) db.getContent(subtaskWrapper.getSerialization());
             Card card = selection.getItems().remove(draggedIndex);
             listOverviewCtrl.updateCardList(card.getId(), tdList);
-            listOverviewCtrl.setBoard(listOverviewCtrl.getBoardId());
+            listOverviewCtrl.setBoard();
             e.consume();
         });
     }
