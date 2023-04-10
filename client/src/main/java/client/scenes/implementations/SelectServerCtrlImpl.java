@@ -2,10 +2,7 @@ package client.scenes.implementations;
 
 
 import client.scenes.*;
-import client.scenes.interfaces.EditCardCtrl;
-import client.scenes.interfaces.JoinedBoardsCtrl;
-import client.scenes.interfaces.ListOverviewCtrl;
-import client.scenes.interfaces.SelectServerCtrl;
+import client.scenes.interfaces.*;
 import client.services.interfaces.SelectServerService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
