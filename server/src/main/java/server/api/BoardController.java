@@ -1,7 +1,6 @@
 package server.api;
 
 import commons.Board;
-import commons.Card;
 import commons.TDList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +13,6 @@ import server.service.BoardService;
 import server.service.ListService;
 
 import java.util.List;
-import java.util.Random;
 
 @Controller
 @ResponseBody
@@ -33,40 +31,6 @@ public class BoardController {
         this.defaultBoardID = -1L; //setting it to undefined
     }
 
-    //This mapper is only temporary to make it possible to already
-    //work with a board even though we dont id this
-    //board yet or give the possibilities to add more boards
-    @GetMapping("/tempGetter")
-    public ResponseEntity<Board> tempGetter() {
-        if (defaultBoardID != -1L) {
-            boolean existsById = boardService.existsById(defaultBoardID);
-            Board board = null;
-            if(existsById)
-                board = boardService.getById(defaultBoardID);
-            return ResponseEntity.ok(board);
-        }
-        Board board = new Board("Default board");
-        Random randomGenerator = new Random();
-        board.key = Math.abs(randomGenerator.nextLong());
-        Card card = new Card("Default card");
-        TDList tdList = new TDList("TO DO");
-        TDList tdList1 = new TDList("DOING");
-        TDList tdList2 = new TDList("DONE");
-        card.list = tdList;
-        //card = cardRepository.save(card);
-        tdList.addCard(card);
-        tdList.board = board;
-        //tdList = listRepository.save(tdList);
-        board.addList(tdList);
-        board.addList(tdList1);
-        tdList1.board =board;
-        board.addList(tdList2);
-        tdList2.board =board;
-        board = boardService.addBoard(board);
-        defaultBoardID = board.id;
-        return ResponseEntity.ok(board);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<Board> getById(@PathVariable("id") long id) {
 
@@ -77,26 +41,11 @@ public class BoardController {
         return ResponseEntity.ok(retrieveBoard);
     }
 
-    @PutMapping("/{id}/addCard")
-    public ResponseEntity addCardToBoard(@PathVariable("id") long id, @RequestBody Card card) {
-        if (!boardService.existsById(id))
-             ResponseEntity.badRequest().build();
-        Board board = boardService.getById(id);
-        TDList list = board.tdLists.get(0);
-        list.addCard(card);
-        list = listService.update(list);
-        board.tdLists.set(0, list);
-        return ResponseEntity.ok().build();
-    }
-
     @PutMapping("/{id}/addList")
     public ResponseEntity addListToBoard(@PathVariable("id") long id, @RequestBody TDList tdList) {
         if (!boardService.existsById(id) || tdList == null)
             ResponseEntity.badRequest().build();
-        Board board = boardService.getById(id);
-        tdList.board = board;
-        board.addList(tdList);
-        boardService.update(board);
+        boardService.addListToBoard(tdList, id);
         return ResponseEntity.ok().build();
     }
 

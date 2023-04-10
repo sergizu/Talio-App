@@ -16,4 +16,5 @@ public interface BoardOverviewService extends Initializable {
     String getJoinByKeyText();
     void clearJoinByKey();
     void setJoinByKeyPrompt(String text);
+    void adjustPromptText(String text);
 }

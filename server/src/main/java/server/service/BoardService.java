@@ -1,9 +1,8 @@
 package server.service;
-
-
-
 import commons.Board;
+import commons.TDList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,10 +18,12 @@ import java.util.function.Consumer;
 @Service
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final ListService listService;
 
     @Autowired
-    public BoardService(BoardRepository boardRepository) {
+    public BoardService(BoardRepository boardRepository, @Lazy ListService listService) {
         this.boardRepository = boardRepository;
+        this.listService = listService;
     }
 
     public List<Board> getAll() {
@@ -33,7 +34,7 @@ public class BoardService {
 
     public Board getById(long id) {
         if(boardRepository.existsById(id)) {
-            return boardRepository.findById(id).get(); 
+            return boardRepository.findById(id).get();
         }
         return null;
     }
@@ -90,8 +91,12 @@ public class BoardService {
         Random randomGenerator = new Random();
         board.key = Math.abs(randomGenerator.nextLong());
     }
+
+
+    public void addListToBoard(TDList toAdd, long boardId) {
+        Board board = getById(boardId);
+        toAdd.board = board;
+        board.tdLists.add(toAdd);
+        update(board);
+    }
 }
-
-
-
-

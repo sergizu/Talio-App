@@ -7,12 +7,9 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import commons.Board;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,18 +73,11 @@ public class BoardOverviewCtrlImpl implements BoardOverviewCtrl {
         try {
             key = Long.parseLong(boardOverviewService.getJoinByKeyText());
         } catch (NumberFormatException e) {
-            adjustPromptText("Please enter a valid key!");
+            boardOverviewService.adjustPromptText("Please enter a valid key!");
             return;
         }
-        ArrayList<Board> allBoards = (ArrayList<Board>) server.getBoards();
-        for (Board board : allBoards)
-            if (board.key == key) {
-                enterBoard(board);
-                boardOverviewService.clearJoinByKey();
-                return;
-            }
         if (!lookForBoardKey(key))
-            adjustPromptText("No board with that key!");
+            boardOverviewService.adjustPromptText("No board with that key!");
     }
 
     public boolean lookForBoardKey(long key) {
@@ -99,22 +89,6 @@ public class BoardOverviewCtrlImpl implements BoardOverviewCtrl {
                 return true;
             }
         return false;
-    }
-
-    public void adjustPromptText(String information) {
-        Platform.runLater(() ->
-        {
-            Timeline timeline = new Timeline(
-                    new KeyFrame(Duration.ZERO, event -> {
-                        boardOverviewService.clearJoinByKey();
-                        boardOverviewService.setJoinByKeyPrompt(information);
-                    }),
-                    new KeyFrame(Duration.seconds(5), event -> {
-                        boardOverviewService.setJoinByKeyPrompt("Join by key");
-                    })
-            );
-            timeline.play();
-        });
     }
 
     public void enterBoard(Board board) {

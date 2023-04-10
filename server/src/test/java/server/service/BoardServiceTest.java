@@ -2,7 +2,6 @@ package server.service;
 
 
 import commons.Board;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.async.DeferredResult;
 import server.database.BoardRepository;
+
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,12 +22,15 @@ class BoardServiceTest {
 
     @Mock
     private BoardRepository boardRepository;
+
+    @Mock
+    private ListService listService;
     private BoardService boardService;
 
 
     @BeforeEach
     void setUp() {
-        boardService = new BoardService(boardRepository);
+        boardService = new BoardService(boardRepository, listService);
     }
 
     @Test
@@ -65,6 +68,16 @@ class BoardServiceTest {
     }
 
     @Test
+    void addCardIfExists() {
+
+        Board toAdd = new Board("Board");
+        toAdd.setId(1);
+        when(boardRepository.existsById(toAdd.getId())).thenReturn(true);
+        boardService.addBoard(toAdd);
+        verify(boardRepository, never()).save(toAdd);
+    }
+
+    @Test
     void addBoardNull() {
         Board toAdd = null;
         boardService.addBoard(toAdd);
@@ -80,16 +93,6 @@ class BoardServiceTest {
     }
 
     @Test
-    void addCardIfExists() {
-
-        Board toAdd = new Board("Board");
-        toAdd.setId(1);
-        when(boardRepository.existsById(toAdd.getId())).thenReturn(true);
-        boardService.addBoard(toAdd);
-        verify(boardRepository, never()).save(toAdd);
-    }
-
-    @Test
     void existsById() {
         long id = 1;
         boardService.existsById(id);
@@ -98,22 +101,17 @@ class BoardServiceTest {
 
     @Test
     void updateIfExists() {
-            Board board = new Board("Board 1");
-            board.id = 1;
-            when(boardRepository.existsById(board.id)).thenReturn(true);
-            when(boardRepository.save(board)).thenReturn(board);
-            boardService.update(board);
-            verify(boardRepository).save(board);
+        Board board = new Board("Board 1");
+        board.id = 1;
+        when(boardRepository.existsById(board.id)).thenReturn(true);
+        when(boardRepository.save(board)).thenReturn(board);
+        boardService.update(board);
+        verify(boardRepository).save(board);
     }
     @Test
     void updateIfNotExists(){
         when(boardRepository.existsById(any(Long.class))).thenReturn(false);
-        assertNull(boardService.update(new Board("b1")));
-    }
-
-    @Test
-    void testUpdateIfNull() {
-        assertNull(boardService.update(null));
+        assertEquals(null, boardService.update(new Board("b1")));
     }
 
     @Test
@@ -122,6 +120,7 @@ class BoardServiceTest {
         board.setTitle(null);
         assertNull(boardService.update(board));
     }
+
     @Test
     void deleteIfExists(){
         when(boardRepository.existsById(any(Long.class))).thenReturn(true);
@@ -132,16 +131,19 @@ class BoardServiceTest {
         when(boardRepository.existsById(any(Long.class))).thenReturn(false);
         assertFalse(boardService.delete(1L));
     }
-
+    @Test
+    void subscribeForUpdates(){
+        DeferredResult<ResponseEntity<Long>> df = boardService.subscribeForUpdates();
+        assertEquals(null, df.getResult());
+    }
     @Test
     void testSendUpdates() {
         boardService.sendUpdates(1L);
     }
+
     @Test
-    void subscribeForUpdates(){
-        DeferredResult<ResponseEntity<Long>> df = boardService.subscribeForUpdates();
-        assertNull(df.getResult());
+    void testUpdateIfNull() {
+        assertNull(boardService.update(null));
     }
+
 }
-
-
