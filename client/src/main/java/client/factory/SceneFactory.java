@@ -29,19 +29,19 @@ public class SceneFactory {
     }
 
     public Scene createListOverviewScene(){
-        Parent parent = fxml.load(ListOverviewCtrl.class,
+        Parent parent = fxml.load(ListOverviewService.class,
                 "client", "scenes", "ListOverview.fxml").getValue();
         return sceneCreator.createScene(parent);
     }
 
     public Scene createEditCardScene(){
-        Parent parent = fxml.load(EditCardCtrl.class, "client",
+        Parent parent = fxml.load(EditCardService.class, "client",
                 "scenes", "EditCard.fxml").getValue();
         return sceneCreator.createScene(parent);
     }
 
     public Scene createSelectServerScene(){
-        Parent parent = fxml.load(SelectServerCtrl.class,"client","scenes",
+        Parent parent = fxml.load(SelectServerService.class,"client","scenes",
                 "SelectServer.fxml").getValue();
         return sceneCreator.createScene(parent);
     }
