@@ -29,7 +29,7 @@ public class CreateBoardCtrlImpl implements CreateBoardCtrl {
     }
 
     public Board getBoardWithTitle() {
-        if(createBoardService.getBoardName().isEmpty()) {
+        if(createBoardService.getBoardName() == null) {
             return null;
         }
         Board board = new Board(createBoardService.getBoardName());
