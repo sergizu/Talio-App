@@ -16,7 +16,8 @@
 package client;
 
 import client.helperClass.SubtaskWrapper;
-import client.scenes.*;
+import client.scenes.EditListCtrl;
+import client.scenes.MainCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Binder;
 import com.google.inject.Module;
@@ -29,7 +30,6 @@ public class MyModule implements Module {
     public void configure(Binder binder) {
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
         binder.bind(EditListCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(BoardOverviewCtrl.class).in(Scopes.SINGLETON);
         binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
         binder.bind(SubtaskWrapper.class).in(Scopes.SINGLETON);
     }

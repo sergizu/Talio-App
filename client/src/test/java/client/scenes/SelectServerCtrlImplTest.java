@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.scenes.implementations.SelectServerCtrlImpl;
+import client.scenes.interfaces.BoardOverviewCtrl;
 import client.scenes.interfaces.EditCardCtrl;
 import client.scenes.interfaces.JoinedBoardsCtrl;
 import client.scenes.interfaces.ListOverviewCtrl;
