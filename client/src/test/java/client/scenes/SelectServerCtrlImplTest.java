@@ -79,17 +79,19 @@ public class SelectServerCtrlImplTest {
     }
     @Test
     void OkTestCheckPassFalse(){
+        given(selectServerService.getVisible()).willReturn(true);
         given(selectServerService.getAdminPassText()).willReturn("something");
-        when(selectServerService.getServerNameText()).thenReturn("something");
+        when(selectServerService.getServerNameText()).thenReturn("localhost:8080");
         when(server.serverRunning()).thenReturn(true);
         selectServerCtrlImpl.ok();
-        verify(mainCtrl).showJoinedBoards();
+        verify(selectServerService).setMyLabel("Password is incorrect!");
         verify(mainCtrl).setAdmin(false);
     }
     @Test
     void OkTest(){
+        given(selectServerService.getVisible()).willReturn(true);
         given(selectServerService.getAdminPassText()).willReturn("1010");
-        given(selectServerService.getServerNameText()).willReturn("1010");
+        given(selectServerService.getServerNameText()).willReturn("localhost:8080");
         given(server.serverRunning()).willReturn(true);
         selectServerCtrlImpl.ok();
         verify(mainCtrl).setAdmin(true);
