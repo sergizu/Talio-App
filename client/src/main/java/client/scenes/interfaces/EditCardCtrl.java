@@ -4,19 +4,18 @@ import client.helperClass.SubtaskWrapper;
 import client.scenes.implementations.EditCardCtrlImpl;
 import com.google.inject.ImplementedBy;
 import commons.Card;
+import commons.Subtask;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.KeyEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @ImplementedBy(EditCardCtrlImpl.class)
 public interface EditCardCtrl {
 
     void init(Card card);
-
-    List<SubtaskWrapper> initSubtask();
-
     void ok();
 
     void delete();
@@ -35,4 +34,6 @@ public interface EditCardCtrl {
 
     void setCard(Card card);
 
+    void updateNestedList(ArrayList<Subtask> nestedList);
+    void showEdit();
 }

@@ -43,36 +43,7 @@ public class EditCardCtrlImpl implements EditCardCtrl {
         service.setCardName(card.getTitle());
         service.setDescription(card.getDescription());
         service.dragAndDrop();
-        List<SubtaskWrapper> subtaskWrappers = initSubtask();
-        service.initTableView(subtaskWrappers);
-    }
-
-    public List<SubtaskWrapper> initSubtask() {
-        List<SubtaskWrapper> subtaskWrappers = new ArrayList<>();
-        for (Subtask subtask : card.getNestedList()) {
-            CheckBox checkBox = new CheckBox();
-            if (subtask.checked) {
-                checkBox.setSelected(true);
-            }
-            checkBox.setOnMouseClicked(event -> {
-                if (checkBox.isSelected()) {
-                    subtask.setChecked(true);
-                    server.updateNestedList(card.id, card.getNestedList());
-                }
-                if (!checkBox.isSelected()) {
-                    subtask.setChecked(false);
-                    server.updateNestedList(card.id, card.getNestedList());
-                }
-            });
-            Button button = new Button("   ");
-            button.setOnAction(event -> {
-                card.getNestedList().remove(subtask);
-                server.updateNestedList(card.id, card.getNestedList());
-                mainCtrl.showEdit(card);
-            });
-            subtaskWrappers.add(new SubtaskWrapper(subtask, checkBox, button));
-        }
-        return subtaskWrappers;
+        service.initTableView(service.initSubtask(card.getNestedList()));
     }
 
     public void ok() {
@@ -195,5 +166,13 @@ public class EditCardCtrlImpl implements EditCardCtrl {
 
     public void setCard(Card card) {
         this.card = card;
+    }
+
+    public void updateNestedList(ArrayList<Subtask> nestedList) {
+        server.updateNestedList(card.getId(), nestedList);
+    }
+
+    public void showEdit() {
+        mainCtrl.showEdit(card);
     }
 }

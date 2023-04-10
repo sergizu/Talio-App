@@ -14,6 +14,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyEvent;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Singleton
@@ -78,6 +80,34 @@ public class EditCardServiceImpl implements EditCardService {
         tableView.setItems(data);
         tableView.setEditable(true);
         tableColumnSubtask.setCellFactory(TextFieldTableCell.forTableColumn());
+    }
+
+    public List<SubtaskWrapper> initSubtask(ArrayList<Subtask> nestedList) {
+        List<SubtaskWrapper> subtaskWrappers = new ArrayList<>();
+        for (Subtask subtask : nestedList) {
+            CheckBox checkBox = new CheckBox();
+            if (subtask.checked) {
+                checkBox.setSelected(true);
+            }
+            checkBox.setOnMouseClicked(event -> {
+                if (checkBox.isSelected()) {
+                    subtask.setChecked(true);
+                    editCardCtrl.updateNestedList(nestedList);
+                }
+                if (!checkBox.isSelected()) {
+                    subtask.setChecked(false);
+                    editCardCtrl.updateNestedList(nestedList);
+                }
+            });
+            Button button = new Button("   ");
+            button.setOnAction(event -> {
+                nestedList.remove(subtask);
+                editCardCtrl.updateNestedList(nestedList);
+                editCardCtrl.showEdit();
+            });
+            subtaskWrappers.add(new SubtaskWrapper(subtask, checkBox, button));
+        }
+        return subtaskWrappers;
     }
 
     public void editSubtask(TableColumn.CellEditEvent<SubtaskWrapper, String> edit) {
