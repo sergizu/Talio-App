@@ -10,14 +10,13 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 
-import java.util.concurrent.Executors;
 
 
 public class SelectServerCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private final ListOverviewCtrl listOverviewCtrl;
-    private JoinedBoardsCtrl joinedBoardsCtrl;
+    private final JoinedBoardsCtrl joinedBoardsCtrl;
 
     private final BoardOverviewCtrl boardOverviewCtrl;
 
@@ -91,7 +90,6 @@ public class SelectServerCtrl {
         }
     }
     public void startSession(){
-        server.setExecutorService(Executors.newCachedThreadPool());
         server.initSession();
         boardOverviewCtrl.registerForMessages();
         joinedBoardsCtrl.registerForMessages();
