@@ -1,28 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
-<AnchorPane fx:id="startBox" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../../CSS/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.services.interfaces.CreateBoardService">
-   <children>
-      <VBox layoutX="125.0" layoutY="18.0" prefHeight="363.0" prefWidth="350.0" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="350.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <Label text="Board title:" textAlignment="JUSTIFY">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <TextField fx:id="boardTitle" onKeyPressed="#keyPressed" />
-            <Label fx:id="myLabel" prefHeight="17.0" prefWidth="261.0" />
-            <HBox prefHeight="111.0" prefWidth="326.0" spacing="200.0">
-               <children>
-                  <Button mnemonicParsing="false" onMouseClicked="#escape" text="Cancel" />
-                  <Button mnemonicParsing="false" onMousePressed="#createBoard" text="Create" />
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-   </children>
+<AnchorPane fx:id="startBox" stylesheets="@../../../CSS/style.css" prefHeight="236.0" prefWidth="362.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.services.interfaces.CreateBoardService">
+   <VBox alignment="CENTER" layoutX="-27.0" layoutY="-38.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="404.0" prefWidth="485.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <children>
+
+
+         <Label alignment="CENTER" prefHeight="26.0" prefWidth="104.0" text="Board title:" />
+         <TextField fx:id="boardTitle" onKeyPressed="#keyPressed" maxWidth="200.0" prefHeight="26.0" prefWidth="201.0" />
+         <Label fx:id="myLabel" alignment="CENTER" prefHeight="18.0" prefWidth="183.0" />
+         <HBox alignment="CENTER" spacing="100.0">
+            <children>
+               <Button mnemonicParsing="false" onMouseClicked="#escape" text="Cancel" prefWidth="100.0"/>
+               <Button mnemonicParsing="false" onMousePressed="#createBoard" text="Create" prefWidth="100.0"/>
+            </children>
+         </HBox>
+      </children>
+   </VBox>
+
 </AnchorPane>
