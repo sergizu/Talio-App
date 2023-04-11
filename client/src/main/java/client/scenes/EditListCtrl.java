@@ -59,14 +59,6 @@ public class EditListCtrl {
             cancel();
         }
     }
-
-    public void delete() {
-        for(Card card : taskList.cards) {
-            server.removeCard(card);
-        }
-        server.removeList(taskList);
-        mainCtrl.showOverview(boardId);
-    }
     public void cancel() {
         mainCtrl.showOverview(boardId);
     }
