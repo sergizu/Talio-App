@@ -1,7 +1,6 @@
 package server.api;
 
 import commons.Board;
-import commons.Card;
 import commons.TDList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,10 +9,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import server.service.BoardService;
-import server.service.ListService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -22,16 +19,13 @@ class BoardControllerTest {
     @Mock
     BoardService boardService;
 
-    @Mock
-    ListService listService;
-
     BoardController boardController;
 
 
     @BeforeEach
 
     void setUp() {
-        boardController = new BoardController(boardService, listService);
+        boardController = new BoardController(boardService);
     }
 
     @Test
