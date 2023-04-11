@@ -55,7 +55,7 @@ class BoardServiceTest {
     void updateIfExists() {
         Board board = boardService.addBoard(new Board("b1"));
         board.setTitle("b2");
-        boardService.update(board);
+        board = boardService.update(board);
         assertEquals("b2", boardRepository.findById(board.getId()).get().getTitle());
         boardRepository.delete(board);
     }
