@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.scenes.implementations.AddListCtrlImpl;
+import client.scenes.interfaces.MainCtrl;
 import client.services.interfaces.AddListService;
 import client.utils.ServerUtils;
 import commons.TDList;

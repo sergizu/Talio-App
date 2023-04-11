@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.scenes.implementations.BoardOverviewCtrlImpl;
+import client.scenes.interfaces.MainCtrl;
 import client.services.interfaces.BoardOverviewService;
 import client.utils.ServerUtils;
 import commons.Board;

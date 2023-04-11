@@ -1,7 +1,7 @@
 package client.scenes.implementations;
 
-import client.scenes.MainCtrl;
 import client.scenes.interfaces.BoardOverviewCtrl;
+import client.scenes.interfaces.MainCtrl;
 import client.services.interfaces.BoardOverviewService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
