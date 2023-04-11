@@ -20,7 +20,7 @@
 .table-view .column-header .label{
    -fx-text-fill: white;
    -fx-font-weight: bold;
-   -fx-alignment: CENTER_LEFT;
+   -fx-alignment: CENTER;
 }
 .table-row-cell:selected {
    -fx-background-color: whitesmoke;
@@ -53,11 +53,6 @@
         -fx-text-fill: white;
         -fx-font-weight: bold;
 }
-.text-field {
-    -fx-background-color: #ffccff;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-}
 
 .label{
     -fx-text-fill: white;
@@ -86,10 +81,6 @@
 .anchorPane{
     -fx-color: #6622CC;
 }
-#boardTitle{
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-}
 #createBoardBox{
     -fx-background-color:
                         #6622CC,
@@ -101,4 +92,9 @@
     -fx-background-image: url('trash.png');
     -fx-background-position: center;
     -fx-background-size: 25px;
+}
+.text-field {
+    -fx-background-color: #ffccff;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
 }
