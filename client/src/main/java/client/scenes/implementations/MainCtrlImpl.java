@@ -233,7 +233,7 @@ public class MainCtrlImpl implements MainCtrl {
     public void setPrimaryStage() {
         this.primaryStage.setWidth(width);
         this.primaryStage.setHeight(heigth);
-        this.primaryStage.setMinWidth(425.0);
+        this.primaryStage.setMinWidth(537);
         this.primaryStage.setMinHeight(409);
 
         this.primaryStage.setOnCloseRequest(event -> this.listOverviewCtrl.stop());
