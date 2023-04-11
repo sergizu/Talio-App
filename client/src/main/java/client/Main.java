@@ -15,8 +15,9 @@
  */
 package client;
 
+import client.factory.SceneCreator;
 import client.factory.SceneFactory;
-import client.scenes.MainCtrl;
+import client.scenes.interfaces.MainCtrl;
 import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -30,7 +31,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         Injector injector = createInjector(new MyModule());
         MyFXML myFXML = new MyFXML(injector);
-        SceneFactory sceneFactory = new SceneFactory(injector, myFXML);
+        SceneFactory sceneFactory = new SceneFactory(injector, myFXML,
+                injector.getInstance(SceneCreator.class));
         var mainCtrl = sceneFactory.getInjector().getInstance(MainCtrl.class);
         mainCtrl.initialize(primaryStage, sceneFactory);
     }

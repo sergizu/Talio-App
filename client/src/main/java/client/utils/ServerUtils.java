@@ -16,6 +16,7 @@
 package client.utils;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import commons.Board;
 import commons.Card;
 import commons.Subtask;
@@ -39,6 +40,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
 
 
+@Singleton
 public class ServerUtils {
 
     private String server;

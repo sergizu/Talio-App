@@ -1,7 +1,6 @@
 package client.scenes.implementations;
 
 
-import client.scenes.MainCtrl;
 import client.scenes.interfaces.*;
 import client.services.interfaces.SelectServerService;
 import client.utils.ServerUtils;

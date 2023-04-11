@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.scenes.implementations.AddSubTaskCtrlImpl;
+import client.scenes.interfaces.MainCtrl;
 import client.services.interfaces.AddSubTaskService;
 import client.utils.ServerUtils;
 import commons.Board;

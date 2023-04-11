@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.scenes.implementations.CreateBoardCtrlImpl;
+import client.scenes.interfaces.MainCtrl;
 import client.services.interfaces.CreateBoardService;
 import client.utils.ServerUtils;
 import commons.AppClient;
