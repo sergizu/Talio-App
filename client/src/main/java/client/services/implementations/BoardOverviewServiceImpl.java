@@ -66,6 +66,7 @@ public class BoardOverviewServiceImpl implements BoardOverviewService {
     public void displayNoBoardsMessage() {
         boardsList.getChildren().clear();
         Label noBoards = new Label("There are no other boards");
+        noBoards.setStyle("-fx-text-fill: black;");
         noBoards.setFont(Font.font(25.0));
         noBoards.setPadding(new Insets(30, 30, 30, 30));
         boardsList.getChildren().add(noBoards);
@@ -102,6 +103,7 @@ public class BoardOverviewServiceImpl implements BoardOverviewService {
 
     public Label createLabel(String title) {
         Label boardTitle = new Label(title);
+        boardTitle.setStyle("-fx-text-fill: black;");
         boardTitle.setFont(Font.font(20));
         boardTitle.setPadding(new Insets(10, 50, 10, 100));
         return boardTitle;
