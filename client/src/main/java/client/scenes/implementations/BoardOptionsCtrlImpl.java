@@ -5,10 +5,12 @@ import client.scenes.interfaces.MainCtrl;
 import client.services.interfaces.BoardOptionsService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import commons.Board;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+@Singleton
 public class BoardOptionsCtrlImpl implements BoardOptionsCtrl {
 
     private final ServerUtils server;

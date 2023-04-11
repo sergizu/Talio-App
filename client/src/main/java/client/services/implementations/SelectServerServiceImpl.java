@@ -2,6 +2,7 @@ package client.services.implementations;
 
 import client.scenes.interfaces.SelectServerCtrl;
 import client.services.interfaces.SelectServerService;
+import com.google.inject.Singleton;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,6 +12,7 @@ import javafx.scene.layout.HBox;
 
 import javax.inject.Inject;
 
+@Singleton
 public class SelectServerServiceImpl implements SelectServerService {
     @FXML
     private TextField serverName;
