@@ -2,6 +2,7 @@ package server.service;
 
 
 import commons.Board;
+import commons.TDList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.async.DeferredResult;
 import server.database.BoardRepository;
 
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,6 +39,32 @@ class BoardServiceTest {
         assertNotNull(boardRepository.getById(board.getId()));
         assertFalse(boardRepository.findAll().isEmpty());
         boardRepository.delete(board);
+    }
+
+    @Test
+    void testGetAll(){
+        List<Board> list = new ArrayList<>();
+        assertEquals(list, boardService.getAll());
+    }
+
+    @Test
+    void testGetById(){
+        Board board = boardService.addBoard(new Board("b1"));
+        assertEquals(board.id, boardService.getById(board.id).id);
+        assertEquals(board.title, boardService.getById(board.id).title);
+    }
+
+    @Test
+    void testGetById2(){
+        assertNull(boardService.getById(0));
+    }
+
+    @Test
+    void testAddBoard2(){
+        Board boardTest = new Board("b1");
+        Board board = boardService.addBoard(boardTest);
+        board = boardService.addBoard(boardTest);
+        assertNull(board);
     }
 
     @Test
