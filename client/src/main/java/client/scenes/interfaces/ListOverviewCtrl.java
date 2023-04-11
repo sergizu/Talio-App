@@ -23,4 +23,5 @@ public interface ListOverviewCtrl {
     void backPressed();
     void updateCardList(long id, TDList tdList);
     void removeList(TDList tdList);
+    void removeCard(Card card);
 }

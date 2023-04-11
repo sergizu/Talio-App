@@ -3,7 +3,6 @@ package client.scenes;
 import client.scenes.interfaces.MainCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.Card;
 import commons.TDList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -58,14 +57,6 @@ public class EditListCtrl {
         if(e.getCode() == KeyCode.ESCAPE) {
             cancel();
         }
-    }
-
-    public void delete() {
-        for(Card card : taskList.cards) {
-            server.removeCard(card);
-        }
-        server.removeList(taskList);
-        mainCtrl.showOverview(boardId);
     }
     public void cancel() {
         mainCtrl.showOverview(boardId);

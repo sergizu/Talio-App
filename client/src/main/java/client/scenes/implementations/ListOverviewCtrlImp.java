@@ -131,4 +131,8 @@ public class ListOverviewCtrlImp implements ListOverviewCtrl {
     public void removeList(TDList tdList){
         server.removeList(tdList);
     }
+
+    public void removeCard(Card card) {
+        server.removeCard(card);
+    }
 }
