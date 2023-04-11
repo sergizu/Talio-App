@@ -58,6 +58,9 @@ public class ServerUtils {
     }
 
     public boolean isExecutorServiceShutdown() {
+        if(executorService == null){
+            return true;
+        }
         return executorService.isShutdown();
     }
 
