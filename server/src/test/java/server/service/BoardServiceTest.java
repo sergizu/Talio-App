@@ -2,6 +2,7 @@ package server.service;
 
 
 import commons.Board;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +21,11 @@ class BoardServiceTest {
 
     @Autowired
     private BoardService boardService;
+
+    @BeforeEach
+    void clearRepository(){
+        boardRepository.deleteAll();
+    }
 
     @Test
     void testAddingBoard() {
