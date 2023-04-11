@@ -106,6 +106,9 @@ public class ListOverviewServiceImpl implements ListOverviewService {
     public Button createRemoveListButton(TDList list) {
         Button button = new Button("   ");
         button.setOnAction(e -> {
+            for(Card card : list.cards) {
+                listOverviewCtrl.removeCard(card);
+            }
             listOverviewCtrl.removeList(list);
         });
         button.getStyleClass().add("removeButtons");
