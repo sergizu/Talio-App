@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 import server.service.BoardService;
-import server.service.ListService;
 
 import java.util.List;
 
@@ -19,16 +18,10 @@ import java.util.List;
 @RequestMapping("/api/boards")
 public class BoardController {
     private final BoardService boardService;
-    private final ListService listService;
-
-    private Long defaultBoardID; //temporary default board to return to all requests
 
     @Autowired
-    public BoardController(BoardService boardService,
-                           ListService listService) {
+    public BoardController(BoardService boardService) {
         this.boardService = boardService;
-        this.listService = listService;
-        this.defaultBoardID = -1L; //setting it to undefined
     }
 
     @GetMapping("/{id}")
@@ -102,5 +95,4 @@ public class BoardController {
     public Long sendCreatedBoardId(long boardId) {
         return boardId;
     }
-    public long getDefaultId(){return defaultBoardID;}
 }
